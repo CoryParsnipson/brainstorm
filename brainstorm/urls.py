@@ -7,6 +7,7 @@ from blog import views
 
 router = routers.DefaultRouter()
 router.register(r'users', views.UserViewSet)
+router.register(r'ideas', views.IdeaViewSet)
 
 urlpatterns = patterns('',
     # Examples:
@@ -16,5 +17,5 @@ urlpatterns = patterns('',
     #url(r'^admin/', include(admin.site.urls)),
 
     url(r'^api/', include(router.urls)),
-    #url(r'^api/', include('rest_framework.urls', namespace='rest_framework')),
+    url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
 )
