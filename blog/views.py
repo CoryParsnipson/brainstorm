@@ -15,9 +15,13 @@ class MainSiteView:
     """
     @staticmethod
     def index(request):
-        context = {}
+        context = {'page_title': 'Home'}
         return render(request, 'blog/index.html', context)
 
+    @staticmethod
+    def dashboard(request):
+        context = {'page_title': 'Dashboard'}
+        return render(request, 'blog/dashboard.html', context)
 
 class UserViewSet(viewsets.ModelViewSet):
     """
