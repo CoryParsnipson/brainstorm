@@ -98,3 +98,5 @@ REST_FRAMEWORK = {
         'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly'
     ]
 }
+
+TEMPLATE_DIRS = (paths.TEMPLATE_DIR, )

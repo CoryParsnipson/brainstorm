@@ -3,11 +3,22 @@ from django.contrib.auth.models import User
 
 from rest_framework import viewsets
 
-from blog.models import Idea
-from blog.serializers import UserSerializer, IdeaSerializer
+from blog.models import Idea, Thought
+from blog.serializers import UserSerializer, IdeaSerializer, ThoughtSerializer
 
 
 # Create your views here.
+class MainSiteView:
+    """
+    'Normal' views organized into a little class, just for tidyness. Contains
+    views for top level "news headlines" portion of the site.
+    """
+    @staticmethod
+    def index(request):
+        context = {}
+        return render(request, 'blog/index.html', context)
+
+
 class UserViewSet(viewsets.ModelViewSet):
     """
     API endpoint that allows users to be viewed
@@ -22,3 +33,11 @@ class IdeaViewSet(viewsets.ModelViewSet):
     """
     queryset = Idea.objects.all()
     serializer_class = IdeaSerializer
+
+class ThoughtViewSet(viewsets.ModelViewSet):
+    """
+    API endpoint for viewing Thoughts
+    """
+    queryset = Thought.objects.all()
+    serializer_class = ThoughtSerializer
+
