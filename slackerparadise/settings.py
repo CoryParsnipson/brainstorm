@@ -1,5 +1,5 @@
 """
-Django settings for brainstorm project.
+Django settings for slackerparadise project.
 
 For more information on this file, see
 https://docs.djangoproject.com/en/1.7/topics/settings/
@@ -57,9 +57,9 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 )
 
-ROOT_URLCONF = 'brainstorm.urls'
+ROOT_URLCONF = 'slackerparadise.urls'
 
-WSGI_APPLICATION = 'brainstorm.wsgi.application'
+WSGI_APPLICATION = 'slackerparadise.wsgi.application'
 
 
 # Database

@@ -12,7 +12,7 @@ router.register(r'thoughts', views.ThoughtViewSet)
 
 urlpatterns = patterns('',
     # Examples:
-    # url(r'^$', 'brainstorm.views.home', name='home'),
+    # url(r'^$', 'slackerparadise.views.home', name='home'),
     # url(r'^blog/', include('blog.urls')),
 
     #url(r'^', include('blog.urls', namespace='blog')),
