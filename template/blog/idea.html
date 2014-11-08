@@ -1,0 +1,19 @@
+{% extends "blog/default_page.html" %}
+
+{% block content %}
+<h1 id="idea_name"></h1>
+<p id="idea_description"></p>
+<p>Show recent thoughts of this idea...</p>
+
+<script type="text/javascript">
+  var urlParams = getUrlParams();
+
+  function getIdeaInfo(idea)
+  {
+    document.getElementById("idea_name").innerHTML = idea.name;
+    document.getElementById("idea_description").innerHTML = idea.description;
+  }
+
+  ajax("/api/ideas/" + urlParams["id"], "GET", getIdeaInfo);
+</script>
+{% endblock %}

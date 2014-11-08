@@ -10,7 +10,7 @@ from blog.serializers import UserSerializer, IdeaSerializer, ThoughtSerializer
 # Create your views here.
 class MainSiteView:
     """
-    'Normal' views organized into a little class, just for tidyness. Contains
+    'Normal' views organized into a little class, just for tidy-ness. Contains
     views for top level "news headlines" portion of the site.
     """
     @staticmethod
@@ -22,6 +22,15 @@ class MainSiteView:
     def dashboard(request):
         context = {'page_title': 'Dashboard'}
         return render(request, 'blog/dashboard.html', context)
+
+    @staticmethod
+    def idea(request):
+        # TODO: raise exception on bad ID
+        idea_id = request.GET.get('id', None)
+        idea = Idea.objects.filter(id=idea_id)
+
+        context = {'page_title': idea[0].name}
+        return render(request, 'blog/idea.html', context)
 
 class UserViewSet(viewsets.ModelViewSet):
     """
@@ -37,6 +46,7 @@ class IdeaViewSet(viewsets.ModelViewSet):
     """
     queryset = Idea.objects.all()
     serializer_class = IdeaSerializer
+
 
 class ThoughtViewSet(viewsets.ModelViewSet):
     """

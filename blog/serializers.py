@@ -13,7 +13,7 @@ class UserSerializer(serializers.HyperlinkedModelSerializer):
 class IdeaSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Idea
-        fields = ('name', 'description')
+        fields = ('id', 'name', 'description')
 
 
 class ThoughtSerializer(serializers.HyperlinkedModelSerializer):

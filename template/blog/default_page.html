@@ -1,8 +1,12 @@
 <!DOCTYPE html>
+{% load staticfiles %}
 <html>
 <head lang="en">
     <meta charset="UTF-8">
     <title>Slacker Paradise :: {{ page_title }}</title>
+
+    <!-- script includes -->
+    <script type="text/javascript" src="{% static 'script/blog.js' %}"></script>
 </head>
 <body>
 <p>Slacker Paradise :: {{ page_title }}</p>
@@ -10,6 +14,5 @@
 {% block content %}
 There is no content on this page.
 {% endblock %}
-
 </body>
 </html>

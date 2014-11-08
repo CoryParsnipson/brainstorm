@@ -1,5 +1,26 @@
 {% extends "blog/default_page.html" %}
 
 {% block content %}
+<ul>
+    <li>New Idea</li>
+</ul>
 
+<ul id="idea_list"></ul>
+
+<script type="text/javascript">
+  function listIdeas(ideas)
+  {
+    var outText = "";
+    var i;
+
+    for(i = 0; i < ideas.length; i++)
+    {
+      outText += "<li>" + ideas[i].name + ": " + ideas[i].description + "</li>\n";
+    }
+
+    document.getElementById("idea_list").innerHTML = outText;
+  }
+
+  ajax("/api/ideas", "GET", listIdeas);
+</script>
 {% endblock %}
