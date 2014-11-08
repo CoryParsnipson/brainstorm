@@ -4,10 +4,11 @@ from rest_framework import serializers
 
 from blog.models import Idea, Thought
 
+
 class UserSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = User
-        fields = ('url', 'username', 'email')
+        fields = ('username', 'email')
 
 
 class IdeaSerializer(serializers.HyperlinkedModelSerializer):
@@ -17,6 +18,9 @@ class IdeaSerializer(serializers.HyperlinkedModelSerializer):
 
 
 class ThoughtSerializer(serializers.HyperlinkedModelSerializer):
+    author = serializers.PrimaryKeyRelatedField(many=False)
+    idea = serializers.PrimaryKeyRelatedField(many=False)
+
     class Meta:
         model = Thought
         fields = ('title', 'content', 'author', 'date_published', 'date_edited', 'idea')

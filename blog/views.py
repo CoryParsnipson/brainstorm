@@ -2,6 +2,7 @@ from django.shortcuts import render
 from django.contrib.auth.models import User
 
 from rest_framework import viewsets
+from rest_framework import response
 
 from blog.models import Idea, Thought
 from blog.serializers import UserSerializer, IdeaSerializer, ThoughtSerializer
@@ -31,6 +32,7 @@ class MainSiteView:
 
         context = {'page_title': idea[0].name}
         return render(request, 'blog/idea.html', context)
+
 
 class UserViewSet(viewsets.ModelViewSet):
     """
