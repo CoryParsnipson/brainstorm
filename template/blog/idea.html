@@ -37,6 +37,6 @@
     thought_list.innerHTML = thought_html;
   }
 
-  ajax("/thoughts/in_idea/" + beParams["be_idea_id"], "GET", populateThoughtList);
+  ajax("/api/ideas/" + beParams["be_idea_id"] + "/thoughts/", "GET", populateThoughtList);
 </script>
 {% endblock %}
