@@ -9,7 +9,9 @@ from blog.models import Idea, Thought
 from blog.serializers import UserSerializer, IdeaSerializer, ThoughtSerializer
 
 
-# Create your views here.
+###############################################################################
+# Site skeleton views
+###############################################################################
 class MainSiteView:
     """
     'Normal' views organized into a little class, just for tidy-ness. Contains
@@ -35,6 +37,9 @@ class MainSiteView:
         return render(request, 'blog/idea.html', context)
 
 
+###############################################################################
+# RESTful API
+###############################################################################
 class UserViewSet(viewsets.ModelViewSet):
     """
     API endpoint that allows users to be viewed
@@ -63,3 +68,20 @@ class ThoughtViewSet(viewsets.ModelViewSet):
     """
     queryset = Thought.objects.all()
     serializer_class = ThoughtSerializer
+
+
+# form handling views
+class FormViewSet(viewsets.ViewSet):
+    """
+    form related api endpoints
+    """
+    #def list(self, request):
+    #def create(self, request):
+    #def retrieve(self, request, pk):
+    #def update(self, request, pk):
+    #def partial_update(self, request, pk):
+    #def destroy(self, request):
+    def create_idea(self, request):
+        return response.Response(data="FormViewSet.create_idea!")
+
+idea_forms = FormViewSet.as_view({"get": "create_idea"})
