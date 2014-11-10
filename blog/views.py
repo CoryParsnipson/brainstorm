@@ -1,4 +1,5 @@
 from django.shortcuts import render
+from django.http import JsonResponse
 from django.contrib.auth.models import User
 
 from rest_framework import viewsets
@@ -25,13 +26,20 @@ class MainSiteView:
         return render(request, 'blog/dashboard.html', context)
 
     @staticmethod
-    def idea(request):
+    def idea_show(request, idea_id):
         # TODO: raise exception on bad ID
-        idea_id = request.GET.get('id', None)
         idea = Idea.objects.filter(id=idea_id)
 
-        context = {'page_title': idea[0].name}
+        context = {'page_title': idea[0].name,
+                   'idea_id': idea_id}
         return render(request, 'blog/idea.html', context)
+
+    @staticmethod
+    def thoughts_in_idea(request, idea_id):
+        # TODO: raise exception on bad input
+        idea = Idea.objects.filter(id=idea_id)
+        thoughts = Thought.objects.filter(idea=idea)
+        return JsonResponse([ThoughtSerializer(t).data for t in thoughts], safe=False)
 
 
 class UserViewSet(viewsets.ModelViewSet):
@@ -56,4 +64,3 @@ class ThoughtViewSet(viewsets.ModelViewSet):
     """
     queryset = Thought.objects.all()
     serializer_class = ThoughtSerializer
-
