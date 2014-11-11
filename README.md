@@ -1,4 +1,4 @@
-brainstorm
+Slacker Paradise
 ==========
 
-Blogging done Cory Parsnipson style.
+Fuck work; let's skate lololoollololol420errydaaayyyy
