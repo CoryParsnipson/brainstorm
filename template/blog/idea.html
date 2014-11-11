@@ -11,10 +11,7 @@
 <p>Latest thoughts:</p>
 <div id="thought_list"></div>
 
-<form id="form_idea_add" action="" method="post">
-    {% csrf_token %}
-    <input type="submit" value="Submit" />
-</form>
+<div id="idea_create_form" style="border: 1px solid black;"></div>
 
 <script type="text/javascript">
   // obtain any back end parameters
@@ -45,17 +42,23 @@
 
   ajax("/api/ideas/" + beParams["be_idea_id"] + "/thoughts/", "GET", populateThoughtList);
 
-  // TEST!!
-  function populateForm(form)
+  // try programmatically populating a form
+  function populateIdeaForm(form_data)
   {
-    var form_container = document.getElementById("form_idea_add");
-    var form_content = document.createDocumentFragment();
-    var parser = new DOMParser();
-    var form_html = parser.parseFromString(form["form"], "text/html");
+    // make form element
+    var form = createFormContainer('test', '', "post", beParams["be_csrf_token"], "Create!");
 
-    form_content.appendChild(form_html.firstChild);
-    form_container.insertBefore(form_content, form_container.firstChild);
+    // populate form content body
+    var parser = new DOMParser();
+    var form_content = document.createDocumentFragment();
+    form_content.appendChild(parser.parseFromString(form_data["form"], "text/html").firstChild);
+
+    // populate form
+    form.insertBefore(form_content, form.firstChild);
+
+    // add form to document
+    document.getElementById("idea_create_form").innerHTML = form.innerHTML;
   }
-  ajax("/api/forms/ideas/", "GET", populateForm);
+  ajax("/api/forms/ideas/", "GET", populateIdeaForm);
 </script>
 {% endblock %}

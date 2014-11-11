@@ -6,7 +6,7 @@
 //
 // \param[url]       url of ajax request
 // \param[method]    "GET" or "POST", etc
-// \param[callback]  function to execute upon receiving data
+// \param[callback]  function to execute upon receiving data (will receive 1 argument, JSON data)
 //
 // \returns reference to javascript XMLHttpRequest object
 function ajax(url, method, callback)
@@ -85,14 +85,50 @@ function getUrlParams()
 // \param[action]      url to open upon form submission
 // \param[method]      usually "post"
 // \param[csrf_token]  string value of csrf token (usually from django backend)
-function createFormContainer(id, action, method, csrf_token)
+// \param[submit]      value for submit button
+//
+// \returns form element
+function createFormContainer(id, action, method, csrf_token, submit)
 {
-  var form_html = '<form ';
+  var form = document.createElement("form");
 
-  if (id)
+  if (typeof id !== 'undefined')
   {
-    form_html += 'id="' + id + '"';
+    form.id = id;
   }
 
-  return;
+  if (typeof action !== 'undefined')
+  {
+    form.action = action;
+  }
+  else
+  {
+    form.action = "";
+  }
+
+  if (typeof method !== 'undefined')
+  {
+    form.method = method;
+  }
+  else
+  {
+    form.method = "post";
+  }
+
+  if (typeof csrf_token !== 'undefined')
+  {
+    var csrf_field = document.createElement("input");
+    csrf_field.hidden = true;
+    csrf_field.name = "csrfmiddlewaretoken";
+    csrf_field.value = csrf_token;
+
+    form.appendChild(csrf_field);
+  }
+
+  var submit_field = document.createElement("input");
+  submit_field.type = "submit";
+  submit_field.value = (typeof submit !== 'undefined') ? submit : "Submit";
+  form.appendChild(submit_field);
+
+  return form;
 }
