@@ -3,12 +3,18 @@
 {% block content %}
 <!-- variables passed from back end -->
 <input type="hidden" name="be_idea_id" value="{{ idea_id }}">
+<input type="hidden" name="be_csrf_token" value="{% csrf_token %}">
 
 <!-- content start -->
 <h1 id="idea_name"></h1>
 <p id="idea_description"></p>
 <p>Latest thoughts:</p>
 <div id="thought_list"></div>
+
+<form id="form_idea_add" action="" method="post">
+    {% csrf_token %}
+    <input type="submit" value="Submit" />
+</form>
 
 <script type="text/javascript">
   // obtain any back end parameters
@@ -38,5 +44,18 @@
   }
 
   ajax("/api/ideas/" + beParams["be_idea_id"] + "/thoughts/", "GET", populateThoughtList);
+
+  // TEST!!
+  function populateForm(form)
+  {
+    var form_container = document.getElementById("form_idea_add");
+    var form_content = document.createDocumentFragment();
+    var parser = new DOMParser();
+    var form_html = parser.parseFromString(form["form"], "text/html");
+
+    form_content.appendChild(form_html.firstChild);
+    form_container.insertBefore(form_content, form_container.firstChild);
+  }
+  ajax("/api/forms/ideas/", "GET", populateForm);
 </script>
 {% endblock %}

@@ -75,3 +75,24 @@ function getUrlParams()
 
   return urlParams;
 }
+
+// \name createFormContainer
+// \description create a form html element with the supplied id,
+// action, and method attributes. One may also supply a csrf token for
+// django csrf token middleware.
+//
+// \param[id]          id of the form element
+// \param[action]      url to open upon form submission
+// \param[method]      usually "post"
+// \param[csrf_token]  string value of csrf token (usually from django backend)
+function createFormContainer(id, action, method, csrf_token)
+{
+  var form_html = '<form ';
+
+  if (id)
+  {
+    form_html += 'id="' + id + '"';
+  }
+
+  return;
+}

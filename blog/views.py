@@ -1,11 +1,13 @@
 from django.shortcuts import render
+from django.http import JsonResponse
+from django.views.generic import View
 from django.contrib.auth.models import User
 
-from rest_framework import viewsets
-from rest_framework import response
+from rest_framework import viewsets, response
 from rest_framework.decorators import detail_route
 
 from blog.models import Idea, Thought
+from blog.forms import IdeaForm
 from blog.serializers import UserSerializer, IdeaSerializer, ThoughtSerializer
 
 
@@ -71,17 +73,19 @@ class ThoughtViewSet(viewsets.ModelViewSet):
 
 
 # form handling views
-class FormViewSet(viewsets.ViewSet):
+class FormIdeaView(View):
     """
-    form related api endpoints
+    API endpoints for forms to manage user interaction for Ideas
     """
-    #def list(self, request):
-    #def create(self, request):
-    #def retrieve(self, request, pk):
-    #def update(self, request, pk):
-    #def partial_update(self, request, pk):
-    #def destroy(self, request):
-    def create_idea(self, request):
-        return response.Response(data="FormViewSet.create_idea!")
+    def get(self, request, *args, **kwargs):
+        idea_form = IdeaForm()
+        idea_form_output = idea_form.as_table()
 
-idea_forms = FormViewSet.as_view({"get": "create_idea"})
+        if "output" in request.GET:
+            if request.GET["output"] == "p":
+                idea_form_output = idea_form.as_p()
+            elif request.GET["output"] == "ul":
+                idea_form_output = idea_form.as_ul()
+
+        context = {'form': idea_form_output}
+        return JsonResponse(context)
