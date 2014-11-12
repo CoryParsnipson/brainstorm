@@ -5,49 +5,47 @@
 <input type="hidden" name="be_idea_id" value="{{ idea_id }}">
 <input type="hidden" name="be_csrf_token" value="{% csrf_token %}">
 
-<!-- content start -->
-<h1 id="idea_name"></h1>
+<!-- page start -->
+<h1><a href="{% url 'index' %}">Slacker Paradise</a> :: <span id="idea_name"></span></h1>
+<a href="{% url 'dashboard' %}">Dashboard</a>
+
+<h2 id="idea_header"></h2>
 <p id="idea_description"></p>
-<p>Latest thoughts:</p>
+<hr>
+
+<h2>Latest thoughts:</h2>
 <div id="thought_list"></div>
 
-<div id="idea_create_form" style="border: 1px solid black;"></div>
-
 <script type="text/javascript">
-  // obtain any back end parameters
-  var beParams = getBeParams();
+// obtain any back end parameters
+var be_params = getBeParams();
 
-  function getIdeaInfo(idea)
+function getIdeaInfo(idea)
+{
+  document.getElementById("idea_name").innerHTML = idea.name;
+  document.getElementById("idea_header").innerHTML = idea.name;
+  document.getElementById("idea_description").innerHTML = idea.description;
+}
+ajax("/api/ideas/" + be_params["be_idea_id"], "GET", getIdeaInfo);
+
+// populate thoughts list
+function populateThoughtList(thoughts)
+{
+  var thought_list = document.getElementById("thought_list");
+
+  var thought_html = "";
+  for (var thought_idx = 0; thought_idx < thoughts.length; thought_idx++)
   {
-    document.getElementById("idea_name").innerHTML = idea.name;
-    document.getElementById("idea_description").innerHTML = idea.description;
-  }
+    thought_html += "<p style='font-weight: bold;'>" + thoughts[thought_idx].title + "</p>";
+    thought_html += "<p>" + thoughts[thought_idx].content + "</p>";
 
-  ajax("/api/ideas/" + beParams["be_idea_id"], "GET", getIdeaInfo);
-
-  // populate thoughts list
-  function populateThoughtList(thoughts)
-  {
-    var thought_list = document.getElementById("thought_list");
-
-    var thought_html = "";
-    for (var thought_idx = 0; thought_idx < thoughts.length; thought_idx++)
+    if (thought_idx != thoughts.length - 1)
     {
-      thought_html += "<p style='font-weight: bold;'>" + thoughts[thought_idx].title + "</p>";
-      thought_html += "<p>" + thoughts[thought_idx].content + "</p>";
       thought_html += "<hr>\n";
     }
-    thought_list.innerHTML = thought_html;
   }
-
-  ajax("/api/ideas/" + beParams["be_idea_id"] + "/thoughts/", "GET", populateThoughtList);
-
-  // try programmatically populating a form
-  function populateIdeaForm(form_data)
-  {
-    var form = createForm("test", "{% url 'forms-ideas' %}", "post", beParams["be_csrf_token"], form_data["form"], "Create!");
-    document.getElementById("idea_create_form").appendChild(form);
-  }
-  ajax("/api/forms/ideas/", "GET", populateIdeaForm);
+  thought_list.innerHTML = thought_html;
+}
+ajax("/api/ideas/" + be_params["be_idea_id"] + "/thoughts/", "GET", populateThoughtList);
 </script>
 {% endblock %}

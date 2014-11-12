@@ -1,26 +1,10 @@
 {% extends "blog/default_page.html" %}
 
 {% block content %}
-<ul>
-    <li>New Idea</li>
-</ul>
+<h1><a href="{% url 'index' %}">Slacker Paradise</a></h1>
 
-<ul id="idea_list"></ul>
+<a href="{% url 'dashboard' %}">Dashboard</a>
 
-<script type="text/javascript">
-  function listIdeas(ideas)
-  {
-    var outText = "";
-    var i;
-
-    for(i = 0; i < ideas.length; i++)
-    {
-      outText += "<li>" + ideas[i].name + ": " + ideas[i].description + "</li>\n";
-    }
-
-    document.getElementById("idea_list").innerHTML = outText;
-  }
-
-  ajax("/api/ideas", "GET", listIdeas);
-</script>
+<p>Recent thoughts</p>
+<p>Featured thoughts/ideas</p>
 {% endblock %}
