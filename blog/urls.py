@@ -22,7 +22,7 @@ urlpatterns = patterns('',
     # RESTful api urls (it is very important that this app has no namespace...)
     url(r'^api/', include(router.urls)),
 
-    url(r'^api/forms/ideas/', views.FormIdeaView.as_view()),
+    url(r'^api/forms/ideas/', views.FormIdeaView.as_view(), name='forms-ideas'),
 
     url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
 )

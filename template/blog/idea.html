@@ -45,7 +45,7 @@
   // try programmatically populating a form
   function populateIdeaForm(form_data)
   {
-    var form = createForm('test', '', "post", beParams["be_csrf_token"], form_data["form"], "Create!");
+    var form = createForm("test", "{% url 'forms-ideas' %}", "post", beParams["be_csrf_token"], form_data["form"], "Create!");
     document.getElementById("idea_create_form").appendChild(form);
   }
   ajax("/api/forms/ideas/", "GET", populateIdeaForm);

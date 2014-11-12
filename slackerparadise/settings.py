@@ -13,6 +13,7 @@ import os
 import paths
 import common
 
+
 # instatiate keyring object
 keyring = common.KeyRing(os.path.join(paths.BASE_DIR, 'keyring.txt'))
 

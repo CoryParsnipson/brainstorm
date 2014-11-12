@@ -1,6 +1,7 @@
-from django.shortcuts import render
+from django.core.urlresolvers import reverse
 from django.http import JsonResponse
 from django.views.generic import View
+from django.shortcuts import render, redirect
 from django.contrib.auth.models import User
 
 from rest_framework import viewsets, response
@@ -78,6 +79,8 @@ class FormIdeaView(View):
     API endpoints for forms to manage user interaction for Ideas
     """
     def get(self, request, *args, **kwargs):
+        """ return form body output for a form to create a new idea
+        """
         idea_form = IdeaForm()
         idea_form_output = idea_form.as_table()
 
@@ -89,3 +92,10 @@ class FormIdeaView(View):
 
         context = {'form': idea_form_output}
         return JsonResponse(context)
+
+    def post(self, request, *args, **kwargs):
+        """ save the POST data for the form into a new Idea
+        """
+        idea_form = IdeaForm(request.POST)
+        new_idea = idea_form.save()
+        return redirect(reverse('idea_detail', args=(new_idea.id,)), permanent=True)
