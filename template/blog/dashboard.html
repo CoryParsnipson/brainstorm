@@ -40,7 +40,7 @@ ajax("/api/ideas", "GET", getIdeas);
 function populateIdeaForm(form_data)
 {
   var form = createForm("form_idea",
-                        "{% url 'forms-ideas' %}",
+                        "{% url 'forms-idea' %}",
                         "post",
                         be_params["be_csrf_token"],
                         form_data["form"],
@@ -54,6 +54,6 @@ function populateIdeaForm(form_data)
 
   document.getElementById("form_idea_container").appendChild(form);
 }
-ajax("/api/forms/ideas/", "GET", populateIdeaForm);
+ajax("{% url 'forms-idea' %}", "GET", populateIdeaForm);
 </script>
 {% endblock %}
