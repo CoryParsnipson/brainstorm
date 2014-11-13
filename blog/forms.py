@@ -1,6 +1,6 @@
 from django.forms import ModelForm
 
-from blog.models import Idea
+from blog.models import Idea, Thought
 
 
 class IdeaForm(ModelForm):
@@ -11,3 +11,12 @@ class IdeaForm(ModelForm):
         model = Idea
         #fields = ['name', 'description']
         fields = '__all__'
+
+
+class ThoughtForm(ModelForm):
+    """
+    Django form class for managing thoughts
+    """
+    class Meta:
+        model = Thought
+        fields = ['title', 'slug', 'content', 'idea', 'author']

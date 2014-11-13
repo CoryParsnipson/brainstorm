@@ -23,6 +23,7 @@ urlpatterns = patterns('',
     url(r'^api/', include(router.urls)),
 
     url(r'^api/forms/idea/', views.FormIdeaView.as_view(), name='forms-idea'),
+    url(r'^api/forms/thought/', views.FormThoughtView.as_view(), name='forms-thought'),
 
     url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
 )

@@ -8,7 +8,7 @@ from rest_framework import viewsets, response
 from rest_framework.decorators import detail_route
 
 from blog.models import Idea, Thought
-from blog.forms import IdeaForm
+from blog.forms import IdeaForm, ThoughtForm
 from blog.serializers import UserSerializer, IdeaSerializer, ThoughtSerializer
 
 
@@ -75,8 +75,7 @@ class ThoughtViewSet(viewsets.ModelViewSet):
 
 # form handling views
 class FormIdeaView(View):
-    """
-    API endpoints for forms to manage user interaction for Ideas
+    """ API endpoints for forms to manage user interaction for Ideas
     """
     def get(self, request, *args, **kwargs):
         """ return form body output for a form to create a new idea
@@ -99,3 +98,27 @@ class FormIdeaView(View):
         idea_form = IdeaForm(request.POST)
         new_idea = idea_form.save()
         return redirect(reverse('idea_detail', args=(new_idea.id,)), permanent=True)
+
+
+class FormThoughtView(View):
+    """ API endpoints for forms to manage user interactions and Thoughts
+    """
+    def get(self, request, *args, **kwargs):
+        """ return form body output for a form to create a new thought
+        """
+        form = ThoughtForm()
+        form_html = form.as_table()
+
+        if "output" in request.GET:
+            if request.GET["output"] == "p":
+                form_html = form.as_p()
+            elif request.GET["output"] == "ul":
+                form_html = form.as_ul()
+
+        context = {'form': form_html}
+        return JsonResponse(context)
+
+    def post(self, request, *args, **kwargs):
+        """ save the POST data to create a new Thought
+        """
+        pass

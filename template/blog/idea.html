@@ -15,6 +15,9 @@
 
 <h2>Latest thoughts:</h2>
 <div id="thought_list"></div>
+<hr>
+
+<div id="new_thought_container"></div>
 
 <script type="text/javascript">
 // obtain any back end parameters
@@ -47,5 +50,20 @@ function populateThoughtList(thoughts)
   thought_list.innerHTML = thought_html;
 }
 ajax("/api/ideas/" + be_params["be_idea_id"] + "/thoughts/", "GET", populateThoughtList);
+
+// create new thought form
+function createNewThoughtForm(form_data)
+{
+  var container = document.getElementById("new_thought_container");
+  var form = createForm("form_thought",
+                        "{% url 'forms-thought' %}",
+                        "post",
+                        be_params["be_csrf_token"],
+                        form_data["form"],
+                        "Publish");
+
+  container.appendChild(form);
+}
+ajax("/api/forms/thought/", "GET", createNewThoughtForm);
 </script>
 {% endblock %}

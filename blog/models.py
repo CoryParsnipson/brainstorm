@@ -9,6 +9,9 @@ class Idea(models.Model):
     # color?
     # icon?
 
+    def __unicode__(self):
+        return self.name
+
 
 class Thought(models.Model):
     title = models.CharField(max_length=200)
