@@ -27,6 +27,17 @@ function ajax(url, method, callback)
   return ajaxRequest;
 }
 
+// \name removeElement
+// \description given a node, remove it from the DOM tree
+function removeElement(node)
+{
+  if (typeof node === "undefined" || node == null)
+  {
+    return;
+  }
+  node.parentNode.removeChild(node);
+}
+
 // \name getBeParams
 // \description the backend will pass parameters through hidden fields when
 // necessary. Use this to find all be parameters and gather them into an

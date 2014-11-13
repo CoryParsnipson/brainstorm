@@ -9,7 +9,6 @@ class IdeaForm(ModelForm):
     """
     class Meta:
         model = Idea
-        #fields = ['name', 'description']
         fields = '__all__'
 
 

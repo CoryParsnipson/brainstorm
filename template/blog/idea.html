@@ -61,8 +61,27 @@ function createNewThoughtForm(form_data)
                         be_params["be_csrf_token"],
                         form_data["form"],
                         "Publish");
-
   container.appendChild(form);
+
+  // remove author and id fields
+  removeElement(document.getElementById("id_author").parentNode.parentNode);
+  removeElement(document.getElementById("id_idea").parentNode.parentNode);
+
+  // add prepopulated fields for author and idea
+  var input_author = document.createElement("input");
+  input_author.type = "hidden";
+  input_author.id = "id_author";
+  input_author.name = "author";
+  input_author.value = 1; // TODO: this should be taken from request.User credentials or something
+
+  var input_idea = document.createElement("input");
+  input_idea.type = "hidden";
+  input_idea.id = "id_idea";
+  input_idea.name = "idea";
+  input_idea.value = be_params["be_idea_id"];
+
+  form.insertBefore(input_idea, form.firstChild);
+  form.insertBefore(input_author, form.firstChild);
 }
 ajax("/api/forms/thought/", "GET", createNewThoughtForm);
 </script>
