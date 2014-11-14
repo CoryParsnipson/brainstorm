@@ -122,7 +122,15 @@ class FormThoughtView(View):
         """ save the POST data to create a new Thought
         """
         thought_form = ThoughtForm(request.POST)
-        thought_form.save()
 
-        idea = Idea.objects.filter(id=request.POST['idea'])[0]
-        return redirect(reverse('idea_detail', args=(idea.id,)))
+        if thought_form.is_valid():
+            thought_form.save()
+
+            idea = Idea.objects.filter(id=request.POST['idea'])[0]
+            return redirect(reverse('idea_detail', args=(idea.id,)))
+        else:
+            errors = {}
+            for k, v in thought_form.fields.items():
+                errors[k] = v
+
+            return JsonResponse(errors)
