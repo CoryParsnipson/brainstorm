@@ -28,7 +28,8 @@ def idea_detail(request, idea_slug):
     idea = Idea.objects.filter(slug=idea_slug)
 
     context = {'page_title': idea[0].name,
-    'idea_slug': idea_slug}
+               'idea_slug': idea_slug,
+               'idea_id': idea[0].id}
     return render(request, 'blog/idea.html', context)
 
 
@@ -123,13 +124,13 @@ class FormThoughtView(View):
             thought_form.save()
 
             idea = Idea.objects.filter(id=request.POST['idea'])[0]
-            return redirect(reverse('idea_detail', args=(idea.id,)))
+            return redirect(reverse('idea_detail', args=(idea.slug,)))
         else:
             # loop through fields on form and add errors to dict
             errors = {}
             i = 0
             for field in thought_form:
-                errors[i] = field.errors
+                errors[field.name] = field.errors
                 i += 1
 
             return JsonResponse(errors)

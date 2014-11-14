@@ -3,6 +3,7 @@
 {% block content %}
 <!-- variables passed from back end -->
 <input type="hidden" name="be_idea_slug" value="{{ idea_slug }}">
+<input type="hidden" name="be_idea_id" value="{{ idea_id }}">
 <input type="hidden" name="be_csrf_token" value="{% csrf_token %}">
 
 <!-- page start -->
