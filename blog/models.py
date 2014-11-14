@@ -5,6 +5,7 @@ from django.contrib.auth.models import User
 # Create your models here.
 class Idea(models.Model):
     name = models.CharField(max_length=200)
+    slug = models.SlugField()
     description = models.TextField()
     # color?
     # icon?

@@ -2,7 +2,7 @@
 
 {% block content %}
 <!-- variables passed from back end -->
-<input type="hidden" name="be_idea_detail_url" value="{% url 'idea_detail' 0 %}">
+<input type="hidden" name="be_idea_detail_url" value="{% url 'idea_detail' '' %}">
 <input type="hidden" name="be_csrf_token" value="{% csrf_token %}">
 
 <!-- page start -->
@@ -27,7 +27,7 @@ function getIdeas(ideas)
   for (var i = 0; i < ideas.length; i++)
   {
     list_html += "<li>";
-    list_html += "<a href=" + idea_url + (i + 1) + ">";
+    list_html += "<a href=" + idea_url + ideas[i].slug + ">";
     list_html += ideas[i].name + "</a>: ";
     list_html += ideas[i].description + "</li>\n";
   }

@@ -2,7 +2,7 @@
 
 {% block content %}
 <!-- variables passed from back end -->
-<input type="hidden" name="be_idea_id" value="{{ idea_id }}">
+<input type="hidden" name="be_idea_slug" value="{{ idea_slug }}">
 <input type="hidden" name="be_csrf_token" value="{% csrf_token %}">
 
 <!-- page start -->
@@ -29,7 +29,7 @@ function getIdeaInfo(idea)
   document.getElementById("idea_header").innerHTML = idea.name;
   document.getElementById("idea_description").innerHTML = idea.description;
 }
-ajax({ url: "/api/ideas/" + be_params["be_idea_id"],
+ajax({ url: "/api/ideas/" + be_params["be_idea_slug"],
        method: "GET",
        callback: getIdeaInfo });
 
@@ -51,7 +51,7 @@ function populateThoughtList(thoughts)
   }
   thought_list.innerHTML = thought_html;
 }
-ajax({ url: "/api/ideas/" + be_params["be_idea_id"] + "/thoughts/",
+ajax({ url: "/api/ideas/" + be_params["be_idea_slug"] + "/thoughts/",
        method: "GET",
        callback: populateThoughtList });
 
@@ -87,7 +87,7 @@ function createNewThoughtForm(form_data)
   form.insertBefore(input_idea, form.firstChild);
   form.insertBefore(input_author, form.firstChild);
 }
-ajax({ url: "/api/forms/thought/",
+ajax({ url: "{% url 'forms-thought' %}",
        method: "GET",
        callback: createNewThoughtForm });
 </script>

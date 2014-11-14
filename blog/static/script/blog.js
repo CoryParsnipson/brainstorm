@@ -26,30 +26,6 @@ function getBeParams()
   return be_vars;
 }
 
-// \name getUrlParams
-// \description obtain all GET variables passed in for this url
-//
-// \returns object with key value pairs
-function getUrlParams()
-{
-  // regex for replacing plus with space
-  var plus = /\+/g;
-
-  var search = /([^&=]+)=?([^&]*)/g;
-  var decode = function(s) { return decodeURIComponent(s.replace(plus, " ")); };
-
-  // "window.location.search" is the query string
-  var query = window.location.search.substring(1)
-
-  var urlParams = {};
-  while (match = search.exec(query))
-  {
-    urlParams[decode(match[1])] = decode(match[2]);
-  }
-
-  return urlParams;
-}
-
 // \name createForm
 // \description create a form html element with the supplied id,
 // action, and method attributes. One may also supply a csrf token for

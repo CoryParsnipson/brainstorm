@@ -32,8 +32,8 @@ function ajax(args)
     var params = "";
     for (var param in args.data)
     {
-      // TODO: urlencode this and sanitize
-      params += param + "=" + args.data[param] + "&";
+      // TODO: sanitize!!
+      params += encodeURIComponent(param) + "=" + encodeURIComponent(args.data[param]) + "&";
     }
     params = params.substring(0, params.length - 1);
 
@@ -41,7 +41,6 @@ function ajax(args)
   }
   else
   {
-
     request.send();
   }
 
@@ -57,4 +56,28 @@ function removeElement(node)
     return;
   }
   node.parentNode.removeChild(node);
+}
+
+// \name getUrlParams
+// \description obtain all GET variables passed in for this url
+//
+// \returns object with key value pairs
+function getUrlParams()
+{
+  // regex for replacing plus with space
+  var plus = /\+/g;
+
+  var search = /([^&=]+)=?([^&]*)/g;
+  var decode = function(s) { return decodeURIComponent(s.replace(plus, " ")); };
+
+  // "window.location.search" is the query string
+  var query = window.location.search.substring(1)
+
+  var urlParams = {};
+  while (match = search.exec(query))
+  {
+    urlParams[decode(match[1])] = decode(match[2]);
+  }
+
+  return urlParams;
 }

@@ -31,12 +31,12 @@ class MainSiteView:
         return render(request, 'blog/dashboard.html', context)
 
     @staticmethod
-    def idea_detail(request, idea_id):
+    def idea_detail(request, idea_slug):
         # TODO: raise exception on bad ID
-        idea = Idea.objects.filter(id=idea_id)
+        idea = Idea.objects.filter(slug=idea_slug)
 
         context = {'page_title': idea[0].name,
-                   'idea_id': idea_id}
+                   'idea_slug': idea_slug}
         return render(request, 'blog/idea.html', context)
 
 
@@ -57,10 +57,11 @@ class IdeaViewSet(viewsets.ModelViewSet):
     """
     queryset = Idea.objects.all()
     serializer_class = IdeaSerializer
+    lookup_field = 'slug'
 
     @detail_route()
-    def thoughts(self, request, pk):
-        idea = Idea.objects.filter(id=pk)
+    def thoughts(self, request, slug):
+        idea = Idea.objects.filter(slug=slug)
         thoughts = Thought.objects.filter(idea=idea)
         return response.Response(data=[ThoughtSerializer(t).data for t in thoughts])
 
@@ -71,6 +72,7 @@ class ThoughtViewSet(viewsets.ModelViewSet):
     """
     queryset = Thought.objects.all()
     serializer_class = ThoughtSerializer
+    lookup_field = 'slug'
 
 
 # form handling views
