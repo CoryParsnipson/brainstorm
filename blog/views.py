@@ -121,4 +121,8 @@ class FormThoughtView(View):
     def post(self, request, *args, **kwargs):
         """ save the POST data to create a new Thought
         """
-        pass
+        thought_form = ThoughtForm(request.POST)
+        thought_form.save()
+
+        idea = Idea.objects.filter(id=request.POST['idea'])[0]
+        return redirect(reverse('idea_detail', args=(idea.id,)))
