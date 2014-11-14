@@ -34,17 +34,19 @@ function getIdeas(ideas)
 
   document.getElementById("idea_list").innerHTML = list_html;
 }
-ajax("/api/ideas", "GET", getIdeas);
+ajax({ url: "/api/ideas",
+       method: "GET",
+       callback: getIdeas });
 
 // create Idea form
 function populateIdeaForm(form_data)
 {
-  var form = createForm("form_idea",
-                        "{% url 'forms-idea' %}",
-                        "post",
-                        be_params["be_csrf_token"],
-                        form_data["form"],
-                        "New Idea");
+  var form = createForm({ id: "form_idea",
+                          action: "{% url 'forms-idea' %}",
+                          method: "post",
+                          csrf_token: be_params["be_csrf_token"],
+                          form_body: form_data["form"],
+                          submit: "New Idea" });
 
   // add a little header
   var tbody = form.getElementsByTagName("tbody")[0];
@@ -54,6 +56,8 @@ function populateIdeaForm(form_data)
 
   document.getElementById("form_idea_container").appendChild(form);
 }
-ajax("{% url 'forms-idea' %}", "GET", populateIdeaForm);
+ajax({ url: "{% url 'forms-idea' %}",
+       method: "GET",
+       callback: populateIdeaForm });
 </script>
 {% endblock %}

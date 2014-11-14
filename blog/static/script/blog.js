@@ -1,42 +1,5 @@
-// Javascript code for django blog app
+// javascript code for django blog app
 // Cory Parsnipson, 2014
-
-// \name ajax
-// \description send an ajax request using javascript
-//
-// \param[url]       url of ajax request
-// \param[method]    "GET" or "POST", etc
-// \param[callback]  function to execute upon receiving data (will receive 1 argument, JSON data)
-//
-// \returns reference to javascript XMLHttpRequest object
-function ajax(url, method, callback)
-{
-  var data = null;
-  var ajaxRequest = new XMLHttpRequest();
-
-  ajaxRequest.onreadystatechange = function()
-  {
-    if (ajaxRequest.readyState == 4 && ajaxRequest.status == 200)
-    {
-      callback(JSON.parse(ajaxRequest.responseText));
-    }
-  }
-  ajaxRequest.open(method, url, true);
-  ajaxRequest.send();
-
-  return ajaxRequest;
-}
-
-// \name removeElement
-// \description given a node, remove it from the DOM tree
-function removeElement(node)
-{
-  if (typeof node === "undefined" || node == null)
-  {
-    return;
-  }
-  node.parentNode.removeChild(node);
-}
 
 // \name getBeParams
 // \description the backend will pass parameters through hidden fields when
@@ -90,7 +53,7 @@ function getUrlParams()
 // \name createForm
 // \description create a form html element with the supplied id,
 // action, and method attributes. One may also supply a csrf token for
-// django csrf token middleware.
+// django csrf token middleware. Takes an object with the below fields:
 //
 // \param[id]          id of the form element
 // \param[action]      url to open upon form submission
@@ -100,8 +63,15 @@ function getUrlParams()
 // \param[submit]      value for submit button
 //
 // \returns form element
-function createForm(id, action, method, csrf_token, form_body, submit)
+function createForm(args)
 {
+  var id = args.id;
+  var action = args.action;
+  var method = args.method;
+  var csrf_token = args.csrf_token;
+  var form_body = args.form_body;
+  var submit = args.submit;
+
   var form = document.createElement("form");
 
   if (typeof id !== 'undefined')

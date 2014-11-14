@@ -29,7 +29,9 @@ function getIdeaInfo(idea)
   document.getElementById("idea_header").innerHTML = idea.name;
   document.getElementById("idea_description").innerHTML = idea.description;
 }
-ajax("/api/ideas/" + be_params["be_idea_id"], "GET", getIdeaInfo);
+ajax({ url: "/api/ideas/" + be_params["be_idea_id"],
+       method: "GET",
+       callback: getIdeaInfo });
 
 // populate thoughts list
 function populateThoughtList(thoughts)
@@ -49,18 +51,20 @@ function populateThoughtList(thoughts)
   }
   thought_list.innerHTML = thought_html;
 }
-ajax("/api/ideas/" + be_params["be_idea_id"] + "/thoughts/", "GET", populateThoughtList);
+ajax({ url: "/api/ideas/" + be_params["be_idea_id"] + "/thoughts/",
+       method: "GET",
+       callback: populateThoughtList });
 
 // create new thought form
 function createNewThoughtForm(form_data)
 {
   var container = document.getElementById("new_thought_container");
-  var form = createForm("form_thought",
-                        "{% url 'forms-thought' %}",
-                        "post",
-                        be_params["be_csrf_token"],
-                        form_data["form"],
-                        "Publish");
+  var form = createForm({ id: "form_thought",
+                          action: "{% url 'forms-thought' %}",
+                          method: "post",
+                          csrf_token: be_params["be_csrf_token"],
+                          form_body: form_data["form"],
+                          submit: "Publish" });
   container.appendChild(form);
 
   // remove author and id fields
@@ -83,6 +87,8 @@ function createNewThoughtForm(form_data)
   form.insertBefore(input_idea, form.firstChild);
   form.insertBefore(input_author, form.firstChild);
 }
-ajax("/api/forms/thought/", "GET", createNewThoughtForm);
+ajax({ url: "/api/forms/thought/",
+       method: "GET",
+       callback: createNewThoughtForm });
 </script>
 {% endblock %}
