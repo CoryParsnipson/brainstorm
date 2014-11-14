@@ -12,9 +12,9 @@ router.register(r'thoughts', views.ThoughtViewSet)
 
 urlpatterns = patterns('',
     # site skeleton urls
-    url(r'^$', views.MainSiteView.index, name='index'),
-    url(r'^dashboard', views.MainSiteView.dashboard, name='dashboard'),
-    url(r'^ideas/(?P<idea_slug>[a-z0-9\-]*)/', views.MainSiteView.idea_detail, name='idea_detail'),
+    url(r'^$', views.index, name='index'),
+    url(r'^dashboard', views.dashboard, name='dashboard'),
+    url(r'^ideas/(?P<idea_slug>[a-z0-9\-]*)/', views.idea_detail, name='idea_detail'),
 
     # RESTful api urls (it is very important that this app has no namespace...)
     url(r'^api/', include(router.urls)),

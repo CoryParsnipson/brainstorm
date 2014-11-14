@@ -15,29 +15,21 @@ from blog.serializers import UserSerializer, IdeaSerializer, ThoughtSerializer
 ###############################################################################
 # Site skeleton views
 ###############################################################################
-class MainSiteView:
-    """
-    'Normal' views organized into a little class, just for tidy-ness. Contains
-    views for top level "news headlines" portion of the site.
-    """
-    @staticmethod
-    def index(request):
-        context = {'page_title': 'Home'}
-        return render(request, 'blog/index.html', context)
+def index(request):
+    context = {'page_title': 'Home'}
+    return render(request, 'blog/index.html', context)
 
-    @staticmethod
-    def dashboard(request):
-        context = {'page_title': 'Dashboard'}
-        return render(request, 'blog/dashboard.html', context)
+def dashboard(request):
+    context = {'page_title': 'Dashboard'}
+    return render(request, 'blog/dashboard.html', context)
 
-    @staticmethod
-    def idea_detail(request, idea_slug):
-        # TODO: raise exception on bad ID
-        idea = Idea.objects.filter(slug=idea_slug)
+def idea_detail(request, idea_slug):
+    # TODO: raise exception on bad ID
+    idea = Idea.objects.filter(slug=idea_slug)
 
-        context = {'page_title': idea[0].name,
-                   'idea_slug': idea_slug}
-        return render(request, 'blog/idea.html', context)
+    context = {'page_title': idea[0].name,
+    'idea_slug': idea_slug}
+    return render(request, 'blog/idea.html', context)
 
 
 ###############################################################################
