@@ -66,9 +66,16 @@ class ThoughtViewSet(viewsets.ModelViewSet):
 
         ?idea=[slug] or [int] to select all Thoughts of an Idea
         ?author=[int] id of User; select all Thoughts authored by User
-        ?later_than=[]
-        ?newer_than=[]
+        ?older_than=[str] all Thoughts older than 'yyyy-mm-dd hh:mm'
+        ?newer_than=[str] all Thoughts newer than 'yyyy-mm-dd hh:mm'
+        ?except=[str] ???
+
+        ?count=[int] total number of Thoughts to return
+        ?slice=[int]:[int] works like python list slice
         ?page=[] ???
+
+        ?order= e.g. "+date" ( ???
+        ?order_val=
         """
         query_string_params = {}
 
@@ -78,7 +85,27 @@ class ThoughtViewSet(viewsets.ModelViewSet):
         if 'author' in request.GET:
             query_string_params['author'] = int(request.GET['author'])
 
+        if 'older_than' in request.GET:
+            query_string_params['date_published__lt'] = request.GET['older_than']
+
+        if 'newer_than' in request.GET:
+            query_string_params['date_published__gt'] = request.GET['newer_than']
+
         thoughts = Thought.objects.filter(**query_string_params)
+
+        if 'count' in request.GET:
+            thoughts = thoughts[:request.GET['count']]
+
+        if 'slice' in request.GET:
+            start_idx, end_idx = request.GET['slice'].split(":")
+            try:
+                start_idx = int(start_idx) if start_idx else None
+                end_idx = int(end_idx) if end_idx else None
+
+                thoughts = thoughts[start_idx:end_idx]
+            except ValueError as e:
+                pass
+
         data = [ThoughtSerializer(t).data for t in thoughts]
         return response.Response(data=data)
 
