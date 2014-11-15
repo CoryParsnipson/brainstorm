@@ -5,7 +5,7 @@ from django.contrib.auth.models import User
 # Create your models here.
 class Idea(models.Model):
     name = models.CharField(max_length=200)
-    slug = models.SlugField()
+    slug = models.SlugField(primary_key=True)
     description = models.TextField()
     # color?
     # icon?
@@ -16,7 +16,7 @@ class Idea(models.Model):
 
 class Thought(models.Model):
     title = models.CharField(max_length=200)
-    slug = models.SlugField()
+    slug = models.SlugField(primary_key=True)
     content = models.TextField()
     idea = models.ForeignKey(Idea)
     author = models.ForeignKey(User)

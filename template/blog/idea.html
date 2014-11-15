@@ -3,7 +3,6 @@
 {% block content %}
 <!-- variables passed from back end -->
 <input type="hidden" name="be_idea_slug" value="{{ idea_slug }}">
-<input type="hidden" name="be_idea_id" value="{{ idea_id }}">
 <input type="hidden" name="be_csrf_token" value="{% csrf_token %}">
 
 <!-- page start -->
@@ -83,7 +82,7 @@ function createNewThoughtForm(form_data)
   input_idea.type = "hidden";
   input_idea.id = "id_idea";
   input_idea.name = "idea";
-  input_idea.value = be_params["be_idea_id"];
+  input_idea.value = be_params["be_idea_slug"];
 
   form.insertBefore(input_idea, form.firstChild);
   form.insertBefore(input_author, form.firstChild);

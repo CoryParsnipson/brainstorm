@@ -5,7 +5,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.models import User
 
 from rest_framework import viewsets, response
-from rest_framework.decorators import detail_route
+from rest_framework.decorators import detail_route, list_route
 
 from blog.models import Idea, Thought
 from blog.forms import IdeaForm, ThoughtForm
@@ -28,8 +28,7 @@ def idea_detail(request, idea_slug):
     idea = Idea.objects.filter(slug=idea_slug)
 
     context = {'page_title': idea[0].name,
-               'idea_slug': idea_slug,
-               'idea_id': idea[0].id}
+               'idea_slug': idea_slug}
     return render(request, 'blog/idea.html', context)
 
 
@@ -67,6 +66,28 @@ class ThoughtViewSet(viewsets.ModelViewSet):
     serializer_class = ThoughtSerializer
     lookup_field = 'slug'
 
+    def list(self, request, *args, **kwargs):
+        """ return a JSON object container containing Thought objects.
+        Supply optional query string parameters to modify the returned set.
+
+        ?idea=[slug] or [int] to select all Thoughts of an Idea
+        ?author=[int] id of User; select all Thoughts authored by User
+        ?later_than=[]
+        ?newer_than=[]
+        ?page=[] ???
+        """
+        query_string_params = {}
+
+        if 'idea' in request.GET:
+            query_string_params['idea'] = Idea.objects.filter(slug=request.GET['idea'])[0]
+
+        if 'author' in request.GET:
+            query_string_params['author'] = int(request.GET['author'])
+
+        thoughts = Thought.objects.filter(**query_string_params)
+        data = [ThoughtSerializer(t).data for t in thoughts]
+        return response.Response(data=data)
+
 
 # form handling views
 class FormIdeaView(View):
@@ -93,7 +114,7 @@ class FormIdeaView(View):
         """
         idea_form = IdeaForm(request.POST)
         new_idea = idea_form.save()
-        return redirect(reverse('idea_detail', args=(new_idea.id,)), permanent=True)
+        return redirect(reverse('idea_detail', args=(new_idea.slug,)), permanent=True)
 
 
 class FormThoughtView(View):
@@ -123,7 +144,7 @@ class FormThoughtView(View):
         if thought_form.is_valid():
             thought_form.save()
 
-            idea = Idea.objects.filter(id=request.POST['idea'])[0]
+            idea = Idea.objects.filter(slug=request.POST['idea'])[0]
             return redirect(reverse('idea_detail', args=(idea.slug,)))
         else:
             # loop through fields on form and add errors to dict
