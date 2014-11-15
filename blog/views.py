@@ -51,12 +51,6 @@ class IdeaViewSet(viewsets.ModelViewSet):
     serializer_class = IdeaSerializer
     lookup_field = 'slug'
 
-    @detail_route()
-    def thoughts(self, request, slug):
-        idea = Idea.objects.filter(slug=slug)
-        thoughts = Thought.objects.filter(idea=idea)
-        return response.Response(data=[ThoughtSerializer(t).data for t in thoughts])
-
 
 class ThoughtViewSet(viewsets.ModelViewSet):
     """
