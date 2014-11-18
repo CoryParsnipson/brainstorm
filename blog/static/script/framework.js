@@ -19,7 +19,10 @@ function ajax(args)
   {
     if (request.readyState == 4 && request.status == 200)
     {
-      args.callback(JSON.parse(request.responseText));
+      if (typeof args.callback !== "undefined")
+      {
+        args.callback(JSON.parse(request.responseText));
+      }
     }
   }
 

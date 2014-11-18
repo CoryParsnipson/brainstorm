@@ -26,6 +26,55 @@ function getBeParams()
   return be_vars;
 }
 
+var EventLib = {
+  // \name addEvent
+  // \description cross browser function for adding event listeners to
+  // DOM elements
+  //
+  // \param[target]      DOM element to add to
+  // \param[event_name]  name of event to add ("click", "load", etc)
+  // \param[handler]     reference to function to execute
+  addEvent: function (target, event_name, handler)
+  {
+    if (target.addEventListener)
+    {
+      target.addEventListener(event_name, handler, false);
+    }
+    else if (target.attachEvent)
+    {
+      // IE <9 support
+      target.attachEvent("on" + type, handler);
+    }
+    else
+    {
+      target["on" + type] = handler;
+    }
+  },
+
+  // \name removeEvent
+  // \description cross browser for removing event listeners
+  //
+  // \param[target]      DOM element to remove from
+  // \param[event_name]  name of event to remove ("click", "load", etc)
+  // \param[handler]     reference to function (must be same reference added)
+  removeEvent: function (target, event_name, handler)
+  {
+    if (target.addEventListener)
+    {
+      target.removeEventListener(event_name, handler, false);
+    }
+    else if (target.detachEvent)
+    {
+      // IE <9 support
+      target.detachEvent("on" + type, handler);
+    }
+    else
+    {
+      target["on" + type] = null;
+    }
+  }
+}
+
 // \name createForm
 // \description create a form html element with the supplied id,
 // action, and method attributes. One may also supply a csrf token for
@@ -89,9 +138,10 @@ function createForm(args)
   form_tbody.innerHTML = form_body;
 
   // add submit button
-  var submit_field = document.createElement("input");
+  var submit_field = document.createElement("button");
+  submit_field.id = "id_submit";
   submit_field.type = "submit";
-  submit_field.value = (typeof submit !== 'undefined') ? submit : "Submit";
+  submit_field.innerText = (typeof submit !== 'undefined') ? submit : "Submit";
 
   var last_row = form_tbody.insertRow(-1); // -1 to append row to end of tbody
   last_row.insertCell(0);

@@ -55,6 +55,23 @@ function populateIdeaForm(form_data)
   tbody.rows[0].cells[0].innerHTML = "<h3>New Idea:</h3>";
 
   document.getElementById("form_idea_container").appendChild(form);
+
+  function submit_action(event)
+  {
+    event.preventDefault();
+
+    // post to submit form data
+    ajax({ url: "{% url 'forms-idea' %}",
+           method: "post",
+           data: {}}); // TODO: populate data object
+
+    // get to refresh page
+    ajax({ url: "{% url 'idea-list' %}",
+           method: "get",
+           callback: getIdeas});
+  }
+  var submit_field = tbody.querySelector('#id_submit');
+  EventLib.addEvent(submit_field, "click", submit_action);
 }
 ajax({ url: "{% url 'forms-idea' %}",
        method: "GET",

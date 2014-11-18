@@ -51,9 +51,14 @@ function populateThoughtList(thoughts)
   }
   thought_list.innerHTML = thought_html;
 }
-ajax({ url: "{% url 'thought-list' %}" + "?idea=" + be_params["be_idea_slug"],
-       method: "GET",
-       callback: populateThoughtList });
+
+function refreshThoughtList()
+{
+  ajax({ url: "{% url 'thought-list' %}" + "?idea=" + be_params["be_idea_slug"],
+         method: "GET",
+         callback: populateThoughtList });
+}
+refreshThoughtList();
 
 // create new thought form
 function createNewThoughtForm(form_data)
