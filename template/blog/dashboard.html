@@ -38,43 +38,40 @@ ajax({ url: "/api/ideas",
        method: "GET",
        callback: getIdeas });
 
-// create Idea form
-function populateIdeaForm(form_data)
+var new_idea_form = new Form({ id: "formlib",
+                               action: "{% url 'forms-idea' %}",
+                               method: "post",
+                               csrf: be_params["be_csrf_token"],
+                             });
+document.getElementById("form_idea_container").appendChild(new_idea_form.node);
+
+new_idea_form.getBody("{% url 'forms-idea' %}");
+new_idea_form.addSubmitButton();
+
+var form_header = document.createElement("h3");
+form_header.innerText = "New Idea:";
+
+new_idea_form.addElement({ element: form_header,
+                           row: 0,
+                           col: 0
+                         });
+
+// "ajax"-ify the form submission
+var formSubmit = function(event)
 {
-  var form = createForm({ id: "form_idea",
-                          action: "{% url 'forms-idea' %}",
-                          method: "post",
-                          csrf_token: be_params["be_csrf_token"],
-                          form_body: form_data["form"],
-                          submit: "New Idea" });
-
-  // add a little header
-  var tbody = form.getElementsByTagName("tbody")[0];
-  tbody.insertRow(0);
-  tbody.rows[0].insertCell(0);
-  tbody.rows[0].cells[0].innerHTML = "<h3>New Idea:</h3>";
-
-  document.getElementById("form_idea_container").appendChild(form);
-
-  function submit_action(event)
-  {
     event.preventDefault();
+    var input_values = new_idea_form.getValues();
 
     // post to submit form data
     ajax({ url: "{% url 'forms-idea' %}",
            method: "post",
-           data: {}}); // TODO: populate data object
+           data: input_values});
 
     // get to refresh page
     ajax({ url: "{% url 'idea-list' %}",
            method: "get",
            callback: getIdeas});
-  }
-  var submit_field = tbody.querySelector('#id_submit');
-  EventLib.addEvent(submit_field, "click", submit_action);
 }
-ajax({ url: "{% url 'forms-idea' %}",
-       method: "GET",
-       callback: populateIdeaForm });
+EventLib.addEvent(new_idea_form.submit_button, "click", formSubmit);
 </script>
 {% endblock %}

@@ -5,10 +5,11 @@
 // \description send an ajax request using javascript. Supply an object
 // with the following fields:
 //
-// \param[url]        url of ajax request
-// \param[method]     "GET" or "POST", etc
-// \param[callback]   function to execute upon receiving data (will receive 1 argument, JSON data)
-// \param[data]       send post data (an object)
+// \param[url]          url of ajax request
+// \param[method]       "GET" or "POST", etc
+// \param[callback]     function to execute upon receiving data (will receive 1 argument, JSON data)
+// \param[data]         send post data (an object)
+// \param[asynch]       run ajax request in parallel? (defaults to true)
 //
 // \returns the XMLHttpRequest object
 function ajax(args)
@@ -26,7 +27,13 @@ function ajax(args)
     }
   }
 
-  request.open(args.method, args.url, true);
+  var async = true;
+  if ("asynch" in args)
+  {
+    async = args.asynch;
+  }
+
+  request.open(args.method, args.url, async);
   if (args.method.toLowerCase() == "post")
   {
     request.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
@@ -83,4 +90,28 @@ function getUrlParams()
   }
 
   return urlParams;
+}
+
+// \name getChildren
+// \description returns an array of childen of given element without any
+// text nodes (same as .children, but without DOM4 support prereq)
+//
+// \param[element]  element to count children of
+//
+// \returns javascript array of child elements
+function getChildren(element)
+{
+  var children = new Array();
+
+  for (var i = 0; i < element.childNodes.length; i++)
+  {
+    if (element.childNodes[i].nodeType != 1)
+    {
+      continue;
+    }
+
+    children.push(element.childNodes[i]);
+  }
+
+  return children;
 }
