@@ -129,13 +129,25 @@ class FormIdeaView(View):
         context = {'form': idea_form_output}
         return JsonResponse(context)
 
-    # TODO: set form action to "", use ajax to call post and receive json response
     def post(self, request, *args, **kwargs):
         """ save the POST data for the form into a new Idea
         """
         idea_form = IdeaForm(request.POST)
-        new_idea = idea_form.save()
-        return redirect(reverse('idea_detail', args=(new_idea.slug,)), permanent=True)
+
+        if idea_form.is_valid():
+            idea_form.save()
+
+            idea = Idea.objects.filter(slug=request.POST['idea'])[0]
+            return redirect(reverse('idea_detail', args=(idea.slug,)))
+        else:
+            # loop through fields on form and add errors to dict
+            errors = {}
+            i = 0
+            for field in idea_form:
+                errors[field.name] = field.errors
+                i += 1
+
+            return JsonResponse(errors)
 
 
 class FormThoughtView(View):
@@ -156,7 +168,6 @@ class FormThoughtView(View):
         context = {'form': form_html}
         return JsonResponse(context)
 
-    # TODO: set form action to "", use ajax to call post and receive json response
     def post(self, request, *args, **kwargs):
         """ save the POST data to create a new Thought
         """
