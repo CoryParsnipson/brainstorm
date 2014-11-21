@@ -177,7 +177,7 @@ Form.prototype = {
     this.submit_button = document.createElement("button");
 
     this.submit_button.id = (typeof args !== "undefined" && "id" in args) ? args.id : "submit";
-    this.submit_button.innerText = (typeof value !== "undefined" && "value" in args) ? args.value : "Submit";
+    this.submit_button.innerText = (typeof args !== "undefined" && "value" in args) ? args.value : "Submit";
 
     var last_row = this.node_tbody.insertRow(-1);
     last_row.insertCell(0);

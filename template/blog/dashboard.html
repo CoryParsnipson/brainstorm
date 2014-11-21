@@ -34,11 +34,11 @@ function getIdeas(ideas)
 
   document.getElementById("idea_list").innerHTML = list_html;
 }
-ajax({ url: "/api/ideas",
+ajax({ url: "{% url 'idea-list' %}",
        method: "GET",
        callback: getIdeas });
 
-var new_idea_form = new Form({ id: "formlib",
+var new_idea_form = new Form({ id: "new_idea_form",
                                action: "{% url 'forms-idea' %}",
                                method: "post",
                                csrf: be_params["be_csrf_token"],
@@ -46,7 +46,7 @@ var new_idea_form = new Form({ id: "formlib",
 document.getElementById("form_idea_container").appendChild(new_idea_form.node);
 
 new_idea_form.getBody("{% url 'forms-idea' %}");
-new_idea_form.addSubmitButton();
+new_idea_form.addSubmitButton({ value: "New Idea" });
 
 var form_header = document.createElement("h3");
 form_header.innerText = "New Idea:";
@@ -60,18 +60,21 @@ new_idea_form.addElement({ element: form_header,
 var formSubmit = function(event)
 {
     event.preventDefault();
+
+    // TODO: this closure is kind of ugly; refactor somehow?
     var input_values = new_idea_form.getValues();
 
     // post to submit form data
     ajax({ url: "{% url 'forms-idea' %}",
            method: "post",
-           data: input_values});
+           data: input_values,
+           asynch: false });
 
     // get to refresh page
     ajax({ url: "{% url 'idea-list' %}",
            method: "get",
            callback: getIdeas});
-}
+};
 EventLib.addEvent(new_idea_form.submit_button, "click", formSubmit);
 </script>
 {% endblock %}
