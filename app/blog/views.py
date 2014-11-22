@@ -1,11 +1,11 @@
 from django.core.urlresolvers import reverse
+from django.core.exceptions import FieldError
 from django.http import JsonResponse
 from django.views.generic import View
 from django.shortcuts import render, redirect
 from django.contrib.auth.models import User
 
 from rest_framework import viewsets, response
-from rest_framework.decorators import detail_route, list_route
 
 from blog.models import Idea, Thought
 from blog.forms import IdeaForm, ThoughtForm
@@ -68,14 +68,15 @@ class ThoughtViewSet(viewsets.ModelViewSet):
         ?author=[int] id of User; select all Thoughts authored by User
         ?older_than=[str] all Thoughts older than 'yyyy-mm-dd hh:mm'
         ?newer_than=[str] all Thoughts newer than 'yyyy-mm-dd hh:mm'
-        ?except=[str] ???
+        ?except=[str] ??? (to be implemented)
 
         ?count=[int] total number of Thoughts to return
         ?slice=[int]:[int] works like python list slice
-        ?page=[] ???
+        ?page=[] ??? (to be implemented)
 
-        ?order= e.g. "+date" ( ???
-        ?order_val=
+        ?order=[string] name of field, prepend "-" to reverse order,
+                        e.g. "+date" (requires exact name of SQL field)
+        ?order_val= (to be implemented)
         """
         query_string_params = {}
 
@@ -91,6 +92,7 @@ class ThoughtViewSet(viewsets.ModelViewSet):
         if 'newer_than' in request.GET:
             query_string_params['date_published__gt'] = request.GET['newer_than']
 
+        # do database query and "post processing"
         thoughts = Thought.objects.filter(**query_string_params)
 
         if 'count' in request.GET:
@@ -104,6 +106,12 @@ class ThoughtViewSet(viewsets.ModelViewSet):
 
                 thoughts = thoughts[start_idx:end_idx]
             except ValueError as e:
+                pass
+
+        if 'order' in request.GET:
+            try:
+                thoughts = thoughts.order_by(request.GET['order'])
+            except FieldError as e:
                 pass
 
         data = [ThoughtSerializer(t).data for t in thoughts]

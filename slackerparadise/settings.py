@@ -43,6 +43,7 @@ INSTALLED_APPS = (
 
     # 3rd party applications
     'rest_framework',
+    'rest_framework_swagger',
 
     # user applications
     'blog',
@@ -92,6 +93,10 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
+# Template dirs
+# keep global, non-app specific template files here
+TEMPLATE_DIRS = (paths.TEMPLATE_DIR, )
+
 REST_FRAMEWORK = {
     # Use Django's standard `django.contrib.auth` permissions,
     # or allow read-only access for unauthenticated users.
@@ -100,4 +105,3 @@ REST_FRAMEWORK = {
     ]
 }
 
-TEMPLATE_DIRS = (paths.TEMPLATE_DIR, )
