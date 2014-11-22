@@ -28,7 +28,7 @@ function getIdeaInfo(idea)
   document.getElementById("idea_header").innerHTML = idea.name;
   document.getElementById("idea_description").innerHTML = idea.description;
 }
-ajax({ url: "/api/ideas/" + be_params["be_idea_slug"],
+ajax({ url: "{% url 'idea-list' %}" + be_params["be_idea_slug"],
        method: "GET",
        callback: getIdeaInfo });
 
@@ -53,7 +53,7 @@ function populateThoughtList(thoughts)
 
 function refreshThoughtList()
 {
-  ajax({ url: "{% url 'thought-list' %}" + "?idea=" + be_params["be_idea_slug"],
+  ajax({ url: "{% url 'thought-list' %}" + "?idea=" + be_params["be_idea_slug"] + "&order=-date_published",
          method: "GET",
          callback: populateThoughtList });
 }

@@ -19,11 +19,13 @@ def index(request):
     context = {'page_title': 'Home'}
     return render(request, 'blog/index.html', context)
 
+
 def dashboard(request):
     context = {'page_title': 'Dashboard'}
     return render(request, 'blog/dashboard.html', context)
 
-def idea_detail(request, idea_slug):
+
+def idea_detail(request, idea_slug=None):
     # TODO: raise exception on bad ID
     idea = Idea.objects.filter(slug=idea_slug)
 
@@ -62,21 +64,20 @@ class ThoughtViewSet(viewsets.ModelViewSet):
 
     def list(self, request, *args, **kwargs):
         """ return a JSON object container containing Thought objects.
-        Supply optional query string parameters to modify the returned set.
+        Supply optional query string parameters to modify the returned set.\n\n
 
-        ?idea=[slug] or [int] to select all Thoughts of an Idea
-        ?author=[int] id of User; select all Thoughts authored by User
-        ?older_than=[str] all Thoughts older than 'yyyy-mm-dd hh:mm'
-        ?newer_than=[str] all Thoughts newer than 'yyyy-mm-dd hh:mm'
-        ?except=[str] ??? (to be implemented)
+        ?idea=[slug] or [int] to select all Thoughts of an Idea\n
+        ?author=[int] id of User; select all Thoughts authored by User\n
+        ?older_than=[str] all Thoughts older than 'yyyy-mm-dd hh:mm'\n
+        ?newer_than=[str] all Thoughts newer than 'yyyy-mm-dd hh:mm'\n
+        ?except=[str] ??? (to be implemented)\n\n
 
-        ?count=[int] total number of Thoughts to return
-        ?slice=[int]:[int] works like python list slice
-        ?page=[] ??? (to be implemented)
+        ?count=[int] total number of Thoughts to return\n
+        ?slice=[int]:[int] works like python list slice\n
+        ?page=[] ??? (to be implemented)\n\n
 
-        ?order=[string] name of field, prepend "-" to reverse order,
-                        e.g. "+date" (requires exact name of SQL field)
-        ?order_val= (to be implemented)
+        ?order=[string] name of field, prepend "-" to reverse order, e.g. "+date" (requires exact name of SQL field)\n
+        ?order_val= (to be implemented)\n
         """
         query_string_params = {}
 
