@@ -74,10 +74,8 @@ class ThoughtViewSet(viewsets.ModelViewSet):
 
         ?count=[int] total number of Thoughts to return\n
         ?slice=[int]:[int] works like python list slice\n
-        ?page=[] ??? (to be implemented)\n\n
 
         ?order=[string] name of field, prepend "-" to reverse order, e.g. "+date" (requires exact name of SQL field)\n
-        ?order_val= (to be implemented)\n
         """
         query_string_params = {}
 
