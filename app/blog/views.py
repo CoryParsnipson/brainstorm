@@ -80,7 +80,7 @@ class ThoughtViewSet(viewsets.ModelViewSet):
         query_string_params = {}
 
         if 'idea' in request.GET:
-            query_string_params['idea'] = Idea.objects.filter(slug=request.GET['idea'])[0]
+            query_string_params['idea'] = request.GET['idea']
 
         if 'author' in request.GET:
             query_string_params['author'] = int(request.GET['author'])
