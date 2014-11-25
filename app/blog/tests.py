@@ -157,7 +157,7 @@ class ThoughtViewTestCase(TestCase):
         self.assertEqual(num_expected, 0)
 
     def test_list_by_author(self):
-        """ get a list of all thoughts written by specific author
+        """ get a list of all thoughts written by a specific author
         """
         num_expected = len(Thought.objects.filter(author=self.dummy_author2))
         test_url = reverse('thought-list') + "?author=" + str(self.dummy_author2.id)
@@ -170,3 +170,17 @@ class ThoughtViewTestCase(TestCase):
 
         for d in response.data:
             self.assertEqual(self.dummy_author2.id, d['author'])
+
+    def test_list_by_author_null(self):
+        """ get a list of all thoughts written by a specific author. There
+            will be no results returned (should not fail)
+        """
+        num_expected = len(Thought.objects.filter(author=-1))
+        test_url = reverse('thought-list') + "?author=-1"
+
+        response = self.client.get(test_url)
+        self.assertEqual(response.status_code, 200)
+
+        num_received = len(response.data)
+        self.assertEqual(num_received, num_expected)
+        self.assertEqual(num_expected, 0)
