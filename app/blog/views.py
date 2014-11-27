@@ -7,9 +7,9 @@ from django.contrib.auth.models import User
 
 from rest_framework import viewsets, response
 
-from blog.models import Idea, Thought
-from blog.forms import IdeaForm, ThoughtForm
-from blog.serializers import UserSerializer, IdeaSerializer, ThoughtSerializer
+from .models import Idea, Thought
+from .forms import IdeaForm, ThoughtForm
+from .serializers import UserSerializer, IdeaSerializer, ThoughtSerializer
 
 
 ###############################################################################

@@ -6,10 +6,14 @@
     <title>SP :: {{ page_title }}</title>
 
     <!-- script includes -->
+    <script type="text/javascript" src="{% static 'script/angular.js' %}"></script>
+
     <script type="text/javascript" src="{% static 'script/framework.js' %}"></script>
     <script type="text/javascript" src="{% static 'script/blog.js' %}"></script>
 </head>
 <body>
+{% if DEBUG %}DEBUG ON{% endif %}
+
 {% block content %}
 There is no content on this page.
 {% endblock %}
