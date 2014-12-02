@@ -33,6 +33,7 @@ def login_page(request):
                'login_form': LoginForm()}
     return render(request, 'blog/login.html', context)
 
+
 def logout_page(request):
     context = {'page_title': 'Logout'}
     return render(request, 'blog/logout.html', context)
@@ -42,6 +43,11 @@ def logout_page(request):
 def dashboard(request):
     context = {'page_title': 'Dashboard'}
     return render(request, 'blog/dashboard.html', context)
+
+
+def about(request):
+    context = {'page_title' : 'About'}
+    return render(request, 'blog/about.html', context)
 
 
 def idea_detail(request, idea_slug=None):

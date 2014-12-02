@@ -1,0 +1,42 @@
+/* default.css
+ * Default css style for Slacker Paradise
+ *
+ * Cory Parsnipson, 2014
+ */
+
+* { margin: 0; padding: 0; }
+
+body
+{
+  background-color: #D893DB;
+}
+
+div#c-header
+{
+  background-color: #ECB7AB;
+}
+
+div#c-nav
+{
+  background-color: #51AD6D;
+}
+
+div#c-body
+{
+  width: 750px;
+  background-color: #E0CDA8;
+
+  margin: 0 auto;
+}
+
+div#c-content
+{
+  background-color: #64ABDE;
+}
+
+div#c-side
+{
+  width: 250px;
+  min-height: 100px;
+  background-color: #DEC564;
+}

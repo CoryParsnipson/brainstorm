@@ -17,6 +17,7 @@ urlpatterns = patterns('',
     url(r'^login/', views.login_page, name='login_page'),
     url(r'^logout/', views.logout_page, name='logout_page'),
 
+    url(r'^about/', views.about, name='about'),
     url(r'^dashboard/', views.dashboard, name='dashboard'),
     url(r'^ideas/(?P<idea_slug>[a-z0-9\-]*)/', views.idea_detail, name='idea_detail'),
 
