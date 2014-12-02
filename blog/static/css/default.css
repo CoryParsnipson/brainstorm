@@ -5,6 +5,7 @@
  */
 
 * { margin: 0; padding: 0; }
+html { height: 100%; }
 
 body
 {
@@ -13,7 +14,9 @@ body
 
 div#c-header
 {
+  height: 150px;
   background-color: #ECB7AB;
+  padding: 10px;
 }
 
 div#c-nav
@@ -23,20 +26,52 @@ div#c-nav
 
 div#c-body
 {
-  width: 750px;
+  width: 950px;
   background-color: #E0CDA8;
-
+  display: table;
   margin: 0 auto;
 }
 
 div#c-content
 {
   background-color: #64ABDE;
+  display: table-cell;
+  position: relative;
 }
 
 div#c-side
 {
-  width: 250px;
+  width: 300px;
   min-height: 100px;
   background-color: #DEC564;
+
+  display: table-cell;
+}
+
+ul.nav
+{
+  width: 100%;
+  position: absolute;
+  top: -2em;
+}
+
+ul.nav li
+{
+  background-color: #87DEA2;
+
+  display: inline-block;
+  float: left;
+
+  padding: 2px;
+}
+
+ul.nav li.right_justified
+{
+  float: right;
+}
+
+a
+{
+  text-decoration: none;
+  font-weight: bold;
 }

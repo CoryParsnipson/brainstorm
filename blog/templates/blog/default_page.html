@@ -21,24 +21,26 @@
 <div id="c-header">
     <h1><a href="{% url 'index' %}">Slacker Paradise</a></h1>
 
-    <div id="c-nav">
-        <ul class="nav">
-            <li><a href="{% url 'index' %}">Home</a></li>
-            <li><a href="{% url 'about' %}">About</a></li>
-            <li>Ideas</li>
-            <li>
-                {% if user.is_authenticated %}
-                <a href="{% url 'dashboard' %}">Dashboard</a>
-                {% else %}
-                <a href="{% url 'login_page' %}">Login</a>
-                {% endif %}
-            </li>
-        </ul>
-    </div>
+
 </div>
 
 <div id="c-body">
     <div id="c-content">
+        <div id="c-nav">
+            <ul class="nav">
+                <li><a href="{% url 'index' %}">Home</a></li>
+                <li><a href="{% url 'about' %}">About</a></li>
+                <li>Ideas</li>
+                <li class="right_justified">
+                    {% if user.is_authenticated %}
+                    <a href="{% url 'dashboard' %}">Dashboard</a>
+                    {% else %}
+                    <a href="{% url 'login_page' %}">Login</a>
+                    {% endif %}
+                </li>
+            </ul>
+        </div>
+
         {% if messages %}
         <ul class="messages" style="list-style-type: none; color: red; font-weight: bold">
             {% for message in messages %}
