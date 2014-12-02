@@ -24,29 +24,21 @@ def index(request):
     return render(request, 'blog/index.html', context)
 
 
-def login(request):
-    username = request.POST['username']
-    password = request.POST['password']
+def login_page(request):
+    if request.user.is_authenticated():
+        # redirect straight to dashboard
+        return redirect('dashboard')
 
-    user = authenticate(username=username, password=password)
+    context = {'page_title': 'Login',
+               'login_form': LoginForm()}
+    return render(request, 'blog/login.html', context)
 
-    if user is not None:
-        if user.is_active:
-            auth_login(request, user)
-            return redirect(dashboard)
-    else:
-        messages.add_message(request, messages.ERROR, 'Invalid login credentials provided.')
-        return redirect(index)
+def logout_page(request):
+    context = {'page_title': 'Logout'}
+    return render(request, 'blog/logout.html', context)
 
 
 @login_required(login_url='index')
-def logout(request):
-    auth_logout(request)
-    messages.add_message(request, messages.INFO, 'Successfully logged out.')
-    return redirect(index)
-
-
-@login_required(login_url='login')
 def dashboard(request):
     context = {'page_title': 'Dashboard'}
     return render(request, 'blog/dashboard.html', context)
@@ -59,6 +51,31 @@ def idea_detail(request, idea_slug=None):
     context = {'page_title': idea[0].name,
                'idea_slug': idea_slug}
     return render(request, 'blog/idea.html', context)
+
+
+###############################################################################
+# Miscellaneous API
+###############################################################################
+def login(request):
+    username = request.POST['username']
+    password = request.POST['password']
+
+    user = authenticate(username=username, password=password)
+
+    if user is not None:
+        if user.is_active:
+            auth_login(request, user)
+            return redirect(dashboard)
+    else:
+        messages.add_message(request, messages.ERROR, 'Invalid login credentials provided.')
+        return redirect(logout_page)
+
+
+@login_required(login_url='index')
+def logout(request):
+    auth_logout(request)
+    messages.add_message(request, messages.INFO, 'Successfully logged out.')
+    return redirect(logout_page)
 
 
 ###############################################################################

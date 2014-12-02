@@ -1,0 +1,11 @@
+{% extends "blog/default_page.html" %}
+
+{% block http_headers %}
+<meta http-equiv="refresh" content="5;url={% url 'index' %}">
+{% endblock %}
+
+{% block content %}
+<h1><a href="{% url 'index' %}">Slacker Paradise</a></h1>
+
+<p>You will be redirected shortly. If you do not wish to wait, please click <a href="{% url 'index' %}">here.</a></p>
+{% endblock %}

@@ -14,14 +14,17 @@ urlpatterns = patterns('',
     # site skeleton urls
     url(r'^$', views.index, name='index'),
 
-    url(r'^login/', views.login, name='login'),
-    url(r'^logout/', views.logout, name='logout'),
+    url(r'^login/', views.login_page, name='login_page'),
+    url(r'^logout/', views.logout_page, name='logout_page'),
 
     url(r'^dashboard/', views.dashboard, name='dashboard'),
     url(r'^ideas/(?P<idea_slug>[a-z0-9\-]*)/', views.idea_detail, name='idea_detail'),
 
     # RESTful api urls (it is very important that this app has no namespace...)
     url(r'^api/', include(router.urls)),
+
+    url(r'^api/login/', views.login, name='login'),
+    url(r'^api/logout/', views.logout, name='logout'),
 
     url(r'^api/docs/', include('rest_framework_swagger.urls')),
     url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
