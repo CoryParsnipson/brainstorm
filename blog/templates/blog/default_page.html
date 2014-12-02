@@ -6,13 +6,18 @@
     <title>SP :: {{ page_title }}</title>
 
     <!-- script includes -->
-    <script type="text/javascript" src="{% static 'script/angular.js' %}"></script>
-
     <script type="text/javascript" src="{% static 'script/framework.js' %}"></script>
     <script type="text/javascript" src="{% static 'script/blog.js' %}"></script>
 </head>
 <body>
-{% if DEBUG %}DEBUG ON{% endif %}
+
+{% if messages %}
+<ul class="messages" style="list-style-type: none; color: red; font-weight: bold">
+    {% for message in messages %}
+    <li {% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+    {% endfor %}
+</ul>
+{% endif %}
 
 {% block content %}
 There is no content on this page.

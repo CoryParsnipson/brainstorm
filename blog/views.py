@@ -3,7 +3,9 @@ from django.core.exceptions import FieldError
 from django.http import JsonResponse
 from django.views.generic import View
 from django.shortcuts import render, redirect
+from django.contrib import messages
 from django.contrib.auth.models import User
+from django.contrib.auth.decorators import login_required
 
 from rest_framework import viewsets, response
 
@@ -20,6 +22,19 @@ def index(request):
     return render(request, 'blog/index.html', context)
 
 
+def login(request):
+    if None:
+        return redirect(dashboard)
+    else:
+        messages.add_message(request, messages.ERROR, 'Invalid login credentials provided.')
+        return redirect(index)
+
+
+def logout(request):
+    pass
+
+
+@login_required(login_url='/login')
 def dashboard(request):
     context = {'page_title': 'Dashboard'}
     return render(request, 'blog/dashboard.html', context)

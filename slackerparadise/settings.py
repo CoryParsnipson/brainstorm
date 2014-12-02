@@ -88,6 +88,10 @@ USE_L10N = True
 USE_TZ = True
 
 
+# Flash Message settings
+MESSAGE_STORAGE = 'django.contrib.messages.storage.session.SessionStorage'
+
+
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.7/howto/static-files/
 
