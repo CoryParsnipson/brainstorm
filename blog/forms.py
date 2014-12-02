@@ -1,20 +1,25 @@
-from django.forms import ModelForm
+from django import forms
 
 from blog.models import Idea, Thought
 
 
-class IdeaForm(ModelForm):
+class LoginForm(forms.Form):
+    """ Create a login form with username and password fields.
     """
-    Django form class for managing user interaction with Idea objects
+    username = forms.CharField(label='Username', max_length=100)
+    password = forms.CharField(widget=forms.PasswordInput)
+
+
+class IdeaForm(forms.ModelForm):
+    """ Django form class for managing user interaction with Idea objects
     """
     class Meta:
         model = Idea
         fields = '__all__'
 
 
-class ThoughtForm(ModelForm):
-    """
-    Django form class for managing thoughts
+class ThoughtForm(forms.ModelForm):
+    """ Django form class for managing thoughts
     """
     class Meta:
         model = Thought

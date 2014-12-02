@@ -10,7 +10,7 @@ from django.contrib.auth.decorators import login_required
 from rest_framework import viewsets, response
 
 from models import Idea, Thought
-from forms import IdeaForm, ThoughtForm
+from forms import LoginForm, IdeaForm, ThoughtForm
 from serializers import UserSerializer, IdeaSerializer, ThoughtSerializer
 
 
@@ -18,7 +18,8 @@ from serializers import UserSerializer, IdeaSerializer, ThoughtSerializer
 # Site skeleton views
 ###############################################################################
 def index(request):
-    context = {'page_title': 'Home'}
+    context = {'page_title': 'Home',
+               'login_form': LoginForm()}
     return render(request, 'blog/index.html', context)
 
 

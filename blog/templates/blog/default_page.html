@@ -11,16 +11,34 @@
 </head>
 <body>
 
-{% if messages %}
-<ul class="messages" style="list-style-type: none; color: red; font-weight: bold">
-    {% for message in messages %}
-    <li {% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
-    {% endfor %}
-</ul>
-{% endif %}
+<div id="c-body">
+    <div id="c-content">
+        {% if messages %}
+        <ul class="messages" style="list-style-type: none; color: red; font-weight: bold">
+            {% for message in messages %}
+            <li {% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+            {% endfor %}
+        </ul>
+        {% endif %}
 
-{% block content %}
-There is no content on this page.
-{% endblock %}
+        {% block content %}
+        There is no content on this page.
+        {% endblock %}
+    </div>
+
+    <div id="c-side">
+        {% block side %}
+
+        {% if not user.is_authenticated %}
+        <form action="{% url 'login' %}" method="post">
+            {% csrf_token %}
+            {{ login_form }}
+            <input type="button" value="Login">
+        </form>
+        {% endif %}
+        {% endblock %}
+    </div>
+</div>
+
 </body>
 </html>
