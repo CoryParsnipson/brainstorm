@@ -4,6 +4,7 @@ from django.http import JsonResponse
 from django.views.generic import View
 from django.shortcuts import render, redirect
 from django.contrib import messages
+from django.contrib.auth import authenticate, login as auth_login, logout as auth_logout
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 
@@ -24,18 +25,28 @@ def index(request):
 
 
 def login(request):
-    if None:
-        return redirect(dashboard)
+    username = request.POST['username']
+    password = request.POST['password']
+
+    user = authenticate(username=username, password=password)
+
+    if user is not None:
+        if user.is_active:
+            auth_login(request, user)
+            return redirect(dashboard)
     else:
         messages.add_message(request, messages.ERROR, 'Invalid login credentials provided.')
         return redirect(index)
 
 
+@login_required(login_url='index')
 def logout(request):
-    pass
+    auth_logout(request)
+    messages.add_message(request, messages.INFO, 'Successfully logged out.')
+    return redirect(index)
 
 
-@login_required(login_url='/login')
+@login_required(login_url='login')
 def dashboard(request):
     context = {'page_title': 'Dashboard'}
     return render(request, 'blog/dashboard.html', context)
