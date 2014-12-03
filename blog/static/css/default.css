@@ -41,9 +41,11 @@ div#c-content
 
 div#c-footer
 {
-  width: 100%;
+  width: 98%;
   min-height: 200px;
   background-color: #A69B6D;
+  margin-top: 10px;
+  padding: 0 1%;
 }
 
 div#c-side
