@@ -20,12 +20,11 @@
 
 <div id="c-header">
     <h1><a href="{% url 'index' %}">Slacker Paradise</a></h1>
-
-
 </div>
 
 <div id="c-body">
     <div id="c-content">
+        <!-- navigation structure -->
         <div id="c-nav">
             <ul class="nav">
                 <li><a href="{% url 'index' %}">Home</a></li>
@@ -42,6 +41,7 @@
         </div>
 
         {% if messages %}
+        <!-- flash message area -->
         <ul class="messages" style="list-style-type: none; color: red; font-weight: bold">
             {% for message in messages %}
             <li {% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
@@ -49,11 +49,16 @@
         </ul>
         {% endif %}
 
+        <!-- breadcrumb navigation -->
+        <p>LOL >> LOL >> LOOOL</p>
+
+        <!-- main content -->
         {% block content %}
         There is no content on this page.
         {% endblock %}
     </div>
 
+    <!-- side content -->
     <div id="c-side">
     </div>
 </div>
