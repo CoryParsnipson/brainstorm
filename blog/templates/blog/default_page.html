@@ -22,7 +22,7 @@
     <h1><a href="{% url 'index' %}">Slacker Paradise</a></h1>
 </div>
 
-<div id="c-body">
+<div id="c-body" class="group">
     <div id="c-content">
         <!-- navigation structure -->
         <div id="c-nav">
@@ -56,6 +56,12 @@
         {% block content %}
         There is no content on this page.
         {% endblock %}
+
+        <!-- footer -->
+        <div id="c-footer">
+            {% block footer %}
+            {% endblock %}
+        </div>
     </div>
 
     <!-- side content -->

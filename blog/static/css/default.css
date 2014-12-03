@@ -28,24 +28,30 @@ div#c-body
 {
   width: 950px;
   background-color: #E0CDA8;
-  display: table;
   margin: 0 auto;
 }
 
 div#c-content
 {
+  width: 70%;
   background-color: #64ABDE;
-  display: table-cell;
   position: relative;
+  float: left;
+}
+
+div#c-footer
+{
+  width: 100%;
+  min-height: 200px;
+  background-color: #A69B6D;
 }
 
 div#c-side
 {
-  width: 300px;
+  width: 30%;
   min-height: 100px;
   background-color: #DEC564;
-
-  display: table-cell;
+  float: left;
 }
 
 ul.nav
@@ -75,4 +81,11 @@ a
 {
   text-decoration: none;
   font-weight: bold;
+}
+
+.group
+{
+  content: "";
+  display: table;
+  clear: both;
 }
