@@ -28,8 +28,11 @@ div#c-nav
 div#c-body
 {
   width: 950px;
+  min-height: 100%;
   background-color: #E0CDA8;
+  overflow: hidden;
   margin: 0 auto;
+  margin-top: -170px;
 }
 
 div#c-content
@@ -38,6 +41,15 @@ div#c-content
   background-color: #64ABDE;
   position: relative;
   float: left;
+  margin-top: 170px;
+  margin-bottom: -99999px;
+  padding-bottom: 99999px;
+}
+
+div#c-content-inner
+{
+  border: 1px solid black;
+  margin: 5px;
 }
 
 div#c-footer
@@ -52,26 +64,32 @@ div#c-footer
 div#c-side
 {
   width: 30%;
-  min-height: 100px;
   background-color: #DEC564;
   float: left;
+  margin-top: 170px;
+  margin-bottom: -99999px;
+  padding-bottom: 99999px;
+}
+
+div#c-side-inner
+{
+  border: 1px solid black;
+  margin: 5px;
 }
 
 ul.nav
 {
   width: 100%;
+  height: 1.5em;
   position: absolute;
   background-color: #5AAD74;
-  top: -2em;
+  top: -1.5em;
 }
 
 ul.nav li
 {
-  background-color: #87DEA2;
-
   display: inline-block;
   float: left;
-
   padding: 2px;
 }
 

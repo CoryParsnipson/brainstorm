@@ -40,22 +40,24 @@
             </ul>
         </div>
 
-        {% if messages %}
-        <!-- flash message area -->
-        <ul class="messages" style="list-style-type: none; color: red; font-weight: bold">
-            {% for message in messages %}
-            <li {% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
-            {% endfor %}
-        </ul>
-        {% endif %}
+        <div id="c-content-inner">
+            {% if messages %}
+            <!-- flash message area -->
+            <ul class="messages" style="list-style-type: none; color: red; font-weight: bold">
+                {% for message in messages %}
+                <li {% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+                {% endfor %}
+            </ul>
+            {% endif %}
 
-        <!-- breadcrumb navigation -->
-        <p>LOL >> LOL >> LOOOL</p>
+            <!-- breadcrumb navigation -->
+            <p>LOL >> LOL >> LOOOL</p>
 
-        <!-- main content -->
-        {% block content %}
-        There is no content on this page.
-        {% endblock %}
+            <!-- main content -->
+            {% block content %}
+            There is no content on this page.
+            {% endblock %}
+        </div>
 
         <!-- footer -->
         <div id="c-footer">
@@ -66,6 +68,11 @@
 
     <!-- side content -->
     <div id="c-side">
+        <div id="c-side-inner">
+            {% block side %}
+            <p>Sidebar content.</p>
+            {% endblock %}
+        </div>
     </div>
 </div>
 
