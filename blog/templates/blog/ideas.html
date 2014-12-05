@@ -1,0 +1,11 @@
+{% extends 'blog/default_page.html' %}
+
+{% block content %}
+<h3>Idea Catalog</h3>
+
+<ul>
+    {% for idea in ideas %}
+    <li><a href="{% url 'idea_detail' idea.slug %}">{{ idea.name }}</a> : {{ idea.description }}</li>
+    {% endfor %}
+</ul>
+{% endblock %}

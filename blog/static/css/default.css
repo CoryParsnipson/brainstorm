@@ -7,10 +7,17 @@
 * { margin: 0; padding: 0; }
 html { height: 100%; }
 
+@font-face {
+  font-family: Roboto;
+  src: url('../font/Roboto-Regular.woff');
+}
+
 body
 {
   height: 100%;
   background-color: #D893DB;
+  font-family: Roboto, Calibri, Segoe, Segoe UI, Optima, Arial, sans-serif;
+  font-size: 11pt;
 }
 
 div#c-header

@@ -19,7 +19,8 @@ urlpatterns = patterns('',
 
     url(r'^about/', views.about, name='about'),
     url(r'^dashboard/', views.dashboard, name='dashboard'),
-    url(r'^ideas/(?P<idea_slug>[a-z0-9\-]*)/', views.idea_detail, name='idea_detail'),
+    url(r'^ideas/$', views.ideas, name='idea_list'),
+    url(r'^ideas/(?P<idea_slug>[a-z0-9\-]+)/', views.idea_detail, name='idea_detail'),
 
     # RESTful api urls (it is very important that this app has no namespace...)
     url(r'^api/', include(router.urls)),

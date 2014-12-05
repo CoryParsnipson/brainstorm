@@ -45,6 +45,13 @@ def dashboard(request):
     return render(request, 'blog/dashboard.html', context)
 
 
+def ideas(request):
+    idea_list = Idea.objects.all()
+    context = {'page_title': 'Ideas',
+               'ideas': idea_list}
+    return render(request, 'blog/ideas.html', context)
+
+
 def about(request):
     context = {'page_title' : 'About'}
     return render(request, 'blog/about.html', context)
