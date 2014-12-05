@@ -56,7 +56,6 @@ div#c-content
 
 div#c-content-inner
 {
-  border: 1px solid black;
   margin: 5px;
 }
 
@@ -129,4 +128,18 @@ a
   content: "";
   display: table;
   clear: both;
+}
+
+h1 {}
+h2 {}
+h3 {}
+h4
+{
+  font-size: inherit;
+  margin-bottom: 1em;
+}
+
+p
+{
+  margin-bottom: 1em;
 }
