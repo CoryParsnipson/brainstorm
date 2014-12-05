@@ -1,82 +1,22 @@
-{% extends "blog/default_page.html" %}
+{% extends 'blog/default_page.html' %}
 
 {% block content %}
-<!-- variables passed from back end -->
-<input type="hidden" name="be_idea_detail_url" value="http://localhost/ideas//">
-<input type="hidden" name="be_csrf_token" value="{% csrf_token %}">
+<h1>{{ user.first_name }}'s Dashboard</h1>
 
-<!-- page start -->
-<h1><a href="{% url 'index' %}">Slacker Paradise</a> :: Dashboard</h1>
+{% endblock %}
 
-<a href="{% url 'logout' %}">Logout</a>
-
-<h2>Ideas:</h2>
-<ul id="idea_list"></ul>
+{% block side %}
+<p>Huurrr dashboard</p>
 <hr>
-<div id="form_idea_container"></div>
-
-<script type="text/javascript">
-var be_params = getBeParams();
-
-function getIdeas(ideas)
-{
-  var list_html = "";
-
-  // idea detail url
-  var idea_url = be_params["be_idea_detail_url"];
-  idea_url = idea_url.substring(0, idea_url.length - 1);
-
-  for (var i = 0; i < ideas.length; i++)
-  {
-    list_html += "<li>";
-    list_html += "<a href=" + idea_url + ideas[i].slug + ">";
-    list_html += ideas[i].name + "</a>: ";
-    list_html += ideas[i].description + "</li>\n";
-  }
-
-  document.getElementById("idea_list").innerHTML = list_html;
-}
-ajax({ url: "{% url 'idea-list' %}",
-       method: "GET",
-       callback: getIdeas });
-
-var new_idea_form = new Form({ id: "new_idea_form",
-                               action: "{% url 'forms-idea' %}",
-                               method: "post",
-                               csrf: be_params["be_csrf_token"],
-                             });
-document.getElementById("form_idea_container").appendChild(new_idea_form.node);
-
-new_idea_form.getBody("{% url 'forms-idea' %}");
-new_idea_form.addSubmitButton({ value: "New Idea" });
-
-var form_header = document.createElement("h3");
-form_header.innerText = "New Idea:";
-
-new_idea_form.addElement({ element: form_header,
-                           row: 0,
-                           col: 0
-                         });
-
-// "ajax"-ify the form submission
-var formSubmit = function(event)
-{
-    event.preventDefault();
-
-    // TODO: this closure is kind of ugly; refactor somehow?
-    var input_values = new_idea_form.getValues();
-
-    // post to submit form data
-    ajax({ url: "{% url 'forms-idea' %}",
-           method: "post",
-           data: input_values,
-           asynch: false });
-
-    // get to refresh page
-    ajax({ url: "{% url 'idea-list' %}",
-           method: "get",
-           callback: getIdeas});
-};
-EventLib.addEvent(new_idea_form.submit_button, "click", formSubmit);
-</script>
+<p>Analytics/Statistics?</p>
+<hr>
+<p>Manage new comments...</p>
+<hr>
+<h3>Ideas</h3>
+<hr>
+<h3>Thoughts</h3>
+<p>Post New Thought</p>
+<hr>
+<h3>Settings</h3>
+<a href="{% url 'logout' %}">Logout</a>
 {% endblock %}

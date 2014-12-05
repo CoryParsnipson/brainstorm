@@ -41,7 +41,8 @@ def logout_page(request):
 
 @login_required(login_url='index')
 def dashboard(request):
-    context = {'page_title': 'Dashboard'}
+    context = {'page_title': 'Dashboard',
+               'user': request.user}
     return render(request, 'blog/dashboard.html', context)
 
 

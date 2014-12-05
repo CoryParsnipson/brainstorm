@@ -56,7 +56,7 @@ div#c-content
 
 div#c-content-inner
 {
-  margin: 5px;
+  margin: 10px 5px;
 }
 
 div#c-footer
@@ -80,8 +80,7 @@ div#c-side
 
 div#c-side-inner
 {
-  border: 1px solid black;
-  margin: 5px;
+  margin: 10px 5px;
 }
 
 ul.nav
@@ -90,7 +89,7 @@ ul.nav
   height: 2em;
   position: absolute;
   background-color: #5AAD74;
-  top: -2em;
+  top: -3em;
 }
 
 ul.nav li
@@ -130,10 +129,14 @@ a
   clear: both;
 }
 
-h1 {}
+h1
+{
+  font-size: 14pt;
+  margin-bottom: 1em;
+}
+
 h2 {}
-h3 {}
-h4
+h3
 {
   font-size: inherit;
   margin-bottom: 1em;
@@ -142,4 +145,13 @@ h4
 p
 {
   margin-bottom: 1em;
+}
+
+hr
+{
+  height: 1px;
+  border-width: 0;
+  color: #000000;
+  background-color: #000000;
+  margin: 10px 0;
 }
