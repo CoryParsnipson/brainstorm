@@ -41,7 +41,11 @@ def logout_page(request):
 
 @login_required(login_url='index')
 def dashboard(request):
+    thought_form = ThoughtForm()
+    ideas = Idea.objects.all()
     context = {'page_title': 'Dashboard',
+               'thought_form': thought_form,
+               'ideas': ideas,
                'user': request.user}
     return render(request, 'blog/dashboard.html', context)
 

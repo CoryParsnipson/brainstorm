@@ -2,7 +2,24 @@
 
 {% block content %}
 <h1>{{ user.first_name }}'s Dashboard</h1>
+<hr>
+<h3>Manage Ideas</h3>
+<ul>
+    {% for idea in ideas %}
+    <li>{{ idea.name }}: {{ idea.description }}</li>
+    {% endfor %}
+</ul>
+<hr>
+<h3>Post New Thought</h3>
 
+<form action="{% url 'forms-thought' %}" method="post">
+    {% csrf_token %}
+    <table>
+        {{ thought_form }}
+        <tr><td><input type="submit" value="Publish"></td></tr>
+    </table>
+</form>
+<p></p>
 {% endblock %}
 
 {% block side %}
