@@ -1,3 +1,4 @@
+from django.db.models import Max
 from django.core.urlresolvers import reverse
 from django.core.exceptions import FieldError
 from django.http import JsonResponse
@@ -10,7 +11,7 @@ from django.contrib.auth.decorators import login_required
 
 from rest_framework import viewsets, response
 
-from models import Idea, Thought
+from models import Idea, Thought, slugify
 from forms import LoginForm, IdeaForm, ThoughtForm
 from serializers import UserSerializer, IdeaSerializer, ThoughtSerializer
 
@@ -208,12 +209,17 @@ class FormIdeaView(View):
 
             request.POST['url_pass'] optional url for redirect on completion
         """
-        url_pass = 'dashboard'
-        if 'url_pass' in request.POST:
-            url_pass = request.POST['url_pass']
-            del request.POST['url_pass']
+        instance_data = request.POST.copy()
 
-        idea_form = IdeaForm(request.POST)
+        url_pass = 'dashboard'
+        if 'url_pass' in instance_data:
+            url_pass = instance_data['url_pass']
+            del instance_data['url_pass']
+
+        if 'slug' in instance_data and not instance_data['slug']:
+            instance_data['slug'] = slugify(instance_data['name'])
+
+        idea_form = IdeaForm(instance_data)
 
         if idea_form.is_valid():
             idea_form.save()
@@ -252,16 +258,24 @@ class FormThoughtView(View):
 
             request.POST['url_pass'] optional url for redirect on completion
         """
-        url_pass = 'dashboard'
-        if 'url_pass' in request.POST:
-            url_pass = request.POST['url_pass']
-            del request.POST['url_pass']
+        instance_data = request.POST.copy()
 
-        thought_form = ThoughtForm(request.POST)
+        url_pass = 'dashboard'
+        if 'url_pass' in instance_data:
+            url_pass = instance_data['url_pass']
+            del instance_data['url_pass']
+
+        if 'slug' in instance_data and not instance_data['slug']:
+            instance_data['slug'] = slugify(instance_data['title'])
+
+        import pdb
+        pdb.set_trace()
+
+        thought_form = ThoughtForm(instance_data)
 
         if thought_form.is_valid():
             thought_form.save()
-            idea = Idea.objects.filter(slug=request.POST['idea'])[0]
+            idea = Idea.objects.filter(slug=instance_data['idea'])[0]
             return redirect(reverse(url_pass, args=(idea.slug,)))
         else:
             # loop through fields on form and add errors to dict

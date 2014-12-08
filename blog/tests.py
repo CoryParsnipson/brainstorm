@@ -5,7 +5,7 @@ from django.test import TestCase, Client
 from django.core.urlresolvers import reverse
 from django.contrib.auth.models import User
 
-from models import Idea, Thought
+from models import Idea, Thought, slugify
 
 
 # Create your tests here.
@@ -206,3 +206,18 @@ class IdeaFormTestCase(TestCase):
     """
     def setUp(self):
         self.client = Client()
+
+
+class SlugifyTestCase(TestCase):
+    """ unit tests related to slugify contents
+    """
+
+    def test_slugify_text_only(self):
+        """ test slugify
+        """
+        test_string = "This is a test string."
+
+        expected = "this-is-a-test-string"
+        received = slugify(test_string)
+
+        self.assertEqual(expected, received)

@@ -1,12 +1,16 @@
-/{% extends 'blog/default_page.html' %}
+{% extends 'blog/default_page.html' %}
 
 {% block content %}
 <h1>{{ user.first_name }}'s Dashboard</h1>
 <hr>
 <h3>Manage Ideas</h3>
-<table>
+<table class="editable">
     {% for idea in ideas %}
-    <tr><td>{{ idea.name }}:</td><td>{{ idea.description }}</td></tr>
+    <tr>
+        <td title="{{ idea.slug }}">{{ idea.name }}</td>
+        <td>{{ idea.description }}</td>
+        <td>[x]</td>
+    </tr>
     {% endfor %}
 </table>
 <hr>

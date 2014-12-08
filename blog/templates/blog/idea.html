@@ -99,9 +99,15 @@ var formSubmit = function(event)
 
   var input_values = new_thought_form.getValues();
 
+  var submitComplete = function(data)
+  {
+    alert(data);
+  };
+
   // post to submit form data
   ajax({ url: "{% url 'forms-thought' %}",
          method: "post",
+         callback: submitComplete,
          data: input_values,
          asynch: false });
 

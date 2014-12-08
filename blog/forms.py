@@ -13,9 +13,12 @@ class LoginForm(forms.Form):
 class IdeaForm(forms.ModelForm):
     """ Django form class for managing user interaction with Idea objects
     """
+    def __init__(self, *args, **kwargs):
+        super(IdeaForm, self).__init__(*args, **kwargs)
+
     class Meta:
         model = Idea
-        fields = '__all__'
+        fields = ['name', 'slug', 'description']
 
 
 class ThoughtForm(forms.ModelForm):
