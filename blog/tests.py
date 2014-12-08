@@ -221,3 +221,13 @@ class SlugifyTestCase(TestCase):
         received = slugify(test_string)
 
         self.assertEqual(expected, received)
+
+    def test_slugify_truncate(self):
+        """ test slugify that should truncate to 20 characters
+        """
+        test_string = "omg this is such a long string it will deinitely be truncated"
+
+        expected = "omg-this-is-such-a-long"
+        received = slugify(test_string, max_len=20)
+
+        self.assertEqual(expected, received)

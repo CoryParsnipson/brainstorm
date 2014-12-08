@@ -4,7 +4,6 @@ from django.db import models
 from django.db.models import Max
 from django.db.models.signals import pre_save
 from django.dispatch import receiver
-from django.template.defaultfilters import slugify
 from django.contrib.auth.models import User
 
 
@@ -33,6 +32,9 @@ def pre_save_idea(sender, instance, *args, **kwargs):
         created Idea instances (or existing ones that don't have ordering for
         whatever reason).
     """
+    if not isinstance(instance, Idea):
+        return
+
     if not instance.ordering:
         next_ordering = Idea.objects.all().aggregate(Max('ordering'))['ordering__max']
         instance.ordering = 1 if not next_ordering else next_ordering + 1
@@ -54,8 +56,10 @@ class Thought(models.Model):
     date_edited = models.DateTimeField(auto_now=True, auto_now_add=True)
 
 
-def slugify_custom(source_str, max_len=20):
-    """ create a nice slug given a string
+def slugify(source_str, max_len=20):
+    """ create a nice slug given a string; FYI, Django comes with a prebuilt
+        slugify function (django.template.defaultfilters) which handles
+        non-unicode characters too, but doesn't truncate.
 
     :param source_str: string to make slug out of
     :param max_len: maximum length of slug
