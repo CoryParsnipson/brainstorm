@@ -41,11 +41,13 @@ def logout_page(request):
 
 @login_required(login_url='index')
 def dashboard(request):
-    thought_form = ThoughtForm()
     ideas = Idea.objects.all()
+    idea_form = IdeaForm()
+    thought_form = ThoughtForm()
     context = {'page_title': 'Dashboard',
-               'thought_form': thought_form,
                'ideas': ideas,
+               'idea_form': idea_form,
+               'thought_form': thought_form,
                'user': request.user}
     return render(request, 'blog/dashboard.html', context)
 
@@ -203,14 +205,19 @@ class FormIdeaView(View):
 
     def post(self, request, *args, **kwargs):
         """ save the POST data for the form into a new Idea
+
+            request.POST['url_pass'] optional url for redirect on completion
         """
+        url_pass = 'dashboard'
+        if 'url_pass' in request.POST:
+            url_pass = request.POST['url_pass']
+            del request.POST['url_pass']
+
         idea_form = IdeaForm(request.POST)
 
         if idea_form.is_valid():
             idea_form.save()
-
-            idea = Idea.objects.filter(slug=request.POST['idea'])[0]
-            return redirect(reverse('idea_detail', args=(idea.slug,)))
+            return redirect(reverse(url_pass))
         else:
             # loop through fields on form and add errors to dict
             errors = {}
@@ -242,14 +249,20 @@ class FormThoughtView(View):
 
     def post(self, request, *args, **kwargs):
         """ save the POST data to create a new Thought
+
+            request.POST['url_pass'] optional url for redirect on completion
         """
+        url_pass = 'dashboard'
+        if 'url_pass' in request.POST:
+            url_pass = request.POST['url_pass']
+            del request.POST['url_pass']
+
         thought_form = ThoughtForm(request.POST)
 
         if thought_form.is_valid():
             thought_form.save()
-
             idea = Idea.objects.filter(slug=request.POST['idea'])[0]
-            return redirect(reverse('idea_detail', args=(idea.slug,)))
+            return redirect(reverse(url_pass, args=(idea.slug,)))
         else:
             # loop through fields on form and add errors to dict
             errors = {}

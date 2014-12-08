@@ -199,3 +199,10 @@ class ThoughtViewTestCase(TestCase):
 
         for d in response.data:
             self.assertEqual(d['author'], self.dummy_author2.id)
+
+
+class IdeaFormTestCase(TestCase):
+    """ unit tests related to IdeaForm functions
+    """
+    def setUp(self):
+        self.client = Client()
