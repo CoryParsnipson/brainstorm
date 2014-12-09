@@ -1,11 +1,18 @@
 {% extends 'blog/template_default.html' %}
+{% load staticfiles %}
 
 {% block content %}
 <h3>Idea Catalog</h3>
 
-<ul>
+<table class="catalog">
+    <tbody>
     {% for idea in ideas %}
-    <li><a href="{% url 'idea_detail' idea.slug %}">{{ idea.name }}</a> : {{ idea.description }}</li>
+    <tr>
+        <td><img src="{% static 'images/idea_icon_default.png' %}"></td>
+        <td><a href="{% url 'idea_detail' idea.slug %}">{{ idea.name }}</a></td>
+        <td>{{ idea.description }}</td>
+    </tr>
     {% endfor %}
-</ul>
+    </tbody>
+</table>
 {% endblock %}
