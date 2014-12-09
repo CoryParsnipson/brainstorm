@@ -1,0 +1,15 @@
+<!-- navigation structure -->
+<div id="c-nav">
+    <ul class="nav">
+        <li><a href="{% url 'index' %}">Home</a></li>
+        <li><a href="{% url 'about' %}">About</a></li>
+        <li><a href="{% url 'idea_list' %}">Ideas</a></li>
+        <li class="right_justified">
+            {% if user.is_authenticated %}
+            <a href="{% url 'dashboard' %}">Dashboard</a>
+            {% else %}
+            <a href="{% url 'login_page' %}">Login</a>
+            {% endif %}
+        </li>
+    </ul>
+</div>

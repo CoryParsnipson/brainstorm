@@ -1,0 +1,47 @@
+/* front.css
+ * Front page css style for Slacker Paradise
+ *
+ * Cory Parsnipson, 2014
+ */
+
+div#c-nav
+{
+  margin-left: -5px;
+}
+
+div#c-body
+{
+  width: 950px;
+  min-height: 100%;
+  overflow: visible;
+  background-color: #E0CDA8;
+  margin: 0 auto;
+}
+
+div#c-content
+{
+  width: 100%;
+  background-color: #64ABDE;
+  float: none; /* override default.css inheritance */
+  margin: 0; /* override default.css inheritance */
+  padding: 0; /* override default.css inheritance */
+}
+
+div#c-content-inner
+{
+  margin: 0 5px; /* override default.css inheritance */
+  padding: 10px 0;
+}
+
+div#c-footer
+{
+  width: 100%;
+  background-color: #A69B6D;
+  margin: 0;
+  padding: 0; /* override default.css inheritance */
+}
+
+div#c-footer-inner
+{
+  margin: 0 10px;
+}

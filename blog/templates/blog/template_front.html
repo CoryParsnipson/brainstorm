@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+{% load staticfiles %}
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>SP :: {{ page_title }}</title>
+
+    <!-- css includes -->
+    <link rel="stylesheet" type="text/css" href="{% static 'css/default.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/front.css' %}">
+
+    <!-- script includes -->
+    <script type="text/javascript" src="{% static 'script/framework.js' %}"></script>
+    <script type="text/javascript" src="{% static 'script/blog.js' %}"></script>
+
+    {% block http_headers %}
+    <!-- template specific head tags should be added here -->
+    {% endblock %}
+</head>
+<body>
+
+<div id="c-header">
+    <h1><a href="{% url 'index' %}">Slacker Paradise</a></h1>
+</div>
+
+<div id="c-body">
+    <div id="c-content">
+        <div id="c-content-inner">
+            {% include 'blog/template_nav.html' %}
+
+            <!-- main content -->
+            {% block content %}
+            There is no content on this page.
+            {% endblock %}
+        </div>
+    </div>
+
+    <!-- footer -->
+    <div id="c-footer">
+        <div id="c-footer-inner">
+            {% block footer %}
+            There is no footer content.
+            {% endblock %}
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

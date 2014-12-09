@@ -231,3 +231,6 @@ class SlugifyTestCase(TestCase):
         received = slugify(test_string, max_len=20)
 
         self.assertEqual(expected, received)
+
+    def test_slugify_alphanumeric(self):
+        pass

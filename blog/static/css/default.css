@@ -19,6 +19,7 @@ body
   background-color: #D893DB;
   font-family: Roboto, Calibri, Segoe, Segoe UI, Optima, Arial, sans-serif;
   font-size: 11pt;
+  text-align: justify;
 }
 
 div#c-header
