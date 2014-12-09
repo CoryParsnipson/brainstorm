@@ -4,8 +4,16 @@
  * Cory Parsnipson, 2014
  */
 
+div#c-header
+{
+  height: 150px;
+  background-color: #ECB7AB;
+  padding: 10px;
+}
+
 div#c-nav
 {
+  background-color: #51AD6D;
   margin-left: -5px;
 }
 
@@ -13,7 +21,6 @@ div#c-body
 {
   width: 950px;
   min-height: 100%;
-  overflow: visible;
   background-color: #E0CDA8;
   margin: 0 auto;
 }
@@ -22,26 +29,23 @@ div#c-content
 {
   width: 100%;
   background-color: #64ABDE;
-  float: none; /* override default.css inheritance */
-  margin: 0; /* override default.css inheritance */
-  padding: 0; /* override default.css inheritance */
+  position: relative;
 }
 
 div#c-content-inner
 {
-  margin: 0 5px; /* override default.css inheritance */
-  padding: 10px 0;
+  padding: 10px 5px;
 }
 
 div#c-footer
 {
   width: 100%;
+  min-height: 200px;
   background-color: #A69B6D;
   margin: 0;
-  padding: 0; /* override default.css inheritance */
 }
 
 div#c-footer-inner
 {
-  margin: 0 10px;
+  margin: 0 5px;
 }
