@@ -7,12 +7,18 @@
 <table class="catalog">
     <tbody>
     {% for idea in ideas %}
-    <tr>
-        <td><img src="{% static 'images/idea_icon_default.png' %}"></td>
-        <td><a href="{% url 'idea_detail' idea.slug %}">{{ idea.name }}</a></td>
-        <td>{{ idea.description }}</td>
+    <tr class="{% cycle 'odd' 'even' %}">
+        <td>
+            <img src="{% static 'images/idea_icon_default.png' %}">
+            <h3 title="{{ idea.slug }}"><a href="{% url 'idea_detail' idea.slug %}">{{ idea.name }}</a></h3>
+            <p>{{ idea.description }}</p>
+        </td>
     </tr>
     {% endfor %}
     </tbody>
 </table>
+{% endblock %}
+
+{% block footer %}
+
 {% endblock %}
