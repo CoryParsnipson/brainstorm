@@ -46,6 +46,21 @@ div#c-content-inner
   margin: 10px 5px;
 }
 
+div#c-side
+{
+  width: 30%;
+  background-color: #DEC564;
+  float: right;
+  margin-top: 170px;
+  margin-bottom: -99999px;
+  padding-bottom: 99999px;
+}
+
+div#c-side-inner
+{
+  margin: 10px 5px;
+}
+
 div#c-footer
 {
   width: 70%;
@@ -56,20 +71,5 @@ div#c-footer
 
 div#c-footer-inner
 {
-  padding: 5px;
-}
-
-div#c-side
-{
-  width: 30%;
-  background-color: #DEC564;
-  float: left;
-  margin-top: 170px;
-  margin-bottom: -99999px;
-  padding-bottom: 99999px;
-}
-
-div#c-side-inner
-{
-  margin: 10px 5px;
+  margin: 5px;
 }
