@@ -13,3 +13,21 @@ div.frontpage-story
   border: 1px solid yellow;
   margin-bottom: 1em;
 }
+
+div.frontpage-story-small-left
+{
+  width: 48%;
+  height: 120px;
+  overflow: hidden;
+  float: left;
+  margin-right: 10px;
+}
+
+div.frontpage-story-small-right
+{
+  width: 48%;
+  height: 120px;
+  overflow: hidden;
+  float: left;
+  margin-left: 10px;
+}
