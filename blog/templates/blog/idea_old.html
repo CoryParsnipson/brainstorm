@@ -1,0 +1,119 @@
+{% extends "blog/template_default.html" %}
+
+{% block content %}
+<!-- variables passed from back end -->
+<input type="hidden" name="be_idea_slug" value="{{ idea_slug }}">
+<input type="hidden" name="be_csrf_token" value="{% csrf_token %}">
+
+<!-- page start -->
+<h1><a href="{% url 'index' %}">Slacker Paradise</a> :: <span id="idea_name"></span></h1>
+<a href="{% url 'dashboard' %}">Dashboard</a>
+
+<h2 id="idea_header"></h2>
+<p id="idea_description"></p>
+<hr>
+
+<h2>Latest thoughts:</h2>
+<div id="thought_list"></div>
+<hr>
+
+<div id="new_thought_container"></div>
+
+<script type="text/javascript">
+var be_params = getBeParams();
+
+function getIdeaInfo(idea)
+{
+  document.getElementById("idea_name").innerHTML = idea.name;
+  document.getElementById("idea_header").innerHTML = idea.name;
+  document.getElementById("idea_description").innerHTML = idea.description;
+}
+ajax({ url: "{% url 'idea-list' %}" + be_params["be_idea_slug"],
+       method: "GET",
+       callback: getIdeaInfo });
+
+// populate thoughts list
+function populateThoughtList(thoughts)
+{
+  var thought_list = document.getElementById("thought_list");
+
+  var thought_html = "";
+  for (var thought_idx = 0; thought_idx < thoughts.length; thought_idx++)
+  {
+    thought_html += "<p style='font-weight: bold;'>" + thoughts[thought_idx].title + "</p>";
+    thought_html += "<p>" + thoughts[thought_idx].content + "</p>";
+
+    if (thought_idx != thoughts.length - 1)
+    {
+      thought_html += "<hr>\n";
+    }
+  }
+  thought_list.innerHTML = thought_html;
+}
+
+function refreshThoughtList()
+{
+  ajax({ url: "{% url 'thought-list' %}" + "?idea=" + be_params["be_idea_slug"] + "&order=-date_published",
+         method: "GET",
+         callback: populateThoughtList });
+}
+refreshThoughtList();
+
+// create new thought form
+var form_args = {
+    id: "new_thought_form",
+    action: "{% url 'forms-thought' %}",
+    method: "post",
+    csrf: be_params["be_csrf_token"],
+};
+var new_thought_form = new Form(form_args);
+document.getElementById("new_thought_container").appendChild(new_thought_form.node);
+
+new_thought_form.getBody("{% url 'forms-thought' %}");
+new_thought_form.addSubmitButton({ value: "Publish!"});
+
+// remove author and id fields
+removeElement(document.getElementById("id_author").parentNode.parentNode);
+removeElement(document.getElementById("id_idea").parentNode.parentNode);
+
+// replace the two fields with prepopulated fields
+var input_author = document.createElement("input");
+input_author.type = "hidden";
+input_author.id = "id_author";
+input_author.name = "author";
+input_author.value = 1; // TODO: this should be taken from request.User credentials or something
+
+var input_idea = document.createElement("input");
+input_idea.type = "hidden";
+input_idea.id = "id_idea";
+input_idea.name = "idea";
+input_idea.value = be_params["be_idea_slug"];
+
+new_thought_form.addElement({ element: input_author, row: 0 });
+new_thought_form.addElement({ element: input_idea, row: 1 });
+
+// "ajax"-ify the form submission
+var formSubmit = function(event)
+{
+  event.preventDefault();
+
+  var input_values = new_thought_form.getValues();
+
+  var submitComplete = function(data)
+  {
+    alert(data);
+  };
+
+  // post to submit form data
+  ajax({ url: "{% url 'forms-thought' %}",
+         method: "post",
+         callback: submitComplete,
+         data: input_values,
+         asynch: false });
+
+  // get to refresh page
+  refreshThoughtList();
+};
+EventLib.addEvent(new_thought_form.submit_button, "click", formSubmit);
+</script>
+{% endblock %}

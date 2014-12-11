@@ -1,9 +1,8 @@
-from django.db.models import Max
 from django.core.urlresolvers import reverse
 from django.core.exceptions import FieldError
 from django.http import JsonResponse
 from django.views.generic import View
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from django.contrib.auth import authenticate, login as auth_login, logout as auth_logout
 from django.contrib.auth.models import User
@@ -61,16 +60,17 @@ def ideas(request):
 
 
 def about(request):
-    context = {'page_title' : 'About'}
+    context = {'page_title': 'About'}
     return render(request, 'blog/about.html', context)
 
 
 def idea_detail(request, idea_slug=None):
-    # TODO: raise exception on bad ID
-    idea = Idea.objects.filter(slug=idea_slug)
+    idea = get_object_or_404(Idea, slug=idea_slug)
+    thoughts = Thought.objects.filter(idea=idea_slug).order_by('-date_published')
 
-    context = {'page_title': idea[0].name,
-               'idea_slug': idea_slug}
+    context = {'page_title': idea.name,
+               'idea': idea,
+               'thoughts': thoughts}
     return render(request, 'blog/idea.html', context)
 
 
