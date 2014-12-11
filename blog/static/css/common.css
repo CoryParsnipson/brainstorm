@@ -4,6 +4,10 @@
  * Cory Parsnipson, 2014
  */
 
+/******************************************************************************
+ * General css rules
+ *****************************************************************************/
+
 * { margin: 0; padding: 0; }
 html { height: 100%; }
 
@@ -20,7 +24,104 @@ body
   font-family: Roboto, Calibri, Segoe, Segoe UI, Optima, Arial, sans-serif;
   font-size: 11pt;
   text-align: justify;
+  line-height: 1.2em;
 }
+
+hr
+{
+  height: 1px;
+  border-width: 0;
+  color: #000000;
+  background-color: #000000;
+  margin: 10px 0;
+}
+
+/* a.k.a. clearfix */
+.group
+{
+  content: "";
+  display: table;
+  clear: both;
+}
+
+/******************************************************************************
+ * Structural divs
+ *****************************************************************************/
+
+div#c-header
+{
+  height: 150px;
+  background-color: #ECB7AB;
+  padding: 10px;
+}
+
+div#c-nav
+{
+  width: 70%;
+  background-color: #51AD6D;
+  position: absolute;
+  top: 170px;
+}
+
+div#c-body
+{
+  width: 950px;
+  height: 100%;
+  background-color: #E0CDA8;
+  position: relative;
+  overflow: hidden;
+  margin: 0 auto;
+  margin-top: -170px;
+}
+
+div#c-content
+{
+  width: 70%;
+  //height: 100%;
+  background-color: #64ABDE;
+  float: left;
+  margin-top: 170px;
+  margin-bottom: -99999px;
+  padding-bottom: 99999px;
+}
+
+div#c-content-inner
+{
+  margin: 10px 5px;
+  margin-right: 10px;
+}
+
+div#c-side
+{
+  width: 30%;
+  background-color: #DEC564;
+  float: right;
+  margin-top: 170px;
+  margin-bottom: -99999px;
+  padding-bottom: 99999px;
+}
+
+div#c-side-inner
+{
+  margin: 10px 5px;
+}
+
+div#c-footer
+{
+  width: 70%;
+  min-height: 200px;
+  background-color: #A69B6D;
+  float: left;
+}
+
+div#c-footer-inner
+{
+  margin: 5px;
+}
+
+/******************************************************************************
+ * Navigational styles
+ *****************************************************************************/
 
 ul.nav
 {
@@ -55,9 +156,13 @@ ul.nav li a:hover
   background-color: #86D19D;
 }
 
+/******************************************************************************
+ * Links
+ *****************************************************************************/
+
 a
 {
-  color: inherit;
+  color: #333333;
   font-weight: bold;
   text-decoration: none;
 }
@@ -67,12 +172,9 @@ a:hover
   color: #FFFFFF;
 }
 
-.group
-{
-  content: "";
-  display: table;
-  clear: both;
-}
+/******************************************************************************
+ * Text styles
+ *****************************************************************************/
 
 h1, h2, h3, h4, h5, h6
 {
@@ -90,7 +192,7 @@ h1
 h3
 {
   font-size: 12pt;
-  margin-bottom: 0.3em;
+  margin-bottom: 0.7em;
 }
 
 p
@@ -98,14 +200,9 @@ p
   margin-bottom: 1em;
 }
 
-hr
-{
-  height: 1px;
-  border-width: 0;
-  color: #000000;
-  background-color: #000000;
-  margin: 10px 0;
-}
+/******************************************************************************
+ * Tables
+ *****************************************************************************/
 
 table
 {
@@ -161,21 +258,24 @@ table.catalog img
   padding-right: 10px;
 }
 
+/******************************************************************************
+ * Images
+ *****************************************************************************/
+
 img
 {
   display: block;
 }
 
-div.thought
+img.left
 {
-  margin-bottom: 2em;
+  float: left;
+  padding-right: 10px;
 }
 
-p.thought-author
+img.right
 {
-  font-size: 9pt;
+  float: right;
+  padding-left: 10px;
 }
 
-hr.thought-hr
-{
-}

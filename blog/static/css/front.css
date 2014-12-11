@@ -1,0 +1,15 @@
+/* front.css
+ * Front page css style for Slacker Paradise
+ *
+ * Cory Parsnipson, 2014
+ */
+
+/******************************************************************************
+ * Front page "story" blurb styles
+ *****************************************************************************/
+
+div.frontpage-story
+{
+  border: 1px solid yellow;
+  margin-bottom: 1em;
+}
