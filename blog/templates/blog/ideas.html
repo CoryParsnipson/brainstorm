@@ -9,7 +9,7 @@
     {% for idea in ideas %}
     <tr class="{% cycle 'odd' 'even' %}">
         <td>
-            <img src="{% static 'images/idea_icon_default.png' %}">
+            <a href="{% url 'idea_detail' idea.slug %}"><img src="{% static 'images/idea_icon_default.png' %}"></a>
             <h3 title="{{ idea.slug }}"><a href="{% url 'idea_detail' idea.slug %}">{{ idea.name }}</a></h3>
             <p>{{ idea.description }}</p>
         </td>
@@ -17,8 +17,4 @@
     {% endfor %}
     </tbody>
 </table>
-{% endblock %}
-
-{% block footer %}
-
 {% endblock %}

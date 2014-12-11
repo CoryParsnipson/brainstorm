@@ -13,7 +13,10 @@ div#c-header
 
 div#c-nav
 {
+  width: 70%;
   background-color: #51AD6D;
+  position: absolute;
+  top: 170px;
 }
 
 div#c-body
@@ -21,6 +24,7 @@ div#c-body
   width: 950px;
   height: 100%;
   background-color: #E0CDA8;
+  position: relative;
   overflow: hidden;
   margin: 0 auto;
   margin-top: -170px;
@@ -29,8 +33,8 @@ div#c-body
 div#c-content
 {
   width: 70%;
+  //height: 100%;
   background-color: #64ABDE;
-  position: relative;
   float: left;
   margin-top: 170px;
   margin-bottom: -99999px;
@@ -39,16 +43,15 @@ div#c-content
 
 div#c-content-inner
 {
-  min-height: 400px; /* quick hack */
   margin: 10px 5px;
 }
 
 div#c-footer
 {
-  width: 100%;
+  width: 70%;
   min-height: 200px;
   background-color: #A69B6D;
-  margin-top: 10px;
+  float: left;
 }
 
 div#c-footer-inner
