@@ -5,29 +5,63 @@
  */
 
 /******************************************************************************
- * Front page "story" blurb styles
+ * general
+ *****************************************************************************/
+
+hr.story-divider
+{
+  margin: 1.5em 0;
+}
+
+/******************************************************************************
+ * announcements
+ *****************************************************************************/
+
+div.announcements
+{
+  width: 100%;
+  height: 100px;
+  margin-bottom: 15px;
+}
+
+/******************************************************************************
+ * frontpage-story div
  *****************************************************************************/
 
 div.frontpage-story
 {
-  border: 1px solid yellow;
+  height: 300px;
   margin-bottom: 1em;
 }
 
-div.frontpage-story-small-left
+.headline
 {
-  width: 48%;
-  height: 120px;
-  overflow: hidden;
-  float: left;
-  margin-right: 10px;
+  margin-bottom: 0.3em;
 }
 
-div.frontpage-story-small-right
+.sub-headline
+{
+  font-size: 9pt;
+  font-weight: bold;
+}
+
+/******************************************************************************
+ * frontpage-story-small-left div
+ *****************************************************************************/
+
+div.frontpage-story-small
 {
   width: 48%;
-  height: 120px;
-  overflow: hidden;
+  height: auto;
+  padding: 1%;
+}
+
+div.small-left
+{
   float: left;
-  margin-left: 10px;
+}
+
+div.small-right
+{
+  float: right;
 }

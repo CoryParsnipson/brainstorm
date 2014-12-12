@@ -19,8 +19,10 @@ from serializers import UserSerializer, IdeaSerializer, ThoughtSerializer
 # Site skeleton views
 ###############################################################################
 def index(request):
+    latest_thoughts = Thought.objects.all().order_by("-date_published")[:9]
+
     context = {'page_title': 'Home',
-               'login_form': LoginForm()}
+               'latest_thoughts': latest_thoughts}
     return render(request, 'blog/index.html', context)
 
 
@@ -162,6 +164,12 @@ class ThoughtViewSet(viewsets.ModelViewSet):
         else:
             thoughts = Thought.objects.filter(**query_string_params)
 
+        if 'order' in request.GET:
+            try:
+                thoughts = thoughts.order_by(request.GET['order'])
+            except FieldError as e:
+                pass
+
         if 'count' in request.GET:
             thoughts = thoughts[:request.GET['count']]
 
@@ -173,12 +181,6 @@ class ThoughtViewSet(viewsets.ModelViewSet):
 
                 thoughts = thoughts[start_idx:end_idx]
             except ValueError as e:
-                pass
-
-        if 'order' in request.GET:
-            try:
-                thoughts = thoughts.order_by(request.GET['order'])
-            except FieldError as e:
                 pass
 
         data = [ThoughtSerializer(t).data for t in thoughts]

@@ -77,7 +77,6 @@ div#c-body
 div#c-content
 {
   width: 70%;
-  //height: 100%;
   background-color: #64ABDE;
   float: left;
   margin-top: 170px;
@@ -187,6 +186,11 @@ h1
 {
   font-size: 14pt;
   margin-bottom: 1em;
+}
+
+h2
+{
+  font-size: 14pt;
 }
 
 h3
