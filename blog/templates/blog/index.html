@@ -24,7 +24,11 @@
     <p>{{ latest_thoughts.0.content }}</p>
     {% endif %}
 </div>
+
+
+{% if latest_thoughts|length > 1 %}
 <hr class="story-divider">
+{% endif %}
 
 {% for thought in latest_thoughts|slice:"1:" %}
 <div class="frontpage-story frontpage-story-small {% cycle 'small-left' 'small-right' %}">
@@ -33,17 +37,6 @@
         <h3 class="headline">{{ thought.title }}</h3>
     </a>
     <p>{{ thought.content }}</p>
-</div>
-{% empty %}
-<div class="frontpage-story frontpage-story-small small-left">
-    <img class="left" src="{% static 'images/idea_icon_default.png' %}">
-    <h3 class="headline">None</h3>
-    <p>None</p>
-</div>
-<div class="frontpage-story frontpage-story-small small-right">
-    <img class="left" src="{% static 'images/idea_icon_default.png' %}">
-    <h3 class="headline">None</h3>
-    <p>None</p>
 </div>
 {% endfor %}
 {% endblock %}
