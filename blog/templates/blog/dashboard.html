@@ -14,24 +14,25 @@
     <table class="add-idea">
         <tbody>
         <tr>
-        {% for field in idea_form %}
-        <td {% if field.id_for_label == "id_description" %} class="fill" {% endif %}>
+            {% for field in idea_form %}
+            <td {% if field.id_for_label == "id_description" %} class="fill" {% endif %}>
             {{ field.label_tag }}<br>
             {{ field }}
-        </td>
-        {% endfor %}
-        <td class="last"><input id="id_submit" type="submit" value="Create"></td>
+            </td>
+            {% endfor %}
+            <td class="last"><input id="id_submit" type="submit" value="Create"></td>
         </tr>
         </tbody>
     </table>
 </form>
 
-
 <table class="editable">
     {% for idea in ideas %}
     <tr>
+        <td>[_]</td>
         <td title="{{ idea.slug }}">{{ idea.name }}</td>
         <td>{{ idea.description }}</td>
+        <td>[edit]</td>
         <td>[x]</td>
     </tr>
     {% endfor %}
@@ -42,12 +43,8 @@
 
 <form action="{% url 'forms-thought' %}" method="post">
     {% csrf_token %}
-    <table>
-        {{ thought_form }}
-        <tr><td><input type="submit" value="Publish"></td></tr>
-    </table>
+    {% include 'blog/template_thought.html' %}
 </form>
-<p></p>
 {% endblock %}
 
 {% block side %}
