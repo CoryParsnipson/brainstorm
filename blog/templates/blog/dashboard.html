@@ -17,7 +17,7 @@
         {% for field in idea_form %}
         <td>{{ field.label_tag }}<br>{{ field }}</td>
         {% endfor %}
-        <td><input class="button" type="submit" value="New Idea"></td>
+        <td><input id="id_submit" type="submit" value="Create"></td>
         </tr>
         </tbody>
     </table>
@@ -35,15 +35,6 @@
 </table>
 <hr>
 
-<h3>Create New Idea</h3>
-<form action="{% url 'forms-idea' %}" method="post">
-    {% csrf_token %}
-    <table>
-        {{ idea_form }}
-        <tr><td><input type="submit" value="New Idea"></td></tr>
-    </table>
-</form>
-<hr>
 <h3>Post New Thought</h3>
 
 <form action="{% url 'forms-thought' %}" method="post">

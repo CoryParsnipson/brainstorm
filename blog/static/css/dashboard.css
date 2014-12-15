@@ -10,26 +10,41 @@
 
 table.add-idea
 {
+  margin-bottom: 5px;
 }
 
 table.add-idea td
 {
-  background-color: #6C6CF8;
   font-size: 9pt;
   font-weight: bold;
   float: left;
-  padding: 5px;
+  padding-right: 5px;
 }
 
-table.add-idea textarea
+table.add-idea #id_name
 {
-  width: 200px;
+  width: 150px;
+  padding: 2px;
+}
+
+table.add-idea #id_slug
+{
+  width: 110px;
+  padding: 2px;
+}
+
+table.add-idea #id_description
+{
+  width: 300px;
+  display: block;
   height: 1.3em;
   resize: none;
+  padding: 2px;
 }
 
-table.add-idea .button
+table.add-idea #id_submit
 {
-  padding: 1px;
-  margin-bottom: 2px;
+  padding: 2px;
+  font-size: 9pt;
+  margin-top: 1.4em;
 }
