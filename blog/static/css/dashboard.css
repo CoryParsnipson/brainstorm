@@ -10,6 +10,7 @@
 
 table.add-idea
 {
+  width: 100%;
   margin-bottom: 5px;
 }
 
@@ -17,8 +18,18 @@ table.add-idea td
 {
   font-size: 9pt;
   font-weight: bold;
-  float: left;
   padding-right: 5px;
+}
+
+table.add-idea td.last
+{
+  width: 100%;
+  padding-right: 0;
+}
+
+table.add-idea td.fill
+{
+  width: 100%;
 }
 
 table.add-idea #id_name
@@ -35,7 +46,7 @@ table.add-idea #id_slug
 
 table.add-idea #id_description
 {
-  width: 300px;
+  width: 98%;
   display: block;
   height: 1.3em;
   resize: none;

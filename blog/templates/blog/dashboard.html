@@ -15,9 +15,12 @@
         <tbody>
         <tr>
         {% for field in idea_form %}
-        <td>{{ field.label_tag }}<br>{{ field }}</td>
+        <td {% if field.id_for_label == "id_description" %} class="fill" {% endif %}>
+            {{ field.label_tag }}<br>
+            {{ field }}
+        </td>
         {% endfor %}
-        <td><input id="id_submit" type="submit" value="Create"></td>
+        <td class="last"><input id="id_submit" type="submit" value="Create"></td>
         </tr>
         </tbody>
     </table>
