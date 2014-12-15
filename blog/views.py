@@ -43,11 +43,11 @@ def logout_page(request):
 
 @login_required(login_url='index')
 def dashboard(request):
-    ideas = Idea.objects.all()
+    idea_list = Idea.objects.all()
     idea_form = IdeaForm()
     thought_form = ThoughtForm()
     context = {'page_title': 'Dashboard',
-               'ideas': ideas,
+               'ideas': idea_list,
                'idea_form': idea_form,
                'thought_form': thought_form,
                'user': request.user}

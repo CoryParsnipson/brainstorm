@@ -1,0 +1,35 @@
+/* dashboard.css
+ * Dashboard css styles for Slacker Paradise
+ *
+ * Cory Parsnipson, 2014
+ */
+
+/******************************************************************************
+ * Add new Idea form styles
+ *****************************************************************************/
+
+table.add-idea
+{
+}
+
+table.add-idea td
+{
+  background-color: #6C6CF8;
+  font-size: 9pt;
+  font-weight: bold;
+  float: left;
+  padding: 5px;
+}
+
+table.add-idea textarea
+{
+  width: 200px;
+  height: 1.3em;
+  resize: none;
+}
+
+table.add-idea .button
+{
+  padding: 1px;
+  margin-bottom: 2px;
+}

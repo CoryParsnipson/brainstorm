@@ -1,9 +1,29 @@
 {% extends 'blog/template_default.html' %}
+{% load staticfiles %}
+
+{% block http_headers %}
+<link rel="stylesheet" type="text/css" href="{% static 'css/dashboard.css' %}">
+{% endblock %}
 
 {% block content %}
-<h1>{{ user.first_name }}'s Dashboard</h1>
-<hr>
+<h1>{{ user.first_name }}'s Dashboard<hr></h1>
+
 <h3>Manage Ideas</h3>
+<form action="{% url 'forms-idea' %}" method="post">
+    {% csrf_token %}
+    <table class="add-idea">
+        <tbody>
+        <tr>
+        {% for field in idea_form %}
+        <td>{{ field.label_tag }}<br>{{ field }}</td>
+        {% endfor %}
+        <td><input class="button" type="submit" value="New Idea"></td>
+        </tr>
+        </tbody>
+    </table>
+</form>
+
+
 <table class="editable">
     {% for idea in ideas %}
     <tr>
