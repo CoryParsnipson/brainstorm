@@ -1,3 +1,5 @@
+import math
+
 from django.core.urlresolvers import reverse
 from django.core.exceptions import FieldError
 from django.http import JsonResponse
@@ -14,6 +16,7 @@ from models import Idea, Thought, slugify
 from forms import LoginForm, IdeaForm, ThoughtForm
 from serializers import UserSerializer, IdeaSerializer, ThoughtSerializer
 
+import common
 
 ###############################################################################
 # Site skeleton views
@@ -43,14 +46,37 @@ def logout_page(request):
 
 @login_required(login_url='index')
 def dashboard(request):
-    idea_list = Idea.objects.all()
+    idea_page = 1
+    ideas_per_page = common.Globals.ideas_per_page
+
+    if 'per_page' in request.GET:
+        try:
+            if request.GET['per_page'] > 0 and request.GET['per_page'] <= common.Globals.ideas_per_page:
+                ideas_per_page = request.GET['per_page']
+        except TypeError as e:
+            ideas_per_page = common.Globals.ideas_per_page
+
+    num_ideas = Idea.objects.all().count()
+    num_pages = (num_ideas / ideas_per_page) + (1 if num_ideas % ideas_per_page else 0)
+
+    if 'page' in request.GET and request.GET['page'] > 0 and request.GET['page'] >= num_pages:
+        try:
+            idea_page = int(request.GET['page'])
+        except TypeError as e:
+            idea_page = 1
+
+    # paginate ideas
+    idea_page_start = (idea_page - 1) * ideas_per_page
+    idea_page_end = idea_page_start + ideas_per_page
+    idea_list = Idea.objects.all()[idea_page_start:idea_page_end]
+
     idea_form = IdeaForm()
     thought_form = ThoughtForm()
     context = {'page_title': 'Dashboard',
                'ideas': idea_list,
                'idea_form': idea_form,
                'thought_form': thought_form,
-               'user': request.user}
+               'idea_pages': range(1, num_pages + 1)}
     return render(request, 'blog/dashboard.html', context)
 
 

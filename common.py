@@ -1,6 +1,16 @@
 # common.py
 # contains common functions and structures used between multiple apps
 
+
+class Globals:
+    """ site-wide constants and global values
+    """
+    def __init__(self):
+        return
+
+    ideas_per_page = 10
+
+
 class KeyRing:
     """ key value storage of sensitive information and passwords for the site
     """

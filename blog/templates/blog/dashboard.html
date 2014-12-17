@@ -6,7 +6,7 @@
 {% endblock %}
 
 {% block content %}
-<h1>{{ user.first_name }}'s Dashboard<hr></h1>
+<h1>{{ request.user.first_name }}'s Dashboard<hr></h1>
 
 {% if request.GET.idea_slug %}
 <h3>Post New Thought</h3>
@@ -16,21 +16,25 @@
 
 <h3>Manage Ideas</h3>
 <table class="editable">
-    <tr>
-        <td><input type="checkbox" id="checkbox_all" value="all"></td>
+    <tr class="header">
         <td>Name</td>
         <td>Slug</td>
         <td>Description</td>
     </tr>
     {% for idea in ideas %}
     <tr>
-        <td><input type="checkbox" id="checkbox_{{ idea.slug }}" value="{{ idea.slug }}"></td>
         <td title="{{ idea.slug }}">{{ idea.name }}</td>
         <td>{{ idea.slug }}</td>
         <td>{{ idea.description }}</td>
     </tr>
     {% endfor %}
 </table>
+
+<ul class="editable-pages group">
+    {% for idea_page in idea_pages %}
+    <li><a href="{% url 'dashboard' %}?page={{ idea_page }}">{{ idea_page }}</a></li>
+    {% endfor %}
+</ul>
 
 <h3>Create New Idea:</h3>
 <hr>
@@ -62,6 +66,7 @@
 <p>Manage new comments...</p>
 <hr>
 <h3>Ideas</h3>
+<p>Manage Ideas</p>
 <p>Create New Idea</p>
 <hr>
 <h3>Thoughts</h3>
