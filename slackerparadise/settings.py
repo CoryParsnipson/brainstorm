@@ -101,6 +101,10 @@ STATIC_URL = '/static/'
 # keep global, non-app specific template files here
 TEMPLATE_DIRS = (paths.TEMPLATE_DIR, )
 
+TEMPLATE_CONTEXT_PROCESSORS = (
+    'django.core.context_processors.request',
+)
+
 REST_FRAMEWORK = {
     # Use Django's standard `django.contrib.auth` permissions,
     # or allow read-only access for unauthenticated users.

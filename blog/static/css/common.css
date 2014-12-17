@@ -220,13 +220,41 @@ table
 table.editable
 {
   width: 100%;
+  font-size: 9pt;
 }
 
 table.editable tr td
 {
   background-color: #CFCFCF;
   border: 1px solid #A6A6A6;
-  padding: 5px;
+  padding: 3px;
+}
+
+table.editable input[type="checkbox"]
+{
+  display: block;
+}
+
+/******************************************************************************
+ * editable ul
+ *****************************************************************************/
+
+ul.editable
+{
+  background-color: pink;
+  list-style-type: none;
+}
+
+ul.editable li
+{
+  float: left;
+  padding: 3px;
+}
+
+ul.editable input[type="checkbox"]
+{
+  margin-top: 2px;
+  margin-left: 1px;
 }
 
 /******************************************************************************

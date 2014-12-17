@@ -8,7 +8,15 @@
 {% block content %}
 <h1>{{ user.first_name }}'s Dashboard<hr></h1>
 
+{% if request.GET.idea_slug %}
+<h3>Post New Thought</h3>
+{% include 'blog/template_thought.html' with form=thought_form idea=request.GET.idea_slug author=request.user.id %}
+<hr>
+{% endif %}
+
 <h3>Manage Ideas</h3>
+
+<!-- new idea form -->
 <form action="{% url 'forms-idea' %}" method="post">
     {% csrf_token %}
     <table class="add-idea">
@@ -26,25 +34,28 @@
     </table>
 </form>
 
+<ul class="editable group">
+    <li><input type="checkbox" id="checkbox_all" value="all"></li>
+    <li>Edit</li>
+    <li>Delete</li>
+</ul>
+
 <table class="editable">
+    <tr>
+        <td><input type="checkbox" id="checkbox_all" value="all"></td>
+        <td>Name</td>
+        <td>Description</td>
+        <td>Delete</td>
+    </tr>
     {% for idea in ideas %}
     <tr>
-        <td>[_]</td>
+        <td><input type="checkbox" id="checkbox_{{ idea.slug }}" value="{{ idea.slug }}"></td>
         <td title="{{ idea.slug }}">{{ idea.name }}</td>
         <td>{{ idea.description }}</td>
-        <td>[edit]</td>
-        <td>[x]</td>
+        <td>=</td>
     </tr>
     {% endfor %}
 </table>
-<hr>
-
-<h3>Post New Thought</h3>
-
-<form action="{% url 'forms-thought' %}" method="post">
-    {% csrf_token %}
-    {% include 'blog/template_thought.html' %}
-</form>
 {% endblock %}
 
 {% block side %}

@@ -1,4 +1,21 @@
-<table>
-    {{ thought_form }}
-    <tr><td><input type="submit" value="Publish"></td></tr>
-</table>
+<form action="{% url 'forms-thought' %}" method="post">
+    {% csrf_token %}
+    <input type="hidden" name="idea" value="{{ idea }}">
+    <input type="hidden" name="author" value="{{ author }}">
+
+    <table>
+        <tr>
+            <th>{{ form.title.label_tag }}</th>
+            <td>{{ form.title }}</td>
+        </tr>
+        <tr>
+            <th>{{ form.slug.label_tag }}</th>
+            <td>{{ form.slug }}</td>
+        </tr>
+        <tr>
+            <th>{{ form.content.label_tag }}</th>
+            <td>{{ form.content }}</td>
+        </tr>
+        <tr><td><input type="submit" value="Publish"></td></tr>
+    </table>
+</form>
