@@ -221,6 +221,7 @@ table.editable
 {
   width: 100%;
   font-size: 9pt;
+  margin-bottom: 2em;
 }
 
 table.editable tr td
@@ -296,6 +297,47 @@ table.catalog img
 {
   float: left;
   padding-right: 10px;
+}
+
+/******************************************************************************
+ * Tables - Thought
+ *****************************************************************************/
+
+table.form-thought
+{
+  width: 100%;
+}
+
+table.form-thought th
+{
+  width: 1px; /* shrink to fit content */
+  text-align: right;
+  vertical-align: top;
+  padding: 0 5px;
+}
+
+table.form-thought td
+{
+}
+
+table.form-thought input[type="text"]
+{
+  width: 99%;
+  padding: 2px;
+  margin-bottom: 5px;
+}
+
+table.form-thought input[type="submit"]
+{
+  padding: 2px;
+}
+
+table.form-thought textarea
+{
+  width: 99%;
+  resize: none;
+  padding: 2px 3px;
+  margin-bottom: 5px;
 }
 
 /******************************************************************************

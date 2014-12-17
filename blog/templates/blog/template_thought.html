@@ -3,7 +3,7 @@
     <input type="hidden" name="idea" value="{{ idea }}">
     <input type="hidden" name="author" value="{{ author }}">
 
-    <table>
+    <table class="form-thought">
         <tr>
             <th>{{ form.title.label_tag }}</th>
             <td>{{ form.title }}</td>
@@ -16,6 +16,9 @@
             <th>{{ form.content.label_tag }}</th>
             <td>{{ form.content }}</td>
         </tr>
-        <tr><td><input type="submit" value="Publish"></td></tr>
+        <tr>
+            <td></td>
+            <td><input type="submit" value="Publish"></td>
+        </tr>
     </table>
 </form>

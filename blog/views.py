@@ -270,15 +270,12 @@ class FormThoughtView(View):
         if 'slug' in instance_data and not instance_data['slug']:
             instance_data['slug'] = slugify(instance_data['title'])
 
-        import pdb
-        pdb.set_trace()
-
         thought_form = ThoughtForm(instance_data)
 
         if thought_form.is_valid():
             thought_form.save()
             idea = Idea.objects.filter(slug=instance_data['idea'])[0]
-            return redirect(reverse(url_pass, args=(idea.slug,)))
+            return redirect(reverse(url_pass))
         else:
             # loop through fields on form and add errors to dict
             errors = {}

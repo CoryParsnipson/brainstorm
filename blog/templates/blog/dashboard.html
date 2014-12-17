@@ -15,6 +15,25 @@
 {% endif %}
 
 <h3>Manage Ideas</h3>
+<table class="editable">
+    <tr>
+        <td><input type="checkbox" id="checkbox_all" value="all"></td>
+        <td>Name</td>
+        <td>Slug</td>
+        <td>Description</td>
+    </tr>
+    {% for idea in ideas %}
+    <tr>
+        <td><input type="checkbox" id="checkbox_{{ idea.slug }}" value="{{ idea.slug }}"></td>
+        <td title="{{ idea.slug }}">{{ idea.name }}</td>
+        <td>{{ idea.slug }}</td>
+        <td>{{ idea.description }}</td>
+    </tr>
+    {% endfor %}
+</table>
+
+<h3>Create New Idea:</h3>
+<hr>
 
 <!-- new idea form -->
 <form action="{% url 'forms-idea' %}" method="post">
@@ -33,29 +52,6 @@
         </tbody>
     </table>
 </form>
-
-<ul class="editable group">
-    <li><input type="checkbox" id="checkbox_all" value="all"></li>
-    <li>Edit</li>
-    <li>Delete</li>
-</ul>
-
-<table class="editable">
-    <tr>
-        <td><input type="checkbox" id="checkbox_all" value="all"></td>
-        <td>Name</td>
-        <td>Description</td>
-        <td>Delete</td>
-    </tr>
-    {% for idea in ideas %}
-    <tr>
-        <td><input type="checkbox" id="checkbox_{{ idea.slug }}" value="{{ idea.slug }}"></td>
-        <td title="{{ idea.slug }}">{{ idea.name }}</td>
-        <td>{{ idea.description }}</td>
-        <td>=</td>
-    </tr>
-    {% endfor %}
-</table>
 {% endblock %}
 
 {% block side %}
