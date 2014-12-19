@@ -87,7 +87,7 @@ div#c-content-inner
 {
   width: 98%;
   margin: 10px 1%;
-  margin-bottom: 200px; /* height of footer div */
+  margin-bottom: 205px; /* height of footer div */
 }
 
 div#c-side
@@ -113,6 +113,7 @@ div#c-footer
   position: absolute;
   bottom: 0;
   padding: 0 0.5%;
+  padding-top: 5px;
 }
 
 /******************************************************************************
