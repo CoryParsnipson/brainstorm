@@ -389,3 +389,8 @@ img.right
   padding-left: 10px;
 }
 
+img.link-icon
+{
+  float: left;
+  margin: 5px;
+}
