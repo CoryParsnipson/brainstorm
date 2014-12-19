@@ -85,9 +85,9 @@ div#c-content
 
 div#c-content-inner
 {
-  display: block; /* should already be block; override group class */
-  margin: 10px 5px;
-  margin-right: 10px;
+  width: 98%;
+  margin: 10px 1%;
+  margin-bottom: 200px; /* height of footer div */
 }
 
 div#c-side
@@ -107,15 +107,12 @@ div#c-side-inner
 
 div#c-footer
 {
-  width: 70%;
-  min-height: 200px;
+  width: 69%;
+  height: 200px;
   background-color: #A69B6D;
-  float: left;
-}
-
-div#c-footer-inner
-{
-  margin: 5px;
+  position: absolute;
+  bottom: 0;
+  padding: 0 0.5%;
 }
 
 /******************************************************************************
