@@ -47,8 +47,15 @@
     <div id="c-side">
         <div id="c-side-inner">
             {% block side %}
-            <p>Cory Parsnipson's Latest Tweets:</p>
-            <p>Link of the Week:</p>
+            <div class="link-box">
+                <p>Links to check out:</p>
+            </div>
+            <a class="twitter-timeline" href="https://twitter.com/CoryParsnipson" data-widget-id="545825292225236992">Tweets by @CoryParsnipson</a>
+            <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+"://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
+            <div class="link-box">
+                <p>Affiliates:</p>
+                <p><a href="https://www.facebook.com/CaldwellU">Caldwell University</a></p>
+            </div>
             <hr>
             <div class="group" style="margin: 0 auto">
                 <a href="https://www.facebook.com/cory.parsnipson" target="_blank"><img class="link-icon" src="{% static 'images/link_icon_facebook.png' %}"></a>
