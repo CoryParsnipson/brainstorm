@@ -14,9 +14,12 @@
     <p class="thought-author">by {{ thought.author }} on {{ thought.date_published }}</p>
     <hr class="thought-hr">
     <p>{{ thought.content }}</p>
+
     {% if not thought.date_published == thought.date_edited %}
     <p>{{ thought.date_edited }}</p>
     {% endif %}
+
+    <p>Permalink: <a href="{% url 'thought_detail' idea.slug thought.slug %}">{{ thought.slug }}</a></p>
 </div>
 {% endfor %}
 {% endblock %}

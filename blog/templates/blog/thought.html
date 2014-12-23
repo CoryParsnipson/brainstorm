@@ -1,0 +1,50 @@
+{% extends 'blog/template_default.html' %}
+{% load staticfiles %}
+
+{% block http_headers %}
+<link rel="stylesheet" type="text/css" href="{% static 'css/idea.css' %}">
+{% endblock %}
+
+{% block content %}
+<h1><a href="{% url 'idea_detail' thought.idea.slug %}">{{ thought.idea }}</a> >> {{ thought.title }}</h1>
+<p class="thought-author">by {{ thought.author }} on {{ thought.date_published }}</p>
+<hr class="thought-hr">
+<p>{{ thought.content }}</p>
+
+{% if not thought.date_published == thought.date_edited %}
+<p>{{ thought.date_edited }}</p>
+{% endif %}
+
+{% endblock %}
+
+{% block side %}
+<table class="thought-history">
+    <tbody>
+    {% for next_thought in next_thoughts reversed %}
+    <tr>
+        <th>Next:</th>
+        <td><a href="{% url 'thought_detail' next_thought.idea.slug next_thought.slug %}">{{ next_thought.title }}</a></td>
+    </tr>
+    {% empty %}
+    <tr><th>This is the Latest Thought.</th></tr>
+    {% endfor %}
+    </tbody>
+</table>
+
+<table class="thought-history">
+    <tbody>
+    {% for prev_thought in prev_thoughts reversed %}
+    <tr>
+        <th>Prev:</th>
+        <td><a href="{% url 'thought_detail' prev_thought.idea.slug prev_thought.slug %}">{{ prev_thought.title }}</a></td>
+    </tr>
+    {% empty %}
+    <tr><th>This is the Earliest Thought.</th></tr>
+    {% endfor %}
+    </tbody>
+</table>
+{% endblock %}
+
+{% block footer %}
+I dunno, like some kind of calendar/content timeline visualization of Thoughts in this Idea?
+{% endblock %}

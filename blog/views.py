@@ -1,5 +1,3 @@
-import math
-
 from django.core.urlresolvers import reverse
 from django.core.exceptions import FieldError
 from django.http import JsonResponse
@@ -96,10 +94,27 @@ def idea_detail(request, idea_slug=None):
     idea = get_object_or_404(Idea, slug=idea_slug)
     thoughts = Thought.objects.filter(idea=idea_slug).order_by('-date_published')
 
-    context = {'page_title': idea.name,
-               'idea': idea,
-               'thoughts': thoughts}
+    context = {
+        'page_title': idea.name,
+        'idea': idea,
+        'thoughts': thoughts
+        }
     return render(request, 'blog/idea.html', context)
+
+
+def thought_detail(request, idea_slug=None, thought_slug=None):
+    thought = get_object_or_404(Thought, slug=thought_slug)
+
+    next_thoughts = get_adjacent_thought(thought_slug=thought.slug, get_next=True, num=3)
+    prev_thoughts = get_adjacent_thought(thought_slug=thought.slug, get_next=False, num=3)
+
+    context = {
+        'page_title': thought.title,
+        'thought': thought,
+        'next_thoughts': next_thoughts,
+        'prev_thoughts': prev_thoughts
+    }
+    return render(request, 'blog/thought.html', context)
 
 
 ###############################################################################
@@ -125,6 +140,39 @@ def logout(request):
     auth_logout(request)
     messages.add_message(request, messages.INFO, 'Successfully logged out.')
     return redirect(logout_page)
+
+
+###############################################################################
+# helper functions
+###############################################################################
+def get_adjacent_thought(thought_slug, get_next=True, num=1):
+    """ get the next or previous Thought in the same Idea and return the
+        thought object
+    """
+    try:
+        thought = Thought.objects.get(slug=thought_slug)
+    except ValueError as e:
+        print e.message
+        return []
+
+    thought_list = Thought.objects.filter(idea=thought.idea)
+
+    current_thought_idx = -1
+    for idx, item in enumerate(thought_list):
+        if thought == item:
+            current_thought_idx = idx
+
+    try:
+        if get_next:
+            start_idx = current_thought_idx + 1
+            adjacent_thoughts = thought_list[start_idx:start_idx + num]
+        else:
+            start_idx = max(current_thought_idx - num, 0)
+            adjacent_thoughts = thought_list[start_idx:current_thought_idx]
+    except (AssertionError, IndexError) as e:
+        return []
+
+    return adjacent_thoughts
 
 
 ###############################################################################
@@ -210,6 +258,45 @@ class ThoughtViewSet(viewsets.ModelViewSet):
                 pass
 
         data = [ThoughtSerializer(t).data for t in thoughts]
+        return response.Response(data=data)
+
+    def retrieve(self, request, *args, **kwargs):
+        """ retrieve a specific Thought object identified by primary key
+            (slug field). You can also do things like get the previous/next
+            Thought in the Idea.\n\n
+
+            ?next=[int] if this is set, get the next Thought (or empty str)\n
+                        the integer value determines how many Thoughts to return \n\n
+
+            ?prev=[int] if this is set, get the previous Thought (or empty str)\n
+                        the integer value determines how many Thoughts to return \n\n
+        """
+        try:
+            thought = Thought.objects.get(slug=kwargs['slug'])
+        except ValueError as e:
+            return response.Response()
+
+        if 'next' in request.GET or 'prev' in request.GET:
+            get_next = 'next' in request.GET
+            thought_range = 1
+
+            try:
+                if 'next' in request.GET:
+                    thought_range = int(request.GET['next'])
+                elif 'prev' in request.GET:
+                    thought_range = int(request.GET['prev'])
+            except ValueError:
+                thought_range = 1
+
+            adjacent_thoughts = get_adjacent_thought(thought_slug=thought.slug, get_next=get_next, num=thought_range)
+
+            if adjacent_thoughts:
+                data = [ThoughtSerializer(t).data for t in adjacent_thoughts]
+                return response.Response(data=data)
+            else:
+                return response.Response()
+
+        data = ThoughtSerializer(thought).data
         return response.Response(data=data)
 
 
