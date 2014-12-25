@@ -13,6 +13,13 @@ hr.story-divider
   margin: 1.5em 0;
 }
 
+P.headline-idea
+{
+  font-size: 8pt;
+  font-weight: bold;
+  margin: 0;
+}
+
 /******************************************************************************
  * announcements
  *****************************************************************************/
@@ -52,7 +59,7 @@ div.frontpage-story
 div.frontpage-story-small
 {
   width: 48%;
-  height: auto;
+  height: 100px;
   padding: 1%;
 }
 

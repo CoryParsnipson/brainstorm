@@ -16,15 +16,16 @@
 <div class="frontpage-story">
     <img class="left" src="{% static 'images/frontpage_top_story_placeholder.png' %}">
     {% if latest_thoughts|length == 0 %}
+
     <h2 class="headline">No content yet!</h2>
     <p>There are no thoughts in the database yet!!</p>
     {% else %}
-    <a href="{% url 'thought_detail' latest_thoughts.0.idea.slug latest_thoughts.0.slug %}"><h2 class="headline" title="{{ latest_thoughts.0.slug }}">{{ latest_thoughts.0.title }}</h2></a>
+    <p class="headline-idea">{{ latest_thoughts.0.idea|upper }}</p>
+    <h2 class="headline" title="{{ latest_thoughts.0.slug }}"><a href="{% url 'thought_detail' latest_thoughts.0.idea.slug latest_thoughts.0.slug %}">{{ latest_thoughts.0.title }}</a></h2>
     <p class="sub-headline">by {{ latest_thoughts.0.author }} on {{ latest_thoughts.0.date_published }}</p>
     <p>{{ latest_thoughts.0.content }}</p>
     {% endif %}
 </div>
-
 
 {% if latest_thoughts|length > 1 %}
 <hr class="story-divider">
@@ -33,10 +34,11 @@
 {% for thought in latest_thoughts|slice:"1:" %}
 <div class="frontpage-story frontpage-story-small {% cycle 'small-left' 'small-right' %}">
     <img class="left" src="{% static 'images/idea_icon_default.png' %}">
-    <a href="{% url 'thought_detail' thought.idea.slug thought.slug %}">
-        <h3 class="headline">{{ thought.title }}</h3>
-    </a>
-    <p>{{ thought.content }}</p>
+    <p class="headline-idea">{{ thought.idea|upper }}</p>
+    <h3 class="headline">
+        <a href="{% url 'thought_detail' thought.idea.slug thought.slug %}">{{ thought.title }}</a>
+    </h3>
+    <p>{{ thought.content|truncatechars:75 }}</p>
 </div>
 {% endfor %}
 {% endblock %}
