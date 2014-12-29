@@ -1,5 +1,5 @@
 from django.core.urlresolvers import reverse
-from django.core.exceptions import FieldError
+from django.core.exceptions import FieldError, ValidationError
 from django.http import JsonResponse
 from django.views.generic import View
 from django.shortcuts import render, redirect, get_object_or_404
@@ -175,6 +175,19 @@ def get_adjacent_thought(thought_slug, get_next=True, num=1):
     return adjacent_thoughts
 
 
+def safe_delete_idea(idea_slug):
+    """ delete a given idea (identified by idea_slug) only if it has no
+        associated thoughts. Else do not delete and raise ValidationError
+    """
+
+    idea = Idea.objects.get(slug=idea_slug)
+    thoughts = Thought.objects.filter(idea=idea)
+
+    if len(thoughts) > 0:
+        raise ValidationError("Cannot delete Idea %s; has associated thoughts" % idea.name)
+    idea.delete()
+
+
 ###############################################################################
 # RESTful API
 ###############################################################################
@@ -193,6 +206,20 @@ class IdeaViewSet(viewsets.ModelViewSet):
     queryset = Idea.objects.all()
     serializer_class = IdeaSerializer
     lookup_field = 'slug'
+
+    def destroy(self, request, *args, **kwargs):
+        """ delete an idea. This function has been overridden from the default
+            behavior to only delete an idea if there are no thoughts associated
+            with it. Otherwise it raises an error.
+
+            kwargs['slug'] id to identify idea
+            kwargs['redirect'] url to redirect; if blank, send empty Response
+        """
+        safe_delete_idea(kwargs['slug'])
+
+        if 'redirect' in kwargs:
+            return redirect(kwargs['redirect'])
+        return response.Response()
 
 
 class ThoughtViewSet(viewsets.ModelViewSet):

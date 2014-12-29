@@ -2,6 +2,7 @@ import datetime
 
 from django.db import IntegrityError
 from django.test import TestCase, Client
+from django.core.exceptions import ValidationError
 from django.core.urlresolvers import reverse
 from django.contrib.auth.models import User
 
@@ -234,3 +235,67 @@ class SlugifyTestCase(TestCase):
 
     def test_slugify_alphanumeric(self):
         pass
+
+
+class IdeaViewTestCase(TestCase):
+    """ unit tests related to Idea view functions
+    """
+
+    def setUp(self):
+        self.client = Client()
+
+        # create superuser with permission to delete
+        self.user = User.objects.create_superuser(
+            username='Cory',
+            email='cparsnipson@gmai.com',
+            password='test'
+        )
+        self.user.save()
+
+    def test_delete_success(self):
+        # create sample idea in test database
+        self.idea1 = Idea.objects.create(
+            name="Idea1",
+            slug="idea-1",
+            description="This is Idea 1.",
+            ordering=1
+        )
+        self.idea1.save()
+
+        self.client.login(username='Cory', password='test')
+
+        # send delete request
+        response = self.client.delete(reverse('idea-detail', kwargs={'slug': self.idea1.slug}))
+        self.assertEqual(200, response.status_code)
+
+        # check again for existence of idea1
+        self.assertEqual(0, Idea.objects.count())
+
+    def test_delete_failure_thoughts_exist(self):
+        """ create an idea and some thoughts that go with it and then try
+            to delete it. Expect the delete request to fail.
+        """
+        # create sample idea in test database
+        self.idea1 = Idea.objects.create(
+            name="Idea1",
+            slug="idea-1",
+            description="This is Idea 1.",
+            ordering=1
+        )
+        self.idea1.save()
+
+        num_ideas = Idea.objects.count()
+
+        # create some sample thoughts
+        self.thought1 = Thought.objects.create(
+            title="Thought1",
+            slug="thought-1",
+            content="This is Thought 1.",
+            idea=self.idea1,
+            author=self.user,
+        )
+
+        self.client.login(username='Cory', password='test')
+        self.assertRaises(ValidationError, self.client.delete, reverse('idea-detail', kwargs={'slug': self.idea1.slug}))
+
+        self.assertEqual(num_ideas, Idea.objects.count())

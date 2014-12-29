@@ -143,6 +143,7 @@ ul.nav li.right_justified
 
 ul.nav li a
 {
+  color: #333333;
   text-decoration: none;
   padding: 5px;
   float: left;
@@ -150,6 +151,7 @@ ul.nav li a
 
 ul.nav li a:hover
 {
+  color: #FFFFFF;
   background-color: #86D19D;
 }
 
@@ -159,7 +161,7 @@ ul.nav li a:hover
 
 a
 {
-  color: #333333;
+  color: #A60303;
   font-weight: bold;
   text-decoration: none;
 }
@@ -236,6 +238,11 @@ table.editable tr td
 table.editable input[type="checkbox"]
 {
   display: block;
+}
+
+table.editable input[type="button"]
+{
+  width: 100%;
 }
 
 /******************************************************************************

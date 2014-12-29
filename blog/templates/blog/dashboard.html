@@ -19,13 +19,17 @@
         <td>Slug</td>
         <td>Description</td>
         <td></td>
+        <td></td>
+        <td></td>
     </tr>
     {% for idea in ideas %}
     <tr>
-        <td title="{{ idea.slug }}">{{ idea.name }}</td>
+        <td title="{{ idea.slug }}"><a href="{% url 'dashboard' %}?idea_slug={{ idea.slug }}">{{ idea.name }}</a></td>
         <td>{{ idea.slug }}</td>
         <td>{{ idea.description }}</td>
-        <td>[x]</td>
+        <td><input type="button" value="^"></td>
+        <td><input type="button" value="v"></td>
+        <td><input type="button" value="x"></td>
     </tr>
     {% endfor %}
 </table>
