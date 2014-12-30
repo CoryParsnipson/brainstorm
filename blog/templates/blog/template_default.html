@@ -14,7 +14,6 @@
     <!-- script includes -->
     <script type="text/javascript" src="{% static 'script/jquery-1.11.1.js' %}"></script>
     <script type="text/javascript" src="{% static 'script/foundation/foundation.js' %}"></script>
-    <script type="text/javascript" src="{% static 'script/foundation/foundation.equalizer.js' %}"></script>
 
     {% block http_headers %}
     <!-- template specific head tags should be added here -->
@@ -22,17 +21,21 @@
 </head>
 <body>
 
-<div id="header" class="row">
-    <h1><a href="{% url 'index' %}">Slacker Paradise</a></h1>
+<div id="header">
+    <div class="row">
+        <div class="large-3 columns">
+            <h1><a href="{% url 'index' %}">Slacker Paradise</a></h1>
+        </div>
 
-    <!-- navigation content -->
-    <div id="nav" class="large-6 large-offset-2 columns">
-        {% include 'blog/template_nav.html' %}
+        <!-- navigation content -->
+        <div id="nav" class="large-5 columns">
+            {% include 'blog/template_nav.html' %}
+        </div>
     </div>
 </div>
 
-<div class="row" data-equalizer>
-    <div id="content" class="large-6 large-offset-2 columns" data-equalizer-watch>
+<div id="content" class="row">
+    <div class="large-9 columns">
         {% if messages %}
         <!-- flash message area -->
         <ul class="messages" style="list-style-type: none; color: red; font-weight: bold">
@@ -49,7 +52,7 @@
     </div>
 
     <!-- side content -->
-    <div class="large-2 columns end side" data-equalizer-watch>
+    <div class="large-3 columns end side">
         {% block side %}
         <div class="link-box">
             <p>Links to check out:</p>
@@ -61,7 +64,7 @@
             <p><a href="https://www.facebook.com/CaldwellU" target="_blank">Caldwell University</a></p>
         </div>
         <hr>
-        <div class="group" style="margin: 0 auto">
+        <div>
             <a href="https://www.facebook.com/cory.parsnipson" target="_blank"><img class="link-icon" src="{% static 'images/link_icon_facebook.png' %}"></a>
             <a href="https://twitter.com/CoryParsnipson" target="_blank"><img class="link-icon" src="{% static 'images/link_icon_twitter.png' %}"></a>
             <a href="https://github.com/CoryParsnipson" target="_blank"><img class="link-icon" src="{% static 'images/link_icon_github.png' %}"></a>
@@ -71,13 +74,15 @@
 </div>
 
 <!-- footer -->
-<div id="footer" class="row">
-    <div class="large-8 large-offset-2 columns">
-        {% block footer %}
-        <p>"Trending" ideas/thoughts</p>
-        <p>Copyright 2014 - 2015, Cory Parsnipson</p>
-        <p>Contact Slacker Paradise:<br>Cory Parsnipson<br>PO Box 190461<br>San Francisco, CA 94119</p>
-        {% endblock %}
+<div id="footer">
+    <div class="row">
+        <div class="large-9 columns">
+            {% block footer %}
+            <p>"Trending" ideas/thoughts</p>
+            <p>Copyright 2014 - 2015, Cory Parsnipson</p>
+            <p>Contact Slacker Paradise:<br>Cory Parsnipson<br>PO Box 190461<br>San Francisco, CA 94119</p>
+            {% endblock %}
+        </div>
     </div>
 </div>
 
