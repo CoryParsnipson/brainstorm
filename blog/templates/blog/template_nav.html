@@ -1,13 +1,26 @@
 <!-- navigation structure -->
-<ul class="nav">
-    <li><a href="{% url 'index' %}">Home</a></li>
-    <li><a href="{% url 'about' %}">About</a></li>
-    <li><a href="{% url 'idea_list' %}">Ideas</a></li>
-    <li class="right_justified">
-        {% if request.user.is_authenticated %}
-        <a href="{% url 'dashboard' %}">Dashboard</a>
-        {% else %}
-        <a href="{% url 'login_page' %}">Login</a>
-        {% endif %}
-    </li>
-</ul>
+<nav class="top-bar">
+    <ul class="title-area">
+        <li class="name">
+            <h1><a href="{% url 'index' %}">Slacker Paradise</a></h1>
+        </li>
+    </ul>
+
+    <section class="top-bar-section">
+        <ul class="left">
+            <li class="divider"></li>
+            <li><a href="{% url 'about' %}">About</a></li>
+            <li><a href="{% url 'idea_list' %}">Ideas</a></li>
+        </ul>
+
+        <ul class="right">
+            <li>
+                {% if request.user.is_authenticated %}
+                <a href="{% url 'dashboard' %}">Dashboard</a>
+                {% else %}
+                <a href="{% url 'login_page' %}">Login</a>
+                {% endif %}
+            </li>
+        </ul>
+    </section>
+</nav>

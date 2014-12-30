@@ -22,7 +22,18 @@ import common
 def index(request):
     latest_thoughts = Thought.objects.all().order_by("-date_published")[:9]
 
+    # main story headline
+    latest_thought = latest_thoughts[0]
+    latest_thoughts = latest_thoughts[1:]
+
+    # zip latest thoughts into a list of tuples of size story_columns
+    story_columns = 2
+
+    thought_iterator = [iter(latest_thoughts)] * story_columns
+    latest_thoughts = zip(*thought_iterator)
+
     context = {'page_title': 'Home',
+               'latest_thought': latest_thought,
                'latest_thoughts': latest_thoughts}
     return render(request, 'blog/index.html', context)
 
