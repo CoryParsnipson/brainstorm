@@ -6,7 +6,7 @@
 {% endblock %}
 
 {% block content %}
-<h1>{{ request.user.first_name }}'s Dashboard<hr></h1>
+<h1>{{ request.user.username }}'s Dashboard<hr></h1>
 
 <h3>Post New Thought</h3>
 {% include 'blog/template_thought.html' with form=thought_form idea=request.GET.idea_slug author=request.user.id %}

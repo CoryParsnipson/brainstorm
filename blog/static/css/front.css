@@ -13,13 +13,6 @@ hr.story-divider
   margin: 1.5em 0;
 }
 
-P.headline-idea
-{
-  font-size: 8pt;
-  font-weight: bold;
-  margin: 0;
-}
-
 /******************************************************************************
  * announcements
  *****************************************************************************/
@@ -41,6 +34,13 @@ div.frontpage-story
   margin-bottom: 1em;
 }
 
+.headline-idea
+{
+  font-size: 8pt;
+  font-weight: bold;
+  margin: 0;
+}
+
 .headline
 {
   margin-bottom: 0.3em;
@@ -50,25 +50,4 @@ div.frontpage-story
 {
   font-size: 9pt;
   font-weight: bold;
-}
-
-/******************************************************************************
- * frontpage-story-small-left div
- *****************************************************************************/
-
-div.frontpage-story-small
-{
-  width: 48%;
-  height: 100px;
-  padding: 1%;
-}
-
-div.small-left
-{
-  float: left;
-}
-
-div.small-right
-{
-  float: right;
 }

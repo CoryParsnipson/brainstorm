@@ -14,6 +14,8 @@
             <p>{{ idea.description }}</p>
         </td>
     </tr>
+    {% empty %}
+    <p>There are no ideas in the catalog!</p>
     {% endfor %}
     </tbody>
 </table>

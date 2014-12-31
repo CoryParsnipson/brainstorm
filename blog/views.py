@@ -22,7 +22,7 @@ import common
 def index(request):
     latest_thoughts = Thought.objects.all().order_by("-date_published")[:9]
     context = {'page_title': 'Home',
-               'latest_thought': latest_thoughts[0],
+               'latest_thought': latest_thoughts[0] if len(latest_thoughts) else None,
                'latest_thoughts': latest_thoughts[1:]}
     return render(request, 'blog/index.html', context)
 
