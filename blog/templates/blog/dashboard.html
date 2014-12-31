@@ -27,9 +27,9 @@
         <td title="{{ idea.slug }}"><a href="{% url 'dashboard' %}?idea_slug={{ idea.slug }}">{{ idea.name }}</a></td>
         <td>{{ idea.slug }}</td>
         <td>{{ idea.description }}</td>
-        <td><input type="button" value="^"></td>
-        <td><input type="button" value="v"></td>
-        <td><input type="button" value="x"></td>
+        <td class="button-box"><input type="button" value="^"></td>
+        <td class="button-box"><input type="button" value="v"></td>
+        <td class="button-box"><input type="button" value="x"></td>
     </tr>
     {% endfor %}
 </table>
