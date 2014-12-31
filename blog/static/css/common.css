@@ -5,25 +5,14 @@
  */
 
 /******************************************************************************
- * General css rules
+ * general css rules
  *****************************************************************************/
 
-@font-face {
-  font-family: Roboto;
-  src: url('../font/Roboto-Regular.woff');
-}
-
-body
-{
-  color: #333333;
+body {
   background-color: #D893DB;
-  font-family: Roboto, Calibri, Segoe, Segoe UI, Optima, Arial, sans-serif;
-  font-size: 11pt;
-  text-align: justify;
 }
 
-hr
-{
+hr {
   height: 1px;
   border-width: 0;
   color: #000000;
@@ -32,44 +21,25 @@ hr
 }
 
 /******************************************************************************
- * custom grid styles
- *****************************************************************************/
-
-#header {
-  background-color: #ECB7AB;
-}
-
-#nav {
-  padding: 0;
-}
-
-#content {
-  background-color: #64ABDE;
-}
-
-.side {
-  background-color: #DEC564;
-}
-
-#footer {
-  background-color: #A69B6D;
-}
-
-/******************************************************************************
- * top bar styles
- *****************************************************************************/
-
-.top-bar {
-  background-color: mediumSeaGreen;
-}
-
-.top-bar-section ul li {
-  background-color: gainsboro;
-}
-
-/******************************************************************************
  * text styles
  *****************************************************************************/
+
+@font-face {
+  font-family: Roboto;
+  src: url('../font/Roboto-Regular.woff');
+}
+
+p, body, h1, h2, h3, h4, h5, h6 {
+  color: #333333;
+  font-family: Roboto, Calibri, Segoe, Segoe UI, Arial, sans-serif;
+  font-size: 11pt;
+  text-align: justify;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-weight: bold;
+}
+
 h1 {
   font-size: 14pt;
 }
@@ -90,34 +60,133 @@ p {
   line-height: 1.2em;
 }
 
-
 /******************************************************************************
- * Links
+ * custom grid styles
  *****************************************************************************/
 
-a
-{
+.row .row {
+  margin: 0; /* reset inner foundation margin */
+}
+
+.column, .columns {
+  padding: 5px; /* overwrite foundation padding */
+}
+
+#header {
+  background-color: #ECB7AB;
+}
+
+#nav {
+  padding: 0;
+}
+
+#content {
+  overflow: hidden;
+  background-color: #64ABDE;
+}
+
+#side {
+  background-color: #DEC564;
+  padding-bottom: 99999px;
+  margin-bottom: -99999px;
+}
+
+#footer {
+  min-height: 200px;
+  background-color: #A69B6D;
+}
+
+/******************************************************************************
+ * top bar styles
+ *****************************************************************************/
+
+.top-bar {
+  background-color: mediumSeaGreen;
+}
+
+/******************************************************************************
+ * link styles
+ *****************************************************************************/
+
+a {
   color: #A60303;
-  font-weight: bold;
   text-decoration: none;
 }
 
-a:hover
-{
+a:hover {
   color: #FFFFFF;
 }
 
 /******************************************************************************
- * Tables
+ * tables general
  *****************************************************************************/
 
-table
-{
-  border-collapse: collapse;
+table, table tr.even, table tr:nth-of-type(even) {
+  border: none;
+  background-color: transparent;
 }
 
 /******************************************************************************
- * Tables - Editable list (for easily modifying stuff)
+ * tables - thought
+ *****************************************************************************/
+
+table.form-thought {
+  width: 100%;
+}
+
+table.form-thought label {
+  cursor: initial; /* wtf? odd decision by foundation to change this */
+  font-weight: bold;
+}
+
+table.form-thought th {
+  width: 1px; /* shrink to fit content */
+  text-align: right;
+  vertical-align: middle;
+  padding: 0 5px;
+}
+
+table.form-thought textarea {
+  resize: none;
+}
+
+table.form-thought select {
+  width: auto;
+  padding: 2px;
+}
+
+/******************************************************************************
+ * input general
+ *****************************************************************************/
+
+input[type="text"],
+input[type="password"],
+input[type="date"],
+input[type="datetime"],
+input[type="datetime-local"],
+input[type="month"],
+input[type="week"],
+input[type="email"],
+input[type="number"],
+input[type="search"],
+input[type="tel"],
+input[type="time"],
+input[type="url"],
+input[type="color"],
+textarea {
+  height: 1.5rem;
+  margin: 0;
+  padding: 2px;
+}
+
+select {
+  height: 1.5rem;
+  margin: 0;
+  padding: 0;
+}
+
+/******************************************************************************
+ * tables - editable list styles
  *****************************************************************************/
 
 table.editable
@@ -190,7 +259,7 @@ ul.editable-pages li.current-page
 }
 
 /******************************************************************************
- * Tables - Catalog
+ * tables catalog
  *****************************************************************************/
 
 table.catalog
@@ -228,52 +297,6 @@ table.catalog img
 {
   float: left;
   padding-right: 10px;
-}
-
-/******************************************************************************
- * Tables - Thought
- *****************************************************************************/
-
-table.form-thought
-{
-  width: 100%;
-}
-
-table.form-thought th
-{
-  width: 1px; /* shrink to fit content */
-  text-align: right;
-  vertical-align: top;
-  padding: 0 5px;
-}
-
-table.form-thought td
-{
-}
-
-table.form-thought input[type="text"]
-{
-  width: 99%;
-  padding: 2px;
-  margin-bottom: 5px;
-}
-
-table.form-thought input[type="submit"]
-{
-  padding: 2px;
-}
-
-table.form-thought textarea
-{
-  width: 99%;
-  resize: none;
-  padding: 2px 3px;
-  margin-bottom: 5px;
-}
-
-table.form-thought select
-{
-  padding: 2px;
 }
 
 /******************************************************************************
