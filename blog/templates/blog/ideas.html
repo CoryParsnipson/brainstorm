@@ -7,7 +7,7 @@
 <table class="catalog">
     <tbody>
     {% for idea in ideas %}
-    <tr class="{% cycle 'odd' 'even' %}">
+    <tr>
         <td>
             <a href="{% url 'idea_detail' idea.slug %}"><img src="{% static 'images/idea_icon_default.png' %}"></a>
             <h3 title="{{ idea.slug }}"><a href="{% url 'idea_detail' idea.slug %}">{{ idea.name }}</a></h3>

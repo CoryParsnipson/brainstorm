@@ -32,24 +32,16 @@
 <hr class="story-divider">
 {% endif %}
 
-{% for thought in latest_thoughts %}
-<div class="row">
-    <div class="large-6 columns">
+<ul class="small-block-grid-2">
+    {% for thought in latest_thoughts %}
+    <li>
         <img class="left" src="{% static 'images/idea_icon_default.png' %}">
-        <p class="headline-idea">{{ thought.0.idea|upper }}</p>
+        <p class="headline-idea">{{ thought.idea|upper }}</p>
         <h3 class="headline">
-            <a href="{% url 'thought_detail' thought.0.idea.slug thought.0.slug %}">{{ thought.0.title }}</a>
+            <a href="{% url 'thought_detail' thought.idea.slug thought.slug %}">{{ thought.title }}</a>
         </h3>
-        <p>{{ thought.0.content|truncatechars:75 }}</p>
-    </div>
-    <div class="large-6 columns">
-        <img class="left" src="{% static 'images/idea_icon_default.png' %}">
-        <p class="headline-idea">{{ thought.1.idea|upper }}</p>
-        <h3 class="headline">
-            <a href="{% url 'thought_detail' thought.1.idea.slug thought.1.slug %}">{{ thought.1.title }}</a>
-        </h3>
-        <p>{{ thought.1.content|truncatechars:75 }}</p>
-    </div>
-</div>
-{% endfor %}
+        <p>{{ thought.content|truncatechars:75 }}</p>
+    </li>
+    {% endfor %}
+</ul>
 {% endblock %}

@@ -61,6 +61,19 @@ p {
 }
 
 /******************************************************************************
+ * link styles
+ *****************************************************************************/
+
+a {
+  color: #A60303;
+  text-decoration: none;
+}
+
+a:hover {
+  color: #FFFFFF;
+}
+
+/******************************************************************************
  * custom grid styles
  *****************************************************************************/
 
@@ -105,19 +118,6 @@ p {
 }
 
 /******************************************************************************
- * link styles
- *****************************************************************************/
-
-a {
-  color: #A60303;
-  text-decoration: none;
-}
-
-a:hover {
-  color: #FFFFFF;
-}
-
-/******************************************************************************
  * tables general
  *****************************************************************************/
 
@@ -153,6 +153,23 @@ table.form-thought textarea {
 table.form-thought select {
   width: auto;
   padding: 2px;
+}
+
+/******************************************************************************
+ * tables catalog
+ *****************************************************************************/
+
+table.catalog {
+  width: 100%;
+}
+
+table.catalog tr.even, table.catalog tr:nth-of-type(even) {
+  background-color: #E0E0E0;
+}
+
+table.catalog img {
+  float: left;
+  padding-right: 10px;
 }
 
 /******************************************************************************
@@ -256,47 +273,6 @@ ul.editable-pages li.current-page
 {
   font-weight: bold;
   background-color: #A6A6A6;
-}
-
-/******************************************************************************
- * tables catalog
- *****************************************************************************/
-
-table.catalog
-{
-  width: 100%;
-}
-
-table.catalog tr.even
-{
-  background-color: #E0E0E0;
-}
-
-table.catalog tr.even:hover
-{
-  background-color: #D12308;
-}
-
-table.catalog tr.odd
-{
-
-}
-
-table.catalog tr.odd:hover
-{
-  background-color: #D12308;
-}
-
-table.catalog td
-{
-  vertical-align: top;
-  padding: 10px;
-}
-
-table.catalog img
-{
-  float: left;
-  padding-right: 10px;
 }
 
 /******************************************************************************
