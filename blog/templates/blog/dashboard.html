@@ -34,7 +34,7 @@
     {% endfor %}
 </table>
 
-<ul class="editable-pages group">
+<ul class="pagination">
     {% for idea_page in idea_pages %}
     <li><a href="{% url 'dashboard' %}?idea_slug={{ request.GET.idea_slug }}&page={{ idea_page }}">{{ idea_page }}</a></li>
     {% endfor %}
@@ -49,13 +49,10 @@
     <table class="add-idea">
         <tbody>
         <tr>
-            {% for field in idea_form %}
-            <td {% if field.id_for_label == "id_description" %} class="fill" {% endif %}>
-            {{ field.label_tag }}<br>
-            {{ field }}
-            </td>
-            {% endfor %}
-            <td class="last"><input id="id_submit" type="submit" value="Create"></td>
+            <td id="name-cell">{{ idea_form.name.label_tag }}{{ idea_form.name }}</td>
+            <td id="slug-cell">{{ idea_form.slug.label_tag }}{{ idea_form.slug }}</td>
+            <td id="description-cell">{{ idea_form.description.label_tag }}{{ idea_form.description }}</td>
+            <td id="submit-cell"><input id="id_submit" type="submit" value="Create"></td>
         </tr>
         </tbody>
     </table>

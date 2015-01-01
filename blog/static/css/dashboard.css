@@ -5,57 +5,96 @@
  */
 
 /******************************************************************************
- * Add new Idea form styles
+ * add idea form styles
  *****************************************************************************/
 
-table.add-idea
-{
+.add-idea {
   width: 100%;
-  margin-bottom: 5px;
+  margin-bottom: 0.5rem;
 }
 
-table.add-idea td
-{
-  font-size: 9pt;
+.add-idea td {
   font-weight: bold;
+  padding: 0;
   padding-right: 5px;
+  margin: 0;
 }
 
-table.add-idea td.last
-{
-  width: 100%;
+.add-idea label {
+  font-size: 10pt;
+}
+
+.add-idea td:last-child {
   padding-right: 0;
 }
 
-table.add-idea td.fill
-{
+.add-idea label {
+  font-weight: bold;
+}
+
+.add-idea textarea[rows] {
+  height: 1.5rem;
+}
+
+.add-idea #name-cell {
+  width: 150px;
+}
+
+.add-idea #id_name {
   width: 100%;
 }
 
-table.add-idea #id_name
-{
-  width: 150px;
-  padding: 2px;
-}
-
-table.add-idea #id_slug
-{
+.add-idea #slug-cell {
   width: 110px;
-  padding: 2px;
 }
 
-table.add-idea #id_description
-{
-  width: 98%;
-  display: block;
-  height: 1.3em;
+.add-idea #id_slug {
+  width: 100%;
+}
+
+.add-idea #id_description {
+  width: 100%;
+  font-weight: normal;
   resize: none;
+}
+
+.add-idea #submit-cell {
+  vertical-align: bottom;
+}
+
+.add-idea #id_submit {
+  font-size: 10pt;
+}
+
+/******************************************************************************
+ * thought form styles
+ *****************************************************************************/
+
+.form-thought {
+  width: 100%;
+}
+
+.form-thought label {
+  cursor: initial; /* wtf? odd decision by foundation to change this */
+  font-weight: bold;
+}
+
+.form-thought th {
+  width: 1px; /* shrink to fit content */
+  text-align: right;
+  vertical-align: middle;
+  padding: 0 5px;
+}
+
+.form-thought textarea {
+  resize: none;
+}
+
+.form-thought select {
+  width: auto;
   padding: 2px;
 }
 
-table.add-idea #id_submit
-{
-  padding: 2px;
-  font-size: 9pt;
-  margin-top: 1.4em;
+.form-thought #id_title, .form-thought #id_slug {
+  font-weight: bold;
 }

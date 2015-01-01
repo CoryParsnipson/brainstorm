@@ -19,6 +19,9 @@ class IdeaForm(forms.ModelForm):
     class Meta:
         model = Idea
         fields = ['name', 'slug', 'description']
+        widgets = {
+            'description': forms.Textarea(attrs={'rows': 1, 'cols': 40}),
+        }
 
 
 class ThoughtForm(forms.ModelForm):

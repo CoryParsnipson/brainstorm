@@ -121,35 +121,7 @@ a:hover {
 table, table tr.even, table tr:nth-of-type(even) {
   border: none;
   background-color: transparent;
-}
-
-/******************************************************************************
- * tables - thought
- *****************************************************************************/
-
-table.form-thought {
-  width: 100%;
-}
-
-table.form-thought label {
-  cursor: initial; /* wtf? odd decision by foundation to change this */
-  font-weight: bold;
-}
-
-table.form-thought th {
-  width: 1px; /* shrink to fit content */
-  text-align: right;
-  vertical-align: middle;
-  padding: 0 5px;
-}
-
-table.form-thought textarea {
-  resize: none;
-}
-
-table.form-thought select {
-  width: auto;
-  padding: 2px;
+  margin: 0;
 }
 
 /******************************************************************************
@@ -197,6 +169,14 @@ table.editable input[type="button"] {
 }
 
 /******************************************************************************
+ * ul pagination styles
+ *****************************************************************************/
+
+ul.pagination li a {
+  background-color: gainsboro;
+}
+
+/******************************************************************************
  * input general
  *****************************************************************************/
 
@@ -226,45 +206,8 @@ select {
   padding: 0;
 }
 
-/******************************************************************************
- * editable ul
- *****************************************************************************/
-
-ul.editable
-{
-  background-color: pink;
-  list-style-type: none;
-}
-
-ul.editable li
-{
-  float: left;
-  padding: 3px;
-}
-
-ul.editable input[type="checkbox"]
-{
-  margin-top: 2px;
-  margin-left: 1px;
-}
-
-ul.editable-pages
-{
-  background-color: #CFCFCF;
-  list-style-type: none;
-  margin-bottom: 2em;
-}
-
-ul.editable-pages li
-{
-  float: left;
-  padding: 3px 7px;
-}
-
-ul.editable-pages li.current-page
-{
-  font-weight: bold;
-  background-color: #A6A6A6;
+textarea[rows] {
+  min-height: initial; /* override foundation setting */
 }
 
 /******************************************************************************
