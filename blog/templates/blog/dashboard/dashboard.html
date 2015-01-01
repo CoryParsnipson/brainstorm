@@ -1,4 +1,4 @@
-{% extends 'blog/template_default.html' %}
+{% extends 'blog/templates/template_dashboard.html' %}
 {% load staticfiles %}
 
 {% block http_headers %}
@@ -9,10 +9,10 @@
 <h1>{{ request.user.username }}'s Dashboard<hr></h1>
 
 <h3>Post New Thought</h3>
-{% include 'blog/template_thought.html' with form=thought_form idea=request.GET.idea_slug author=request.user.id %}
+{% include 'blog/templates/template_thought.html' with form=thought_form idea=request.GET.idea_slug author=request.user.id %}
 <hr>
 
-<h3><a name="bob">Manage Ideas</a></h3>
+<h3><a name="manage_ideas">Manage Ideas</a></h3>
 <table class="editable">
     <tr class="header">
         <td>Name</td>
@@ -36,7 +36,7 @@
 
 <ul class="pagination">
     {% for idea_page in idea_pages %}
-    <li><a href="{% url 'dashboard' %}?idea_slug={{ request.GET.idea_slug }}&page={{ idea_page }}">{{ idea_page }}</a></li>
+    <li><a href="{% url 'dashboard' %}?idea_slug={{ request.GET.idea_slug }}&page={{ idea_page }}#manage_ideas">{{ idea_page }}</a></li>
     {% endfor %}
 </ul>
 
@@ -67,7 +67,7 @@
 <p>Manage new comments...</p>
 <hr>
 <h3>Ideas</h3>
-<p><a href="#bob">Manage Ideas</a></p>
+<p><a href="#manage_ideas">Manage Ideas</a></p>
 <p>Create New Idea</p>
 <hr>
 <h3>Thoughts</h3>

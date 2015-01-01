@@ -94,6 +94,10 @@ a:hover {
   margin: 0;
 }
 
+#nav-2 {
+  padding: 0;
+}
+
 #content {
   background-color: #64ABDE;
 }
