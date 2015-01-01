@@ -101,6 +101,7 @@ STATIC_URL = '/static/'
 # keep global, non-app specific template files here
 TEMPLATE_DIRS = (paths.TEMPLATE_DIR, )
 
+# have request template variable automatically
 TEMPLATE_CONTEXT_PROCESSORS = (
     'django.core.context_processors.request',
 )

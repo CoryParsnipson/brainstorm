@@ -120,6 +120,12 @@ def dashboard(request):
     return render(request, 'blog/dashboard/dashboard.html', context)
 
 
+@login_required(login_url='index')
+def dashboard_idea_delete(self, request, *args, **kwargs):
+    messages.add_message(request, messages.INFO, "OMG I love cocks.")
+
+    redirect(reverse('dashboard'))
+
 ###############################################################################
 # Miscellaneous API
 ###############################################################################

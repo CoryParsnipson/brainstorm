@@ -33,26 +33,29 @@
             </form>
 
             <!-- manage ideas form -->
-            <table class="editable">
-                <tr class="header">
-                    <td>Name</td>
-                    <td>Slug</td>
-                    <td>Description</td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                </tr>
-                {% for idea in ideas %}
-                <tr>
-                    <td title="{{ idea.slug }}"><a href="{% url 'dashboard' %}?idea_slug={{ idea.slug }}">{{ idea.name }}</a></td>
-                    <td>{{ idea.slug }}</td>
-                    <td>{{ idea.description }}</td>
-                    <td class="button-box"><input type="button" value="^"></td>
-                    <td class="button-box"><input type="button" value="v"></td>
-                    <td class="button-box"><input type="button" value="x"></td>
-                </tr>
-                {% endfor %}
-            </table>
+            <form action="{% url 'dashboard-idea-delete' %}" method="post">
+                {% csrf_token %}
+                <table class="editable">
+                    <tr class="header">
+                        <td>Name</td>
+                        <td>Slug</td>
+                        <td>Description</td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    {% for idea in ideas %}
+                    <tr>
+                        <td title="{{ idea.slug }}"><a href="{% url 'dashboard' %}?idea_slug={{ idea.slug }}">{{ idea.name }}</a></td>
+                        <td>{{ idea.slug }}</td>
+                        <td>{{ idea.description }}</td>
+                        <td class="button-box"><input type="submit" value="^"></td>
+                        <td class="button-box"><input type="submit" value="v"></td>
+                        <td class="button-box"><input type="submit" value="x"></td>
+                    </tr>
+                    {% endfor %}
+                </table>
+            </form>
 
             <ul class="pagination">
                 {% for idea_page in idea_pages %}
