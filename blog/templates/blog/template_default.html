@@ -23,8 +23,19 @@
 
 <div id="header">
     <div class="row">
-        <!-- top bar and navigation content -->
-        <div id="nav" class="large-12 columns">
+        <!-- top bar -->
+        <div class="large-7 columns">
+            <h1><a href="{% url 'index' %}">Slacker Paradise</a></h1>
+        </div>
+
+        <div class="large-5 columns" style="background-color: lime">
+            Secondary Nav
+        </div>
+    </div>
+
+    <div class="row">
+        <!-- navigation content -->
+        <div id="nav" class="large-9 columns">
             {% include 'blog/template_nav.html' %}
         </div>
     </div>
