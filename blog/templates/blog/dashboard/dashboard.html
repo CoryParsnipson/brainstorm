@@ -12,8 +12,11 @@
 <div class="row">
     <div class="large-6 columns">
         <div class="dashboard-panel">
-            <h3>Manage Ideas</h3>
+            <h3>Post New Thought</h3>
+            {% include 'blog/templates/template_thought.html' with form=thought_form idea=request.GET.idea_slug author=request.user.id %}
+            <hr>
 
+            <h3>Manage Ideas</h3>
             <!-- new idea form section -->
             <form action="{% url 'forms-idea' %}" method="post">
                 {% csrf_token %}
@@ -60,11 +63,8 @@
     </div>
     <div class="large-6 columns">
         <div class="dashboard-panel">
-            <h3>Post New Thought</h3>
-            {% include 'blog/templates/template_thought.html' with form=thought_form idea=request.GET.idea_slug author=request.user.id %}
-            <hr>
-
             <h3>Manage Thoughts</h3>
+            <hr>
         </div>
     </div>
 </div>
