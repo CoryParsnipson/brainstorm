@@ -24,11 +24,11 @@
 <div id="header">
     <div class="row">
         <!-- top bar -->
-        <div class="large-7 columns">
+        <div class="large-6 columns">
             <h1><a href="{% url 'index' %}">Slacker Paradise</a></h1>
         </div>
 
-        <div id="nav-2" class="large-5 columns">
+        <div id="nav-2" class="large-4 columns end">
             <nav class="top-bar" data-topbar role="navigation">
                 <section class="top-bar-section">
                     <ul class="right">
@@ -64,21 +64,26 @@
     <!-- side content -->
     <div id="side" class="large-2 columns">
         {% block side %}
-        <div class="link-box">
-            <p>Links to check out:</p>
-        </div>
-        <a class="twitter-timeline" href="https://twitter.com/CoryParsnipson" data-widget-id="545825292225236992">Tweets by @CoryParsnipson</a>
-        <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+"://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
-        <div class="link-box">
-            <p>Cool links for kool peeple:</p>
-            <p><a href="https://www.facebook.com/CaldwellU" target="_blank">Caldwell University</a></p>
-        </div>
+
+        Drafts
+
+
+
+        <p>Huurrr dashboard</p>
         <hr>
-        <div>
-            <a href="https://www.facebook.com/cory.parsnipson" target="_blank"><img class="link-icon" src="{% static 'images/link_icon_facebook.png' %}"></a>
-            <a href="https://twitter.com/CoryParsnipson" target="_blank"><img class="link-icon" src="{% static 'images/link_icon_twitter.png' %}"></a>
-            <a href="https://github.com/CoryParsnipson" target="_blank"><img class="link-icon" src="{% static 'images/link_icon_github.png' %}"></a>
-        </div>
+        <p>Analytics/Statistics?</p>
+        <hr>
+        <p>Manage new comments...</p>
+        <hr>
+        <h3>Ideas</h3>
+        <p><a href="#manage_ideas">Manage Ideas</a></p>
+        <p>Create New Idea</p>
+        <hr>
+        <h3>Thoughts</h3>
+        <p>Manage Thoughts</p>
+        <p>Post New Thought</p>
+        <hr>
+        <h3>Settings</h3>
         {% endblock %}
     </div>
 </div>
@@ -86,11 +91,9 @@
 <!-- footer -->
 <div id="footer">
     <div class="row">
-        <div class="large-9 columns">
+        <div class="large-12 columns">
             {% block footer %}
-            <p>"Trending" ideas/thoughts</p>
-            <p>Copyright 2014 - 2015, Cory Parsnipson</p>
-            <p>Contact Slacker Paradise:<br>Cory Parsnipson<br>PO Box 190461<br>San Francisco, CA 94119</p>
+            Some kind of useful breadcrumb navigation bullshit.
             {% endblock %}
         </div>
     </div>

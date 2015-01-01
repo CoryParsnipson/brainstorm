@@ -69,6 +69,11 @@ a {
   text-decoration: none;
 }
 
+a[name], a[name]:hover {
+  color: inherit;
+  cursor: initial;
+}
+
 a:hover {
   color: #FFFFFF;
 }

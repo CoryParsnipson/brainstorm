@@ -12,8 +12,26 @@
   min-width: 100%;
 }
 
-.column, .columns {
-  border: 1px solid black;
+.dashboard-panel {
+  background-color: #DEDEDE;
+  border: 1px solid #ABABAB;
+  padding: 5px;
+}
+
+#content {
+  height: 100%;
+}
+
+#side {
+  height: 100%;
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+}
+
+#footer {
+  min-height: 1.5rem;
 }
 
 /******************************************************************************
