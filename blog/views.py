@@ -112,9 +112,18 @@ def dashboard(request):
 
     idea_form = IdeaForm()
     thought_form = ThoughtForm()
+
+    # thought data
+    thoughts = []
+    if 'idea_slug' in request.GET and request.GET['idea_slug']:
+        current_idea = Idea.objects.get(slug=request.GET['idea_slug'])
+        if current_idea:
+            thoughts = Thought.objects.filter(idea=current_idea)
+
     context = {'page_title': 'Main',
                'ideas': idea_list,
                'idea_form': idea_form,
+               'thoughts': thoughts,
                'thought_form': thought_form,
                'idea_pages': range(1, num_pages + 1)}
     return render(request, 'blog/dashboard/dashboard.html', context)
@@ -123,7 +132,6 @@ def dashboard(request):
 @login_required(login_url='index')
 def dashboard_idea_delete(self, request, *args, **kwargs):
     messages.add_message(request, messages.INFO, "OMG I love cocks.")
-
     redirect(reverse('dashboard'))
 
 ###############################################################################

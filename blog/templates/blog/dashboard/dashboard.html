@@ -12,11 +12,11 @@
 <div class="row">
     <div class="large-6 columns">
         <div class="dashboard-panel">
-            <h3>Post New Thought</h3>
+            <h3><a name="post_new_thought">Post New Thought</a></h3>
             {% include 'blog/templates/template_thought.html' with form=thought_form idea=request.GET.idea_slug author=request.user.id %}
             <hr>
 
-            <h3>Manage Ideas</h3>
+            <h3><a name="manage_ideas">Manage Ideas</a></h3>
             <!-- new idea form section -->
             <form action="{% url 'forms-idea' %}" method="post">
                 {% csrf_token %}
@@ -66,8 +66,30 @@
     </div>
     <div class="large-6 columns">
         <div class="dashboard-panel">
-            <h3>Manage Thoughts</h3>
+            <h3>
+                <a name="manage_thoughts">Manage Thoughts {% if request.GET.idea_slug %} ({{ request.GET.idea_slug }}) {% endif %}</a>
+            </h3>
             <hr>
+            <table class="editable">
+                <tbody>
+                <tr>
+                    <td>Date</td>
+                    <td>Title</td>
+                    <td>[e]</td>
+                    <td>[x]</td>
+                </tr>
+                {% for thought in thoughts %}
+                <tr>
+                    <td>{{ thought.date_published|date:"N n Y" }}</td>
+                    <td>{{ thought.title }}</td>
+                    <td><input class="button-box" type="submit" value="e" /></td>
+                    <td><input class="button-box" type="submit" value="x" /></td>
+                </tr>
+                {% empty %}
+                <tr><td colspan="3">There are no thoughts in this Idea.</td></tr>
+                {% endfor %}
+                </tbody>
+            </table>
         </div>
     </div>
 </div>

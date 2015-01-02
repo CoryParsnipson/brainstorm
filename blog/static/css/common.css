@@ -203,6 +203,23 @@ textarea[rows] {
 }
 
 /******************************************************************************
+ * input button styles
+ *****************************************************************************/
+
+input[type=button], input[type="submit"] {
+  border: 1px solid black;
+  padding: 2px 7px;
+}
+
+input[type="button"]:hover, input[type="submit"]:hover {
+  background-color: #FFFFFF;
+}
+
+input[type="button"]:active, input[type="submit"]:active {
+  background-color: #BBBBBB;
+}
+
+/******************************************************************************
  * link styles
  *****************************************************************************/
 
@@ -221,7 +238,7 @@ a:hover {
 }
 
 /******************************************************************************
- * button styles
+ * link based button styles
  *****************************************************************************/
 
 .top-button {

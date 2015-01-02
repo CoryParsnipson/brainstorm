@@ -31,6 +31,7 @@
 
 #footer {
   min-height: 1.5rem;
+  text-align: right;
 }
 
 /******************************************************************************
@@ -114,7 +115,6 @@
 }
 
 .form-thought label {
-  cursor: initial; /* wtf? odd decision by foundation to change this */
   font-weight: bold;
 }
 
