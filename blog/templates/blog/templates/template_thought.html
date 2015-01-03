@@ -21,7 +21,11 @@
         <tr>
             <td></td>
             <td>
+                {% if "edit_thought" in request.GET %}
+                <input type="submit" value="Edit">
+                {% else %}
                 <input type="submit" value="Publish">
+                {% endif %}
                 {% if not idea %}
                 {{ form.idea }}
                 {% endif %}

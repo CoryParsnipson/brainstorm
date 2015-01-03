@@ -148,8 +148,12 @@ def dashboard(request, *args, **kwargs):
 
 
 @login_required(login_url='index')
-def dashboard_idea_delete(request):
+def dashboard_manage_idea(request):
     messages.add_message(request, messages.INFO, "OMG I love cocks.")
+
+    if 'edit' in request.POST:
+        return redirect(reverse('dashboard') + "?edit_idea=" + request.POST['idea'])
+
     #redirect(reverse('dashboard'))
     return render(request, 'blog/index.html', {'messages': messages})
 
@@ -396,14 +400,25 @@ class FormIdeaView(View):
             url_pass = instance_data['url_pass']
             del instance_data['url_pass']
 
+        query_string = ""
+        if 'q' in instance_data:
+            query_string = "?" + instance_data['q']
+
+        if 'qdict' in instance_data:
+            query_string = "?" + urlencode(instance_data['qdict'])
+
         if 'slug' in instance_data and not instance_data['slug']:
             instance_data['slug'] = slugify(instance_data['name'])
 
-        idea_form = IdeaForm(instance_data)
+        try:
+            instance = Idea.objects.get(slug=instance_data['slug'])
+        except Idea.DoesNotExist as e:
+            instance = None
+        idea_form = IdeaForm(instance_data, instance=instance)
 
         if idea_form.is_valid():
             idea_form.save()
-            return redirect(reverse(url_pass))
+            return redirect(reverse(url_pass) + query_string)
         else:
             # loop through fields on form and add errors to dict
             errors = {}

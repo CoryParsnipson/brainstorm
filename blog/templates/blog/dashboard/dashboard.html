@@ -22,36 +22,45 @@
                         <td id="name-cell">{{ idea_form.name.label_tag }}{{ idea_form.name }}</td>
                         <td id="slug-cell">{{ idea_form.slug.label_tag }}{{ idea_form.slug }}</td>
                         <td id="description-cell">{{ idea_form.description.label_tag }}{{ idea_form.description }}</td>
-                        <td id="submit-cell"><input id="id_submit" type="submit" value="Create"></td>
+                        <td id="submit-cell">
+                            {% if "edit_idea" in request.GET %}
+                            <input id="id_submit" type="submit" value="Edit">
+                            {% else %}
+                            <input id="id_submit" type="submit" value="Create">
+                            {% endif %}
+                        </td>
                     </tr>
                     </tbody>
                 </table>
             </form>
 
             <!-- manage ideas form -->
-            <form action="{% url 'dashboard-idea-delete' %}" method="post">
-                {% csrf_token %}
-                <table class="editable">
-                    <tr class="header">
-                        <td>Name</td>
-                        <td>Slug</td>
-                        <td>Description</td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                    </tr>
-                    {% for idea in ideas %}
-                    <tr>
+            <table class="editable">
+                <tr class="header">
+                    <td>Name</td>
+                    <td>Slug</td>
+                    <td>Description</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                {% for idea in ideas %}
+                <tr>
+                    <form action="{% url 'dashboard-manage-idea' %}" method="post">
+                        {% csrf_token %}
+                        <input type="hidden" name="idea" value="{{ idea.slug }}" />
                         <td title="{{ idea.slug }}"><a href="{% url 'dashboard' %}?idea_slug={{ idea.slug }}">{{ idea.name }}</a></td>
                         <td>{{ idea.slug }}</td>
                         <td>{{ idea.description }}</td>
-                        <td class="button-box"><input type="submit" value="^"></td>
-                        <td class="button-box"><input type="submit" value="v"></td>
-                        <td class="button-box"><input type="submit" value="x"></td>
-                    </tr>
-                    {% endfor %}
-                </table>
-            </form>
+                        <td class="button-box"><input type="submit" name="order_up" value="^"></td>
+                        <td class="button-box"><input type="submit" name="order_down" value="v"></td>
+                        <td class="button-box"><input type="submit" name="edit" value="e"></td>
+                        <td class="button-box"><input type="submit" name="delete" value="x"></td>
+                    </form>
+                </tr>
+                {% endfor %}
+            </table>
 
             <ul class="pagination">
                 {% for idea_page in idea_pages %}
@@ -70,11 +79,11 @@
             {% else %}
               {% include 'blog/templates/template_thought.html' with form=thought_form idea=request.GET.idea_slug author=request.user.id %}
             {% endif %}
+            <hr>
 
             <h3>
                 <a name="manage_thoughts">Manage Thoughts {% if request.GET.idea_slug %} ({{ request.GET.idea_slug }}) {% endif %}</a>
             </h3>
-            <hr>
             <table class="editable">
                 <tbody>
                 <tr>
