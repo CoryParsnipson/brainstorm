@@ -89,6 +89,7 @@
                 <tr>
                     <td>Date</td>
                     <td>Title</td>
+                    <td>Trash</td>
                     <td class="shrink">[e]</td>
                     <td class="shrink">[x]</td>
                 </tr>
@@ -101,6 +102,7 @@
                         <input type="hidden" name="idea_slug" value="{{ thought.idea.slug }}" />
                         <td>{{ thought.date_published|date:"N n Y" }}</td>
                         <td>{{ thought.title }}</td>
+                        <td>{{ thought.is_trash }}</td>
                         <td><input class="button-box" type="submit" name="edit" value="e" /></td>
                         <td><input class="button-box" type="submit" name="delete" value="x" /></td>
                     </form>
