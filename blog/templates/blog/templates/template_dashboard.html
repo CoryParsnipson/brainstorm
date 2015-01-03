@@ -48,7 +48,7 @@
     <div class="large-10 columns">
         {% if messages %}
         <!-- flash message area -->
-        <ul class="messages" style="list-style-type: none; color: red; font-weight: bold">
+        <ul class="messages">
             {% for message in messages %}
             <li {% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
             {% endfor %}

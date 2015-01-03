@@ -149,8 +149,6 @@ def dashboard(request, *args, **kwargs):
 
 @login_required(login_url='index')
 def dashboard_manage_idea(request):
-    messages.add_message(request, messages.INFO, "OMG I love cocks.")
-
     if 'edit' in request.POST:
         return redirect(reverse('dashboard') + "?edit_idea=" + request.POST['idea'])
 
