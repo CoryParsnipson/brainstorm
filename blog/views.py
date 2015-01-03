@@ -110,8 +110,23 @@ def dashboard(request):
     idea_page_end = idea_page_start + ideas_per_page
     idea_list = Idea.objects.all()[idea_page_start:idea_page_end]
 
-    idea_form = IdeaForm()
-    thought_form = ThoughtForm()
+    # create idea form (or load instance data if editing an idea)
+    idea_form_instance = None
+    if 'edit_idea' in request.GET:
+        try:
+            idea_form_instance = Idea.objects.get(slug=request.GET['edit_idea'])
+        except Idea.DoesNotExist as e:
+            pass
+    idea_form = IdeaForm(instance=idea_form_instance)
+
+    # create thought form (or load instance data if editing a thought)
+    thought_form_instance = None
+    if 'edit_thought' in request.GET:
+        try:
+            thought_form_instance = Thought.objects.get(slug=request.GET['edit_thought'])
+        except Thought.DoesNotExist as e:
+            pass
+    thought_form = ThoughtForm(instance=thought_form_instance)
 
     # thought data
     thoughts = []
@@ -130,9 +145,10 @@ def dashboard(request):
 
 
 @login_required(login_url='index')
-def dashboard_idea_delete(self, request, *args, **kwargs):
+def dashboard_idea_delete(request):
     messages.add_message(request, messages.INFO, "OMG I love cocks.")
-    redirect(reverse('dashboard'))
+    #redirect(reverse('dashboard'))
+    return render(request, 'blog/index.html', {'messages': messages})
 
 ###############################################################################
 # Miscellaneous API

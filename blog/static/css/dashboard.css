@@ -22,7 +22,6 @@
 }
 
 #side {
-  height: 100%;
   position: fixed;
   top: 0;
   right: 0;
@@ -107,11 +106,19 @@
 }
 
 /******************************************************************************
+ * manage ideas form styles
+ *****************************************************************************/
+.editable td {
+  font-size: 9pt;
+}
+
+/******************************************************************************
  * thought form styles
  *****************************************************************************/
 
 .form-thought {
   width: 100%;
+  margin-bottom: 20px;
 }
 
 .form-thought label {
@@ -121,8 +128,12 @@
 .form-thought th {
   width: 1px; /* shrink to fit content */
   text-align: right;
-  vertical-align: middle;
+  vertical-align: top;
   padding: 0 5px;
+}
+
+.form-thought td {
+  padding: 2px 0;
 }
 
 .form-thought textarea {
