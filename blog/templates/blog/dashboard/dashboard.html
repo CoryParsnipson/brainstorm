@@ -63,7 +63,13 @@
     <div class="large-6 columns">
         <div class="dashboard-panel">
             <h3><a name="post_new_thought">Post New Thought</a></h3>
-            {% include 'blog/templates/template_thought.html' with form=thought_form idea=request.GET.idea_slug author=request.user.id %}
+            {% if "idea_slug" in request.GET %}
+            {% with "idea_slug="|add:request.GET.idea_slug as q %}
+              {% include 'blog/templates/template_thought.html' with form=thought_form idea=request.GET.idea_slug author=request.user.id q=q %}
+            {% endwith %}
+            {% else %}
+              {% include 'blog/templates/template_thought.html' with form=thought_form idea=request.GET.idea_slug author=request.user.id %}
+            {% endif %}
 
             <h3>
                 <a name="manage_thoughts">Manage Thoughts {% if request.GET.idea_slug %} ({{ request.GET.idea_slug }}) {% endif %}</a>
@@ -77,11 +83,17 @@
                     <td>[e]</td>
                     <td>[x]</td>
                 </tr>
+
                 {% for thought in thoughts %}
                 <tr>
-                    <td>{{ thought.date_published|date:"N n Y" }}</td>
-                    <td>{{ thought.title }}</td>
-                    <td><input class="button-box" type="submit" value="e" /></td>
+                    <form action="{% url 'dashboard' %}" method="get">
+                        <input type="hidden" name="edit_thought" value="{{ thought.slug }}" />
+                        <input type="hidden" name="idea_slug" value="{{ thought.idea.slug }}" />
+                        <td>{{ thought.date_published|date:"N n Y" }}</td>
+                        <td>{{ thought.title }}</td>
+                        <td><input class="button-box" type="submit" value="e" /></td>
+                    </form>
+
                     <td><input class="button-box" type="submit" value="x" /></td>
                 </tr>
                 {% empty %}

@@ -1,7 +1,10 @@
+import urllib
+
 from django.core.urlresolvers import reverse
 from django.core.exceptions import FieldError, ValidationError
 from django.http import JsonResponse
 from django.views.generic import View
+from django.utils.http import urlencode
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from django.contrib.auth import authenticate, login as auth_login, logout as auth_logout
@@ -85,7 +88,7 @@ def thought_detail(request, idea_slug=None, thought_slug=None):
 # site admin sections
 ###############################################################################
 @login_required(login_url='index')
-def dashboard(request):
+def dashboard(request, *args, **kwargs):
     idea_page = 1
     ideas_per_page = common.Globals.ideas_per_page
 
@@ -383,6 +386,8 @@ class FormIdeaView(View):
         """ save the POST data for the form into a new Idea
 
             request.POST['url_pass'] optional url for redirect on completion
+            request.POST['q'] optional query string parameters (urlencoded)
+            request.POST['qdict'] optional query string in dictionary form
         """
         instance_data = request.POST.copy()
 
@@ -432,6 +437,8 @@ class FormThoughtView(View):
         """ save the POST data to create a new Thought
 
             request.POST['url_pass'] optional url for redirect on completion
+            request.POST['q'] optional query string parameters (urlencoded)
+            request.POST['qdict'] optional query string in dictionary form
         """
         instance_data = request.POST.copy()
 
@@ -440,15 +447,26 @@ class FormThoughtView(View):
             url_pass = instance_data['url_pass']
             del instance_data['url_pass']
 
+        query_string = ""
+        if 'q' in instance_data:
+            query_string = "?" + instance_data['q']
+
+        if 'qdict' in instance_data:
+            query_string = "?" + urlencode(instance_data['qdict'])
+
         if 'slug' in instance_data and not instance_data['slug']:
             instance_data['slug'] = slugify(instance_data['title'])
 
-        thought_form = ThoughtForm(instance_data)
+        try:
+            instance = Thought.objects.get(slug=instance_data['slug'])
+        except Thought.DoesNotExist as e:
+            instance = None
+        thought_form = ThoughtForm(instance_data, instance=instance)
 
         if thought_form.is_valid():
             thought_form.save()
             idea = Idea.objects.filter(slug=instance_data['idea'])[0]
-            return redirect(reverse(url_pass))
+            return redirect(reverse(url_pass) + query_string)
         else:
             # loop through fields on form and add errors to dict
             errors = {}

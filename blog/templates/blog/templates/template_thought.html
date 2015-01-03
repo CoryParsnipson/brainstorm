@@ -1,7 +1,9 @@
 <form action="{% url 'forms-thought' %}" method="post">
     {% csrf_token %}
-    {% if idea %}<input type="hidden" name="idea" value="{{ idea }}">{% endif %}
-    <input type="hidden" name="author" value="{{ author }}">
+    {% if idea %}<input type="hidden" name="idea" value="{{ idea }}" />{% endif %}
+    <input type="hidden" name="author" value="{{ author }}" />
+    {% if urlpass %}<input type="hidden" name="urlpass" value="{{ urlpass }}" />{% endif %}
+    {% if q %}<input type="hidden" name="q" value="{{ q }}" />{% endif %}
 
     <table class="form-thought">
         <tr>
