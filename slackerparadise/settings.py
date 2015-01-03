@@ -104,6 +104,7 @@ TEMPLATE_DIRS = (paths.TEMPLATE_DIR, )
 # have request template variable automatically
 TEMPLATE_CONTEXT_PROCESSORS = (
     'django.core.context_processors.request',
+    'django.contrib.messages.context_processors.messages',
 )
 
 REST_FRAMEWORK = {

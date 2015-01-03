@@ -154,8 +154,13 @@ def dashboard_manage_idea(request):
     if 'edit' in request.POST:
         return redirect(reverse('dashboard') + "?edit_idea=" + request.POST['idea'])
 
-    #redirect(reverse('dashboard'))
-    return render(request, 'blog/index.html', {'messages': messages})
+    if 'delete' in request.POST:
+        try:
+            safe_delete_idea(request.POST['idea'])
+        except ValidationError as e:
+            messages.add_message(request, messages.ERROR, e.message)
+        return redirect(reverse('dashboard'))
+
 
 ###############################################################################
 # Miscellaneous API
