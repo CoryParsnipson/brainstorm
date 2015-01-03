@@ -52,7 +52,7 @@
                         <input type="hidden" name="idea" value="{{ idea.slug }}" />
                         <td title="{{ idea.slug }}"><a href="{% url 'dashboard' %}?idea_slug={{ idea.slug }}">{{ idea.name }}</a></td>
                         <td>{{ idea.slug }}</td>
-                        <td>{{ idea.description }}</td>
+                        <td class="expand">{{ idea.description }}</td>
                         <td class="button-box"><input type="submit" name="order_up" value="^"></td>
                         <td class="button-box"><input type="submit" name="order_down" value="v"></td>
                         <td class="button-box"><input type="submit" name="edit" value="e"></td>
@@ -89,21 +89,21 @@
                 <tr>
                     <td>Date</td>
                     <td>Title</td>
-                    <td>[e]</td>
-                    <td>[x]</td>
+                    <td class="shrink">[e]</td>
+                    <td class="shrink">[x]</td>
                 </tr>
 
                 {% for thought in thoughts %}
                 <tr>
-                    <form action="{% url 'dashboard' %}" method="get">
-                        <input type="hidden" name="edit_thought" value="{{ thought.slug }}" />
+                    <form action="{% url 'dashboard-manage-thought' %}" method="post">
+                        {% csrf_token %}
+                        <input type="hidden" name="thought_slug" value="{{ thought.slug }}" />
                         <input type="hidden" name="idea_slug" value="{{ thought.idea.slug }}" />
                         <td>{{ thought.date_published|date:"N n Y" }}</td>
                         <td>{{ thought.title }}</td>
-                        <td><input class="button-box" type="submit" value="e" /></td>
+                        <td><input class="button-box" type="submit" name="edit" value="e" /></td>
+                        <td><input class="button-box" type="submit" name="delete" value="x" /></td>
                     </form>
-
-                    <td><input class="button-box" type="submit" value="x" /></td>
                 </tr>
                 {% empty %}
                 <tr><td colspan="4">There are no thoughts in this Idea.</td></tr>

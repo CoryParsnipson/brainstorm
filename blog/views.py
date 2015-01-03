@@ -160,6 +160,21 @@ def dashboard_manage_idea(request):
         return redirect(reverse('dashboard'))
 
 
+@login_required(login_url='index')
+def dashboard_manage_thought(request):
+    if 'edit' in request.POST:
+        query_string = urlencode({'edit_thought': request.POST['thought_slug'],
+                                  'idea_slug': request.POST['idea_slug'],
+                                  })
+        return redirect(reverse('dashboard') + "?" + query_string)
+
+    if 'delete' in request.POST:
+        try:
+            thought = Thought.objects.get(slug=request.POST['thought_slug'])
+        except Thought.DoesNotExist as e:
+            return
+
+
 ###############################################################################
 # Miscellaneous API
 ###############################################################################

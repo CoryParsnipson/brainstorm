@@ -52,7 +52,8 @@ class Thought(models.Model):
     content = models.TextField()
     idea = models.ForeignKey(Idea)
     author = models.ForeignKey(User)
-    is_draft = models.BooleanField(default=False)
+    is_draft = models.BooleanField(default=True)
+    is_trash = models.BooleanField(default=False)
     date_published = models.DateTimeField(auto_now_add=True)
     date_edited = models.DateTimeField(auto_now=True, auto_now_add=True)
 
