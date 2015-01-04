@@ -18,7 +18,7 @@ class Idea(models.Model):
     name = models.CharField(max_length=200)
     slug = models.SlugField(primary_key=True)
     description = models.TextField()
-    ordering = models.IntegerField(unique=True, null=True)
+    ordering = models.IntegerField(unique=True)
     # color?
     # icon?
 

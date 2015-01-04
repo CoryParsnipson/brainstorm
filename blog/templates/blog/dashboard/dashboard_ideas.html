@@ -1,0 +1,63 @@
+{% extends 'blog/templates/template_dashboard.html' %}
+{% load staticfiles %}
+
+{% block content %}
+<div class="row">
+    <div class="large-12 columns">
+        <h3>Dashboard :: Manage Ideas</h3>
+        <!-- new idea form section -->
+        <form action="{% url 'forms-idea' %}" method="post">
+            {% csrf_token %}
+            <input type="hidden" name="url_pass" value="dashboard-ideas" />
+            <table class="add-idea">
+                <tbody>
+                <tr>
+                    <td id="name-cell">{{ new_idea_form.name.label_tag }}{{ new_idea_form.name }}</td>
+                    <td id="slug-cell">{{ new_idea_form.slug.label_tag }}{{ new_idea_form.slug }}</td>
+                    <td id="description-cell">{{ new_idea_form.description.label_tag }}{{ new_idea_form.description }}</td>
+                    <td id="submit-cell">
+                        {% if "i" in request.GET %}
+                        <input id="id_submit" type="submit" value="Edit">
+                        {% else %}
+                        <input id="id_submit" type="submit" value="Create">
+                        {% endif %}
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </form>
+
+        <!-- manage ideas form -->
+        <table class="editable">
+            <tr class="header">
+                <td>#</td>
+                <td>Name</td>
+                <td>Slug</td>
+                <td>Description</td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+            {% for idea in ideas %}
+            <tr>
+                <form action="{% url 'dashboard-manage-idea' %}" method="post">
+                    {% csrf_token %}
+                    <input type="hidden" name="idea" value="{{ idea.slug }}" />
+                    <td>{{ idea.ordering }}</td>
+                    <td>{{ idea.name }}</td>
+                    <td>{{ idea.slug }}</td>
+                    <td>{{ idea.description }}</td>
+                    <td class="button-box"><input type="submit" name="order_up" value="^"></td>
+                    <td class="button-box"><input type="submit" name="order_down" value="v"></td>
+                    <td class="button-box">
+                        <a class="editable-button" href="{% url 'dashboard-ideas' %}?i={{ idea.slug }}">e</a>
+                    </td>
+                    <td class="button-box"><input type="submit" name="delete" value="x"></td>
+                </form>
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+</div>
+{% endblock %}

@@ -18,6 +18,7 @@ urlpatterns = patterns('',
     url(r'^logout/', views.logout_page, name='logout_page'),
 
     url(r'^dashboard/$', views.dashboard, name='dashboard'),
+    url(r'^dashboard/ideas/', views.dashboard_ideas, name='dashboard-ideas'),
     url(r'^dashboard/manage/idea/$', views.dashboard_manage_idea, name='dashboard-manage-idea'),
     url(r'^dashboard/manage/thought/$', views.dashboard_manage_thought, name='dashboard-manage-thought'),
 

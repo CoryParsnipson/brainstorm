@@ -149,7 +149,7 @@ table.editable tr:first-child {
 table.editable tr td {
   background-color: #CFCFCF;
   border: 1px solid #A6A6A6;
-  padding: 7px 3px;
+  padding: 5px 3px;
 }
 
 table.editable tr td.button-box {
@@ -232,6 +232,23 @@ a:hover {
 /******************************************************************************
  * link based button styles
  *****************************************************************************/
+
+.editable-button {
+  color: #000000;
+  background-color: #DBDBDB;
+  border: 1px solid black;
+  padding: 2px 7px;
+}
+
+.editable-button:hover {
+  color: #000000;
+  background-color: #FFFFFF;
+}
+
+.editable-button:active {
+  color: #000000;
+  background-color: #BBBBBB;
+}
 
 .top-button {
   opacity: 0;

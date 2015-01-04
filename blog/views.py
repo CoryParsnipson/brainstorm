@@ -138,13 +138,44 @@ def dashboard(request, *args, **kwargs):
         if current_idea:
             thoughts = Thought.objects.filter(idea=current_idea)
 
-    context = {'page_title': 'Main',
-               'ideas': idea_list,
-               'idea_form': idea_form,
-               'thoughts': thoughts,
-               'thought_form': thought_form,
-               'idea_pages': range(1, num_pages + 1)}
+    context = {
+        'page_title': 'Main',
+        'ideas': idea_list,
+        'idea_form': idea_form,
+        'thoughts': thoughts,
+        'thought_form': thought_form,
+        'idea_pages': range(1, num_pages + 1)
+    }
     return render(request, 'blog/dashboard/dashboard.html', context)
+
+
+@login_required(login_url='index')
+def dashboard_ideas(request):
+    """ User dashboard page to edit/create/manage Idea objects.
+
+        ?i=[idea slug]  specify a slug in query string to edit an idea
+    """
+    # obtain all the Ideas
+    idea_list = Idea.objects.all().order_by("ordering")
+
+    # form for editing/creating a new idea
+    idea_form_instance = None
+    if 'i' in request.GET:
+        try:
+            # sanitize query parameter
+            idea_slug = slugify(request.GET['i'])
+            idea_form_instance = Idea.objects.get(slug=idea_slug)
+        except Idea.DoesNotExist as e:
+            dne_msg = "Cannot edit Idea '%s'" % idea_slug
+            messages.add_message(request, messages.ERROR, dne_msg)
+    new_idea_form = IdeaForm(instance=idea_form_instance)
+
+    context = {
+        'page_title': 'Manage Ideas',
+        'new_idea_form': new_idea_form,
+        'ideas': idea_list,
+    }
+    return render(request, 'blog/dashboard/dashboard_ideas.html', context)
 
 
 @login_required(login_url='index')
@@ -423,8 +454,9 @@ class FormIdeaView(View):
             request.POST['qdict'] optional query string in dictionary form
         """
         instance_data = request.POST.copy()
+        msgs = {}
 
-        url_pass = 'dashboard'
+        url_pass = None
         if 'url_pass' in instance_data:
             url_pass = instance_data['url_pass']
             del instance_data['url_pass']
@@ -436,18 +468,25 @@ class FormIdeaView(View):
         if 'qdict' in instance_data:
             query_string = "?" + urlencode(instance_data['qdict'])
 
-        if 'slug' in instance_data and not instance_data['slug']:
+        if 'slug' not in instance_data or not instance_data['slug']:
             instance_data['slug'] = slugify(instance_data['name'])
+        else:
+            instance_data['slug'] = slugify(instance_data['slug'])
 
         try:
             instance = Idea.objects.get(slug=instance_data['slug'])
+            msgs['msg'] = "Successfully edited Idea %s" % instance.slug
         except Idea.DoesNotExist as e:
             instance = None
+            msgs['msg'] = "Successfully created Idea %s" % instance_data['slug']
         idea_form = IdeaForm(instance_data, instance=instance)
 
         if idea_form.is_valid():
             idea_form.save()
-            return redirect(reverse(url_pass) + query_string)
+            if url_pass:
+                return redirect(reverse(url_pass) + query_string)
+            else:
+                return JsonResponse(msgs)
         else:
             # loop through fields on form and add errors to dict
             errors = {}
@@ -485,8 +524,9 @@ class FormThoughtView(View):
             request.POST['qdict'] optional query string in dictionary form
         """
         instance_data = request.POST.copy()
+        msgs = {}
 
-        url_pass = 'dashboard'
+        url_pass = None
         if 'url_pass' in instance_data:
             url_pass = instance_data['url_pass']
             del instance_data['url_pass']
@@ -498,19 +538,27 @@ class FormThoughtView(View):
         if 'qdict' in instance_data:
             query_string = "?" + urlencode(instance_data['qdict'])
 
-        if 'slug' in instance_data and not instance_data['slug']:
+        if 'slug' not in instance_data or not instance_data['slug']:
             instance_data['slug'] = slugify(instance_data['title'])
+        else:
+            instance_data['slug'] = slugify(instance_data['slug'])
 
         try:
             instance = Thought.objects.get(slug=instance_data['slug'])
+            msgs['msg'] = "Successfully edited Thought %s" % instance.slug
         except Thought.DoesNotExist as e:
             instance = None
+            msgs['msg'] = "Successfully created Thought %s" % instance_data['slug']
         thought_form = ThoughtForm(instance_data, instance=instance)
 
         if thought_form.is_valid():
             thought_form.save()
             idea = Idea.objects.filter(slug=instance_data['idea'])[0]
-            return redirect(reverse(url_pass) + query_string)
+
+            if url_pass:
+                return redirect(reverse(url_pass) + query_string)
+            else:
+                return JsonResponse(msgs)
         else:
             # loop through fields on form and add errors to dict
             errors = {}

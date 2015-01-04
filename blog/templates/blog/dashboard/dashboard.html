@@ -1,10 +1,6 @@
 {% extends 'blog/templates/template_dashboard.html' %}
 {% load staticfiles %}
 
-{% block http_headers %}
-<link rel="stylesheet" type="text/css" href="{% static 'css/dashboard.css' %}">
-{% endblock %}
-
 {% block content %}
 <h1>{{ request.user.username }}'s Dashboard<hr></h1>
 
