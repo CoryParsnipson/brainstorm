@@ -1,0 +1,50 @@
+{% extends 'blog/templates/template_dashboard.html' %}
+{% load staticfiles %}
+
+{% block content %}
+<div class="row">
+    <div class="large-12 columns">
+        <h3>
+            {% if "thought_slug" in request.GET %}
+            Edit Thought
+            {% else %}
+            Write New Thought
+            {% endif %}
+        </h3>
+
+        <form action="{% url 'forms-thought' %}" method="post">
+            {% csrf_token %}
+            <input type="hidden" name="author" value="{{ request.user.id }}" />
+            <input type="hidden" name="next" value="default" />
+
+            <table class="form-thought">
+                <tr>
+                    <th>{{ new_thought_form.title.label_tag }}</th>
+                    <td>{{ new_thought_form.title }}</td>
+                </tr>
+                <tr>
+                    <th>{{ new_thought_form.slug.label_tag }}</th>
+                    <td>{{ new_thought_form.slug }}</td>
+                </tr>
+                <tr>
+                    <th>{{ new_thought_form.content.label_tag }}</th>
+                    <td>{{ new_thought_form.content }}</td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td>
+                        {% if "thought_slug" in request.GET %}
+                        <input type="submit" value="Edit">
+                        {% else %}
+                        <input type="submit" value="Publish">
+                        {% endif %}
+                        {% if not idea %}
+                        {{ new_thought_form.idea }}
+                        {% endif %}
+                    </td>
+                </tr>
+            </table>
+        </form>
+    </div>
+</div>
+{% endblock %}

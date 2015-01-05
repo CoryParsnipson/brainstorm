@@ -2,6 +2,7 @@ import urllib
 
 from django.core.urlresolvers import reverse
 from django.core.exceptions import FieldError, ValidationError
+from django.core.context_processors import csrf
 from django.http import JsonResponse
 from django.views.generic import View
 from django.utils.http import urlencode
@@ -212,29 +213,82 @@ def dashboard_ideas_backend(request):
 
 
 @login_required(login_url='index')
-def dashboard_manage_thought(request):
-    if 'edit' in request.POST:
-        query_string = urlencode({
-            'edit_thought': request.POST['thought_slug'],
-            'idea_slug': request.POST['idea_slug'],
-        })
-        return redirect(reverse('dashboard') + "?" + query_string)
-
-    if 'delete' in request.POST:
+def dashboard_thoughts(request):
+    # thought data
+    thoughts = []
+    if 'idea_slug' in request.GET:
         try:
-            thought = Thought.objects.get(slug=request.POST['thought_slug'])
-            thought.is_trash = True
-            thought.save()
+            current_idea = Idea.objects.get(slug=request.GET['idea_slug'])
+            thoughts = Thought.objects.filter(idea=current_idea)
+        except Idea.DoesNotExist:
+            thoughts = []
 
-            delete_msg = "Thought %s was trashed. [Undo]" % thought.title
-            messages.add_message(request, messages.SUCCESS, delete_msg)
+    context = {
+        'page_title': 'Manage Thoughts',
+        'thoughts': thoughts,
+    }
+    return render(request, 'blog/dashboard/dashboard_thoughts.html', context)
+
+
+@login_required(login_url='index')
+def dashboard_thoughts_backend(request):
+    if 'delete' in request.POST or 'undelete' in request.POST:
+        try:
+            thought_slug = slugify(request.POST['thought_slug'])
+            thought = Thought.objects.get(slug=thought_slug)
+
+            if 'delete' in request.POST:
+                thought.is_trash = True
+
+                # jesus, is there a better way to do this??
+                be_msg = "Thought %s was trashed. " \
+                         "<form action='%s' method='post'>" \
+                         "<input type='hidden' name='csrfmiddlewaretoken' value='%s' />" \
+                         "<input type='hidden' name='thought_slug' value='%s' />" \
+                         "<input type='submit' name='undelete' value='Undo' />" \
+                         "</form>" % (thought.slug,
+                                      reverse('dashboard-thoughts-backend'),
+                                      csrf(request)['csrf_token'],
+                                      thought_slug)
+
+            elif 'undelete' in request.POST:
+                thought.is_trash = False
+                be_msg = "Thought %s was taken out of trash." % thought.slug
+
+            thought.save()
+            messages.add_message(request, messages.SUCCESS, be_msg)
 
             query_string = urlencode({
-                'idea_slug': request.POST['idea_slug'],
+                'idea_slug': thought.idea.slug,
             })
         except Thought.DoesNotExist as e:
-            return
-        return redirect(reverse('dashboard') + "?" + query_string)
+            pass
+        return redirect(reverse('dashboard-thoughts') + "?" + query_string)
+
+    return redirect(reverse('dashboard'))
+
+
+@login_required(login_url='index')
+def dashboard_author(request):
+    """ User dashboard page to write new thoughts, edit old ones, or work on drafts.
+
+        ?thought_slug=[thought slug] provide a slug to edit a thought or draft
+    """
+    # create thought form (or load instance data if editing a thought)
+    thought_form_instance = None
+    if 'thought_slug' in request.GET:
+        try:
+            thought_slug = slugify(request.GET['thought_slug'])
+            thought_form_instance = Thought.objects.get(slug=thought_slug)
+        except Thought.DoesNotExist as e:
+            pass
+    new_thought_form = ThoughtForm(instance=thought_form_instance)
+
+    context = {
+        'page_title': 'Write New Thought',
+        'new_thought_form': new_thought_form,
+    }
+    return render(request, 'blog/dashboard/dashboard_author.html', context)
 
 
 ###############################################################################
@@ -568,17 +622,17 @@ class FormThoughtView(View):
     def post(self, request, *args, **kwargs):
         """ save the POST data to create a new Thought
 
-            request.POST['url_pass'] optional url for redirect on completion
+            request.POST['next'] optional url for redirect on completion
             request.POST['q'] optional query string parameters (urlencoded)
             request.POST['qdict'] optional query string in dictionary form
         """
         instance_data = request.POST.copy()
         msgs = {}
 
-        url_pass = None
-        if 'url_pass' in instance_data:
-            url_pass = instance_data['url_pass']
-            del instance_data['url_pass']
+        callback = None
+        if 'callback' in instance_data:
+            callback = instance_data['next']
+            del instance_data['next']
 
         query_string = ""
         if 'q' in instance_data:
@@ -604,8 +658,15 @@ class FormThoughtView(View):
             thought_form.save()
             idea = Idea.objects.filter(slug=instance_data['idea'])[0]
 
-            if url_pass:
-                return redirect(reverse(url_pass) + query_string)
+            if callback:
+                if callback == 'default':
+                    kwargs = {
+                        'thought_slug': instance_data['slug'],
+                        'idea_slug': instance_data['idea'],
+                    }
+                    return redirect(reverse('thought_detail', kwargs=kwargs))
+
+                return redirect(reverse(callback) + query_string)
             else:
                 return JsonResponse(msgs)
         else:

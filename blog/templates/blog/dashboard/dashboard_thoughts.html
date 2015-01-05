@@ -1,0 +1,41 @@
+{% extends 'blog/templates/template_dashboard.html' %}
+{% load staticfiles %}
+
+{% block content %}
+<div class="row">
+    <div class="large-12 columns">
+        <h3>
+            <a name="manage_thoughts">Manage Thoughts {% if request.GET.idea_slug %} ({{ request.GET.idea_slug }}) {% endif %}</a>
+        </h3>
+        <table class="editable">
+            <tbody>
+            <tr>
+                <td>Date</td>
+                <td>Title</td>
+                <td>Trash</td>
+                <td>[e]</td>
+                <td>[x]</td>
+            </tr>
+
+            {% for thought in thoughts %}
+            <tr>
+                <form action="{% url 'dashboard-thoughts-backend' %}" method="post">
+                    {% csrf_token %}
+                    <input type="hidden" name="thought_slug" value="{{ thought.slug }}" />
+                    <td>{{ thought.date_published|date:"N n Y" }}</td>
+                    <td>{{ thought.title }}</td>
+                    <td class="shrink">{{ thought.is_trash }}</td>
+                    <td class="shrink">
+                        <a class="editable-button" href="{% url 'dashboard-author' %}?thought_slug={{ thought.slug }}">e</a>
+                    </td>
+                    <td class="shrink"><input class="button-box" type="submit" name="delete" value="x" /></td>
+                </form>
+            </tr>
+            {% empty %}
+            <tr><td colspan="5">There are no thoughts in this Idea.</td></tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

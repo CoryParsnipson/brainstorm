@@ -116,6 +116,10 @@ table, table tr.even, table tr:nth-of-type(even) {
   margin: 0;
 }
 
+.shrink {
+  width: 1px;
+}
+
 /******************************************************************************
  * tables catalog
  *****************************************************************************/
@@ -150,10 +154,6 @@ table.editable tr td {
   background-color: #CFCFCF;
   border: 1px solid #A6A6A6;
   padding: 5px 3px;
-}
-
-table.editable tr td.button-box {
-  width: 1px; /* as small as possible */
 }
 
 table.editable input[type="button"] {
@@ -272,16 +272,42 @@ ul.pagination li a {
 }
 
 /******************************************************************************
- * ul messages styles
+ * ul flash messages styles
  *****************************************************************************/
 
 ul.messages {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+
+ul.messages li {
+  border-radius: 3px;
+  padding: 2px 5px;
+}
+
+ul.messages .success {
+  color: #157A2D;
+  background-color: #71E38C;
+}
+
+ul.messages .error {
   color: #FFFFFF;
   background-color: #B00000;
-  list-style-type: none;
-  border-radius: 3px;
-  margin: 0;
-  padding: 2px 5px;
+}
+
+ul.messages form {
+  display: inline;
+}
+
+ul.messages input[type=submit] {
+  font-weight: bold;
+  background-color: transparent;
+  border: none;
+}
+
+ul.messages input[type=submit]:hover {
+  color: #FFFFFF;
 }
 
 /******************************************************************************

@@ -95,7 +95,6 @@
 }
 
 .add-idea #submit-cell {
-  width: 1px; /* as small as possible */
   vertical-align: bottom;
 }
 

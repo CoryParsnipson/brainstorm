@@ -51,7 +51,9 @@
         <!-- flash message area -->
         <ul class="messages">
             {% for message in messages %}
+            {% autoescape off %}
             <li {% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+            {% endautoescape %}
             {% endfor %}
         </ul>
         {% endif %}
@@ -70,9 +72,9 @@
             <li>Manage new comments...</li>
             <li>Drafts</li>
             <li>Trash</li>
-            <li><a href="#post_new_thought">Post New Thought</a></li>
+            <li><a href="{% url 'dashboard-author' %}">Post New Thought</a></li>
             <li><a href="{% url 'dashboard-ideas' %}">Manage Ideas</a></li>
-            <li><a href="#manage_thoughts">Manage Thoughts</a></li>
+            <li><a href="{% url 'dashboard-thoughts' %}">Manage Thoughts</a></li>
             <li>Export Database</li>
             <li>Import Database</li>
             <li>User Profile</li>

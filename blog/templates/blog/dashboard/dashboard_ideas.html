@@ -15,7 +15,7 @@
                     <td id="name-cell">{{ new_idea_form.name.label_tag }}{{ new_idea_form.name }}</td>
                     <td id="slug-cell">{{ new_idea_form.slug.label_tag }}{{ new_idea_form.slug }}</td>
                     <td id="description-cell">{{ new_idea_form.description.label_tag }}{{ new_idea_form.description }}</td>
-                    <td id="submit-cell">
+                    <td id="submit-cell" class="shrink">
                         {% if "i" in request.GET %}
                         <input id="id_submit" type="submit" value="Edit">
                         {% else %}
@@ -44,16 +44,16 @@
                 <form action="{% url 'dashboard-ideas-backend' %}" method="post">
                     {% csrf_token %}
                     <input type="hidden" name="idea" value="{{ idea.slug }}" />
-                    <td>{{ idea.order }}</td>
-                    <td>{{ idea.name }}</td>
-                    <td>{{ idea.slug }}</td>
+                    <td class="shrink">{{ idea.order }}</td>
+                    <td class="shrink">{{ idea.name }}</td>
+                    <td class="shrink">{{ idea.slug }}</td>
                     <td>{{ idea.description }}</td>
-                    <td class="button-box"><input type="submit" name="order_up" value="v"></td>
-                    <td class="button-box"><input type="submit" name="order_down" value="^"></td>
-                    <td class="button-box">
+                    <td class="shrink"><input type="submit" name="order_up" value="v"></td>
+                    <td class="shrink"><input type="submit" name="order_down" value="^"></td>
+                    <td class="shrink">
                         <a class="editable-button" href="{% url 'dashboard-ideas' %}?i={{ idea.slug }}">e</a>
                     </td>
-                    <td class="button-box"><input type="submit" name="delete" value="x"></td>
+                    <td class="shrink"><input type="submit" name="delete" value="x"></td>
                 </form>
             </tr>
             {% endfor %}
