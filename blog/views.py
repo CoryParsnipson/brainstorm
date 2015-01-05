@@ -190,7 +190,6 @@ def dashboard_ideas_backend(request):
     if 'order_up' in request.POST or 'order_down' in request.POST:
         try:
             err_msg = None
-
             idea_slug = slugify(request.POST['idea'])
             idea = Idea.objects.get(slug=idea_slug)
 
@@ -200,17 +199,7 @@ def dashboard_ideas_backend(request):
                 adjacent_idea = idea.get_prev()
 
             if adjacent_idea:
-                # swap the ordering on these two ideas
-                order = adjacent_idea.order
-
-                adjacent_idea.order = -1
-                adjacent_idea.save()
-
-                adjacent_idea.order = idea.order
-                idea.order = order
-
-                idea.save()
-                adjacent_idea.save()
+                swap_ideas(idea_slug, adjacent_idea.slug)
         except KeyError as e:
             err_msg = e.message
         except Idea.DoesNotExist as e:
@@ -317,6 +306,35 @@ def safe_delete_idea(idea_slug):
     if len(thoughts) > 0:
         raise ValidationError("Cannot delete Idea %s; has associated thoughts" % idea.name)
     idea.delete()
+
+
+def swap_ideas(idea_slug, adjacent_idea_slug):
+    """ swap an idea with another given idea (based on the order column)
+
+        returns True on success, False on error
+    """
+    idea_slug = slugify(idea_slug)
+    adjacent_idea_slug = slugify(adjacent_idea_slug)
+
+    try:
+        idea = Idea.objects.get(slug=idea_slug)
+        adjacent_idea = Idea.objects.get(slug=adjacent_idea_slug)
+
+        # swap the ordering on these two ideas
+        order = adjacent_idea.order
+
+        # order is unique, obliterate one value and save
+        adjacent_idea.order = -1
+        adjacent_idea.save()
+
+        adjacent_idea.order = idea.order
+        idea.order = order
+
+        idea.save()
+        adjacent_idea.save()
+    except Idea.DoesNotExist:
+        return False
+    return True
 
 
 ###############################################################################
