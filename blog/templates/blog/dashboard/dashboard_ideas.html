@@ -41,15 +41,15 @@
             </tr>
             {% for idea in ideas %}
             <tr>
-                <form action="{% url 'dashboard-manage-idea' %}" method="post">
+                <form action="{% url 'dashboard-ideas-backend' %}" method="post">
                     {% csrf_token %}
                     <input type="hidden" name="idea" value="{{ idea.slug }}" />
-                    <td>{{ idea.ordering }}</td>
+                    <td>{{ idea.order }}</td>
                     <td>{{ idea.name }}</td>
                     <td>{{ idea.slug }}</td>
                     <td>{{ idea.description }}</td>
-                    <td class="button-box"><input type="submit" name="order_up" value="^"></td>
-                    <td class="button-box"><input type="submit" name="order_down" value="v"></td>
+                    <td class="button-box"><input type="submit" name="order_up" value="v"></td>
+                    <td class="button-box"><input type="submit" name="order_down" value="^"></td>
                     <td class="button-box">
                         <a class="editable-button" href="{% url 'dashboard-ideas' %}?i={{ idea.slug }}">e</a>
                     </td>

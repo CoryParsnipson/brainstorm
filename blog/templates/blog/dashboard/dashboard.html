@@ -43,7 +43,7 @@
                 </tr>
                 {% for idea in ideas %}
                 <tr>
-                    <form action="{% url 'dashboard-manage-idea' %}" method="post">
+                    <form action="" method="post">
                         {% csrf_token %}
                         <input type="hidden" name="idea" value="{{ idea.slug }}" />
                         <td title="{{ idea.slug }}"><a href="{% url 'dashboard' %}?idea_slug={{ idea.slug }}">{{ idea.name }}</a></td>

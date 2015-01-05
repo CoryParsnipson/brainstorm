@@ -3,11 +3,12 @@ import re
 from django.db import models
 from django.db.models import Max
 from django.db.models.signals import pre_save
-from django.dispatch import receiver
 from django.contrib.auth.models import User
 
 
-# Create your models here.
+###############################################################################
+# Idea model
+###############################################################################
 class Idea(models.Model):
     """ In other blogs, this would be called a "Category", but I want to
         connote a sense of progression on a line of inquiry or research. For
@@ -18,28 +19,58 @@ class Idea(models.Model):
     name = models.CharField(max_length=200)
     slug = models.SlugField(primary_key=True)
     description = models.TextField()
-    ordering = models.IntegerField(unique=True)
+
+    order = models.IntegerField(unique=True)
+
     # color?
     # icon?
+
+    def get_next(self):
+        """ get the next Idea by order column or return
+            None if this Idea instance is the latest
+        """
+        try:
+            return Idea.objects.filter(order__gt=self.order).order_by('order')[0]
+        except IndexError:
+            return None
+
+    def get_prev(self):
+        """ get the previous Idea by order column or return
+            None if this Idea instance is the first
+        """
+        try:
+            return Idea.objects.filter(order__lt=self.order).order_by('-order')[0]
+        except IndexError:
+            return None
 
     def __unicode__(self):
         return self.name
 
 
-@receiver(pre_save)
-def pre_save_idea(sender, instance, *args, **kwargs):
-    """ pre save callback for Idea model. Used to autofill ordering for newly
-        created Idea instances (or existing ones that don't have ordering for
-        whatever reason).
-    """
-    if not isinstance(instance, Idea):
+###############################################################################
+# Idea model signals
+###############################################################################
+def idea_pre_save(**kwargs):
+    instance = kwargs['instance']
+
+    # short circuit if Idea already exists (instance is being modified)
+    if Idea.objects.get(slug=instance.slug):
         return
 
-    if not instance.ordering:
-        next_ordering = Idea.objects.all().aggregate(Max('ordering'))['ordering__max']
-        instance.ordering = 1 if not next_ordering else next_ordering + 1
+    # find the highest ordered Idea and increment for this Idea
+    idea_idx = Idea.objects.all().aggregate(Max('order'))['order__max']
+    if idea_idx:
+        idea_idx += 1
+    else:
+        idea_idx = 1
+
+    instance.order = idea_idx
+pre_save.connect(idea_pre_save, Idea)
 
 
+###############################################################################
+# Thought model
+###############################################################################
 class Thought(models.Model):
     """ Thought class corresponds roughly to a blog post. The intention
         is to have many child classes of Thought to include different types
@@ -58,6 +89,9 @@ class Thought(models.Model):
     date_edited = models.DateTimeField(auto_now=True, auto_now_add=True)
 
 
+###############################################################################
+# model helper methods
+###############################################################################
 def slugify(source_str, max_len=20):
     """ create a nice slug given a string; FYI, Django comes with a prebuilt
         slugify function (django.template.defaultfilters) which handles

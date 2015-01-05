@@ -156,7 +156,7 @@ def dashboard_ideas(request):
         ?i=[idea slug]  specify a slug in query string to edit an idea
     """
     # obtain all the Ideas
-    idea_list = Idea.objects.all().order_by("ordering")
+    idea_list = Idea.objects.all().order_by("order")
 
     # form for editing/creating a new idea
     idea_form_instance = None
@@ -179,16 +179,47 @@ def dashboard_ideas(request):
 
 
 @login_required(login_url='index')
-def dashboard_manage_idea(request):
-    if 'edit' in request.POST:
-        return redirect(reverse('dashboard') + "?edit_idea=" + request.POST['idea'])
-
+def dashboard_ideas_backend(request):
     if 'delete' in request.POST:
         try:
             safe_delete_idea(request.POST['idea'])
         except ValidationError as e:
             messages.add_message(request, messages.ERROR, e.message)
-        return redirect(reverse('dashboard'))
+        return redirect(reverse('dashboard-ideas'))
+
+    if 'order_up' in request.POST or 'order_down' in request.POST:
+        try:
+            err_msg = None
+
+            idea_slug = slugify(request.POST['idea'])
+            idea = Idea.objects.get(slug=idea_slug)
+
+            if 'order_up' in request.POST:
+                adjacent_idea = idea.get_next()
+            else:
+                adjacent_idea = idea.get_prev()
+
+            if adjacent_idea:
+                # swap the ordering on these two ideas
+                order = adjacent_idea.order
+
+                adjacent_idea.order = -1
+                adjacent_idea.save()
+
+                adjacent_idea.order = idea.order
+                idea.order = order
+
+                idea.save()
+                adjacent_idea.save()
+        except KeyError as e:
+            err_msg = e.message
+        except Idea.DoesNotExist as e:
+            err_msg = e.message
+        finally:
+            if err_msg:
+                messages.add_message(request, messages.ERROR, err_msg)
+
+        return redirect(reverse('dashboard-ideas'))
 
 
 @login_required(login_url='index')
