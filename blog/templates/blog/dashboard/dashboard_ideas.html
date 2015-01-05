@@ -38,6 +38,7 @@
                 <td></td>
                 <td></td>
                 <td></td>
+                <td></td>
             </tr>
             {% for idea in ideas %}
             <tr>
@@ -48,6 +49,9 @@
                     <td class="shrink">{{ idea.name }}</td>
                     <td class="shrink">{{ idea.slug }}</td>
                     <td>{{ idea.description }}</td>
+                    <td>
+                        <a class="editable-button" href="{% url 'dashboard-thoughts' %}?idea_slug={{ idea.slug }}">see thoughts...</a>
+                    </td>
                     <td class="shrink"><input type="submit" name="order_up" value="v"></td>
                     <td class="shrink"><input type="submit" name="order_down" value="^"></td>
                     <td class="shrink">

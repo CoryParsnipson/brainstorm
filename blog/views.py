@@ -216,6 +216,8 @@ def dashboard_ideas_backend(request):
 def dashboard_thoughts(request):
     # thought data
     thoughts = []
+    current_idea = None
+
     if 'idea_slug' in request.GET:
         try:
             current_idea = Idea.objects.get(slug=request.GET['idea_slug'])
@@ -226,6 +228,7 @@ def dashboard_thoughts(request):
     context = {
         'page_title': 'Manage Thoughts',
         'thoughts': thoughts,
+        'idea': current_idea
     }
     return render(request, 'blog/dashboard/dashboard_thoughts.html', context)
 
