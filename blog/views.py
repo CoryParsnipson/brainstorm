@@ -633,7 +633,7 @@ class FormThoughtView(View):
         msgs = {}
 
         callback = None
-        if 'callback' in instance_data:
+        if 'next' in instance_data:
             callback = instance_data['next']
             del instance_data['next']
 

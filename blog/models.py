@@ -43,29 +43,22 @@ class Idea(models.Model):
         except IndexError:
             return None
 
+    def save(self, *args, **kwargs):
+        """ if order field is None, add value
+        """
+        if not self.order:
+            idea_idx = Idea.objects.all().aggregate(Max('order'))['order__max']
+            if idea_idx:
+                idea_idx += 1
+            else:
+                idea_idx = 1
+            self.order = idea_idx
+
+        # "real" save method
+        super(Idea, self).save(*args, **kwargs)
+
     def __unicode__(self):
         return self.name
-
-
-###############################################################################
-# Idea model signals
-###############################################################################
-def idea_pre_save(**kwargs):
-    instance = kwargs['instance']
-
-    # short circuit if Idea already exists (instance is being modified)
-    if Idea.objects.get(slug=instance.slug):
-        return
-
-    # find the highest ordered Idea and increment for this Idea
-    idea_idx = Idea.objects.all().aggregate(Max('order'))['order__max']
-    if idea_idx:
-        idea_idx += 1
-    else:
-        idea_idx = 1
-
-    instance.order = idea_idx
-pre_save.connect(idea_pre_save, Idea)
 
 
 ###############################################################################

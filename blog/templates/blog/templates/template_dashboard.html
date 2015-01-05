@@ -69,14 +69,18 @@
         {% block side %}
         <ul>
             <li>Analytics/Statistics</li>
+            <hr>
             <li>Manage new comments...</li>
+            <hr>
+            <li><a href="{% url 'dashboard-ideas' %}">Manage Content</a></li>
+            <hr>
+            <li><a href="{% url 'dashboard-author' %}">Post New Thought</a></li>
             <li>Drafts</li>
             <li>Trash</li>
-            <li><a href="{% url 'dashboard-author' %}">Post New Thought</a></li>
-            <li><a href="{% url 'dashboard-ideas' %}">Manage Ideas</a></li>
-            <li><a href="{% url 'dashboard-thoughts' %}">Manage Thoughts</a></li>
+            <hr>
             <li>Export Database</li>
             <li>Import Database</li>
+            <hr>
             <li>User Profile</li>
             <li>Settings</li>
         </ul>

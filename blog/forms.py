@@ -30,3 +30,7 @@ class ThoughtForm(forms.ModelForm):
     class Meta:
         model = Thought
         fields = ['title', 'slug', 'content', 'idea', 'author']
+
+    def clean_content(self):
+        data = self.cleaned_data['content']
+        return data

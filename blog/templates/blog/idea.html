@@ -21,6 +21,8 @@
 
     <p>Permalink: <a href="{% url 'thought_detail' idea.slug thought.slug %}">{{ thought.slug }}</a></p>
 </div>
+{% empty %}
+<p>This idea has no thoughts yet!</p>
 {% endfor %}
 {% endblock %}
 
