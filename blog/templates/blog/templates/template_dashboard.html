@@ -51,9 +51,7 @@
         <!-- flash message area -->
         <ul class="messages">
             {% for message in messages %}
-            {% autoescape off %}
-            <li {% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
-            {% endautoescape %}
+            <li {% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message|safe }}</li>
             {% endfor %}
         </ul>
         {% endif %}

@@ -13,7 +13,7 @@
     <h3>{{ thought.title }}</h3>
     <p class="thought-author">by {{ thought.author }} on {{ thought.date_published }}</p>
     <hr class="thought-hr">
-    <p>{{ thought.content }}</p>
+    <p>{{ thought.content|safe }}</p>
 
     {% if not thought.date_published == thought.date_edited %}
     <p>{{ thought.date_edited }}</p>
