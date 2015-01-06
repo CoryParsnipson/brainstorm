@@ -19,7 +19,11 @@
 
     <script type="text/javascript">
        tinymce.init({
-         selector: "textarea.editor"
+         auto_focus: 'thought-editor',
+         selector: 'textarea.editor',
+         plugins: 'advlist autoresize autosave code contextmenu emoticons hr image insertdatetime link media paste preview save searchreplace tabfocus table textcolor visualblocks',
+         autoresize_max_height: 600,
+         //toolbar: 'emoticons save searchreplace forecolor backcolor',
        });
     </script>
 

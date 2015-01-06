@@ -23,7 +23,7 @@
         <p class="headline-idea">{{ latest_thought.idea|upper }}</p>
         <h2 class="headline" title="{{ latest_thought.slug }}"><a href="{% url 'thought_detail' latest_thought.idea.slug latest_thought.slug %}">{{ latest_thought.title }}</a></h2>
         <p class="sub-headline">by {{ latest_thought.author }} on {{ latest_thought.date_published }}</p>
-        <p>{{ latest_thought.content|safe|truncatechars:500 }}</p>
+        <p>{{ latest_thought.content|safe|striptags|truncatechars:500 }}</p>
         {% endif %}
     </div>
 </div>
@@ -40,7 +40,7 @@
         <h3 class="headline">
             <a href="{% url 'thought_detail' thought.idea.slug thought.slug %}">{{ thought.title }}</a>
         </h3>
-        <p>{{ thought.content|safe|truncatechars:70 }}</p>
+        <p>{{ thought.content|safe|striptags|truncatechars:70 }}</p>
     </li>
     {% endfor %}
 </ul>

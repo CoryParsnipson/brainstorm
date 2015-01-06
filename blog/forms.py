@@ -36,6 +36,7 @@ class ThoughtForm(forms.ModelForm):
         widgets = {
             # tinymce textarea (when js is enabled)
             'content': forms.Textarea(attrs={
+                'id': 'thought-editor',
                 'class': 'editor',
             })
         }

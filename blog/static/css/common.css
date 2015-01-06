@@ -213,6 +213,23 @@ input[type="button"]:active, input[type="submit"]:active {
 }
 
 /******************************************************************************
+ * button styles
+ *****************************************************************************/
+
+/* reset foundation button style */
+button .button {
+  border-color: initial;
+  background-color: initial;
+  color: initial;
+  transition: initial;
+}
+
+button:hover, button:focus, .button:hover, .button:focus {
+  color: initial;
+  background-color: initial;
+}
+
+/******************************************************************************
  * link styles
  *****************************************************************************/
 
