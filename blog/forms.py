@@ -20,7 +20,10 @@ class IdeaForm(forms.ModelForm):
         model = Idea
         fields = ['name', 'slug', 'description']
         widgets = {
-            'description': forms.Textarea(attrs={'rows': 1, 'cols': 40}),
+            'description': forms.Textarea(attrs={
+                'rows': 1,
+                'cols': 40,
+            }),
         }
 
 
@@ -30,7 +33,13 @@ class ThoughtForm(forms.ModelForm):
     class Meta:
         model = Thought
         fields = ['title', 'slug', 'content', 'idea', 'author']
+        widgets = {
+            # tinymce textarea (when js is enabled)
+            'content': forms.Textarea(attrs={
+                'class': 'editor',
+            })
+        }
 
-    def clean_content(self):
-        data = self.cleaned_data['content']
-        return data
+    #def clean_content(self):
+    #    data = self.cleaned_data['content']
+    #    return data

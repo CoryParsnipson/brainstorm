@@ -6,6 +6,9 @@ BASE_DIR = os.path.dirname(__file__)
 
 TEMPLATE_DIR = os.path.join(BASE_DIR, "template")
 
+STATIC_DIR = os.path.join(BASE_DIR, "static")
+IMAGE_DIR = os.path.join(STATIC_DIR, "images")
+
 VENDOR_DIR = os.path.join(BASE_DIR, "vendor")
 VENDOR_SWAGGER_DIR = os.path.join(VENDOR_DIR, "django-rest-swagger")
 

@@ -15,6 +15,13 @@
     <!-- script includes -->
     <script type="text/javascript" src="{% static 'script/jquery-1.11.1.js' %}"></script>
     <script type="text/javascript" src="{% static 'script/foundation/foundation.js' %}"></script>
+    <script type="text/javascript" src="{% static 'script/tinymce/tinymce.min.js' %}"></script>
+
+    <script type="text/javascript">
+       tinymce.init({
+         selector: "textarea.editor"
+       });
+    </script>
 
     {% block http_headers %}
     <!-- template specific head tags should be added here -->
