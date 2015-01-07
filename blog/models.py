@@ -1,5 +1,7 @@
 import re
 
+import bleach
+
 from django.db import models
 from django.db.models import Max
 from django.contrib.auth.models import User
@@ -78,6 +80,25 @@ class Thought(models.Model):
     is_trash = models.BooleanField(default=False)
     date_published = models.DateTimeField(auto_now_add=True)
     date_edited = models.DateTimeField(auto_now=True, auto_now_add=True)
+
+    # non field members
+    allowed_tags = [
+        'a', 'abbr', 'ul', 'blockquote', 'code', 'em', 'strong', 'li', 'ol',
+        'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'hr', 'p', 'br'
+    ]
+
+    def prepare(self, max_length=70):
+        """ output a form of the content field, truncated to max_length. Tags
+            will be whitelisted, stripped, and balanced to account for
+            truncation.
+        """
+        clean_str = self.content[:max_length]
+        return bleach.clean(
+            clean_str,
+            tags=self.allowed_tags,
+            strip=True,
+            strip_comments=True,
+        )
 
 
 ###############################################################################

@@ -1,4 +1,4 @@
-import urllib
+import HTMLParser
 
 from django.core.urlresolvers import reverse
 from django.core.exceptions import FieldError, ValidationError
@@ -14,6 +14,8 @@ from django.contrib.auth.decorators import login_required
 
 from rest_framework import viewsets, response
 
+import bleach
+
 from models import Idea, Thought, slugify
 from forms import LoginForm, IdeaForm, ThoughtForm
 from serializers import UserSerializer, IdeaSerializer, ThoughtSerializer
@@ -24,9 +26,21 @@ import common
 # Site skeleton views
 ###############################################################################
 def index(request):
+    h = HTMLParser.HTMLParser()
+
     latest_thoughts = Thought.objects.all().order_by("-date_published")[:9]
+    for t in latest_thoughts[1:]:
+        t.content = t.prepare()
+
+    # prepare html output for big story
+    if len(latest_thoughts):
+        latest_thought = latest_thoughts[0]
+        latest_thought.content = latest_thought.prepare(max_length=500)
+    else:
+        latest_thought = None
+
     context = {'page_title': 'Home',
-               'latest_thought': latest_thoughts[0] if len(latest_thoughts) else None,
+               'latest_thought': latest_thought,
                'latest_thoughts': latest_thoughts[1:]}
     return render(request, 'blog/index.html', context)
 
