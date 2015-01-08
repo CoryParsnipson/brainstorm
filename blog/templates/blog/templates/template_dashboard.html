@@ -23,10 +23,19 @@
          selector: 'textarea.editor',
          plugins: 'advlist anchor autoresize autosave charmap code contextmenu emoticons hr image link media paste preview save searchreplace tabfocus table textcolor visualblocks wordcount',
          autoresize_max_height: 600,
+         content_css: '{% static "css/common.css" %}',
          resize: false,
          menubar: false,
+         skin: "light",
+         font_formats: "Roboto=Roboto;"+
+           "Arial=arial,helvetica,sans-serif;"+
+           "Courier New=courier new,courier;"+
+           "Comic Sans MS=comic sans ms,sans-serif;"+
+           "Helvetica=helvetica;"+
+           "Times New Roman=times new roman,times;",
          toolbar: [
-           'undo redo | styleselect | forecolor backcolor | alignleft aligncenter alignright | outdent indent | blockquote | bullist numlist | link image media emoticons charmap | table | visualblocks preview code',
+           'undo redo | forecolor backcolor | alignleft aligncenter alignright | superscript subscript | removeformat | outdent indent | blockquote | bullist numlist | link image media emoticons charmap | table | visualblocks preview code',
+           'styleselect formatselect fontselect fontsizeselect'
          ]
        });
     </script>

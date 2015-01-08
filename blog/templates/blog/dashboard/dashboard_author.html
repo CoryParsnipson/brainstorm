@@ -4,13 +4,13 @@
 {% block content %}
 <div class="row">
     <div class="large-12 columns">
-        <h3>
+        <h2>
             {% if "thought_slug" in request.GET %}
             Edit Thought
             {% else %}
             Write New Thought
             {% endif %}
-        </h3>
+        </h2>
 
         <form action="{% url 'forms-thought' %}" method="post">
             {% csrf_token %}
@@ -21,14 +21,12 @@
                 <tr>
                     <th>{{ new_thought_form.title.label_tag }}</th>
                     <td>{{ new_thought_form.title }}</td>
-                </tr>
-                <tr>
                     <th>{{ new_thought_form.slug.label_tag }}</th>
-                    <td>{{ new_thought_form.slug }}</td>
+                    <td class="shrink">{{ new_thought_form.slug }}</td>
                 </tr>
                 <tr>
                     <th>{{ new_thought_form.content.label_tag }}</th>
-                    <td>{{ new_thought_form.content }}</td>
+                    <td colspan="3">{{ new_thought_form.content }}</td>
                 </tr>
                 <tr>
                     <td></td>

@@ -142,6 +142,11 @@
   padding: 2px;
 }
 
-.form-thought #id_title, .form-thought #id_slug {
+.form-thought #id_title {
+  font-weight: bold;
+}
+
+.form-thought #id_slug {
+  width: 150px;
   font-weight: bold;
 }
