@@ -3,7 +3,7 @@
 
 {% block content %}
 <div class="row">
-    <div class="large-12 columns">
+    <div class="large-10 large-offset-1 medium-12 small-12 columns">
         <h2>
             {% if "thought_slug" in request.GET %}
             Edit Thought
@@ -19,25 +19,30 @@
 
             <table class="form-thought">
                 <tr>
-                    <th>{{ new_thought_form.title.label_tag }}</th>
-                    <td>{{ new_thought_form.title }}</td>
-                    <th>{{ new_thought_form.slug.label_tag }}</th>
-                    <td class="shrink">{{ new_thought_form.slug }}</td>
+                    <th class="shrink">{{ new_thought_form.title.label_tag }}</th>
+                    <th class="shrink">{{ new_thought_form.slug.label_tag }}</th>
+                    <th class="shrink">{{ new_thought_form.idea.label_tag }}</th>
                 </tr>
                 <tr>
-                    <th>{{ new_thought_form.content.label_tag }}</th>
+                    <td class="expand">{{ new_thought_form.title }}</td>
+                    <td class="shrink">{{ new_thought_form.slug }}</td>
+                    <td class="shrink">
+                        {% if not idea %}
+                        {{ new_thought_form.idea }}
+                        {% endif %}
+                    </td>
+                </tr>
+                <tr>
                     <td colspan="3">{{ new_thought_form.content }}</td>
                 </tr>
                 <tr>
-                    <td></td>
-                    <td>
+                    <td colspan="3">
                         {% if "thought_slug" in request.GET %}
-                        <input type="submit" value="Edit">
+                        <input class="right" type="submit" value="Edit">
                         {% else %}
-                        <input type="submit" value="Publish">
-                        {% endif %}
-                        {% if not idea %}
-                        {{ new_thought_form.idea }}
+                        <input class="left" type="submit" value="Clear">
+                        <input class="left" type="submit" value="Save as Draft">
+                        <input class="right" type="submit" value="Publish">
                         {% endif %}
                     </td>
                 </tr>

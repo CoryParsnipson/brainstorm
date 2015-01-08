@@ -123,14 +123,11 @@
 }
 
 .form-thought th {
-  width: 1px; /* shrink to fit content */
-  text-align: right;
-  vertical-align: top;
   padding: 0 5px;
 }
 
 .form-thought td {
-  padding: 2px 0;
+  padding: 2px;
 }
 
 .form-thought textarea {
@@ -138,7 +135,7 @@
 }
 
 .form-thought select {
-  width: auto;
+  width: 200px;
   padding: 2px;
 }
 
@@ -149,4 +146,17 @@
 .form-thought #id_slug {
   width: 150px;
   font-weight: bold;
+}
+
+.form-thought input[type="submit"] {
+  width: 150px;
+  border: none;
+  color: #FFFFFF;
+  background-color: crimson;
+  margin-right: 10px;
+  padding: 10px 25px;
+}
+
+.form-thought tr td input[type="submit"]:last-of-type {
+  margin-right: 0;
 }

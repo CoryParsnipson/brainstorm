@@ -20,6 +20,14 @@ hr {
   margin: 10px 0;
 }
 
+.left {
+  float: left;
+}
+
+.right {
+  float: right;
+}
+
 /******************************************************************************
  * text styles
  *****************************************************************************/
@@ -115,6 +123,10 @@ table, table tr.even, table tr:nth-of-type(even) {
   border: none;
   background-color: transparent;
   margin: 0;
+}
+
+.expand {
+  width: 100%;
 }
 
 .shrink {
