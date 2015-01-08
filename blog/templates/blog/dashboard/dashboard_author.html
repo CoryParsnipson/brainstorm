@@ -37,12 +37,14 @@
                 </tr>
                 <tr>
                     <td colspan="3">
+                        <input id="button_clear" class="left" type="button" value="Clear" />
+                        <input id="button_revert" class="left" type="button" value="Revert Changes" />
+
                         {% if "thought_slug" in request.GET %}
-                        <input class="right" type="submit" value="Edit">
+                        <input class="publish right" type="submit" value="Edit" />
                         {% else %}
-                        <input class="left" type="submit" value="Clear">
-                        <input class="left" type="submit" value="Save as Draft">
-                        <input class="right" type="submit" value="Publish">
+                        <input class="left" type="submit" value="Save as Draft" />
+                        <input class="publish right" type="submit" value="Publish" />
                         {% endif %}
                     </td>
                 </tr>

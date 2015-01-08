@@ -22,6 +22,7 @@
          auto_focus: 'thought-editor',
          selector: 'textarea.editor',
          plugins: 'advlist anchor autoresize autosave charmap code contextmenu emoticons hr image link media paste preview save searchreplace tabfocus table textcolor visualblocks wordcount',
+         autoresize_min_height: 300,
          autoresize_max_height: 600,
          content_css: '{% static "css/common.css" %}',
          resize: false,
@@ -34,10 +35,31 @@
            "Helvetica=helvetica;"+
            "Times New Roman=times new roman,times;",
          toolbar: [
-           'undo redo | forecolor backcolor | alignleft aligncenter alignright | superscript subscript | removeformat | outdent indent | blockquote | bullist numlist | link image media emoticons charmap | table | visualblocks preview code',
-           'styleselect formatselect fontselect fontsizeselect'
-         ]
+           'undo redo | forecolor backcolor | alignleft aligncenter alignright | superscript subscript | removeformat | outdent indent | blockquote | bullist numlist | table | visualblocks preview code',
+           'styleselect formatselect fontselect fontsizeselect | link image media emoticons charmap'
+         ],
+         setup: function (editor) {
+           editor.on('loadContent', function () {
+             // save snapshot on load for "revert changes" button
+             original_state = editor.getContent();
+           });
+         }
        });
+
+       init = function () {
+         tinymce_clear = function () {
+           tinyMCE.get('thought-editor').setContent('');
+         }
+
+         tinymce_revert = function () {
+           tinyMCE.get('thought-editor').setContent(original_state);
+         }
+
+         $('#button_clear').click(tinymce_clear);
+         $('#button_revert').click(tinymce_revert);
+       };
+
+       $(document).ready(init);
     </script>
 
     {% block http_headers %}
