@@ -681,17 +681,19 @@ class FormThoughtView(View):
                         'thought_slug': instance_data['slug'],
                         'idea_slug': instance_data['idea'],
                     }
-                    return redirect(reverse('thought_detail', kwargs=kwargs))
-
+                    callback = reverse('thought_detail', kwargs=kwargs)
                 return redirect(reverse(callback) + query_string)
             else:
                 return JsonResponse(msgs)
         else:
             # loop through fields on form and add errors to dict
             errors = {}
-            i = 0
             for field in thought_form:
                 errors[field.name] = field.errors
-                i += 1
 
-            return JsonResponse(errors)
+            if callback:
+                err_msg = "<br>".join([k + ": " + " ".join(v) for k, v in errors.items() if v])
+                messages.add_message(request, messages.ERROR, err_msg)
+                return redirect(reverse('dashboard-author') + query_string)
+            else:
+                return JsonResponse(errors)

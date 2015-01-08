@@ -40,7 +40,3 @@ class ThoughtForm(forms.ModelForm):
                 'class': 'editor',
             })
         }
-
-    #def clean_content(self):
-    #    data = self.cleaned_data['content']
-    #    return data

@@ -21,10 +21,13 @@
        tinymce.init({
          auto_focus: 'thought-editor',
          selector: 'textarea.editor',
-         plugins: 'advlist autoresize autosave code contextmenu emoticons hr image insertdatetime link media paste preview save searchreplace tabfocus table textcolor visualblocks wordcount',
+         plugins: 'advlist anchor autoresize autosave charmap code contextmenu emoticons hr image link media paste preview save searchreplace tabfocus table textcolor visualblocks wordcount',
          autoresize_max_height: 600,
          resize: false,
-         //toolbar: 'emoticons save searchreplace forecolor backcolor',
+         menubar: false,
+         toolbar: [
+           'undo redo | styleselect | forecolor backcolor | alignleft aligncenter alignright | outdent indent | blockquote | bullist numlist | link image media emoticons charmap | table | visualblocks preview code',
+         ]
        });
     </script>
 
@@ -37,11 +40,11 @@
 <div id="header">
     <div class="row">
         <!-- top bar -->
-        <div class="large-6 columns">
+        <div class="large-6 medium-4 small-2 columns">
             <h1><a href="{% url 'dashboard' %}">Slacker Paradise</a></h1>
         </div>
 
-        <div id="nav-2" class="large-4 columns end">
+        <div id="nav-2" class="large-4 medium-6 small-8 columns end">
             <nav class="top-bar" data-topbar role="navigation">
                 <section class="top-bar-section">
                     <ul class="right">
@@ -58,7 +61,7 @@
 </div>
 
 <div id="content" class="row">
-    <div class="large-10 columns">
+    <div class="large-10 medium-10 small-10 columns">
         {% if messages %}
         <!-- flash message area -->
         <ul class="messages">
@@ -75,7 +78,7 @@
     </div>
 
     <!-- side content -->
-    <div id="side" class="large-2 columns">
+    <div id="side" class="large-2 medium-2 small-2 columns">
         {% block side %}
         <ul>
             <li>Analytics/Statistics</li>
@@ -102,7 +105,7 @@
 <!-- footer -->
 <div id="footer">
     <div class="row">
-        <div class="large-10 columns">
+        <div class="large-10 medium-10 small-10 columns">
             {% block footer %}
             Some kind of useful breadcrumb navigation bullshit.
             {% endblock %}
