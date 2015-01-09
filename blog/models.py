@@ -112,10 +112,12 @@ class Thought(models.Model):
     def save(self, *args, **kwargs):
         # check to see if this save means a draft is being published and
         # change date_published to now
-        if self.slug is not None:
+        try:
             orig = Thought.objects.get(slug=self.slug)
             if orig.is_draft and not self.is_draft:
                 self.date_published = datetime.datetime.now()
+        except Thought.DoesNotExist as e:
+            pass
 
         # "real" save method
         super(Thought, self).save(*args, **kwargs)
