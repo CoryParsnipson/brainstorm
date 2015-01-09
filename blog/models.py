@@ -87,7 +87,7 @@ class Thought(models.Model):
         'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'hr', 'p', 'br'
     ]
 
-    def prepare(self, max_length=70):
+    def truncate(self, max_length=70):
         """ output a form of the content field, truncated to max_length. Tags
             will be whitelisted, stripped, and balanced to account for
             truncation.

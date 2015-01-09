@@ -1,5 +1,3 @@
-import HTMLParser
-
 from django.core.urlresolvers import reverse
 from django.core.exceptions import FieldError, ValidationError
 from django.core.context_processors import csrf
@@ -14,28 +12,25 @@ from django.contrib.auth.decorators import login_required
 
 from rest_framework import viewsets, response
 
-import bleach
-
 from models import Idea, Thought, slugify
 from forms import LoginForm, IdeaForm, ThoughtForm
 from serializers import UserSerializer, IdeaSerializer, ThoughtSerializer
 
 import common
 
+
 ###############################################################################
 # Site skeleton views
 ###############################################################################
 def index(request):
-    h = HTMLParser.HTMLParser()
-
     latest_thoughts = Thought.objects.all().order_by("-date_published")[:9]
     for t in latest_thoughts[1:]:
-        t.content = t.prepare()
+        t.content = t.truncate()
 
     # prepare html output for big story
     if len(latest_thoughts):
         latest_thought = latest_thoughts[0]
-        latest_thought.content = latest_thought.prepare(max_length=500)
+        latest_thought.content = latest_thought.truncate(max_length=500)
     else:
         latest_thought = None
 
@@ -651,6 +646,11 @@ class FormThoughtView(View):
             callback = instance_data['next']
             del instance_data['next']
 
+        if 'is_draft' in instance_data:
+            instance_data['is_draft'] = True
+        else:
+            instance_data['is_draft'] = False
+
         query_string = ""
         if 'q' in instance_data:
             query_string = "?" + instance_data['q']
@@ -682,7 +682,7 @@ class FormThoughtView(View):
                         'idea_slug': instance_data['idea'],
                     }
                     callback = reverse('thought_detail', kwargs=kwargs)
-                return redirect(reverse(callback) + query_string)
+                return redirect(callback + query_string)
             else:
                 return JsonResponse(msgs)
         else:

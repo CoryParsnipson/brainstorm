@@ -15,6 +15,7 @@
             <tr>
                 <td>Date</td>
                 <td>Title</td>
+                <td>Draft</td>
                 <td>Trash</td>
                 <td>[e]</td>
                 <td>[x]</td>
@@ -27,6 +28,7 @@
                     <input type="hidden" name="thought_slug" value="{{ thought.slug }}" />
                     <td class="shrink">{{ thought.date_published|date:"N n Y" }}</td>
                     <td>{{ thought.title }}</td>
+                    <td class="shrink">{{ thought.is_draft }}</td>
                     <td class="shrink">{{ thought.is_trash }}</td>
                     <td class="shrink">
                         <a class="editable-button" href="{% url 'dashboard-author' %}?thought_slug={{ thought.slug }}">e</a>

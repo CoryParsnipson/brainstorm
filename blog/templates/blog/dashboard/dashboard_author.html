@@ -43,8 +43,8 @@
                         {% if "thought_slug" in request.GET %}
                         <input class="publish right" type="submit" value="Edit" />
                         {% else %}
-                        <input class="left" type="submit" value="Save as Draft" />
-                        <input class="publish right" type="submit" value="Publish" />
+                        <input class="left" type="submit" name="is_draft" value="Save as Draft" />
+                        <input class="publish right" type="submit" name="publish" value="Publish" />
                         {% endif %}
                     </td>
                 </tr>

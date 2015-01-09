@@ -32,7 +32,7 @@ class ThoughtForm(forms.ModelForm):
     """
     class Meta:
         model = Thought
-        fields = ['title', 'slug', 'content', 'idea', 'author']
+        fields = ['title', 'slug', 'content', 'idea', 'author', 'is_draft', 'is_trash']
         widgets = {
             # tinymce textarea (when js is enabled)
             'content': forms.Textarea(attrs={
