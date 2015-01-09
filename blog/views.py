@@ -23,7 +23,7 @@ import common
 # Site skeleton views
 ###############################################################################
 def index(request):
-    latest_thoughts = Thought.objects.filter(is_draft=False).order_by("-date_published")[:9]
+    latest_thoughts = Thought.objects.filter(is_draft=False, is_trash=False).order_by("-date_published")[:9]
     for t in latest_thoughts[1:]:
         t.content = t.truncate()
 
@@ -69,7 +69,7 @@ def about(request):
 
 def idea_detail(request, idea_slug=None):
     idea = get_object_or_404(Idea, slug=idea_slug)
-    thoughts = Thought.objects.filter(idea=idea_slug, is_draft=False).order_by('-date_published')
+    thoughts = Thought.objects.filter(idea=idea_slug, is_draft=False, is_trash=False).order_by('-date_published')
 
     context = {
         'page_title': idea.name,
@@ -99,62 +99,8 @@ def thought_detail(request, idea_slug=None, thought_slug=None):
 ###############################################################################
 @login_required(login_url='index')
 def dashboard(request, *args, **kwargs):
-    idea_page = 1
-    ideas_per_page = common.Globals.ideas_per_page
-
-    if 'per_page' in request.GET:
-        try:
-            if request.GET['per_page'] > 0 and request.GET['per_page'] <= common.Globals.ideas_per_page:
-                ideas_per_page = request.GET['per_page']
-        except TypeError as e:
-            ideas_per_page = common.Globals.ideas_per_page
-
-    num_ideas = Idea.objects.all().count()
-    num_pages = (num_ideas / ideas_per_page) + (1 if num_ideas % ideas_per_page else 0)
-
-    if 'page' in request.GET and request.GET['page'] > 0 and request.GET['page'] >= num_pages:
-        try:
-            idea_page = int(request.GET['page'])
-        except TypeError as e:
-            idea_page = 1
-
-    # paginate ideas
-    idea_page_start = (idea_page - 1) * ideas_per_page
-    idea_page_end = idea_page_start + ideas_per_page
-    idea_list = Idea.objects.all()[idea_page_start:idea_page_end]
-
-    # create idea form (or load instance data if editing an idea)
-    idea_form_instance = None
-    if 'edit_idea' in request.GET:
-        try:
-            idea_form_instance = Idea.objects.get(slug=request.GET['edit_idea'])
-        except Idea.DoesNotExist as e:
-            pass
-    idea_form = IdeaForm(instance=idea_form_instance)
-
-    # create thought form (or load instance data if editing a thought)
-    thought_form_instance = None
-    if 'edit_thought' in request.GET:
-        try:
-            thought_form_instance = Thought.objects.get(slug=request.GET['edit_thought'])
-        except Thought.DoesNotExist as e:
-            pass
-    thought_form = ThoughtForm(instance=thought_form_instance)
-
-    # thought data
-    thoughts = []
-    if 'idea_slug' in request.GET and request.GET['idea_slug']:
-        current_idea = Idea.objects.get(slug=request.GET['idea_slug'])
-        if current_idea:
-            thoughts = Thought.objects.filter(idea=current_idea)
-
     context = {
         'page_title': 'Main',
-        'ideas': idea_list,
-        'idea_form': idea_form,
-        'thoughts': thoughts,
-        'thought_form': thought_form,
-        'idea_pages': range(1, num_pages + 1)
     }
     return render(request, 'blog/dashboard/dashboard.html', context)
 
@@ -230,7 +176,7 @@ def dashboard_thoughts(request):
     if 'idea_slug' in request.GET:
         try:
             current_idea = Idea.objects.get(slug=request.GET['idea_slug'])
-            thoughts = Thought.objects.filter(idea=current_idea, is_draft=False)
+            thoughts = Thought.objects.filter(idea=current_idea, is_draft=False, is_trash=False)
         except Idea.DoesNotExist:
             thoughts = []
 
@@ -314,7 +260,7 @@ def dashboard_author(request):
 def dashboard_drafts(request):
     """ User dashboard page to manage drafts
     """
-    thoughts = Thought.objects.filter(is_draft=True).order_by('-idea')
+    thoughts = Thought.objects.filter(is_draft=True, is_trash=False).order_by('-idea')
     tags = ['a', 'strong', 'em']
 
     drafts = {}
@@ -365,7 +311,7 @@ def logout(request):
 ###############################################################################
 # helper functions
 ###############################################################################
-def get_adjacent_thought(thought_slug, get_next=True, num=1, include_drafts=False):
+def get_adjacent_thought(thought_slug, get_next=True, num=1, include_drafts=False, include_trash=False):
     """ get the next or previous Thought in the same Idea and return the
         thought object
     """
@@ -375,10 +321,19 @@ def get_adjacent_thought(thought_slug, get_next=True, num=1, include_drafts=Fals
         print e.message
         return []
 
+    query_params = {
+        'idea': thought.idea,
+        'is_draft': False,
+        'is_trash': False,
+    }
+
     if include_drafts:
-        thought_list = Thought.objects.filter(idea=thought.idea)
-    else:
-        thought_list = Thought.objects.filter(idea=thought.idea, is_draft=False)
+        del query_params['is_draft']
+
+    if include_trash:
+        del query_params['is_trash']
+
+    thought_list = Thought.objects.filter(**query_params)
 
     current_thought_idx = -1
     for idx, item in enumerate(thought_list):
@@ -508,6 +463,7 @@ class ThoughtViewSet(viewsets.ModelViewSet):
         ?exclude="true" if set, negates filter parameters\n
 
         ?draft=["true"|"false"|"both"] specify to include drafts, false by default\n
+        ?trash=["true"|"false"|"both"] specify to include trashed thoughts, false by default\n
 
         ?count=[int] total number of Thoughts to return\n
         ?slice=[int]:[int] works like python list slice\n
@@ -535,6 +491,13 @@ class ThoughtViewSet(viewsets.ModelViewSet):
                 del query_string_params['is_draft']
             elif request.GET['draft'] == "true":
                 query_string_params['is_draft'] = True
+
+        query_string_params['is_trash'] = False
+        if 'trash' in request.GET:
+            if request.GET['trash'] == "both":
+                del query_string_params['is_trash']
+            elif request.GET['trash'] == "true":
+                query_string_params['is_trash'] = True
 
         # do database query and "post processing"
         if 'exclude' in request.GET and request.GET['exclude'] == "true":

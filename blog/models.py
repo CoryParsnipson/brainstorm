@@ -97,15 +97,15 @@ class Thought(models.Model):
             allowed_tags = self.allowed_tags
 
         clean_str = self.content[:max_length]
+        if max_length < len(self.content):
+            clean_str += "..."
+
         clean_str = bleach.clean(
             clean_str,
             tags=allowed_tags,
             strip=strip,
             strip_comments=True,
         )
-
-        if max_length < len(self.content):
-            clean_str += "..."
 
         return clean_str
 
