@@ -6,7 +6,10 @@
 {% endblock %}
 
 {% block content %}
-<h1><a href="{% url 'idea_detail' thought.idea.slug %}">{{ thought.idea }}</a> >> {{ thought.title }}</h1>
+<h1>
+    <a href="{% url 'idea_detail' thought.idea.slug %}">{{ thought.idea }}</a> >> {{ thought.title }}
+    {% if thought.is_draft %}[Draft]{% endif %}
+</h1>
 <p class="thought-author">by {{ thought.author }} on {{ thought.date_published }}</p>
 <hr class="thought-hr">
 <p>{{ thought.content|safe }}</p>
@@ -14,7 +17,6 @@
 {% if not thought.date_published == thought.date_edited %}
 <p>{{ thought.date_edited }}</p>
 {% endif %}
-
 {% endblock %}
 
 {% block side %}

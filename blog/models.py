@@ -1,4 +1,5 @@
 import re
+import datetime
 
 import bleach
 
@@ -87,19 +88,37 @@ class Thought(models.Model):
         'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'hr', 'p', 'br'
     ]
 
-    def truncate(self, max_length=70):
+    def truncate(self, max_length=70, allowed_tags=None, strip=True):
         """ output a form of the content field, truncated to max_length. Tags
             will be whitelisted, stripped, and balanced to account for
             truncation.
         """
+        if not allowed_tags:
+            allowed_tags = self.allowed_tags
+
         clean_str = self.content[:max_length]
-        return bleach.clean(
+        clean_str = bleach.clean(
             clean_str,
-            tags=self.allowed_tags,
-            strip=True,
+            tags=allowed_tags,
+            strip=strip,
             strip_comments=True,
         )
 
+        if max_length < len(self.content):
+            clean_str += "..."
+
+        return clean_str
+
+    def save(self, *args, **kwargs):
+        # check to see if this save means a draft is being published and
+        # change date_published to now
+        if self.slug is not None:
+            orig = Thought.objects.get(slug=self.slug)
+            if orig.is_draft and not self.is_draft:
+                self.date_published = datetime.datetime.now()
+
+        # "real" save method
+        super(Thought, self).save(*args, **kwargs)
 
 ###############################################################################
 # model helper methods

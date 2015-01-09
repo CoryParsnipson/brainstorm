@@ -23,7 +23,7 @@ import common
 # Site skeleton views
 ###############################################################################
 def index(request):
-    latest_thoughts = Thought.objects.all().order_by("-date_published")[:9]
+    latest_thoughts = Thought.objects.filter(is_draft=False).order_by("-date_published")[:9]
     for t in latest_thoughts[1:]:
         t.content = t.truncate()
 
@@ -69,13 +69,13 @@ def about(request):
 
 def idea_detail(request, idea_slug=None):
     idea = get_object_or_404(Idea, slug=idea_slug)
-    thoughts = Thought.objects.filter(idea=idea_slug).order_by('-date_published')
+    thoughts = Thought.objects.filter(idea=idea_slug, is_draft=False).order_by('-date_published')
 
     context = {
         'page_title': idea.name,
         'idea': idea,
         'thoughts': thoughts
-        }
+    }
     return render(request, 'blog/idea.html', context)
 
 
@@ -230,7 +230,7 @@ def dashboard_thoughts(request):
     if 'idea_slug' in request.GET:
         try:
             current_idea = Idea.objects.get(slug=request.GET['idea_slug'])
-            thoughts = Thought.objects.filter(idea=current_idea)
+            thoughts = Thought.objects.filter(idea=current_idea, is_draft=False)
         except Idea.DoesNotExist:
             thoughts = []
 
@@ -276,6 +276,13 @@ def dashboard_thoughts_backend(request):
         except Thought.DoesNotExist as e:
             pass
         return redirect(reverse('dashboard-thoughts') + "?" + query_string)
+    elif 'unpublish' in request.POST:
+        unpublish_thought(request.POST['thought_slug'])
+        thought = Thought.objects.get(slug=request.POST['thought_slug'])
+        query_string = urlencode({
+            'idea_slug': thought.idea.slug,
+        })
+        return redirect(reverse('dashboard-thoughts') + "?" + query_string)
 
     return redirect(reverse('dashboard'))
 
@@ -301,6 +308,33 @@ def dashboard_author(request):
         'new_thought_form': new_thought_form,
     }
     return render(request, 'blog/dashboard/dashboard_author.html', context)
+
+
+@login_required(login_url='index')
+def dashboard_drafts(request):
+    """ User dashboard page to manage drafts
+    """
+    thoughts = Thought.objects.filter(is_draft=True).order_by('-idea')
+    tags = ['a', 'strong', 'em']
+
+    drafts = {}
+    for t in thoughts:
+        t.content = t.truncate(max_length=100, allowed_tags=tags)
+
+        if t.idea not in drafts:
+            drafts[t.idea] = []
+        drafts[t.idea].append(t)
+
+    context = {
+        'page_title': 'Drafts',
+        'drafts': drafts,
+    }
+    return render(request, 'blog/dashboard/dashboard_drafts.html', context)
+
+
+@login_required(login_url='index')
+def dashboard_drafts_backend(request):
+    pass
 
 
 ###############################################################################
@@ -331,7 +365,7 @@ def logout(request):
 ###############################################################################
 # helper functions
 ###############################################################################
-def get_adjacent_thought(thought_slug, get_next=True, num=1):
+def get_adjacent_thought(thought_slug, get_next=True, num=1, include_drafts=False):
     """ get the next or previous Thought in the same Idea and return the
         thought object
     """
@@ -341,7 +375,10 @@ def get_adjacent_thought(thought_slug, get_next=True, num=1):
         print e.message
         return []
 
-    thought_list = Thought.objects.filter(idea=thought.idea)
+    if include_drafts:
+        thought_list = Thought.objects.filter(idea=thought.idea)
+    else:
+        thought_list = Thought.objects.filter(idea=thought.idea, is_draft=False)
 
     current_thought_idx = -1
     for idx, item in enumerate(thought_list):
@@ -403,6 +440,21 @@ def swap_ideas(idea_slug, adjacent_idea_slug):
     return True
 
 
+def unpublish_thought(thought_slug):
+    """ Select a thought by the slug and change the is_draft field
+        back to True
+    """
+    thought_slug = slugify(thought_slug)
+
+    try:
+        thought = Thought.objects.get(slug=thought_slug)
+        thought.is_draft = True
+        thought.save()
+    except Thought.DoesNotExist:
+        return False
+    return True
+
+
 ###############################################################################
 # RESTful API
 ###############################################################################
@@ -455,6 +507,8 @@ class ThoughtViewSet(viewsets.ModelViewSet):
         ?newer_than=[str] all Thoughts newer than 'yyyy-mm-dd hh:mm'\n
         ?exclude="true" if set, negates filter parameters\n
 
+        ?draft=["true"|"false"|"both"] specify to include drafts, false by default\n
+
         ?count=[int] total number of Thoughts to return\n
         ?slice=[int]:[int] works like python list slice\n
 
@@ -473,6 +527,14 @@ class ThoughtViewSet(viewsets.ModelViewSet):
 
         if 'newer_than' in request.GET:
             query_string_params['date_published__gt'] = request.GET['newer_than']
+
+        # exclude drafts by default
+        query_string_params['is_draft'] = False
+        if 'draft' in request.GET:
+            if request.GET['draft'] == "both":
+                del query_string_params['is_draft']
+            elif request.GET['draft'] == "true":
+                query_string_params['is_draft'] = True
 
         # do database query and "post processing"
         if 'exclude' in request.GET and request.GET['exclude'] == "true":
@@ -513,6 +575,9 @@ class ThoughtViewSet(viewsets.ModelViewSet):
             ?prev=[int] if this is set, get the previous Thought (or empty str)\n
                         the integer value determines how many Thoughts to return \n\n
         """
+
+        # TODO: make draft thought require admin permissions to pull
+
         try:
             thought = Thought.objects.get(slug=kwargs['slug'])
         except ValueError as e:

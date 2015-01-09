@@ -40,11 +40,16 @@
                         <input id="button_clear" class="left" type="button" value="Clear" />
                         <input id="button_revert" class="left" type="button" value="Revert Changes" />
 
-                        {% if "thought_slug" in request.GET %}
-                        <input class="publish right" type="submit" value="Edit" />
+                        {% if new_thought_form.is_draft.value == True %}
+                        <input class="left" type="submit" name="is_draft" value="Save Changes" />
+                        <input class="publish right" type="submit" value="Publish" />
                         {% else %}
-                        <input class="left" type="submit" name="is_draft" value="Save as Draft" />
-                        <input class="publish right" type="submit" name="publish" value="Publish" />
+                          {% if "thought_slug" in request.GET %}
+                          <input class="publish right" type="submit" value="Edit" />
+                          {% else %}
+                          <input class="left" type="submit" name="is_draft" value="Save as Draft" />
+                          <input class="publish right" type="submit" name="publish" value="Publish" />
+                          {% endif %}
                         {% endif %}
                     </td>
                 </tr>

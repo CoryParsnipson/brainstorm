@@ -27,6 +27,8 @@ urlpatterns = patterns('',
     url(r'^dashboard/thoughts/$', views.dashboard_thoughts, name='dashboard-thoughts'),
     url(r'^dashboard/thoughts/backend/$', views.dashboard_thoughts_backend, name='dashboard-thoughts-backend'),
     url(r'^dashboard/author/$', views.dashboard_author, name='dashboard-author'),
+    url(r'^dashboard/drafts/$', views.dashboard_drafts, name='dashboard-drafts'),
+    url(r'^dashboard/drafts/backend/$', views.dashboard_drafts_backend, name='dashboard-drafts-backend'),
 
     url(r'^about/', views.about, name='about'),
     url(r'^ideas/$', views.ideas, name='idea_list'),
