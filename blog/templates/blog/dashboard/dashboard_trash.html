@@ -1,0 +1,46 @@
+{% extends 'blog/templates/template_dashboard.html' %}
+{% load staticfiles %}
+
+{% block content %}
+<h1>Trash</h1>
+
+<table class="editable">
+    <tbody>
+    {% for idea, thought_list in thoughts.items %}
+    <tr>
+        <th colspan="5">{{ idea }}</th>
+    </tr>
+
+    <tr>
+        <td class="editable-header">Title</td>
+        <td class="editable-header">Slug</td>
+        <td class="editable-header">Content</td>
+        <td></td>
+        <td></td>
+    </tr>
+
+    {% for t in thought_list %}
+    <form action="{% url 'dashboard-thoughts-backend' %}" method="post">
+        <input type="hidden" name="thought_slug" value="{{ t.slug }}" />
+        <input type="hidden" name="next" value="{% url 'dashboard-trash' %}" />
+        {% csrf_token %}
+        <tr>
+            <td class="shrink">{{ t.title }}</td>
+            <td class="shrink">{{ t.slug }}</td>
+            <td>{{ t.content }}</td>
+            <td class="shrink">
+                <input type="submit" name="untrash" value="untrash"/>
+            </td>
+            <td class="shrink">
+                <input type="submit" name="delete" value="delete" />
+            </td>
+        </tr>
+    </form>
+    {% endfor %}
+
+    {% empty %}
+    <tr><td>There are no Thoughts in the trash.</td></tr>
+    {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

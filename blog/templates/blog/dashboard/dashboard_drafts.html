@@ -20,15 +20,22 @@
     </tr>
 
     {% for draft in thoughts %}
-    <tr>
-        <td class="shrink">{{ draft.title }}</td>
-        <td class="shrink">{{ draft.slug }}</td>
-        <td>{{ draft.content|safe }}</td>
-        <td class="shrink">
-            <a class="editable-button" href="{% url 'dashboard-author' %}?thought_slug={{ draft.slug }}">edit</a>
-        </td>
-        <td class="shrink">discard</td>
-    </tr>
+    <form action="{% url 'dashboard-thoughts-backend' %}" method="post">
+        <input type="hidden" name="thought_slug" value="{{ draft.slug }}" />
+        <input type="hidden" name="next" value="{% url 'dashboard-drafts' %}" />
+        {% csrf_token %}
+        <tr>
+            <td class="shrink">{{ draft.title }}</td>
+            <td class="shrink">{{ draft.slug }}</td>
+            <td>{{ draft.content|safe }}</td>
+            <td class="shrink">
+                <a class="editable-button" href="{% url 'dashboard-author' %}?thought_slug={{ draft.slug }}">edit</a>
+            </td>
+            <td class="shrink">
+                <input type="submit" name="trash" value="discard" />
+            </td>
+        </tr>
+    </form>
     {% endfor %}
     {% empty %}
     <tr><td>There are no drafts in database.</td></tr>

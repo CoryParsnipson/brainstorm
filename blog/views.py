@@ -16,8 +16,6 @@ from models import Idea, Thought, slugify
 from forms import LoginForm, IdeaForm, ThoughtForm
 from serializers import UserSerializer, IdeaSerializer, ThoughtSerializer
 
-import common
-
 
 ###############################################################################
 # Site skeleton views
@@ -190,47 +188,49 @@ def dashboard_thoughts(request):
 
 @login_required(login_url='index')
 def dashboard_thoughts_backend(request):
-    if 'delete' in request.POST or 'undelete' in request.POST:
-        try:
-            thought_slug = slugify(request.POST['thought_slug'])
-            thought = Thought.objects.get(slug=thought_slug)
+    query_string = ""
+    if 'next' in request.POST:
+        next_url = request.POST['next']
+    else:
+        next_url = reverse('dashboard-thoughts')
 
-            if 'delete' in request.POST:
-                thought.is_trash = True
+    if 'trash' in request.POST or 'untrash' in request.POST:
+        trash = True if 'trash' in request.POST else False
+        result = thought_set_trash(request.POST['thought_slug'], trash=trash)
 
-                # jesus, is there a better way to do this??
-                be_msg = "Thought %s was trashed. " \
-                         "<form action='%s' method='post'>" \
-                         "<input type='hidden' name='csrfmiddlewaretoken' value='%s' />" \
-                         "<input type='hidden' name='thought_slug' value='%s' />" \
-                         "<input type='submit' name='undelete' value='Undo' />" \
-                         "</form>" % (thought.slug,
-                                      reverse('dashboard-thoughts-backend'),
-                                      csrf(request)['csrf_token'],
-                                      thought_slug)
+        if result:
+            try:
+                thought_slug = slugify(request.POST['thought_slug'])
+                thought = Thought.objects.get(slug=thought_slug)
 
-            elif 'undelete' in request.POST:
-                thought.is_trash = False
-                be_msg = "Thought %s was taken out of trash." % thought.slug
+                if trash:
+                    be_msg = "Thought %s was trashed. " % thought.slug
+                    be_msg += "<form action='%s' method='post'>" % reverse('dashboard-thoughts-backend')
+                    be_msg += "<input type='hidden' name='csrfmiddlewaretoken' value='%s' />" % unicode(csrf(request)['csrf_token'])
+                    be_msg += "<input type='hidden' name='thought_slug' value='%s' />" % thought.slug
 
-            thought.save()
-            messages.add_message(request, messages.SUCCESS, be_msg)
+                    if 'next' in request.POST:
+                        be_msg += '<input type="hidden" name="next" value="%s" />' % request.POST['next']
 
-            query_string = urlencode({
-                'idea_slug': thought.idea.slug,
-            })
-        except Thought.DoesNotExist as e:
-            pass
-        return redirect(reverse('dashboard-thoughts') + "?" + query_string)
+                    be_msg += "<input type='submit' name='untrash' value='Undo' />"
+                    be_msg += "</form>"
+                    messages.add_message(request, messages.SUCCESS, be_msg)
+
+                query_string = urlencode({
+                    'idea_slug': thought.idea.slug,
+                })
+            except Thought.DoesNotExist as e:
+                pass
     elif 'unpublish' in request.POST:
         unpublish_thought(request.POST['thought_slug'])
         thought = Thought.objects.get(slug=request.POST['thought_slug'])
         query_string = urlencode({
             'idea_slug': thought.idea.slug,
         })
-        return redirect(reverse('dashboard-thoughts') + "?" + query_string)
+    elif 'delete' in request.POST:
+        delete_thought(request.POST['thought_slug'])
 
-    return redirect(reverse('dashboard'))
+    return redirect(next_url + "?" + query_string)
 
 
 @login_required(login_url='index')
@@ -279,8 +279,25 @@ def dashboard_drafts(request):
 
 
 @login_required(login_url='index')
-def dashboard_drafts_backend(request):
-    pass
+def dashboard_trash(request):
+    """ user dashboard page to manage thoughts in trash
+    """
+    thoughts = Thought.objects.filter(is_trash=True).order_by("date_published")
+    tags = ['a', 'strong', 'em']
+
+    trash = {}
+    for t in thoughts:
+        t.content = t.truncate(max_length=100, allowed_tags=tags)
+
+        if t.idea not in trash:
+            trash[t.idea] = []
+        trash[t.idea].append(t)
+
+    context = {
+        'page_title': 'Trash',
+        'thoughts': trash,
+    }
+    return render(request, 'blog/dashboard/dashboard_trash.html', context)
 
 
 ###############################################################################
@@ -395,6 +412,22 @@ def swap_ideas(idea_slug, adjacent_idea_slug):
     return True
 
 
+def thought_set_trash(thought_slug, trash=True):
+    """ set the is_trash field on a given Thought.
+
+        return True on success, False on failure
+    """
+    try:
+        thought_slug = slugify(thought_slug)
+        thought = Thought.objects.get(slug=thought_slug)
+
+        thought.is_trash = trash
+        thought.save()
+    except Thought.DoesNotExist as e:
+        return False
+    return True
+
+
 def unpublish_thought(thought_slug):
     """ Select a thought by the slug and change the is_draft field
         back to True
@@ -405,6 +438,19 @@ def unpublish_thought(thought_slug):
         thought = Thought.objects.get(slug=thought_slug)
         thought.is_draft = True
         thought.save()
+    except Thought.DoesNotExist:
+        return False
+    return True
+
+
+def delete_thought(thought_slug):
+    """ Delete a thought specified by thought_slug
+    """
+    thought_slug = slugify(thought_slug)
+
+    try:
+        thought = Thought.objects.get(slug=thought_slug)
+        thought.delete()
     except Thought.DoesNotExist:
         return False
     return True
@@ -497,7 +543,9 @@ class ThoughtViewSet(viewsets.ModelViewSet):
             if request.GET['trash'] == "both":
                 del query_string_params['is_trash']
             elif request.GET['trash'] == "true":
+                # trash should show drafts too
                 query_string_params['is_trash'] = True
+                del query_string_params['is_draft']
 
         # do database query and "post processing"
         if 'exclude' in request.GET and request.GET['exclude'] == "true":
