@@ -73,12 +73,9 @@ p {
  * custom grid styles
  *****************************************************************************/
 
-.row .row {
-  margin: 0; /* reset inner foundation margin */
-}
-
-.column, .columns {
-  padding: 5px; /* overwrite foundation padding */
+.row {
+  margin: 0 auto; /* reset inner foundation margin */
+  max-width: 70rem;
 }
 
 #header {
@@ -100,6 +97,7 @@ p {
 
 #side {
   background-color: #DEC564;
+  padding-left: 5rem;
 }
 
 #footer {

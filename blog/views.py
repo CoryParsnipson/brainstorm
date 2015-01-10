@@ -22,7 +22,9 @@ from serializers import UserSerializer, IdeaSerializer, ThoughtSerializer
 ###############################################################################
 def index(request):
     latest_thoughts = Thought.objects.filter(is_draft=False, is_trash=False).order_by("-date_published")[:9]
-    for t in latest_thoughts[1:]:
+
+    small_stories = latest_thoughts[1:]
+    for t in small_stories:
         t.content = t.truncate()
 
     # prepare html output for big story
@@ -34,7 +36,7 @@ def index(request):
 
     context = {'page_title': 'Home',
                'latest_thought': latest_thought,
-               'latest_thoughts': latest_thoughts[1:]}
+               'latest_thoughts': small_stories}
     return render(request, 'blog/index.html', context)
 
 

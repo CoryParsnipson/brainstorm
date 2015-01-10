@@ -20,7 +20,7 @@
     </tr>
 
     {% for t in thought_list %}
-    <form action="{% url 'dashboard-thoughts-backend' %}" method="post">
+    <form action="{% url 'dashboard-backend' %}" method="post">
         <input type="hidden" name="thought_slug" value="{{ t.slug }}" />
         <input type="hidden" name="next" value="{% url 'dashboard-trash' %}" />
         {% csrf_token %}

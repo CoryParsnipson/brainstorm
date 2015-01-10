@@ -16,14 +16,13 @@
                 <td>Date</td>
                 <td>Title</td>
                 <td></td>
-                <td>Trash</td>
                 <td>[e]</td>
                 <td>[x]</td>
             </tr>
 
             {% for thought in thoughts %}
             <tr>
-                <form action="{% url 'dashboard-thoughts-backend' %}" method="post">
+                <form action="{% url 'dashboard-backend' %}" method="post">
                     {% csrf_token %}
                     <input type="hidden" name="thought_slug" value="{{ thought.slug }}" />
                     <td class="shrink">{{ thought.date_published|date:"N n Y" }}</td>
@@ -31,7 +30,6 @@
                     <td class="shrink">
                         <input class="button-box" type="submit" name="unpublish" value="unpublish" />
                     </td>
-                    <td class="shrink">{{ thought.is_trash }}</td>
                     <td class="shrink">
                         <a class="editable-button" href="{% url 'dashboard-author' %}?thought_slug={{ thought.slug }}">e</a>
                     </td>

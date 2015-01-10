@@ -29,52 +29,50 @@
 </head>
 <body name="top">
 
-<div id="header">
-    <div class="row">
-        <!-- top bar -->
-        <div class="large-7 medium-7 small-7 columns">
-            <h1><a href="{% url 'index' %}">Slacker Paradise</a></h1>
-        </div>
-
-        <div id="nav-2" class="large-5 medium-5 small-5 columns">
-            <!-- secondary navigation content -->
-            <nav class="top-bar" data-topbar role="navigation">
-                <section class="top-bar-section">
-                    <ul class="right">
-                        <li>
-                            {% if request.user.is_authenticated %}
-                            <a href="{% url 'dashboard' %}">Dashboard</a>
-                            {% else %}
-                            <a href="{% url 'login_page' %}">Log In</a>
-                            {% endif %}
-                        </li>
-                    </ul>
-                </section>
-            </nav>
-        </div>
+<div id="header" class="row">
+    <!-- top bar -->
+    <div class="large-5 medium-7 small-7 columns">
+        <h1><a href="{% url 'index' %}">Slacker Paradise</a></h1>
     </div>
 
-    <div class="row">
-        <!-- navigation content -->
-        <div id="nav" class="large-9 medium-9 small-9 columns">
-            <nav class="top-bar">
-                <section class="top-bar-section">
-                    <ul class="left">
-                        <li><a href="{% url 'index' %}">Home</a></li>
-                        <li><a href="{% url 'about' %}">About</a></li>
-                        <li><a href="{% url 'idea_list' %}">Ideas</a></li>
-                    </ul>
-                </section>
-            </nav>
-        </div>
+    <div id="nav-2" class="large-5 medium-5 small-5 columns">
+        <!-- secondary navigation content -->
+        <nav class="top-bar" data-topbar role="navigation">
+            <section class="top-bar-section">
+                <ul class="right">
+                    <li>
+                        {% if request.user.is_authenticated %}
+                        <a href="{% url 'dashboard' %}">Dashboard</a>
+                        {% else %}
+                        <a href="{% url 'login_page' %}">Log In</a>
+                        {% endif %}
+                    </li>
+                </ul>
+            </section>
+        </nav>
+    </div>
+</div>
+
+<div class="row">
+    <!-- navigation content -->
+    <div id="nav" class="large-8 medium-8 small-8 columns">
+        <nav class="top-bar">
+            <section class="top-bar-section">
+                <ul class="left">
+                    <li><a href="{% url 'index' %}">Home</a></li>
+                    <li><a href="{% url 'about' %}">About</a></li>
+                    <li><a href="{% url 'idea_list' %}">Ideas</a></li>
+                </ul>
+            </section>
+        </nav>
     </div>
 </div>
 
 <div id="content" class="row">
-    <div class="large-9 medium-12 small-12 columns">
+    <div class="large-8 medium-12 small-12 columns">
         {% if messages %}
         <!-- flash message area -->
-        <ul class="messages" style="list-style-type: none; color: red; font-weight: bold">
+        <ul class="messages">
             {% for message in messages %}
             <li {% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message|safe }}</li>
             {% endfor %}
@@ -88,7 +86,7 @@
     </div>
 
     <!-- side content -->
-    <div id="side" class="large-3 medium-4 small-10 columns">
+    <div id="side" class="large-4 medium-12 small-12 columns">
         {% block side %}
         <div class="link-box">
             <p>Links to check out:</p>
@@ -112,7 +110,7 @@
 <!-- footer -->
 <div id="footer">
     <div class="row">
-        <div class="large-9 medium-9 small-9 columns">
+        <div class="large-12 medium-12 small-12 columns">
             {% block footer %}
             <p>"Trending" ideas/thoughts</p>
             <p>Copyright 2014 - 2015, Cory Parsnipson</p>
