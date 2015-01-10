@@ -23,12 +23,11 @@ urlpatterns = patterns('',
 
     url(r'^dashboard/$', views.dashboard, name='dashboard'),
     url(r'^dashboard/ideas/$', views.dashboard_ideas, name='dashboard-ideas'),
-    url(r'^dashboard/ideas/backend/$', views.dashboard_ideas_backend, name='dashboard-ideas-backend'),
     url(r'^dashboard/thoughts/$', views.dashboard_thoughts, name='dashboard-thoughts'),
-    url(r'^dashboard/thoughts/backend/$', views.dashboard_thoughts_backend, name='dashboard-thoughts-backend'),
     url(r'^dashboard/author/$', views.dashboard_author, name='dashboard-author'),
     url(r'^dashboard/drafts/$', views.dashboard_drafts, name='dashboard-drafts'),
     url(r'^dashboard/trash/$', views.dashboard_trash, name='dashboard-trash'),
+    url(r'^dashboard/backend/$', views.dashboard_backend, name='dashboard-backend'),
 
     url(r'^about/', views.about, name='about'),
     url(r'^ideas/$', views.ideas, name='idea_list'),

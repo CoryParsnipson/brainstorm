@@ -53,16 +53,16 @@ def logout_page(request):
     return render(request, 'blog/logout.html', context)
 
 
+def about(request):
+    context = {'page_title': 'About'}
+    return render(request, 'blog/about.html', context)
+
+
 def ideas(request):
     idea_list = Idea.objects.all()
     context = {'page_title': 'Ideas',
                'ideas': idea_list}
     return render(request, 'blog/ideas.html', context)
-
-
-def about(request):
-    context = {'page_title': 'About'}
-    return render(request, 'blog/about.html', context)
 
 
 def idea_detail(request, idea_slug=None):
@@ -133,39 +133,6 @@ def dashboard_ideas(request):
 
 
 @login_required(login_url='index')
-def dashboard_ideas_backend(request):
-    if 'delete' in request.POST:
-        try:
-            safe_delete_idea(request.POST['idea'])
-        except ValidationError as e:
-            messages.add_message(request, messages.ERROR, e.message)
-        return redirect(reverse('dashboard-ideas'))
-
-    if 'order_up' in request.POST or 'order_down' in request.POST:
-        try:
-            err_msg = None
-            idea_slug = slugify(request.POST['idea'])
-            idea = Idea.objects.get(slug=idea_slug)
-
-            if 'order_up' in request.POST:
-                adjacent_idea = idea.get_next()
-            else:
-                adjacent_idea = idea.get_prev()
-
-            if adjacent_idea:
-                swap_ideas(idea_slug, adjacent_idea.slug)
-        except KeyError as e:
-            err_msg = e.message
-        except Idea.DoesNotExist as e:
-            err_msg = e.message
-        finally:
-            if err_msg:
-                messages.add_message(request, messages.ERROR, err_msg)
-
-        return redirect(reverse('dashboard-ideas'))
-
-
-@login_required(login_url='index')
 def dashboard_thoughts(request):
     # thought data
     thoughts = []
@@ -184,53 +151,6 @@ def dashboard_thoughts(request):
         'idea': current_idea
     }
     return render(request, 'blog/dashboard/dashboard_thoughts.html', context)
-
-
-@login_required(login_url='index')
-def dashboard_thoughts_backend(request):
-    query_string = ""
-    if 'next' in request.POST:
-        next_url = request.POST['next']
-    else:
-        next_url = reverse('dashboard-thoughts')
-
-    if 'trash' in request.POST or 'untrash' in request.POST:
-        trash = True if 'trash' in request.POST else False
-        result = thought_set_trash(request.POST['thought_slug'], trash=trash)
-
-        if result:
-            try:
-                thought_slug = slugify(request.POST['thought_slug'])
-                thought = Thought.objects.get(slug=thought_slug)
-
-                if trash:
-                    be_msg = "Thought %s was trashed. " % thought.slug
-                    be_msg += "<form action='%s' method='post'>" % reverse('dashboard-thoughts-backend')
-                    be_msg += "<input type='hidden' name='csrfmiddlewaretoken' value='%s' />" % unicode(csrf(request)['csrf_token'])
-                    be_msg += "<input type='hidden' name='thought_slug' value='%s' />" % thought.slug
-
-                    if 'next' in request.POST:
-                        be_msg += '<input type="hidden" name="next" value="%s" />' % request.POST['next']
-
-                    be_msg += "<input type='submit' name='untrash' value='Undo' />"
-                    be_msg += "</form>"
-                    messages.add_message(request, messages.SUCCESS, be_msg)
-
-                query_string = urlencode({
-                    'idea_slug': thought.idea.slug,
-                })
-            except Thought.DoesNotExist as e:
-                pass
-    elif 'unpublish' in request.POST:
-        unpublish_thought(request.POST['thought_slug'])
-        thought = Thought.objects.get(slug=request.POST['thought_slug'])
-        query_string = urlencode({
-            'idea_slug': thought.idea.slug,
-        })
-    elif 'delete' in request.POST:
-        delete_thought(request.POST['thought_slug'])
-
-    return redirect(next_url + "?" + query_string)
 
 
 @login_required(login_url='index')
@@ -298,6 +218,78 @@ def dashboard_trash(request):
         'thoughts': trash,
     }
     return render(request, 'blog/dashboard/dashboard_trash.html', context)
+
+
+@login_required(login_url='index')
+def dashboard_backend(request):
+    query_string = ""
+    if 'next' in request.POST:
+        next_url = request.POST['next']
+    else:
+        next_url = reverse('dashboard-thoughts')
+
+    if 'trash' in request.POST or 'untrash' in request.POST:
+        trash = True if 'trash' in request.POST else False
+        result = thought_set_trash(request.POST['thought_slug'], trash=trash)
+
+        if result:
+            try:
+                thought_slug = slugify(request.POST['thought_slug'])
+                thought = Thought.objects.get(slug=thought_slug)
+
+                if trash:
+                    be_msg = "Thought %s was trashed. " % thought.slug
+                    be_msg += "<form action='%s' method='post'>" % reverse('dashboard-thoughts-backend')
+                    be_msg += "<input type='hidden' name='csrfmiddlewaretoken' value='%s' />" % unicode(csrf(request)['csrf_token'])
+                    be_msg += "<input type='hidden' name='thought_slug' value='%s' />" % thought.slug
+
+                    if 'next' in request.POST:
+                        be_msg += '<input type="hidden" name="next" value="%s" />' % request.POST['next']
+
+                    be_msg += "<input type='submit' name='untrash' value='Undo' />"
+                    be_msg += "</form>"
+                    messages.add_message(request, messages.SUCCESS, be_msg)
+
+                query_string = urlencode({
+                    'idea_slug': thought.idea.slug,
+                })
+            except Thought.DoesNotExist as e:
+                pass
+    elif 'unpublish' in request.POST:
+        thought_unpublish(request.POST['thought_slug'])
+        thought = Thought.objects.get(slug=request.POST['thought_slug'])
+        query_string = urlencode({
+            'idea_slug': thought.idea.slug,
+        })
+    elif 'delete_thought' in request.POST:
+        thought_delete(request.POST['thought_slug'])
+    elif 'delete_idea' in request.POST:
+        try:
+            safe_delete_idea(request.POST['idea'])
+        except ValidationError as e:
+            messages.add_message(request, messages.ERROR, e.message)
+    elif 'order_up' in request.POST or 'order_down' in request.POST:
+        try:
+            err_msg = None
+            idea_slug = slugify(request.POST['idea'])
+            idea = Idea.objects.get(slug=idea_slug)
+
+            if 'order_up' in request.POST:
+                adjacent_idea = idea.get_next()
+            else:
+                adjacent_idea = idea.get_prev()
+
+            if adjacent_idea:
+                swap_ideas(idea_slug, adjacent_idea.slug)
+        except KeyError as e:
+            err_msg = e.message
+        except Idea.DoesNotExist as e:
+            err_msg = e.message
+        finally:
+            if err_msg:
+                messages.add_message(request, messages.ERROR, err_msg)
+
+    return redirect(next_url + "?" + query_string)
 
 
 ###############################################################################
@@ -428,7 +420,7 @@ def thought_set_trash(thought_slug, trash=True):
     return True
 
 
-def unpublish_thought(thought_slug):
+def thought_unpublish(thought_slug):
     """ Select a thought by the slug and change the is_draft field
         back to True
     """
@@ -443,7 +435,7 @@ def unpublish_thought(thought_slug):
     return True
 
 
-def delete_thought(thought_slug):
+def thought_delete(thought_slug):
     """ Delete a thought specified by thought_slug
     """
     thought_slug = slugify(thought_slug)
