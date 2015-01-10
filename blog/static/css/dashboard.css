@@ -9,7 +9,7 @@
  *****************************************************************************/
 
 .row {
-  min-width: 100%;
+  max-width: 100rem;
 }
 
 .dashboard-panel {
@@ -19,6 +19,7 @@
 }
 
 #content {
+  padding-bottom: 2rem;
 }
 
 #side {
@@ -26,6 +27,7 @@
   top: 0;
   right: 0;
   bottom: 0;
+  padding: 5px;
 }
 
 #footer {

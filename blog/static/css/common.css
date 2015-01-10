@@ -98,6 +98,7 @@ p {
 #side {
   background-color: #DEC564;
   padding-left: 5rem;
+  padding-right: 0;
 }
 
 #footer {
