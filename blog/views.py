@@ -1,3 +1,5 @@
+import os
+
 from django.core.urlresolvers import reverse
 from django.core.exceptions import FieldError, ValidationError
 from django.core.context_processors import csrf
@@ -15,6 +17,8 @@ from rest_framework import viewsets, response
 from models import Idea, Thought, slugify
 from forms import LoginForm, IdeaForm, ThoughtForm
 from serializers import UserSerializer, IdeaSerializer, ThoughtSerializer
+
+import paths
 
 
 ###############################################################################
@@ -319,6 +323,20 @@ def logout(request):
     return redirect(logout_page)
 
 
+@login_required(login_url='index')
+def upload(request):
+    """ server logic for handling file/image/video/mp3 uploads
+    """
+    files = {}
+
+    if request.method == 'POST':
+        for file_input, f in request.FILES.items():
+            result, files[f.name] = upload_file(f)
+
+        return JsonResponse(files)
+    return JsonResponse({'msg': 'Unsupported method for Upload. (POST only)'})
+
+
 ###############################################################################
 # helper functions
 ###############################################################################
@@ -449,6 +467,39 @@ def thought_delete(thought_slug):
         return False
     return True
 
+
+def upload_file(f):
+    """ Given file post data, place filedata into media directory
+
+        Watch out. This function will return False, file_url if the
+        file already exists. This will point to the right url, but
+        maybe not be the file you were expecting.
+
+        Returns 2-tuple (Boolean, String)
+          success -> True, file_url of newly created file
+          failure -> False, error message
+    """
+    # TODO: filesize limit and quotas?
+
+    file_dir = paths.MEDIA_IMAGE_ROOT
+    file_url = os.path.join(file_dir, f.name)
+
+    try:
+        os.makedirs(file_dir)
+    except OSError:
+        # if there is a file with the same name as the intended directory,
+        # fail, else directory exists and everything is ok
+        if os.path.exists(file_dir) and not os.path.isdir(file_dir):
+            return False, "%s cannot be created." % file_dir
+
+    if os.path.exists(file_url):
+        # file already exists, return file_url
+        return False, file_url
+
+    with open(file_url, 'wb+') as destination:
+        for chunk in f.chunks():
+            destination.write(chunk)
+    return True, file_url
 
 ###############################################################################
 # RESTful API

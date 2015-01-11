@@ -90,11 +90,14 @@ USE_TZ = True
 # Flash Message settings
 MESSAGE_STORAGE = 'django.contrib.messages.storage.session.SessionStorage'
 
-
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.7/howto/static-files/
 STATIC_URL = '/' + os.path.basename(paths.STATIC_DIR) + '/'
 STATIC_ROOT = paths.STATIC_DIR
+
+# media files
+MEDIA_URL = '/' + os.path.basename(paths.MEDIA_DIR) + '/'
+MEDIA_ROOT = paths.MEDIA_DIR
 
 # Template dirs
 # keep global, non-app specific template files here
