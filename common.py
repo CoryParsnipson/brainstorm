@@ -8,8 +8,6 @@ class Globals:
     def __init__(self):
         return
 
-    ideas_per_page = 10
-
 
 class KeyRing:
     """ key value storage of sensitive information and passwords for the site

@@ -41,6 +41,12 @@
 
         var test = function (data) {
           for (filename in data) {
+            var valid_filename = /^[0-9]*\-[0-9]{2,3}\.[a-zA-Z0-9]+$/;
+            if (filename.match(valid_filename) === null) {
+              alert(data[filename]);
+              return;
+            }
+
             lwin.document.getElementById(lfieldname).value = get_absolute_url(data[filename]);
           }
         }
@@ -92,6 +98,7 @@
         resize: false,
         menubar: false,
         skin: "light",
+        relative_urls: false,
         font_formats: "Roboto=Roboto;"+
           "Arial=arial,helvetica,sans-serif;"+
           "Courier New=courier new,courier;"+

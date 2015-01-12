@@ -1,4 +1,6 @@
 import os
+import time
+import random
 
 from django.core.urlresolvers import reverse
 from django.core.exceptions import FieldError, ValidationError
@@ -468,10 +470,22 @@ def thought_delete(thought_slug):
     return True
 
 
+def generate_filename(orig_name):
+    """ given a string (presumably an original filename with extension),
+        generate a non-conflicting filename
+    """
+    filename = str(int(time.time())) + "-" + str(int(random.random() * 1000))
+
+    try:
+        extension = orig_name.split(".").pop()
+    except IndexError:
+        extension = "txt"
+    return filename + "." + extension
+
 def upload_file(f):
     """ Given file post data, place filedata into media directory
 
-        Watch out. This function will return False, file_url if the
+        Watch out. This function will return True, file_url if the
         file already exists. This will point to the right url, but
         maybe not be the file you were expecting.
 
@@ -479,10 +493,13 @@ def upload_file(f):
           success -> True, file_url of newly created file
           failure -> False, error message
     """
-    # TODO: filesize limit and quotas?
-
     file_dir = paths.MEDIA_IMAGE_ROOT
-    file_url = os.path.join(file_dir, f.name)
+    file_url = os.path.join(file_dir, generate_filename(f.name))
+
+    # enforce filesize limit
+    max_upload_size = 104857600  # (1024 * 1024 bits * 100)
+    if f.size > max_upload_size:
+        return False, "%s exceeds maximum upload size!" % f.name
 
     try:
         os.makedirs(file_dir)
@@ -494,7 +511,7 @@ def upload_file(f):
 
     if os.path.exists(file_url):
         # file already exists, return file_url
-        return False, file_url
+        return True, file_url
 
     with open(file_url, 'wb+') as destination:
         for chunk in f.chunks():
