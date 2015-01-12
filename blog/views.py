@@ -493,7 +493,18 @@ def upload_file(f):
           success -> True, file_url of newly created file
           failure -> False, error message
     """
-    file_dir = paths.MEDIA_IMAGE_ROOT
+    # determine correct folder depending on content_type
+    content_category = f.content_type.split("/")[0]
+    if content_category == "image":
+        file_dir = paths.MEDIA_IMAGE_ROOT
+    elif content_category == "video":
+        file_dir = paths.MEDIA_VIDEO_ROOT
+    else:
+        file_dir = paths.MEDIA_FILE_ROOT
+
+    import pdb
+    pdb.set_trace()
+
     file_url = os.path.join(file_dir, generate_filename(f.name))
 
     # enforce filesize limit
