@@ -6,7 +6,7 @@
     <div class="large-12 columns">
         <h3>Dashboard :: Manage Ideas</h3>
         <!-- new idea form section -->
-        <form action="{% url 'forms-idea' %}" method="post">
+        <form action="{% url 'forms-idea' %}" method="post" enctype="multipart/form-data">
             {% csrf_token %}
             <input type="hidden" name="url_pass" value="dashboard-ideas" />
             <table class="add-idea">
@@ -15,7 +15,12 @@
                     <td id="name-cell">{{ new_idea_form.name.label_tag }}{{ new_idea_form.name }}</td>
                     <td id="slug-cell">{{ new_idea_form.slug.label_tag }}{{ new_idea_form.slug }}</td>
                     <td id="description-cell">{{ new_idea_form.description.label_tag }}{{ new_idea_form.description }}</td>
+                    <td>
+                        {{ new_idea_form.icon.label_tag }}
+                        {{ new_idea_form.icon }}
+                    </td>
                     <td id="submit-cell" class="shrink">
+                         <label>&nbsp;</label>
                         {% if "i" in request.GET %}
                         <input id="id_submit" type="submit" value="Edit">
                         {% else %}

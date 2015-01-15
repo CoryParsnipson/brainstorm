@@ -56,6 +56,7 @@
 
 .add-idea td {
   font-weight: bold;
+  vertical-align: top;
   padding: 0;
   padding-right: 5px;
   margin: 0;
@@ -96,12 +97,13 @@
   resize: none;
 }
 
-.add-idea #submit-cell {
-  vertical-align: bottom;
-}
-
 .add-idea #id_submit {
   font-size: 10pt;
+}
+
+.add-idea input[type="file"] {
+  margin: 0;
+  padding: 0;
 }
 
 /******************************************************************************

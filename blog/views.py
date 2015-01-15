@@ -743,7 +743,10 @@ class FormIdeaView(View):
         except Idea.DoesNotExist as e:
             instance = None
             msgs['msg'] = "Successfully created Idea %s" % instance_data['slug']
-        idea_form = IdeaForm(instance_data, instance=instance)
+        idea_form = IdeaForm(instance_data, request.FILES, instance=instance)
+
+        import pdb
+        pdb.set_trace()
 
         if idea_form.is_valid():
             idea_form.save()

@@ -18,12 +18,13 @@ class IdeaForm(forms.ModelForm):
 
     class Meta:
         model = Idea
-        fields = ['name', 'slug', 'description']
+        fields = ['name', 'slug', 'description', 'icon']
         widgets = {
             'description': forms.Textarea(attrs={
                 'rows': 1,
                 'cols': 40,
             }),
+            'icon': forms.FileInput(),
         }
 
 

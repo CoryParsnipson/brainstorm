@@ -23,6 +23,7 @@ class Idea(models.Model):
     description = models.TextField()
     order = models.IntegerField(unique=True)
 
+    icon = models.ImageField(upload_to='images')
     # color?
     # icon?
 
@@ -121,6 +122,7 @@ class Thought(models.Model):
 
         # "real" save method
         super(Thought, self).save(*args, **kwargs)
+
 
 ###############################################################################
 # model helper methods
