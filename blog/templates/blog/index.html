@@ -42,7 +42,7 @@
         {% if thought.preview %}
         <img class="left" src="{{ thought.preview.url }}">
         {% else %}
-        <img class="left" src="{% static 'images/idea_icon_default.png' %}">
+        <img class="left" src="{{ thought.idea.icon.url }}">
         {% endif %}
         <p class="headline-idea">{{ thought.idea|upper }}</p>
         <h3 class="headline">
