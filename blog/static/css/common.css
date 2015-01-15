@@ -201,6 +201,11 @@ textarea {
   padding: 2px;
 }
 
+input[type="file"] {
+  margin: 0;
+  padding: 0;
+}
+
 select {
   height: 1.5rem;
   margin: 0;

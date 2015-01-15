@@ -1,3 +1,7 @@
+import os
+import random
+import datetime
+
 # common.py
 # contains common functions and structures used between multiple apps
 
@@ -34,7 +38,7 @@ class KeyRing:
         f.close()
 
     def __unicode__(self):
-        return __str__()
+        return self.__str__()
 
     def __str__(self):
         kr_string = ["KEYRING:"]
@@ -54,3 +58,16 @@ class KeyRing:
             return self.keyring[key]
         except KeyError:
             return ""
+
+
+def generate_upload_filename(filename):
+    """ given a string (presumably an original filename with extension),
+        generate a non-conflicting filename for user uploads
+    """
+    filename, ext = os.path.splitext(filename)
+    filename = "%s-%s" % (datetime.datetime.now().strftime("%Y%m%d%H%M%S"), str(int(random.random() * 1000)))
+
+    if ext == '.':
+        ext = '.txt'
+
+    return filename + ext

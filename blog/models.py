@@ -1,3 +1,4 @@
+import os
 import re
 import datetime
 
@@ -6,6 +7,8 @@ import bleach
 from django.db import models
 from django.db.models import Max
 from django.contrib.auth.models import User
+
+import paths
 
 
 ###############################################################################
@@ -23,9 +26,8 @@ class Idea(models.Model):
     description = models.TextField()
     order = models.IntegerField(unique=True)
 
-    icon = models.ImageField(upload_to='images')
+    icon = models.ImageField(upload_to=os.path.basename(paths.MEDIA_IMAGE_ROOT))
     # color?
-    # icon?
 
     def get_next(self):
         """ get the next Idea by order column or return
@@ -82,6 +84,11 @@ class Thought(models.Model):
     is_trash = models.BooleanField(default=False)
     date_published = models.DateTimeField(auto_now_add=True)
     date_edited = models.DateTimeField(auto_now=True, auto_now_add=True)
+    preview = models.ImageField(
+        upload_to=os.path.basename(paths.MEDIA_IMAGE_ROOT),
+        blank=True,
+        null=True,
+    )
 
     # non field members
     allowed_tags = [
@@ -119,6 +126,9 @@ class Thought(models.Model):
                 self.date_published = datetime.datetime.now()
         except Thought.DoesNotExist as e:
             pass
+
+        import pdb
+        pdb.set_trace()
 
         # "real" save method
         super(Thought, self).save(*args, **kwargs)

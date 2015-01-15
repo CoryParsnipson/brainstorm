@@ -1,6 +1,4 @@
 import os
-import time
-import random
 
 from django.core.urlresolvers import reverse
 from django.core.exceptions import FieldError, ValidationError
@@ -21,6 +19,7 @@ from forms import LoginForm, IdeaForm, ThoughtForm
 from serializers import UserSerializer, IdeaSerializer, ThoughtSerializer
 
 import paths
+from common import generate_upload_filename
 
 
 ###############################################################################
@@ -470,18 +469,6 @@ def thought_delete(thought_slug):
     return True
 
 
-def generate_filename(orig_name):
-    """ given a string (presumably an original filename with extension),
-        generate a non-conflicting filename
-    """
-    filename = str(int(time.time())) + "-" + str(int(random.random() * 1000))
-
-    try:
-        extension = orig_name.split(".").pop()
-    except IndexError:
-        extension = "txt"
-    return filename + "." + extension
-
 def upload_file(f):
     """ Given file post data, place filedata into media directory
 
@@ -502,10 +489,7 @@ def upload_file(f):
     else:
         file_dir = paths.MEDIA_FILE_ROOT
 
-    import pdb
-    pdb.set_trace()
-
-    file_url = os.path.join(file_dir, generate_filename(f.name))
+    file_url = os.path.join(file_dir, generate_upload_filename(f.name))
 
     # enforce filesize limit
     max_upload_size = 104857600  # (1024 * 1024 bits * 100)
@@ -745,9 +729,6 @@ class FormIdeaView(View):
             msgs['msg'] = "Successfully created Idea %s" % instance_data['slug']
         idea_form = IdeaForm(instance_data, request.FILES, instance=instance)
 
-        import pdb
-        pdb.set_trace()
-
         if idea_form.is_valid():
             idea_form.save()
             if url_pass:
@@ -821,7 +802,7 @@ class FormThoughtView(View):
         except Thought.DoesNotExist as e:
             instance = None
             msgs['msg'] = "Successfully created Thought %s" % instance_data['slug']
-        thought_form = ThoughtForm(instance_data, instance=instance)
+        thought_form = ThoughtForm(instance_data, request.FILES, instance=instance)
 
         if thought_form.is_valid():
             thought_form.save()
