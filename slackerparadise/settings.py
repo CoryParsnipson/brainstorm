@@ -43,6 +43,7 @@ INSTALLED_APPS = (
     # 3rd party applications
     'rest_framework',
     'rest_framework_swagger',
+    'imagekit',
 
     # user applications
     'blog',

@@ -5,6 +5,8 @@ import datetime
 import bleach
 import PIL
 from PIL import Image
+from imagekit.models import ImageSpecField
+from imagekit.processors import ResizeToFill
 
 from django.db import models
 from django.db.models import Max
@@ -91,6 +93,12 @@ class Thought(models.Model):
         blank=True,
         null=True,
     )
+    preview_small = ImageSpecField(
+        source='preview',
+        processors=[ResizeToFill(100, 100)],
+        format='png',
+        options={'quality': '70'}
+    )
 
     # non field members
     allowed_tags = [
@@ -136,7 +144,7 @@ class Thought(models.Model):
         if not self.preview:
             return
 
-        cropped_image_size = (100, 100)
+        cropped_image_size = (300, 300)
         filename = os.path.join(paths.MEDIA_DIR, self.preview.name)
 
         image = Image.open(filename)

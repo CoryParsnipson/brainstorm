@@ -40,7 +40,7 @@
     {% for thought in latest_thoughts %}
     <li>
         {% if thought.preview %}
-        <img class="left" src="{{ thought.preview.url }}">
+        <img class="left" src="{{ thought.preview_small.url }}">
         {% else %}
         <img class="left" src="{{ thought.idea.icon.url }}">
         {% endif %}

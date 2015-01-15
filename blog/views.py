@@ -246,7 +246,7 @@ def dashboard_backend(request):
 
                 if trash:
                     be_msg = "Thought %s was trashed. " % thought.slug
-                    be_msg += "<form action='%s' method='post'>" % reverse('dashboard-thoughts-backend')
+                    be_msg += "<form action='%s' method='post'>" % reverse('dashboard-backend')
                     be_msg += "<input type='hidden' name='csrfmiddlewaretoken' value='%s' />" % unicode(csrf(request)['csrf_token'])
                     be_msg += "<input type='hidden' name='thought_slug' value='%s' />" % thought.slug
 
