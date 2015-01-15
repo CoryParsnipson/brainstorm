@@ -56,7 +56,6 @@ div.frontpage-story
  * smaller frontpage story
  *****************************************************************************/
 ul.small-frontpage-story li {
-  height: 120px;
-  overflow: hidden;
+  min-height: 150px;
   margin-bottom: 20px;
 }
