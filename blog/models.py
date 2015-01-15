@@ -3,6 +3,8 @@ import re
 import datetime
 
 import bleach
+import PIL
+from PIL import Image
 
 from django.db import models
 from django.db.models import Max
@@ -127,11 +129,24 @@ class Thought(models.Model):
         except Thought.DoesNotExist as e:
             pass
 
-        import pdb
-        pdb.set_trace()
-
         # "real" save method
         super(Thought, self).save(*args, **kwargs)
+
+        # crop picture if necessary
+        if not self.preview:
+            return
+
+        cropped_image_size = (100, 100)
+        filename = os.path.join(paths.MEDIA_DIR, self.preview.name)
+
+        image = Image.open(filename)
+        image_size = image.size
+
+        if image_size[0] > cropped_image_size[0] or image_size[1] > cropped_image_size[1]:
+            cropped_image = image.crop((0, 0, cropped_image_size[0], cropped_image_size[1]))
+        else:
+            cropped_image = image.resize(size=cropped_image_size, resample=PIL.Image.LANCZOS)
+        cropped_image.save(filename)
 
 
 ###############################################################################
