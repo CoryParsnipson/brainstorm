@@ -18,7 +18,7 @@
         {% if latest_thought.preview %}
         <img class="left" src="{{ latest_thought.preview.url }}">
         {% else %}
-        <img class="left" src="{% static 'images/frontpage_top_story_placeholder.png' %}">
+        <img class="left" src="{{ latest_thought.idea.icon_large.url }}">
         {% endif %}
         {% if not latest_thought %}
         <h2 class="headline">No content yet!</h2>

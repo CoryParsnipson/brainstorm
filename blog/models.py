@@ -31,6 +31,12 @@ class Idea(models.Model):
     order = models.IntegerField(unique=True)
 
     icon = models.ImageField(upload_to=os.path.basename(paths.MEDIA_IMAGE_ROOT))
+    icon_large = ImageSpecField(
+        source='icon',
+        processors=[ResizeToFill(300, 300)],
+        format='png',
+        options={'quality': '70'}
+    )
     # color?
 
     def get_next(self):
