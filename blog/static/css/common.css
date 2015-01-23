@@ -405,8 +405,10 @@ img.link-icon
  * Twitter widget
  *****************************************************************************/
 
-.twitter-timeline
-{
-  height: 350px;
+.twitter-timeline {
+  //background-color: #959595;
+  background-color: #383838;
+  border-radius: 3px;
   margin-bottom: 25px;
+  padding: 3px;
 }
