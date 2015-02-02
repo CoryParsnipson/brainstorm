@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+{% load staticfiles %}
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SP :: {{ page_title }}</title>
+
+    <!-- css includes -->
+    <link rel="stylesheet" type="text/css" href="{% static 'css/foundation/foundation.min.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/common.css' %}">
+
+    <!-- script includes -->
+    <script type="text/javascript" src="{% static 'script/jquery-1.11.1.js' %}"></script>
+    <script type="text/javascript" src="{% static 'script/foundation/foundation.js' %}"></script>
+
+    <script type="text/javascript" src="{% static 'script/tinymce/tinymce.min.js' %}"></script>
+
+    <script type="text/javascript">
+       tinymce.init({
+         selector: "textarea"
+       });
+    </script>
+
+    {% block http_headers %}
+    <!-- template specific head tags should be added here -->
+    {% endblock %}
+</head>
+<body name="top">
+    <div id="header">
+        <div class="row collapse">
+            <div class="large-6 medium-6 small-12 columns">
+                <span id="logo">Slacker Paradise</span>
+            </div>
+
+            <div class="large-6 medium-6 small-12 columns">
+                <nav role="navigation">
+                    <ul>
+                        <li><a href="{% url 'index' %}">Home</a></li>
+                        <li><a href="{% url 'about' %}">About</a></li>
+                        <li><a href="{% url 'idea_list' %}">Ideas</a></li>
+                        <li>Forum</li>
+                        {% if request.user.is_authenticated %}
+                        <li><a href="{% url 'login_page' %}">Login</a></li>
+                        {% else %}
+                        <li><a href="{% url 'dashboard' %}">Dashboard</a></li>
+                        {% endif %}
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </div>
+
+    <div id="content" class="row collapse">
+        <div id="content-main" class="large-8 medium-8 small-12 columns">
+            {% if messages %}
+            <!-- flash message area -->
+            <ul class="messages">
+                {% for message in messages %}
+                <li {% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message|safe }}</li>
+                {% endfor %}
+            </ul>
+            {% endif %}
+
+            {% block content %}
+            There is no content on this page.
+            {% endblock %}
+        </div>
+
+        <div id="content-side" class="large-4 medium-4 small-12 columns">
+            {% block side %}
+            <div class="link-box">
+                <p>Links to check out:</p>
+            </div>
+
+            <a class="twitter-timeline" href="https://twitter.com/CoryParsnipson" data-widget-id="545825292225236992" data-chrome="transparent noheader nofooter" data-tweet-limit="1">Tweets by @CoryParsnipson</a>
+            <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+"://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
+
+            <div class="link-box">
+                <p>Cool links for kool peeple:</p>
+                <p><a href="https://www.facebook.com/CaldwellU" target="_blank">Caldwell University</a></p>
+            </div>
+            <hr>
+            <div>
+                <a href="https://www.facebook.com/cory.parsnipson" target="_blank"><img class="link-icon" src="{% static 'images/link_icon_facebook.png' %}"></a>
+                <a href="https://twitter.com/CoryParsnipson" target="_blank"><img class="link-icon" src="{% static 'images/link_icon_twitter.png' %}"></a>
+                <a href="https://github.com/CoryParsnipson" target="_blank"><img class="link-icon" src="{% static 'images/link_icon_github.png' %}"></a>
+            </div>
+            {% endblock %}
+        </div>
+    </div>
+
+    <div id="footer">
+        <div class="row collapse">
+            {% block footer %}
+            <div class="large-8 medium-8 small-12 columns">
+                <h3>YO THIS IS WHATS COOL RIGHT NOW</h3>
+                <p>asdkfaksjdf</p>
+                <p>asdkjflsakdjf</p>
+            </div>
+            <div class="large-4 medium-4 small-12 columns">
+                <h3>CONTACT</h3>
+                <p>Cory Parsnipson</p>
+                <p>PO Box 1490641</p>
+                <p>San Francisco, CA 94116</p>
+            </div>
+            {% endblock %}
+        </div>
+    </div>
+
+<!-- back to top bottom -->
+<a href="#top" class="top-button">Top</a>
+
+</body>
+</html>
