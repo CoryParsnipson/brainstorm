@@ -41,9 +41,9 @@
                         <li><a href="{% url 'idea_list' %}">Ideas</a></li>
                         <li>Forum</li>
                         {% if request.user.is_authenticated %}
-                        <li><a href="{% url 'login_page' %}">Login</a></li>
-                        {% else %}
                         <li><a href="{% url 'dashboard' %}">Dashboard</a></li>
+                        {% else %}
+                        <li><a href="{% url 'login_page' %}">Login</a></li>
                         {% endif %}
                     </ul>
                 </nav>
@@ -90,26 +90,24 @@
         </div>
     </div>
 
-    <div id="footer">
-        <div class="row collapse">
-            {% block footer %}
-            <div class="large-8 medium-8 small-12 columns">
-                <h3>YO THIS IS WHATS COOL RIGHT NOW</h3>
-                <p>asdkfaksjdf</p>
-                <p>asdkjflsakdjf</p>
-            </div>
-            <div class="large-4 medium-4 small-12 columns">
-                <h3>CONTACT</h3>
-                <p>Cory Parsnipson</p>
-                <p>PO Box 1490641</p>
-                <p>San Francisco, CA 94116</p>
-            </div>
-            {% endblock %}
+    <div id="footer" class="row collapse">
+        {% block footer %}
+        <div class="large-8 medium-8 small-12 columns">
+            <h3>YO THIS IS WHATS COOL RIGHT NOW</h3>
+            <p>asdkfaksjdf</p>
+            <p>asdkjflsakdjf</p>
         </div>
+        <div class="large-4 medium-4 small-12 columns">
+            <h3>CONTACT</h3>
+            <p>Cory Parsnipson</p>
+            <p>PO Box 1490641</p>
+            <p>San Francisco, CA 94116</p>
+        </div>
+        {% endblock %}
     </div>
 
 <!-- back to top bottom -->
-<a href="#top" class="top-button">Top</a>
+<a href="#top" class="top-button">back to the<br><h1>Top</h1></a>
 
 </body>
 </html>
