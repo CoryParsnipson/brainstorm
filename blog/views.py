@@ -1,5 +1,3 @@
-import os
-
 from django.core.urlresolvers import reverse
 from django.core.exceptions import FieldError, ValidationError
 from django.core.context_processors import csrf
@@ -14,12 +12,10 @@ from django.contrib.auth.decorators import login_required
 
 from rest_framework import viewsets, response
 
-from models import Idea, Thought, slugify
+import lib
+from models import Idea, Thought
 from forms import LoginForm, IdeaForm, ThoughtForm
 from serializers import UserSerializer, IdeaSerializer, ThoughtSerializer
-
-import paths
-from common import generate_upload_filename
 
 
 ###############################################################################
@@ -124,7 +120,7 @@ def dashboard_ideas(request):
     if 'i' in request.GET:
         try:
             # sanitize query parameter
-            idea_slug = slugify(request.GET['i'])
+            idea_slug = lib.slugify(request.GET['i'])
             idea_form_instance = Idea.objects.get(slug=idea_slug)
         except Idea.DoesNotExist as e:
             dne_msg = "Cannot edit Idea '%s'" % idea_slug
@@ -170,7 +166,7 @@ def dashboard_author(request):
     thought_form_instance = None
     if 'thought_slug' in request.GET:
         try:
-            thought_slug = slugify(request.GET['thought_slug'])
+            thought_slug = lib.slugify(request.GET['thought_slug'])
             thought_form_instance = Thought.objects.get(slug=thought_slug)
         except Thought.DoesNotExist as e:
             pass
@@ -241,7 +237,7 @@ def dashboard_backend(request):
 
         if result:
             try:
-                thought_slug = slugify(request.POST['thought_slug'])
+                thought_slug = lib.slugify(request.POST['thought_slug'])
                 thought = Thought.objects.get(slug=thought_slug)
 
                 if trash:
@@ -278,7 +274,7 @@ def dashboard_backend(request):
     elif 'order_up' in request.POST or 'order_down' in request.POST:
         try:
             err_msg = None
-            idea_slug = slugify(request.POST['idea'])
+            idea_slug = lib.slugify(request.POST['idea'])
             idea = Idea.objects.get(slug=idea_slug)
 
             if 'order_up' in request.POST:
@@ -332,7 +328,7 @@ def upload(request):
 
     if request.method == 'POST':
         for file_input, f in request.FILES.items():
-            result, files[f.name] = upload_file(f)
+            result, files[f.name] = lib.upload_file(f)
 
         return JsonResponse(files)
     return JsonResponse({'msg': 'Unsupported method for Upload. (POST only)'})
@@ -401,8 +397,8 @@ def swap_ideas(idea_slug, adjacent_idea_slug):
 
         returns True on success, False on error
     """
-    idea_slug = slugify(idea_slug)
-    adjacent_idea_slug = slugify(adjacent_idea_slug)
+    idea_slug = lib.slugify(idea_slug)
+    adjacent_idea_slug = lib.slugify(adjacent_idea_slug)
 
     try:
         idea = Idea.objects.get(slug=idea_slug)
@@ -431,7 +427,7 @@ def thought_set_trash(thought_slug, trash=True):
         return True on success, False on failure
     """
     try:
-        thought_slug = slugify(thought_slug)
+        thought_slug = lib.slugify(thought_slug)
         thought = Thought.objects.get(slug=thought_slug)
 
         thought.is_trash = trash
@@ -445,7 +441,7 @@ def thought_unpublish(thought_slug):
     """ Select a thought by the slug and change the is_draft field
         back to True
     """
-    thought_slug = slugify(thought_slug)
+    thought_slug = lib.slugify(thought_slug)
 
     try:
         thought = Thought.objects.get(slug=thought_slug)
@@ -459,7 +455,7 @@ def thought_unpublish(thought_slug):
 def thought_delete(thought_slug):
     """ Delete a thought specified by thought_slug
     """
-    thought_slug = slugify(thought_slug)
+    thought_slug = lib.slugify(thought_slug)
 
     try:
         thought = Thought.objects.get(slug=thought_slug)
@@ -468,50 +464,6 @@ def thought_delete(thought_slug):
         return False
     return True
 
-
-def upload_file(f):
-    """ Given file post data, place filedata into media directory
-
-        Watch out. This function will return True, file_url if the
-        file already exists. This will point to the right url, but
-        maybe not be the file you were expecting.
-
-        Returns 2-tuple (Boolean, String)
-          success -> True, file_url of newly created file
-          failure -> False, error message
-    """
-    # determine correct folder depending on content_type
-    content_category = f.content_type.split("/")[0]
-    if content_category == "image":
-        file_dir = paths.MEDIA_IMAGE_ROOT
-    elif content_category == "video":
-        file_dir = paths.MEDIA_VIDEO_ROOT
-    else:
-        file_dir = paths.MEDIA_FILE_ROOT
-
-    file_url = os.path.join(file_dir, generate_upload_filename(f.name))
-
-    # enforce filesize limit
-    max_upload_size = 104857600  # (1024 * 1024 bits * 100)
-    if f.size > max_upload_size:
-        return False, "%s exceeds maximum upload size!" % f.name
-
-    try:
-        os.makedirs(file_dir)
-    except OSError:
-        # if there is a file with the same name as the intended directory,
-        # fail, else directory exists and everything is ok
-        if os.path.exists(file_dir) and not os.path.isdir(file_dir):
-            return False, "%s cannot be created." % file_dir
-
-    if os.path.exists(file_url):
-        # file already exists, return file_url
-        return True, file_url
-
-    with open(file_url, 'wb+') as destination:
-        for chunk in f.chunks():
-            destination.write(chunk)
-    return True, file_url
 
 ###############################################################################
 # RESTful API
@@ -717,9 +669,9 @@ class FormIdeaView(View):
             query_string = "?" + urlencode(instance_data['qdict'])
 
         if 'slug' not in instance_data or not instance_data['slug']:
-            instance_data['slug'] = slugify(instance_data['name'])
+            instance_data['slug'] = lib.slugify(instance_data['name'])
         else:
-            instance_data['slug'] = slugify(instance_data['slug'])
+            instance_data['slug'] = lib.slugify(instance_data['slug'])
 
         try:
             instance = Idea.objects.get(slug=instance_data['slug'])
@@ -792,9 +744,9 @@ class FormThoughtView(View):
             query_string = "?" + urlencode(instance_data['qdict'])
 
         if 'slug' not in instance_data or not instance_data['slug']:
-            instance_data['slug'] = slugify(instance_data['title'])
+            instance_data['slug'] = lib.slugify(instance_data['title'])
         else:
-            instance_data['slug'] = slugify(instance_data['slug'])
+            instance_data['slug'] = lib.slugify(instance_data['slug'])
 
         try:
             instance = Thought.objects.get(slug=instance_data['slug'])

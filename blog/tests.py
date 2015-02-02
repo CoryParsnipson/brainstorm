@@ -6,7 +6,8 @@ from django.core.exceptions import ValidationError
 from django.core.urlresolvers import reverse
 from django.contrib.auth.models import User
 
-from models import Idea, Thought, slugify
+import lib
+from models import Idea, Thought
 
 
 # Create your tests here.
@@ -101,6 +102,8 @@ class ThoughtViewTestCase(TestCase):
             args['slug'] = 'thought-%d' % i
             args['content'] = 'This is thought %d' % i
             args['date_published'] = datetime.datetime(2014, 11, 24, 0, 0) + datetime.timedelta(i)
+            args['is_draft'] = False # just publish these right off the bat
+            args['is_trash'] = False # assume none are trashed for now
 
             if self.num_thoughts / 2 > i:
                 args['idea'] = self.dummy_idea1
@@ -219,7 +222,7 @@ class SlugifyTestCase(TestCase):
         test_string = "This is a test string."
 
         expected = "this-is-a-test-string"
-        received = slugify(test_string)
+        received = lib.slugify(test_string)
 
         self.assertEqual(expected, received)
 
@@ -229,7 +232,7 @@ class SlugifyTestCase(TestCase):
         test_string = "omg this is such a long string it will deinitely be truncated"
 
         expected = "omg-this-is-such-a-long"
-        received = slugify(test_string, max_len=20)
+        received = lib.slugify(test_string, max_len=20)
 
         self.assertEqual(expected, received)
 
@@ -258,7 +261,7 @@ class IdeaViewTestCase(TestCase):
             name="Idea1",
             slug="idea-1",
             description="This is Idea 1.",
-            ordering=1
+            order=1
         )
         self.idea1.save()
 
@@ -280,7 +283,7 @@ class IdeaViewTestCase(TestCase):
             name="Idea1",
             slug="idea-1",
             description="This is Idea 1.",
-            ordering=1
+            order=1
         )
         self.idea1.save()
 
@@ -299,3 +302,9 @@ class IdeaViewTestCase(TestCase):
         self.assertRaises(ValidationError, self.client.delete, reverse('idea-detail', kwargs={'slug': self.idea1.slug}))
 
         self.assertEqual(num_ideas, Idea.objects.count())
+
+
+class FileUploadTestCase(TestCase):
+    """ test file upload functions
+    """
+    pass
