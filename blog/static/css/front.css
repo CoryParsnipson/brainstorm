@@ -38,6 +38,7 @@ div.frontpage-story
 {
   font-size: 8pt;
   font-weight: bold;
+  text-transform: uppercase;
   margin: 0;
 }
 

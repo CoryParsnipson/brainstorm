@@ -6,9 +6,6 @@
 {% endblock %}
 
 {% block content %}
-<h2>Latest Thoughts:</h2>
-<hr>
-
 <!-- <div class="announcements">
     Important announcement here!
 </div> -->
@@ -24,7 +21,7 @@
         <h2 class="headline">No content yet!</h2>
         <p>There are no thoughts in the database yet!!</p>
         {% else %}
-        <p class="headline-idea">{{ latest_thought.idea|upper }}</p>
+        <p class="headline-idea">{{ latest_thought.idea }}</p>
         <h2 class="headline" title="{{ latest_thought.slug }}"><a href="{% url 'thought_detail' latest_thought.idea.slug latest_thought.slug %}">{{ latest_thought.title }}</a></h2>
         <p class="sub-headline">by {{ latest_thought.author }} on {{ latest_thought.date_published }}</p>
         <p>{{ latest_thought.content|safe }}</p>
@@ -44,7 +41,7 @@
         {% else %}
         <img class="left" src="{{ thought.idea.icon.url }}">
         {% endif %}
-        <p class="headline-idea">{{ thought.idea|upper }}</p>
+        <p class="headline-idea">{{ thought.idea }}</p>
         <h3 class="headline">
             <a href="{% url 'thought_detail' thought.idea.slug thought.slug %}">{{ thought.title }}</a>
         </h3>
