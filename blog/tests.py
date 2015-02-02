@@ -102,8 +102,8 @@ class ThoughtViewTestCase(TestCase):
             args['slug'] = 'thought-%d' % i
             args['content'] = 'This is thought %d' % i
             args['date_published'] = datetime.datetime(2014, 11, 24, 0, 0) + datetime.timedelta(i)
-            args['is_draft'] = False # just publish these right off the bat
-            args['is_trash'] = False # assume none are trashed for now
+            args['is_draft'] = False  # just publish these right off the bat
+            args['is_trash'] = False  # assume none are trashed for now
 
             if self.num_thoughts / 2 > i:
                 args['idea'] = self.dummy_idea1
@@ -307,4 +307,20 @@ class IdeaViewTestCase(TestCase):
 class FileUploadTestCase(TestCase):
     """ test file upload functions
     """
-    pass
+    def setup(self):
+        self.client = Client()
+
+        # create superuser with permission to delete
+        self.user = User.objects.create_superuser(
+            username='Cory',
+            email='cparsnipson@gmai.com',
+            password='test'
+        )
+        self.user.save()
+
+    def test_file_upload(self):
+        """ upload a file
+        """
+
+        self.client.login(username='Cory', password='test')
+        response = self.client.post(reverse('upload'), )

@@ -509,21 +509,21 @@ class ThoughtViewSet(viewsets.ModelViewSet):
 
     def list(self, request, *args, **kwargs):
         """ return a JSON object container containing Thought objects.
-        Supply optional query string parameters to modify the returned set.\n\n
+            Supply optional query string parameters to modify the returned set.\n\n
 
-        ?idea=[slug] or [int] to select all Thoughts of an Idea\n
-        ?author=[int] id of User; select all Thoughts authored by User\n
-        ?older_than=[str] all Thoughts older than 'yyyy-mm-dd hh:mm'\n
-        ?newer_than=[str] all Thoughts newer than 'yyyy-mm-dd hh:mm'\n
-        ?exclude="true" if set, negates filter parameters\n
+            ?idea=[slug] or [int] to select all Thoughts of an Idea\n
+            ?author=[int] id of User; select all Thoughts authored by User\n
+            ?older_than=[str] all Thoughts older than 'yyyy-mm-dd hh:mm'\n
+            ?newer_than=[str] all Thoughts newer than 'yyyy-mm-dd hh:mm'\n
+            ?exclude="true" if set, negates filter parameters\n
 
-        ?draft=["true"|"false"|"both"] specify to include drafts, false by default\n
-        ?trash=["true"|"false"|"both"] specify to include trashed thoughts, false by default\n
+            ?draft=["true"|"false"|"both"] specify to include drafts, false by default\n
+            ?trash=["true"|"false"|"both"] specify to include trashed thoughts, false by default\n
 
-        ?count=[int] total number of Thoughts to return\n
-        ?slice=[int]:[int] works like python list slice\n
+            ?count=[int] total number of Thoughts to return\n
+            ?slice=[int]:[int] works like python list slice\n
 
-        ?order=[string] name of field, prepend "-" to reverse order, e.g. "+date" (requires exact name of SQL field)\n
+            ?order=[string] name of field, prepend "-" to reverse order, e.g. "+date" (requires exact name of SQL field)\n
         """
         query_string_params = {}
 
