@@ -101,7 +101,7 @@ class Thought(models.Model):
 
     # non field members
     allowed_tags = [
-        'a', 'abbr', 'ul', 'blockquote', 'code', 'em', 'strong', 'li', 'ol',
+        'abbr', 'ul', 'blockquote', 'code', 'em', 'strong', 'li', 'ol',
         'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'hr', 'br'
     ]
 
