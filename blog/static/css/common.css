@@ -196,6 +196,7 @@ div#header nav > ul li:hover {
 div#header nav > ul li a {
   color: #A80505;
   display: block;
+  font-weight: bold;
   padding: 10px 15px;
 }
 
