@@ -11,21 +11,24 @@
 </div> -->
 
 <div class="row">
-    <div class="large-12 columns">
-        {% if latest_thought.preview %}
-        <img class="left" src="{{ latest_thought.preview.url }}">
-        {% else %}
-        <img class="left" src="{{ latest_thought.idea.icon_large.url }}">
-        {% endif %}
-        {% if not latest_thought %}
-        <h2 class="headline">No content yet!</h2>
-        <p>There are no thoughts in the database yet!!</p>
-        {% else %}
-        <p class="headline-idea">{{ latest_thought.idea }}</p>
-        <h2 class="headline" title="{{ latest_thought.slug }}"><a href="{% url 'thought_detail' latest_thought.idea.slug latest_thought.slug %}">{{ latest_thought.title }}</a></h2>
-        <p class="sub-headline">by {{ latest_thought.author }} on {{ latest_thought.date_published }}</p>
-        <p>{{ latest_thought.content|safe }}</p>
-        {% endif %}
+    <div class="large-12 columns showcase"
+    {% if latest_thought.preview %}
+    style="background-image: url('{{ latest_thought.preview.url }}');"
+    {% endif %}>
+
+        <a href="{% url 'thought_detail' latest_thought.idea.slug latest_thought.slug %}">
+            <div class="text-overlay">
+                {% if not latest_thought %}
+                <h2 class="headline">No content yet!</h2>
+                <p>There are no thoughts in the database yet!!</p>
+                {% else %}
+                <p class="headline-idea">{{ latest_thought.idea }}</p>
+                <h2 class="headline" title="{{ latest_thought.slug }}">{{ latest_thought.title }}</h2>
+                <p class="sub-headline">{{ latest_thought.author }} // {{ latest_thought.date_published }}</p>
+                <p>{{ latest_thought.content|safe }}</p>
+                {% endif %}
+            </div>
+        </a>
     </div>
 </div>
 
@@ -37,9 +40,9 @@
     {% for thought in latest_thoughts %}
     <li>
         {% if thought.preview %}
-        <img class="left" src="{{ thought.preview_small.url }}">
+        <img src="{{ thought.preview_small.url }}">
         {% else %}
-        <img class="left" src="{{ thought.idea.icon.url }}">
+        <img src="{{ thought.idea.icon.url }}">
         {% endif %}
         <p class="headline-idea">{{ thought.idea }}</p>
         <h3 class="headline">

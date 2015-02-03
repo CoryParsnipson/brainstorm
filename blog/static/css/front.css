@@ -16,12 +16,41 @@ hr.story-divider
 /******************************************************************************
  * announcements
  *****************************************************************************/
-
 div.announcements
 {
   width: 100%;
   height: 100px;
   margin-bottom: 15px;
+}
+
+/******************************************************************************
+ * product showcase thought
+ *****************************************************************************/
+div.showcase {
+  height: 300px;
+  background-color: #A80505;
+  background-image: url('../images/showcase_placeholder.png');
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+div.text-overlay {
+  width: 200px;
+  height: 100%;
+  overflow: hidden;
+  background-color: rgba(0, 0, 0, 0.75);
+  z-index: 10;
+  padding: 10px;
+}
+
+div.text-overlay p {
+  color: #FFFFFF;
+}
+
+a > div.text-overlay {
+  color: inherit;
+  font-weight: inherit;
+  font-size: inherit;
 }
 
 /******************************************************************************
@@ -36,6 +65,7 @@ div.frontpage-story
 
 .headline-idea
 {
+  color: #FFFFFF;
   font-size: 8pt;
   font-weight: bold;
   text-transform: uppercase;
@@ -44,13 +74,14 @@ div.frontpage-story
 
 .headline
 {
+  color: #F8C118;
   margin-bottom: 0.3em;
 }
 
 .sub-headline
 {
+  color: #b7b7b7;
   font-size: 9pt;
-  font-weight: bold;
 }
 
 /******************************************************************************

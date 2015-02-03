@@ -5,13 +5,14 @@ import bleach
 import PIL
 from PIL import Image
 from imagekit.models import ImageSpecField
-from imagekit.processors import ResizeToFill
+from imagekit.processors import ResizeToFill, Crop
 
 from django.db import models
 from django.db.models import Max
 from django.contrib.auth.models import User
 
 import paths
+import lib
 
 
 ###############################################################################
@@ -99,7 +100,7 @@ class Thought(models.Model):
     )
     preview_small = ImageSpecField(
         source='preview',
-        processors=[ResizeToFill(100, 100)],
+        processors=[Crop(width=lib.UPLOAD_IMAGE_SMALL[0], height=lib.UPLOAD_IMAGE_SMALL[1])],
         format='png',
         options={'quality': '70'}
     )
@@ -148,14 +149,21 @@ class Thought(models.Model):
         if not self.preview:
             return
 
-        cropped_image_size = (300, 300)
         filename = os.path.join(paths.MEDIA_DIR, self.preview.name)
 
         image = Image.open(filename)
         image_size = image.size
 
-        if image_size[0] > cropped_image_size[0] or image_size[1] > cropped_image_size[1]:
-            cropped_image = image.crop((0, 0, cropped_image_size[0], cropped_image_size[1]))
+        if image_size[0] >= lib.UPLOAD_IMAGE_SIZE[0] or image_size[1] >= lib.UPLOAD_IMAGE_SIZE[1]:
+            cropped_image = image.crop((0, 0, lib.UPLOAD_IMAGE_SIZE[0], lib.UPLOAD_IMAGE_SIZE[1]))
         else:
-            cropped_image = image.resize(size=cropped_image_size, resample=PIL.Image.LANCZOS)
-        cropped_image.save(filename)
+            cropped_image = Image.new('RGBA', lib.UPLOAD_IMAGE_SIZE, lib.UPLOAD_IMAGE_MATTE)
+
+            # calculate resize ratio (preserve aspect ratio)
+            resize_ratio = min(lib.UPLOAD_IMAGE_SIZE[0] / image_size[0], lib.UPLOAD_IMAGE_SIZE[1] / image_size[1])
+            new_image_size = (image_size[0] * resize_ratio, image_size[1] * resize_ratio)
+            resized_image = image.resize(size=new_image_size, resample=PIL.Image.LANCZOS)
+
+            cropped_image.paste(resized_image, ((image_size[0] - new_image_size[0]) / 2, (image_size[1] - new_image_size[1]) / 2))
+
+        cropped_image.save(filename, 'PNG')

@@ -12,7 +12,13 @@
 <div class="thought">
     <h3>{{ thought.title }}</h3>
     <p class="thought-author">by {{ thought.author }} on {{ thought.date_published }}</p>
-    <hr class="thought-hr">
+
+    {% if thought.preview %}
+    <img src="{{ thought.preview.url }}">
+    {% else %}
+    <img src="{{ thought.idea.icon_large.url }}">
+    {% endif %}
+
     <p>{{ thought.content|safe }}</p>
 
     {% if not thought.date_published == thought.date_edited %}

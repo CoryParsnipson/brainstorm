@@ -7,6 +7,7 @@
     <title>SP :: {{ page_title }}</title>
 
     <!-- css includes -->
+    <link href='http://fonts.googleapis.com/css?family=Oleo+Script|Roboto' rel='stylesheet' type='text/css'>
     <link rel="stylesheet" type="text/css" href="{% static 'css/foundation/foundation.min.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'css/common.css' %}">
 
@@ -35,7 +36,7 @@
 
             <div class="large-6 medium-6 small-12 columns">
                 <nav role="navigation">
-                    <ul>
+                    <ul class="group">
                         <li><a href="{% url 'index' %}">Home</a></li>
                         <li><a href="{% url 'about' %}">About</a></li>
                         <li><a href="{% url 'idea_list' %}">Ideas</a></li>
@@ -90,20 +91,22 @@
         </div>
     </div>
 
-    <div id="footer" class="row collapse">
-        {% block footer %}
-        <div class="large-8 medium-8 small-12 columns">
-            <h3>YO THIS IS WHATS COOL RIGHT NOW</h3>
-            <p>asdkfaksjdf</p>
-            <p>asdkjflsakdjf</p>
+    <div id="footer">
+        <div class="row collapse">
+            {% block footer %}
+            <div class="large-8 medium-8 small-12 columns">
+                <h3>Yo This is Whats Cool Right Now</h3>
+                <p>asdkfaksjdf</p>
+                <p>asdkjflsakdjf</p>
+            </div>
+            <div class="large-4 medium-4 small-12 columns">
+                <h3>Contact</h3>
+                <p>Cory Parsnipson</p>
+                <p>PO Box 1490641</p>
+                <p>San Francisco, CA 94116</p>
+            </div>
+            {% endblock %}
         </div>
-        <div class="large-4 medium-4 small-12 columns">
-            <h3>CONTACT</h3>
-            <p>Cory Parsnipson</p>
-            <p>PO Box 1490641</p>
-            <p>San Francisco, CA 94116</p>
-        </div>
-        {% endblock %}
     </div>
 
 <!-- back to top bottom -->
