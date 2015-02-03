@@ -12,16 +12,7 @@
     <link rel="stylesheet" type="text/css" href="{% static 'css/common.css' %}">
 
     <!-- script includes -->
-    <script type="text/javascript" src="{% static 'script/jquery-1.11.1.js' %}"></script>
-    <script type="text/javascript" src="{% static 'script/foundation/foundation.js' %}"></script>
-
-    <script type="text/javascript" src="{% static 'script/tinymce/tinymce.min.js' %}"></script>
-
-    <script type="text/javascript">
-       tinymce.init({
-         selector: "textarea"
-       });
-    </script>
+    <!-- <script type="text/javascript" src="{% static 'script/jquery-1.11.1.js' %}"></script> -->
 
     {% block http_headers %}
     <!-- template specific head tags should be added here -->
@@ -81,12 +72,6 @@
                 <p>Cool links for kool peeple:</p>
                 <p><a href="https://www.facebook.com/CaldwellU" target="_blank">Caldwell University</a></p>
             </div>
-            <hr>
-            <div>
-                <a href="https://www.facebook.com/cory.parsnipson" target="_blank"><img class="link-icon" src="{% static 'images/link_icon_facebook.png' %}"></a>
-                <a href="https://twitter.com/CoryParsnipson" target="_blank"><img class="link-icon" src="{% static 'images/link_icon_twitter.png' %}"></a>
-                <a href="https://github.com/CoryParsnipson" target="_blank"><img class="link-icon" src="{% static 'images/link_icon_github.png' %}"></a>
-            </div>
             {% endblock %}
         </div>
     </div>
@@ -104,6 +89,9 @@
                 <p>Cory Parsnipson</p>
                 <p>PO Box 1490641</p>
                 <p>San Francisco, CA 94116</p>
+                <a href="https://www.facebook.com/cory.parsnipson" target="_blank"><img class="link-icon left" src="{% static 'images/link_facebook.png' %}"></a>
+                <a href="https://twitter.com/CoryParsnipson" target="_blank"><img class="link-icon left" src="{% static 'images/link_twitter.png' %}"></a>
+                <a href="https://github.com/CoryParsnipson" target="_blank"><img class="link-icon left" src="{% static 'images/link_github.png' %}"></a>
             </div>
             {% endblock %}
         </div>
