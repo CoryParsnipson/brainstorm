@@ -19,13 +19,10 @@ div.text-overlay {
   width: 200px;
   height: 100%;
   overflow: hidden;
+  text-align: left;
   background-color: rgba(0, 0, 0, 0.75);
   z-index: 10;
   padding: 10px;
-}
-
-div.text-overlay h2 {
-  text-align: initial;
 }
 
 div.text-overlay p:not([class]) {
