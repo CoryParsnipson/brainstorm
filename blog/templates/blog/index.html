@@ -6,10 +6,6 @@
 {% endblock %}
 
 {% block content %}
-<!-- <div class="announcements">
-    Important announcement here!
-</div> -->
-
 <div class="row">
     <div class="large-12 columns showcase"
     {% if latest_thought.preview %}
@@ -30,11 +26,11 @@
             </a>
         </div>
     </div>
-</div>
 
-{% if latest_thoughts|length >= 1 %}
-<hr class="story-divider">
-{% endif %}
+    <div class="large-12 columns showcase-splitter">
+        Something interesting here?
+    </div>
+</div>
 
 <ul class="small-block-grid-2 small-frontpage-story">
     {% for thought in latest_thoughts %}

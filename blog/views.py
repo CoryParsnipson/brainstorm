@@ -35,9 +35,11 @@ def index(request):
     else:
         latest_thought = None
 
-    context = {'page_title': 'Home',
-               'latest_thought': latest_thought,
-               'latest_thoughts': small_stories}
+    context = {
+        'page_title': 'Home',
+        'latest_thought': latest_thought,
+        'latest_thoughts': small_stories,
+    }
     return render(request, 'blog/index.html', context)
 
 
@@ -46,8 +48,10 @@ def login_page(request):
         # redirect straight to dashboard
         return redirect('dashboard')
 
-    context = {'page_title': 'Login',
-               'login_form': LoginForm()}
+    context = {
+        'page_title': 'Login',
+        'login_form': LoginForm()
+    }
     return render(request, 'blog/login.html', context)
 
 
