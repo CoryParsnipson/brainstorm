@@ -102,7 +102,7 @@ class Thought(models.Model):
     # non field members
     allowed_tags = [
         'a', 'abbr', 'ul', 'blockquote', 'code', 'em', 'strong', 'li', 'ol',
-        'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'hr', 'p', 'br'
+        'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'hr', 'br'
     ]
 
     def truncate(self, max_length=70, allowed_tags=None, strip=True):
@@ -113,16 +113,15 @@ class Thought(models.Model):
         if not allowed_tags:
             allowed_tags = self.allowed_tags
 
-        clean_str = self.content[:max_length]
-        if max_length < len(self.content):
-            clean_str += "..."
-
         clean_str = bleach.clean(
-            clean_str,
+            self.content[:max_length],
             tags=allowed_tags,
             strip=strip,
             strip_comments=True,
         )
+
+        if max_length < len(self.content):
+            clean_str += "..."
 
         return clean_str
 

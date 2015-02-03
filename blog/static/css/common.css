@@ -52,6 +52,54 @@ hr {
 }
 
 /******************************************************************************
+ * text styles
+ *****************************************************************************/
+a {
+  color: #F8C118;
+  text-decoration: none;
+}
+
+h1, h2, h3 {
+  color: #F8C118;
+  font-size: 14pt;
+  font-weight: normal;
+  margin-bottom: 3px;
+}
+
+h1 a, h2 a, h3 a, h4 a, h5 a, h6 a {
+  font-weight: normal;
+}
+
+div#footer h3 {
+  color: #A80505;
+  font-size: 14pt;
+  font-weight: bold;
+}
+
+p {
+  margin-bottom: 1rem;
+}
+
+.right-justify {
+  text-align: right;
+}
+
+.left-justify {
+  text-align: left;
+}
+
+/******************************************************************************
+ * img styles
+ *****************************************************************************/
+img {
+
+}
+
+.link-icon {
+  padding-right: 10px;
+}
+
+/******************************************************************************
  * logo styles
  *****************************************************************************/
 span#logo {
@@ -132,15 +180,21 @@ div#header nav > ul {
 div#header nav > ul li {
   display: block;
   float: left;
-  padding: 10px 15px;
 }
 
 div#header nav > ul li:hover {
-  background-color: white;
+  color: #FFFFFF;
+  background-color: #EBB100;
 }
 
 div#header nav > ul li a {
   color: #A80505;
+  display: block;
+  padding: 10px 15px;
+}
+
+div#header nav > ul li a:hover {
+  color: #FFFFFF;
 }
 
 /******************************************************************************
@@ -166,54 +220,6 @@ ul.messages .success {
 ul.messages .error {
   color: #F8C118;
   background-color: #A80505;
-}
-
-/******************************************************************************
- * text styles
- *****************************************************************************/
-a {
-  color: #F8C118;
-  text-decoration: none;
-}
-
-h1, h2, h3 {
-  color: #F8C118;
-  font-size: 14pt;
-  font-weight: normal;
-  margin-bottom: 3px;
-}
-
-h1 a, h2 a, h3 a, h4 a, h5 a, h6 a {
-  font-weight: normal;
-}
-
-div#footer h3 {
-  color: #A80505;
-  font-size: 14pt;
-  font-weight: bold;
-}
-
-p {
-  margin-bottom: 1rem;
-}
-
-.right-justify {
-  text-align: right;
-}
-
-.left-justify {
-  text-align: left;
-}
-
-/******************************************************************************
- * img styles
- *****************************************************************************/
-img {
-
-}
-
-.link-icon {
-  padding-right: 10px;
 }
 
 /******************************************************************************
