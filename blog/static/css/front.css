@@ -47,12 +47,6 @@ div.text-overlay p {
   color: #FFFFFF;
 }
 
-a > div.text-overlay {
-  color: inherit;
-  font-weight: inherit;
-  font-size: inherit;
-}
-
 /******************************************************************************
  * frontpage-story div
  *****************************************************************************/

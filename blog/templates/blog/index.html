@@ -16,8 +16,8 @@
     style="background-image: url('{{ latest_thought.preview.url }}');"
     {% endif %}>
 
-        <a href="{% url 'thought_detail' latest_thought.idea.slug latest_thought.slug %}">
-            <div class="text-overlay">
+        <div class="text-overlay">
+            <a href="{% url 'thought_detail' latest_thought.idea.slug latest_thought.slug %}">
                 {% if not latest_thought %}
                 <h2 class="headline">No content yet!</h2>
                 <p>There are no thoughts in the database yet!!</p>
@@ -27,8 +27,8 @@
                 <p class="sub-headline">{{ latest_thought.author }} // {{ latest_thought.date_published }}</p>
                 <p>{{ latest_thought.content|safe }}</p>
                 {% endif %}
-            </div>
-        </a>
+            </a>
+        </div>
     </div>
 </div>
 
