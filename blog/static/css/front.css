@@ -16,12 +16,17 @@ div.showcase {
 }
 
 div.text-overlay {
-  width: 230px;
+  width: 200px;
   height: 100%;
   overflow: hidden;
   background-color: rgba(0, 0, 0, 0.75);
   z-index: 10;
   padding: 10px;
+}
+
+div.text-overlay h2 {
+  text-align: initial;
+  margin-bottom: 3px;
 }
 
 div.text-overlay p:not([class]) {

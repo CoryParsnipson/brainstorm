@@ -66,7 +66,7 @@ span#logo {
  *****************************************************************************/
 .row {
   /* override foundation style */
-  max-width: 920px;
+  max-width: 950px;
 }
 
 div#header {
@@ -81,7 +81,7 @@ div#header {
 div#content {
   color: #FFFFFF;
   background-color: #383838;
-  padding: 15px 7px;
+  padding: 15px 20px;
 }
 
 div#content-main {
@@ -102,6 +102,13 @@ div#footer {
 
 div#footer div.columns {
   padding: 10px;
+}
+
+/******************************************************************************
+ * list styles - general
+ *****************************************************************************/
+ul {
+  list-style-position: inside;
 }
 
 /******************************************************************************
