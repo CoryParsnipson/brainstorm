@@ -61,15 +61,17 @@
 
         <div id="content-side" class="large-4 medium-4 small-12 columns">
             {% block side %}
-            <div class="link-box">
-                <p>Links to check out:</p>
+            <div class="side-box">
+                <h3>I Found This and Its Awesome</h3>
             </div>
 
-            <a class="twitter-timeline" href="https://twitter.com/CoryParsnipson" data-widget-id="545825292225236992" data-chrome="transparent noheader nofooter" data-tweet-limit="1">Tweets by @CoryParsnipson</a>
-            <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+"://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
+            <div class="side-box">
+                <a class="twitter-timeline" href="https://twitter.com/CoryParsnipson" data-widget-id="545825292225236992" data-chrome="transparent noheader nofooter" data-tweet-limit="2">Tweets by @CoryParsnipson</a>
+                <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+"://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
+            </div>
 
-            <div class="link-box">
-                <p>Cool links for kool peeple:</p>
+            <div class="side-box">
+                <h3>Kool Links for Kool Peeple</h3>
                 <p><a href="https://www.facebook.com/CaldwellU" target="_blank">Caldwell University</a></p>
             </div>
             {% endblock %}
@@ -94,6 +96,11 @@
                 <a href="https://github.com/CoryParsnipson" target="_blank"><img class="link-icon left" src="{% static 'images/link_github.png' %}"></a>
             </div>
             {% endblock %}
+        </div>
+        <div class="row collapse">
+            <div class="large-12 columns">
+                <span class="footer-copyleft">THIS WEBSITE IS CALLED SLACKER PARADISE. I MADE THIS. COPYRIGHT 2015 CORY PARSNIPSON HELL YEAH OFFICIAL LOOKING SMALL PRINT</span>
+            </div>
         </div>
     </div>
 

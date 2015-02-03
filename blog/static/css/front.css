@@ -26,7 +26,6 @@ div.text-overlay {
 
 div.text-overlay h2 {
   text-align: initial;
-  margin-bottom: 3px;
 }
 
 div.text-overlay p:not([class]) {
@@ -38,8 +37,10 @@ div.text-overlay p:not([class]) {
  *****************************************************************************/
 .showcase-splitter {
   height: 100px;
+  color: #383838;
   background-color: salmon;
   margin: 15px 0;
+  padding: 5px;
 }
 
 /******************************************************************************

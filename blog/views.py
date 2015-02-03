@@ -26,12 +26,12 @@ def index(request):
 
     small_stories = latest_thoughts[1:]
     for t in small_stories:
-        t.content = t.truncate(max_length=300)
+        t.content = t.truncate(max_length=250)
 
     # prepare html output for big story
     if len(latest_thoughts):
         latest_thought = latest_thoughts[0]
-        latest_thought.content = latest_thought.truncate(max_length=300)
+        latest_thought.content = latest_thought.truncate(max_length=250)
     else:
         latest_thought = None
 
