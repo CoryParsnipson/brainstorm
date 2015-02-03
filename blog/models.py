@@ -98,12 +98,6 @@ class Thought(models.Model):
         blank=True,
         null=True,
     )
-    preview_small = ImageSpecField(
-        source='preview',
-        processors=[Crop(width=lib.UPLOAD_IMAGE_SMALL[0], height=lib.UPLOAD_IMAGE_SMALL[1])],
-        format='png',
-        options={'quality': '70'}
-    )
 
     # non field members
     allowed_tags = [

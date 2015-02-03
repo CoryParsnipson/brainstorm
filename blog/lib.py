@@ -11,7 +11,6 @@ import paths
 MAX_UPLOAD_SIZE = 104857600  # (1024 * 1024 bits * 100)
 UPLOAD_IMAGE_SIZE = (600, 300)
 UPLOAD_IMAGE_MATTE = (0, 0, 0, 255)
-UPLOAD_IMAGE_SMALL = (300, 150)
 
 
 ###############################################################################
