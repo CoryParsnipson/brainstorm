@@ -15,11 +15,11 @@
         <div class="text-overlay">
             <a href="{% url 'thought_detail' latest_thought.idea.slug latest_thought.slug %}">
                 {% if not latest_thought %}
-                <h2 class="headline">No content yet!</h2>
+                <p class="title">No content yet!</p>
                 <p>There are no thoughts in the database yet!!</p>
                 {% else %}
                 <p class="idea">{{ latest_thought.idea }}</p>
-                <h2 class="title" title="{{ latest_thought.slug }}">{{ latest_thought.title }}</h2>
+                <p class="title" title="{{ latest_thought.slug }}">{{ latest_thought.title }}</p>
                 <p class="subtitle">{{ latest_thought.author }} // {{ latest_thought.date_published }}</p>
                 <p>{{ latest_thought.content|safe }}</p>
                 {% endif %}
@@ -47,9 +47,9 @@
         </a>
 
         <p class="idea">{{ thought.idea }}</p>
-        <h3 class="title">
+        <p class="title">
             <a href="{% url 'thought_detail' thought.idea.slug thought.slug %}">{{ thought.title }}</a>
-        </h3>
+        </p>
         <p class="subtitle">{{ thought.author }} // {{ thought.date_published }}</p>
         <p>{{ thought.content|safe }}</p>
     </li>
