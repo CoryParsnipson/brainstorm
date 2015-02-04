@@ -7,13 +7,13 @@
     <title>SP :: Dashboard :: {{ page_title }}</title>
 
     <!-- css includes -->
+    <link href='http://fonts.googleapis.com/css?family=Sigmar+One|Roboto' rel='stylesheet' type='text/css'>
     <link rel="stylesheet" type="text/css" href="{% static 'css/foundation/foundation.min.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'css/common.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'css/dashboard.css' %}">
 
     <!-- script includes -->
-    <script type="text/javascript" src="{% static 'script/jquery-1.11.1.js' %}"></script>
-    <script type="text/javascript" src="{% static 'script/foundation/foundation.js' %}"></script>
+    <!-- <script type="text/javascript" src="{% static 'script/jquery-1.11.1.js' %}"></script> -->
     <script type="text/javascript" src="{% static 'script/tinymce/tinymce.min.js' %}"></script>
 
     <script type="text/javascript">
@@ -138,17 +138,15 @@
     {% endblock %}
 </head>
 <body name="top">
+    <div id="header">
+        <div class="row collapse">
+            <!-- top bar -->
+            <div class="large-6 medium-6 small-10 columns">
+                <span class="logo">Slacker Paradise</span>
+            </div>
 
-<div id="header">
-    <div class="row">
-        <!-- top bar -->
-        <div class="large-6 medium-4 small-2 columns">
-            <h1><a href="{% url 'dashboard' %}">Slacker Paradise</a></h1>
-        </div>
-
-        <div id="nav-2" class="large-4 medium-6 small-8 columns end">
-            <nav class="top-bar" data-topbar role="navigation">
-                <section class="top-bar-section">
+            <div class="large-4 medium-4 small-10 columns end">
+                <nav role="navigation">
                     <ul class="right">
                         <li><a href="{% url 'index' %}">Site Home</a></li>
                         <li class="divider"></li>
@@ -156,11 +154,10 @@
                         <li class="divider"></li>
                         <li><a href="{% url 'logout' %}">Log Out</a></li>
                     </ul>
-                </section>
-            </nav>
+                </nav>
+            </div>
         </div>
     </div>
-</div>
 
 <div id="content" class="row">
     <div class="large-10 medium-10 small-10 columns">
@@ -199,7 +196,6 @@
             <li>User Profile</li>
             <li>Settings</li>
         </ul>
-        <a href="#top" class="button top-button">Top</a>
         {% endblock %}
     </div>
 </div>
@@ -214,6 +210,8 @@
         </div>
     </div>
 </div>
+
+<a href="#top" class="top-button">back to the<br><h1>top</h1></a>
 
 </body>
 </html>

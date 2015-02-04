@@ -147,16 +147,20 @@ class Thought(models.Model):
         image = Image.open(filename)
         image_size = image.size
 
-        if image_size[0] >= lib.UPLOAD_IMAGE_SIZE[0] or image_size[1] >= lib.UPLOAD_IMAGE_SIZE[1]:
-            cropped_image = image.crop((0, 0, lib.UPLOAD_IMAGE_SIZE[0], lib.UPLOAD_IMAGE_SIZE[1]))
+        if image_size[0] < lib.UPLOAD_IMAGE_SIZE[0] or image_size[1] < lib.UPLOAD_IMAGE_SIZE[1]:
+            # if the image is smaller than lib.UPLOAD_IMAGE_SIZE, find the smallest dimension, upscale, and crop
+            resize_ratio = max(float(lib.UPLOAD_IMAGE_SIZE[0]) / image_size[0],
+                               float(lib.UPLOAD_IMAGE_SIZE[1]) / image_size[1])
+            image_size = (int(image_size[0] * resize_ratio), int(image_size[1] * resize_ratio))
+            image = image.resize(size=image_size, resample=PIL.Image.LANCZOS)
+        elif image_size[0] > lib.UPLOAD_IMAGE_SIZE[0] or image_size[1] > lib.UPLOAD_IMAGE_SIZE[1]:
+            # if the image is larger, find smallest edge, and shrink
+            resize_ratio = max(float(lib.UPLOAD_IMAGE_SIZE[0]) / image_size[0],
+                               float(lib.UPLOAD_IMAGE_SIZE[1]) / image_size[1])
+            image_size = (int(image_size[0] * resize_ratio), int(image_size[1] * resize_ratio))
+            image = image.resize(size=image_size, resample=PIL.Image.LANCZOS)
         else:
-            cropped_image = Image.new('RGBA', lib.UPLOAD_IMAGE_SIZE, lib.UPLOAD_IMAGE_MATTE)
+            return
 
-            # calculate resize ratio (preserve aspect ratio)
-            resize_ratio = min(lib.UPLOAD_IMAGE_SIZE[0] / image_size[0], lib.UPLOAD_IMAGE_SIZE[1] / image_size[1])
-            new_image_size = (image_size[0] * resize_ratio, image_size[1] * resize_ratio)
-            resized_image = image.resize(size=new_image_size, resample=PIL.Image.LANCZOS)
-
-            cropped_image.paste(resized_image, ((image_size[0] - new_image_size[0]) / 2, (image_size[1] - new_image_size[1]) / 2))
-
+        cropped_image = image.crop((0, 0, lib.UPLOAD_IMAGE_SIZE[0], lib.UPLOAD_IMAGE_SIZE[1]))
         cropped_image.save(filename, 'PNG')
