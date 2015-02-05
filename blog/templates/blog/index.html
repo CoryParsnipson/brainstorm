@@ -44,10 +44,9 @@
             <div class="img-placeholder"
             {% if thought.preview %}
             style="background-image: url({{ thought.preview.url }});"
-            {% else %}
-
             {% endif %}
             >
+
             {% if not thought.preview %}
             <span class="placeholder">SP</span>
             {% endif %}

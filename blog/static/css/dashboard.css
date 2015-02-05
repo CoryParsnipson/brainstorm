@@ -8,7 +8,7 @@
  * custom grid styles
  *****************************************************************************/
 .row {
-  max-width: 100rem;
+  max-width: 100%;
 }
 
 .dashboard-panel {

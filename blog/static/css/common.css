@@ -222,6 +222,7 @@ span.footer-copyleft {
  *****************************************************************************/
 ul {
   list-style-position: inside;
+  margin-bottom: 1rem;
 }
 
 /******************************************************************************
@@ -233,6 +234,7 @@ nav {
 
 nav > ul {
   list-style-type: none;
+  margin: 0;
 }
 
 nav > ul li {
@@ -248,7 +250,6 @@ nav > ul li:hover {
 nav > ul li a {
   color: #A80505;
   display: block;
-  font-weight: bold;
   padding: 10px 15px;
 }
 
