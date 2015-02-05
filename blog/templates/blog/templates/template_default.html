@@ -6,8 +6,21 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>SP :: {{ page_title }}</title>
 
+    <script type="text/javascript">
+    (function() {
+        var path = '//easy.myfonts.net/v2/js?sid=4276(font-family=Eurostile+Regular)&sid=4277(font-family=Eurostile+Bold)&sid=4279(font-family=Eurostile+Black)&sid=4280(font-family=Eurostile+Medium)&key=Dq99rML4bs',
+            protocol = ('https:' == document.location.protocol ? 'https:' : 'http:'),
+            trial = document.createElement('script');
+        trial.type = 'text/javascript';
+        trial.async = true;
+        trial.src = protocol + path;
+        var head = document.getElementsByTagName("head")[0];
+        head.appendChild(trial);
+    })();
+    </script>
+
     <!-- css includes -->
-    <link href='http://fonts.googleapis.com/css?family=Sigmar+One|Roboto' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Jura|Sigmar+One|Roboto' rel='stylesheet' type='text/css'>
     <link rel="stylesheet" type="text/css" href="{% static 'css/foundation/foundation.min.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'css/common.css' %}">
 

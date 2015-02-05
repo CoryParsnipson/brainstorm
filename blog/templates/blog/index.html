@@ -7,25 +7,30 @@
 
 {% block content %}
 <div class="row">
-    <div class="large-12 columns showcase"
-    {% if latest_thought.preview %}
-    style="background-image: url('{{ latest_thought.preview.url }}');"
-    {% endif %}>
+    <a href="{% url 'thought_detail' latest_thought.idea.slug latest_thought.slug %}">
+        <div class="large-12 columns showcase"
+        {% if latest_thought.preview %}
+        style="background-image: url('{{ latest_thought.preview.url }}');"
+        {% endif %}
+        >
+
+        {% if not latest_thought.preview %}
+        <span class="placeholder">SP</span>
+        {% endif %}
 
         <div class="text-overlay">
-            <a href="{% url 'thought_detail' latest_thought.idea.slug latest_thought.slug %}">
-                {% if not latest_thought %}
-                <p class="title">No content yet!</p>
-                <p>There are no thoughts in the database yet!!</p>
-                {% else %}
-                <p class="idea">{{ latest_thought.idea }}</p>
-                <p class="title" title="{{ latest_thought.slug }}">{{ latest_thought.title }}</p>
-                <p class="subtitle">{{ latest_thought.author }} // {{ latest_thought.date_published }}</p>
-                <p>{{ latest_thought.content|safe }}</p>
-                {% endif %}
-            </a>
+            {% if not latest_thought %}
+            <p class="title">No content yet!</p>
+            <p>There are no thoughts in the database yet!!</p>
+            {% else %}
+            <p class="idea">{{ latest_thought.idea }}</p>
+            <p class="title" title="{{ latest_thought.slug }}">{{ latest_thought.title }}</p>
+            <p class="subtitle">{{ latest_thought.author }} // {{ latest_thought.date_published }}</p>
+            <p>{{ latest_thought.content|safe }}</p>
+            {% endif %}
         </div>
-    </div>
+        </div>
+    </a>
 
     <div class="large-12 columns showcase-splitter">
         Something interesting here?
@@ -40,9 +45,12 @@
             {% if thought.preview %}
             style="background-image: url({{ thought.preview.url }});"
             {% else %}
-            style="background-image: url({% static 'images/thought_placeholder.png' %});"
+
             {% endif %}
             >
+            {% if not thought.preview %}
+            <span class="placeholder">SP</span>
+            {% endif %}
             </div>
         </a>
 

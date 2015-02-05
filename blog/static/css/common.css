@@ -58,6 +58,7 @@ hr {
   color: #B7B7B7;
   background-color: #B7B7B7;
   border-collapse: collapse;
+  border-style: none;
   margin: 1rem 0;
 }
 
@@ -82,8 +83,10 @@ h1 a, h2 a, h3 a, h4 a, h5 a, h6 a {
 
 div#footer h3 {
   color: #A80505;
-  font-size: 14pt;
-  font-weight: bold;
+  font-size: 11pt;
+  font-family: 'Eurostile Black';
+  text-transform: uppercase;
+  text-shadow: 0px 0px 2px rgba(168, 5, 5, 0.3);
 }
 
 p {
@@ -150,8 +153,8 @@ img.right {
  *****************************************************************************/
 span.logo {
   color: #A80505;
-  font-family: 'Sigmar One';
-  font-size: 22pt;
+  font-family: 'Eurostile Black';
+  font-size: 20pt;
   display: block;
   text-transform: uppercase;
   text-shadow: 0px 0px 2px rgba(168, 5, 5, 0.3);
@@ -161,7 +164,9 @@ span.logo {
 span.footer-copyleft {
   color: #A80505;
   font-size: 8pt;
+  font-family: 'Eurostile Black';
   font-weight: bold;
+  text-shadow: 0px 0px 1px rgba(168, 5, 5, 0.3);
 }
 
 /******************************************************************************

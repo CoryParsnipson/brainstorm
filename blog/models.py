@@ -147,20 +147,20 @@ class Thought(models.Model):
         image = Image.open(filename)
         image_size = image.size
 
-        if image_size[0] < lib.UPLOAD_IMAGE_SIZE[0] or image_size[1] < lib.UPLOAD_IMAGE_SIZE[1]:
+        if image_size[0] < lib.THOUGHT_PREVIEW_IMAGE_SIZE[0] or image_size[1] < lib.THOUGHT_PREVIEW_IMAGE_SIZE[1]:
             # if the image is smaller than lib.UPLOAD_IMAGE_SIZE, find the smallest dimension, upscale, and crop
-            resize_ratio = max(float(lib.UPLOAD_IMAGE_SIZE[0]) / image_size[0],
-                               float(lib.UPLOAD_IMAGE_SIZE[1]) / image_size[1])
+            resize_ratio = max(float(lib.THOUGHT_PREVIEW_IMAGE_SIZE[0]) / image_size[0],
+                               float(lib.THOUGHT_PREVIEW_IMAGE_SIZE[1]) / image_size[1])
             image_size = (int(image_size[0] * resize_ratio), int(image_size[1] * resize_ratio))
             image = image.resize(size=image_size, resample=PIL.Image.LANCZOS)
-        elif image_size[0] > lib.UPLOAD_IMAGE_SIZE[0] or image_size[1] > lib.UPLOAD_IMAGE_SIZE[1]:
+        elif image_size[0] > lib.THOUGHT_PREVIEW_IMAGE_SIZE[0] or image_size[1] > lib.THOUGHT_PREVIEW_IMAGE_SIZE[1]:
             # if the image is larger, find smallest edge, and shrink
-            resize_ratio = max(float(lib.UPLOAD_IMAGE_SIZE[0]) / image_size[0],
-                               float(lib.UPLOAD_IMAGE_SIZE[1]) / image_size[1])
+            resize_ratio = max(float(lib.THOUGHT_PREVIEW_IMAGE_SIZE[0]) / image_size[0],
+                               float(lib.THOUGHT_PREVIEW_IMAGE_SIZE[1]) / image_size[1])
             image_size = (int(image_size[0] * resize_ratio), int(image_size[1] * resize_ratio))
             image = image.resize(size=image_size, resample=PIL.Image.LANCZOS)
         else:
             return
 
-        cropped_image = image.crop((0, 0, lib.UPLOAD_IMAGE_SIZE[0], lib.UPLOAD_IMAGE_SIZE[1]))
+        cropped_image = image.crop((0, 0, lib.THOUGHT_PREVIEW_IMAGE_SIZE[0], lib.THOUGHT_PREVIEW_IMAGE_SIZE[1]))
         cropped_image.save(filename, 'PNG')
