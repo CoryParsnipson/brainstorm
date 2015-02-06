@@ -318,14 +318,14 @@ def login(request):
             return redirect(dashboard)
     else:
         messages.add_message(request, messages.ERROR, 'Invalid login credentials provided.')
-        return redirect(logout_page)
+        return redirect(reverse('logout-page'))
 
 
 @login_required(login_url='index')
 def logout(request):
     auth_logout(request)
     messages.add_message(request, messages.INFO, 'Successfully logged out.')
-    return redirect(logout_page)
+    return redirect(reverse('logout-page'))
 
 
 @login_required(login_url='index')
@@ -774,7 +774,7 @@ class FormThoughtView(View):
                         'thought_slug': instance_data['slug'],
                         'idea_slug': instance_data['idea'],
                     }
-                    callback = reverse('thought_detail', kwargs=kwargs)
+                    callback = reverse('thought-detail', kwargs=kwargs)
                 return redirect(callback + query_string)
             else:
                 return JsonResponse(msgs)

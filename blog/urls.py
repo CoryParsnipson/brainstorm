@@ -20,8 +20,8 @@ urlpatterns = patterns('',
     # site skeleton urls
     url(r'^$', views.index, name='index'),
 
-    url(r'^login/', views.login_page, name='login_page'),
-    url(r'^logout/', views.logout_page, name='logout_page'),
+    url(r'^login/', views.login_page, name='login-page'),
+    url(r'^logout/', views.logout_page, name='logout-page'),
 
     url(r'^dashboard/$', views.dashboard, name='dashboard'),
     url(r'^dashboard/ideas/$', views.dashboard_ideas, name='dashboard-ideas'),
@@ -32,10 +32,10 @@ urlpatterns = patterns('',
     url(r'^dashboard/backend/$', views.dashboard_backend, name='dashboard-backend'),
 
     url(r'^about/', views.about, name='about'),
-    url(r'^ideas/$', views.ideas, name='idea_list'),
-    url(r'^ideas/(?P<idea_slug>[a-z0-9\-]+)/$', views.idea_detail, name='idea_detail'),
+    url(r'^ideas/$', views.ideas, name='idea-catalog-page'),
+    url(r'^ideas/(?P<idea_slug>[a-z0-9\-]+)/$', views.idea_detail, name='idea-page'),
 
-    url(r'^ideas/(?P<idea_slug>[a-z0-9\-]+)/(?P<thought_slug>[a-z0-9\-]+)/', views.thought_detail, name='thought_detail'),
+    url(r'^ideas/(?P<idea_slug>[a-z0-9\-]+)/(?P<thought_slug>[a-z0-9\-]+)/', views.thought_detail, name='thought-detail'),
 
     # RESTful api urls (it is very important that this app has no namespace...)
     url(r'^api/', include(router.urls)),

@@ -43,12 +43,12 @@
                     <ul class="group">
                         <li><a href="{% url 'index' %}">Home</a></li>
                         <li><a href="{% url 'about' %}">About</a></li>
-                        <li><a href="{% url 'idea_list' %}">Ideas</a></li>
+                        <li><a href="{% url 'idea-catalog-page' %}">Ideas</a></li>
                         <li><a href="#">Forum</a></li>
                         {% if request.user.is_authenticated %}
                         <li><a href="{% url 'dashboard' %}">Dashboard</a></li>
                         {% else %}
-                        <li><a href="{% url 'login_page' %}">Login</a></li>
+                        <li><a href="{% url 'login-page' %}">Login</a></li>
                         {% endif %}
                     </ul>
                 </nav>

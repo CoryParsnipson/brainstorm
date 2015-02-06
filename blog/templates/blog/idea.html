@@ -11,8 +11,12 @@
 
 {% for thought in thoughts %}
 <div class="thought">
-    <p class="title">{{ thought.title }}</p>
-    <p class="subtitle">by {{ thought.author }} on {{ thought.date_published }}</p>
+    <a href="{% url 'thought-detail' thought.idea.slug thought.slug %}"><p class="title">{{ thought.title }}</p></a>
+    <p class="subtitle">by {{ thought.author }} on {{ thought.date_published|date:"F j, Y g:i A" }}
+        {% if not thought.date_published == thought.date_edited %}
+        (Edited on {{ thought.date_edited }})
+        {% endif %}
+    </p>
 
     {% if thought.preview %}
     <img src="{{ thought.preview.url }}">
@@ -20,15 +24,16 @@
 
     <p>{{ thought.content|safe }}</p>
 
-    {% if not thought.date_published == thought.date_edited %}
-    <p>{{ thought.date_edited }}</p>
-    {% endif %}
-
-    <p>Permalink: <a href="{% url 'thought_detail' idea.slug thought.slug %}">{{ thought.slug }}</a></p>
+    <p>Permalink: <a href="{% url 'thought-detail' idea.slug thought.slug %}">{{ thought.slug }}</a></p>
 </div>
 {% empty %}
 <p>This idea has no thoughts yet!</p>
 {% endfor %}
+
+{% if thoughts %}
+<p>[pagination]</p>
+{% endif %}
+
 {% endblock %}
 
 {% block footer %}

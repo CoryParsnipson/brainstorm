@@ -7,7 +7,7 @@
 
 {% block content %}
 <div class="row">
-    <a href="{% url 'thought_detail' latest_thought.idea.slug latest_thought.slug %}">
+    <a href="{% url 'thought-detail' latest_thought.idea.slug latest_thought.slug %}">
         <div class="large-12 columns showcase"
         {% if latest_thought.preview %}
         style="background-image: url('{{ latest_thought.preview.url }}');"
@@ -40,7 +40,7 @@
 <ul class="small-block-grid-2 small-stories">
     {% for thought in latest_thoughts %}
     <li>
-        <a href="{% url 'thought_detail' thought.idea.slug thought.slug %}">
+        <a href="{% url 'thought-detail' thought.idea.slug thought.slug %}">
             <div class="img-placeholder"
             {% if thought.preview %}
             style="background-image: url({{ thought.preview.url }});"
@@ -55,7 +55,7 @@
 
         <p class="idea">{{ thought.idea }}</p>
         <p class="title">
-            <a href="{% url 'thought_detail' thought.idea.slug thought.slug %}">{{ thought.title }}</a>
+            <a href="{% url 'thought-detail' thought.idea.slug thought.slug %}">{{ thought.title }}</a>
         </p>
         <p class="subtitle">{{ thought.author }} // {{ thought.date_published }}</p>
         <p>{{ thought.content|safe }}</p>

@@ -7,7 +7,7 @@
 
 {% block content %}
 <h1>
-    <a href="{% url 'idea_detail' thought.idea.slug %}">{{ thought.idea }}</a> >> {{ thought.title }}
+    <a href="{% url 'idea-page' thought.idea.slug %}">{{ thought.idea }}</a> >> {{ thought.title }}
     {% if thought.is_draft %}[Draft]{% endif %}
 </h1>
 <p class="thought-author">by {{ thought.author }} on {{ thought.date_published }}</p>
@@ -33,7 +33,7 @@
     {% for next_thought in next_thoughts reversed %}
     <tr>
         <th>Next:</th>
-        <td><a href="{% url 'thought_detail' next_thought.idea.slug next_thought.slug %}">{{ next_thought.title }}</a></td>
+        <td><a href="{% url 'thought-detail' next_thought.idea.slug next_thought.slug %}">{{ next_thought.title }}</a></td>
     </tr>
     {% empty %}
     <tr><th>This is the Latest Thought.</th></tr>
@@ -46,7 +46,7 @@
     {% for prev_thought in prev_thoughts reversed %}
     <tr>
         <th>Prev:</th>
-        <td><a href="{% url 'thought_detail' prev_thought.idea.slug prev_thought.slug %}">{{ prev_thought.title }}</a></td>
+        <td><a href="{% url 'thought-detail' prev_thought.idea.slug prev_thought.slug %}">{{ prev_thought.title }}</a></td>
     </tr>
     {% empty %}
     <tr><th>This is the Earliest Thought.</th></tr>
