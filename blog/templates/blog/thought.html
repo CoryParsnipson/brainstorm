@@ -33,7 +33,7 @@
     {% for next_thought in next_thoughts reversed %}
     <tr>
         <th>Next:</th>
-        <td><a href="{% url 'thought-detail' next_thought.idea.slug next_thought.slug %}">{{ next_thought.title }}</a></td>
+        <td><a href="{% url 'thought-page' next_thought.idea.slug next_thought.slug %}">{{ next_thought.title }}</a></td>
     </tr>
     {% empty %}
     <tr><th>This is the Latest Thought.</th></tr>
@@ -46,7 +46,7 @@
     {% for prev_thought in prev_thoughts reversed %}
     <tr>
         <th>Prev:</th>
-        <td><a href="{% url 'thought-detail' prev_thought.idea.slug prev_thought.slug %}">{{ prev_thought.title }}</a></td>
+        <td><a href="{% url 'thought-page' prev_thought.idea.slug prev_thought.slug %}">{{ prev_thought.title }}</a></td>
     </tr>
     {% empty %}
     <tr><th>This is the Earliest Thought.</th></tr>

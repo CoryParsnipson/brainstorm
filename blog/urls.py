@@ -35,7 +35,7 @@ urlpatterns = patterns('',
     url(r'^ideas/$', views.ideas, name='idea-catalog-page'),
     url(r'^ideas/(?P<idea_slug>[a-z0-9\-]+)/$', views.idea_detail, name='idea-page'),
 
-    url(r'^ideas/(?P<idea_slug>[a-z0-9\-]+)/(?P<thought_slug>[a-z0-9\-]+)/', views.thought_detail, name='thought-detail'),
+    url(r'^ideas/(?P<idea_slug>[a-z0-9\-]+)/(?P<thought_slug>[a-z0-9\-]+)/', views.thought_detail, name='thought-page'),
 
     # RESTful api urls (it is very important that this app has no namespace...)
     url(r'^api/', include(router.urls)),
