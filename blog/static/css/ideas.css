@@ -7,23 +7,23 @@
 /******************************************************************************
  * idea catalog styles
  *****************************************************************************/
+.catalog {
+  border-collapse: separate;
+  border-spacing: 0 1rem;
+}
+
 .catalog td {
   position: relative;
   overflow: hidden;
 }
 
 .catalog td div.overlay {
-  position: absolute; /* stretch this goddamn div over the entire td */
-  left: 0;
-  right: 0;
+  width: 100%;
+  height: 100%;
+  position: absolute;
   top: 0;
-  bottom: 0;
+  left: 0;
   z-index: 10;
-  margin-bottom: 2rem;
-}
-
-.catalog td img {
-  margin-bottom: 2rem;
 }
 
 .catalog td:hover div.overlay {
@@ -43,7 +43,7 @@
 .catalog td p {
   width: 70%;
   position: absolute;
-  bottom: 2rem;
+  bottom: 0;
   visibility: hidden;
   z-index: 20;
   margin: 0.5rem;
