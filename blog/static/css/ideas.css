@@ -8,23 +8,58 @@
  * idea catalog styles
  *****************************************************************************/
 .catalog td {
+  position: relative;
+  overflow: hidden;
 }
 
-.catalog td h3, .catalog td p {
+.catalog td div.overlay {
+  position: absolute; /* stretch this goddamn div over the entire td */
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: -1px;
+  z-index: 10;
+  margin-bottom: 2rem;
 }
 
-.catalog td:nth-of-type(odd) h3 {
-  text-align: left;
+.catalog td img {
+  margin-bottom: 2rem;
 }
 
-.catalog td:nth-of-type(odd) p {
-  text-align: right;
+.catalog td:hover div.overlay {
+  background-color: rgba(0, 0, 0, 0.75);
 }
 
-.catalog td:nth-of-type(even) h3 {
-  text-align: right;
+.catalog td:hover p {
+  visibility: visible;
 }
 
-.catalog td:nth-of-type(even) p {
-  text-align: right;
+.catalog td h3 {
+  position: absolute;
+  top: 0.5rem;
+  z-index: 20;
+}
+
+.catalog td p {
+  position: absolute;
+  bottom: 2rem;
+  visibility: hidden;
+  z-index: 20;
+  margin: 0.5rem;
+}
+
+.catalog tr:nth-of-type(odd) h3 {
+  left: 0.5rem;
+}
+
+.catalog tr:nth-of-type(odd) p {
+  right: 0.5rem;
+}
+
+.catalog tr:nth-of-type(even) h3 {
+  right: 0.5rem;
+}
+
+.catalog tr:nth-of-type(even) p {
+  left: 0.5rem;
 }

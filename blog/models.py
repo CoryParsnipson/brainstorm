@@ -49,6 +49,16 @@ class Idea(models.Model):
         except IndexError:
             return None
 
+    def truncate(self, max_length=250, allowed_tags=None, strip=True):
+        """ output a form of the content field, truncated to max_length. Tags
+            will be whitelisted, stripped, and balanced to account for
+            truncation.
+        """
+        return lib.truncate(
+            content=self.description,
+            max_length=max_length,
+            strip=strip)
+
     def save(self, *args, **kwargs):
         """ if order field is None, add value (1 + maximum existing value)
         """
@@ -102,26 +112,16 @@ class Thought(models.Model):
         'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'hr', 'br'
     ]
 
-    def truncate(self, max_length=70, allowed_tags=None, strip=True):
+    def truncate(self, max_length=250, allowed_tags=None, strip=True):
         """ output a form of the content field, truncated to max_length. Tags
             will be whitelisted, stripped, and balanced to account for
             truncation.
         """
-        if not allowed_tags:
-            allowed_tags = self.allowed_tags
-
-        clean_str = bleach.clean(
-            self.content,
-            tags=allowed_tags,
-            strip=strip,
-            strip_comments=True,
-        )
-
-        clean_str = clean_str[:max_length]
-        if max_length < len(self.content):
-            clean_str += "..."
-
-        return clean_str
+        return lib.truncate(
+            content=self.content,
+            max_length=max_length,
+            allowed_tags=allowed_tags or self.allowed_tags,
+            strip=strip)
 
     def save(self, *args, **kwargs):
         # check to see if this save means a draft is being published and

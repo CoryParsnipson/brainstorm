@@ -5,6 +5,7 @@ import datetime
 
 import PIL
 from PIL import Image
+import bleach
 
 import paths
 
@@ -12,8 +13,15 @@ import paths
 # app level defines
 ###############################################################################
 MAX_UPLOAD_SIZE = 104857600  # (1024 * 1024 bits * 100)
+
 THOUGHT_PREVIEW_IMAGE_SIZE = (600, 300)
 IDEA_PREVIEW_IMAGE_SIZE = (600, 150)
+
+DEFAULT_TRUNCATE_LENGTH = 70
+ALLOWED_TAGS = [
+    'abbr', 'ul', 'blockquote', 'code', 'em', 'strong', 'li', 'ol',
+    'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'hr', 'br'
+]
 
 
 ###############################################################################
@@ -40,6 +48,27 @@ def slugify(source_str, max_len=20):
     slug = "-".join(slug_tokens)
     slug = urlenc_regex.sub('', slug)
     return slug
+
+
+def truncate(content, max_length=DEFAULT_TRUNCATE_LENGTH, allowed_tags=ALLOWED_TAGS, strip=True):
+    """ truncate a body of text to the expected 'max_length' and strip
+        the body of text of all html tags that are not in 'allowed tags'. You
+        can also specify a 'strip' value (True -> strip html tags, False ->
+        escape html tags and leave them in text)
+    """
+
+    truncated_str = bleach.clean(
+        content,
+        tags=allowed_tags,
+        strip=strip,
+        strip_comments=True,
+    )
+
+    truncated_str = truncated_str[:max_length]
+    if max_length < len(content):
+        truncated_str += "..."
+
+    return truncated_str
 
 
 def generate_upload_filename(filename):

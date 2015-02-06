@@ -12,12 +12,10 @@
 {% for thought in thoughts %}
 <div class="thought">
     <p class="title">{{ thought.title }}</p>
-    <p class="thought-author">by {{ thought.author }} on {{ thought.date_published }}</p>
+    <p class="subtitle">by {{ thought.author }} on {{ thought.date_published }}</p>
 
     {% if thought.preview %}
     <img src="{{ thought.preview.url }}">
-    {% else %}
-    <img src="{{ thought.idea.icon_large.url }}">
     {% endif %}
 
     <p>{{ thought.content|safe }}</p>

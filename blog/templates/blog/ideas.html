@@ -12,9 +12,12 @@
     {% for idea in ideas %}
     <tr>
         <td>
-            <a href="{% url 'idea_detail' idea.slug %}"><img src="{{ idea.icon.url }}" /></a>
-            <h3 title="{{ idea.slug }}"><a href="{% url 'idea_detail' idea.slug %}">{{ idea.name }}</a></h3>
-            <p>{{ idea.description }}</p>
+            <a href="{% url 'idea_detail' idea.slug %}">
+                <div class="overlay"></div>
+                <img src="{{ idea.icon.url }}" />
+                <h3 title="{{ idea.slug }}"><a href="{% url 'idea_detail' idea.slug %}">{{ idea.name }}</a></h3>
+                <p>{{ idea.description }}</p>
+            </a>
         </td>
     </tr>
     {% empty %}

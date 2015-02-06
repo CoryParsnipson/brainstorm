@@ -26,12 +26,12 @@ def index(request):
 
     small_stories = latest_thoughts[1:]
     for t in small_stories:
-        t.content = t.truncate(max_length=250)
+        t.content = t.truncate()
 
     # prepare html output for big story
     if len(latest_thoughts):
         latest_thought = latest_thoughts[0]
-        latest_thought.content = latest_thought.truncate(max_length=250)
+        latest_thought.content = latest_thought.truncate()
     else:
         latest_thought = None
 
@@ -67,6 +67,10 @@ def about(request):
 
 def ideas(request):
     idea_list = Idea.objects.all()
+
+    for idea in idea_list:
+        idea.description = idea.truncate()
+
     context = {'page_title': 'Ideas',
                'ideas': idea_list}
     return render(request, 'blog/ideas.html', context)
