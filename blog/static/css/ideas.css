@@ -17,7 +17,7 @@
   left: 0;
   right: 0;
   top: 0;
-  bottom: -1px;
+  bottom: 0;
   z-index: 10;
   margin-bottom: 2rem;
 }
@@ -41,6 +41,7 @@
 }
 
 .catalog td p {
+  width: 70%;
   position: absolute;
   bottom: 2rem;
   visibility: hidden;
@@ -54,6 +55,7 @@
 
 .catalog tr:nth-of-type(odd) p {
   right: 0.5rem;
+  text-align: right;
 }
 
 .catalog tr:nth-of-type(even) h3 {
@@ -62,4 +64,5 @@
 
 .catalog tr:nth-of-type(even) p {
   left: 0.5rem;
+  text-align: left;
 }
