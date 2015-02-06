@@ -1,9 +1,12 @@
 {% extends 'blog/templates/template_default.html' %}
 {% load staticfiles %}
 
+{% block http_headers %}
+<link rel="stylesheet" type="text/css" href="{% static 'css/ideas.css' %}">
+{% endblock %}
+
 {% block content %}
 <h3>Idea Catalog</h3>
-
 <table class="catalog">
     <tbody>
     {% for idea in ideas %}
@@ -19,4 +22,11 @@
     {% endfor %}
     </tbody>
 </table>
+{% endblock %}
+
+{% block side %}
+<h3>About Ideas</h3>
+<p>Ideas are like "topics" in other blogs, but here they indicate something more serial, with individual posts (called "Thoughts") in each Idea being very closely related.</p>
+<p>An Idea is centered around a single ongoing project or line of inquiry that may have a beginning, middle, and end.</p>
+<p>This page is a catalog of all the Ideas that I write about on Slacker Paradise.</p>
 {% endblock %}

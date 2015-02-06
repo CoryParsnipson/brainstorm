@@ -3,6 +3,9 @@ import re
 import random
 import datetime
 
+import PIL
+from PIL import Image
+
 import paths
 
 ###############################################################################
@@ -10,6 +13,7 @@ import paths
 ###############################################################################
 MAX_UPLOAD_SIZE = 104857600  # (1024 * 1024 bits * 100)
 THOUGHT_PREVIEW_IMAGE_SIZE = (600, 300)
+IDEA_PREVIEW_IMAGE_SIZE = (600, 150)
 
 
 ###############################################################################
@@ -93,3 +97,39 @@ def upload_file(f):
         for chunk in f.chunks():
             destination.write(chunk)
     return True, file_url
+
+
+def resize_image(filename, new_size=THOUGHT_PREVIEW_IMAGE_SIZE):
+    """ Given a filename to an existing image file, resize the
+        file to the given dimensions (new_size). If no dimensions
+        are provided, the file will be resized and cropped to the
+        value in THOUGHT_PREVIEW_IMAGE_SIZE. The new image will
+        be saved over the existing filename.
+    """
+    image = Image.open(filename)
+    image_size = image.size
+
+    if image_size[0] < new_size[0] or image_size[1] < new_size[1]:
+        # find the smallest dimension, upscale, and crop
+        resize_ratio = max(float(new_size[0]) / image_size[0],
+                           float(new_size[1]) / image_size[1])
+        image_size = (int(image_size[0] * resize_ratio),
+                      int(image_size[1] * resize_ratio))
+        image = image.resize(size=image_size, resample=PIL.Image.LANCZOS)
+    elif image_size[0] > new_size[0] or image_size[1] > new_size[1]:
+        # if the image is larger, find smallest edge, and shrink
+        resize_ratio = max(float(new_size[0]) / image_size[0],
+                           float(new_size[1]) / image_size[1])
+        image_size = (int(image_size[0] * resize_ratio),
+                      int(image_size[1] * resize_ratio))
+        image = image.resize(size=image_size, resample=PIL.Image.LANCZOS)
+    else:
+        # image is already the perfect size, don't do anything
+        return
+
+    offset_x = (image_size[0] - new_size[0]) / 2
+    offset_y = (image_size[1] - new_size[1]) / 2
+    crop_box = (offset_x, offset_y, offset_x + new_size[0], offset_y + new_size[1])
+
+    cropped_image = image.crop(crop_box)
+    cropped_image.save(filename, 'PNG')

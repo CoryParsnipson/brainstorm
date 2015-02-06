@@ -43,6 +43,7 @@ body {
 .top-button h1 {
   color: #FFFFFF;
   text-transform: uppercase;
+  margin: 0;
 }
 
 .top-button:hover {
@@ -146,6 +147,10 @@ img.right {
 
 .link-icon {
   padding-right: 10px;
+}
+
+.idea-banner {
+  margin-bottom: 1rem;
 }
 
 /******************************************************************************
@@ -327,4 +332,25 @@ textarea {
 .side-box h3 {
   font-size: 11pt;
   margin-bottom: 1rem;
+}
+
+/******************************************************************************
+ * thought styles
+ *****************************************************************************/
+p.idea {
+  color: #FFFFFF;
+  font-size: 8pt;
+  text-transform: uppercase;
+  margin: 0;
+}
+
+p.title {
+  color: #F8C118;
+  font-size: 14pt;
+  margin-bottom: 0.3em;
+}
+
+p.subtitle {
+  color: #B7B7B7;
+  font-size: 9pt;
 }

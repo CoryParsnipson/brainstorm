@@ -24,6 +24,7 @@ div.text-overlay {
   width: 200px;
   height: 100%;
   overflow: hidden;
+  text-overflow: ellipsis; /* doesn't seem to work with the current styles... */
   text-align: left;
   background-color: rgba(0, 0, 0, 0.75);
   z-index: 10;
@@ -48,24 +49,6 @@ div.text-overlay p:not([class]) {
 /******************************************************************************
  * thought styles
  *****************************************************************************/
-p.idea {
-  color: #FFFFFF;
-  font-size: 8pt;
-  text-transform: uppercase;
-  margin: 0;
-}
-
-p.title {
-  color: #F8C118;
-  font-size: 14pt;
-  margin-bottom: 0.3em;
-}
-
-p.subtitle {
-  color: #B7B7B7;
-  font-size: 9pt;
-}
-
 .placeholder {
   font-size: 110pt;
   font-family: 'Eurostile Black';

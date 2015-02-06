@@ -1,0 +1,30 @@
+/* ideas.css
+ * Ideas css style for Slacker Paradise
+ *
+ * Cory Parsnipson, 2015
+ */
+
+/******************************************************************************
+ * idea catalog styles
+ *****************************************************************************/
+.catalog td {
+}
+
+.catalog td h3, .catalog td p {
+}
+
+.catalog td:nth-of-type(odd) h3 {
+  text-align: left;
+}
+
+.catalog td:nth-of-type(odd) p {
+  text-align: right;
+}
+
+.catalog td:nth-of-type(even) h3 {
+  text-align: right;
+}
+
+.catalog td:nth-of-type(even) p {
+  text-align: right;
+}

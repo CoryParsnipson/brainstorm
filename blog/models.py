@@ -2,10 +2,6 @@ import os
 import datetime
 
 import bleach
-import PIL
-from PIL import Image
-from imagekit.models import ImageSpecField
-from imagekit.processors import ResizeToFill, Crop
 
 from django.db import models
 from django.db.models import Max
@@ -29,13 +25,10 @@ class Idea(models.Model):
     slug = models.SlugField(primary_key=True)
     description = models.TextField()
     order = models.IntegerField(unique=True)
-
-    icon = models.ImageField(upload_to=os.path.basename(paths.MEDIA_IMAGE_ROOT))
-    icon_large = ImageSpecField(
-        source='icon',
-        processors=[ResizeToFill(300, 300)],
-        format='png',
-        options={'quality': '70'}
+    icon = models.ImageField(
+        upload_to=os.path.basename(paths.MEDIA_IMAGE_ROOT),
+        blank=False,
+        null=False,
     )
 
     def get_next(self):
@@ -69,6 +62,10 @@ class Idea(models.Model):
 
         # "real" save method
         super(Idea, self).save(*args, **kwargs)
+
+        if self.icon:
+            filename = os.path.join(paths.MEDIA_DIR, self.icon.name)
+            lib.resize_image(filename, new_size=lib.IDEA_PREVIEW_IMAGE_SIZE)
 
     def __unicode__(self):
         return self.name
@@ -114,12 +111,13 @@ class Thought(models.Model):
             allowed_tags = self.allowed_tags
 
         clean_str = bleach.clean(
-            self.content[:max_length],
+            self.content,
             tags=allowed_tags,
             strip=strip,
             strip_comments=True,
         )
 
+        clean_str = clean_str[:max_length]
         if max_length < len(self.content):
             clean_str += "..."
 
@@ -143,24 +141,4 @@ class Thought(models.Model):
             return
 
         filename = os.path.join(paths.MEDIA_DIR, self.preview.name)
-
-        image = Image.open(filename)
-        image_size = image.size
-
-        if image_size[0] < lib.THOUGHT_PREVIEW_IMAGE_SIZE[0] or image_size[1] < lib.THOUGHT_PREVIEW_IMAGE_SIZE[1]:
-            # if the image is smaller than lib.UPLOAD_IMAGE_SIZE, find the smallest dimension, upscale, and crop
-            resize_ratio = max(float(lib.THOUGHT_PREVIEW_IMAGE_SIZE[0]) / image_size[0],
-                               float(lib.THOUGHT_PREVIEW_IMAGE_SIZE[1]) / image_size[1])
-            image_size = (int(image_size[0] * resize_ratio), int(image_size[1] * resize_ratio))
-            image = image.resize(size=image_size, resample=PIL.Image.LANCZOS)
-        elif image_size[0] > lib.THOUGHT_PREVIEW_IMAGE_SIZE[0] or image_size[1] > lib.THOUGHT_PREVIEW_IMAGE_SIZE[1]:
-            # if the image is larger, find smallest edge, and shrink
-            resize_ratio = max(float(lib.THOUGHT_PREVIEW_IMAGE_SIZE[0]) / image_size[0],
-                               float(lib.THOUGHT_PREVIEW_IMAGE_SIZE[1]) / image_size[1])
-            image_size = (int(image_size[0] * resize_ratio), int(image_size[1] * resize_ratio))
-            image = image.resize(size=image_size, resample=PIL.Image.LANCZOS)
-        else:
-            return
-
-        cropped_image = image.crop((0, 0, lib.THOUGHT_PREVIEW_IMAGE_SIZE[0], lib.THOUGHT_PREVIEW_IMAGE_SIZE[1]))
-        cropped_image.save(filename, 'PNG')
+        lib.resize_image(filename, lib.THOUGHT_PREVIEW_IMAGE_SIZE)
