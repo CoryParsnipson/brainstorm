@@ -5,10 +5,23 @@
  */
 
 /******************************************************************************
- * Thought styles
+ * thought styles
  *****************************************************************************/
-
 div.thought {
   margin-top: 2rem;
   margin-bottom: 4rem;
+}
+
+/******************************************************************************
+ * thought side navigation styles
+ *****************************************************************************/
+table.thought-nav {
+  border-collapse: separate;
+  //border-spacing: 0 1rem;
+}
+
+table.thought-nav td {
+}
+
+table.thought-nav p {
 }

@@ -91,7 +91,7 @@ def idea_detail(request, idea_slug=None):
 def thought_detail(request, idea_slug=None, thought_slug=None):
     thought = get_object_or_404(Thought, slug=thought_slug)
 
-    next_thoughts = get_adjacent_thought(thought_slug=thought.slug, get_next=True, num=3)
+    next_thoughts = get_adjacent_thought(thought_slug=thought.slug, get_next=True, num=1)
     prev_thoughts = get_adjacent_thought(thought_slug=thought.slug, get_next=False, num=3)
 
     context = {
@@ -774,7 +774,7 @@ class FormThoughtView(View):
                         'thought_slug': instance_data['slug'],
                         'idea_slug': instance_data['idea'],
                     }
-                    callback = reverse('thought-detail', kwargs=kwargs)
+                    callback = reverse('thought-page', kwargs=kwargs)
                 return redirect(callback + query_string)
             else:
                 return JsonResponse(msgs)

@@ -1,7 +1,8 @@
 import os
 import datetime
 
-import bleach
+from imagekit.models import ImageSpecField
+from imagekit.processors import Crop
 
 from django.db import models
 from django.db.models import Max
@@ -30,6 +31,16 @@ class Idea(models.Model):
         blank=False,
         null=False,
     )
+    icon_small = ImageSpecField(
+        source='icon',
+        processors=[Crop(
+            width=lib.IDEA_PREVIEW_IMAGE_SMALL_SIZE[0],
+            height=lib.IDEA_PREVIEW_IMAGE_SMALL_SIZE[1],
+            anchor=(0.5, 0.5),
+        )],
+        format='png',
+        options={'quality': '70'},
+    )
 
     def get_next(self):
         """ get the next Idea by order column or return
@@ -49,7 +60,7 @@ class Idea(models.Model):
         except IndexError:
             return None
 
-    def truncate(self, max_length=250, allowed_tags=None, strip=True):
+    def truncate(self, max_length=500, allowed_tags=None, strip=True):
         """ output a form of the content field, truncated to max_length. Tags
             will be whitelisted, stripped, and balanced to account for
             truncation.
@@ -122,6 +133,14 @@ class Thought(models.Model):
             max_length=max_length,
             allowed_tags=allowed_tags or self.allowed_tags,
             strip=strip)
+
+    def get_preview(self):
+        """ safe way to get preview url for this thought. Will return None if
+            there is no preview picture. Use template tag |default_if_none:
+            to handle template output of this function.
+        """
+        if self.preview and hasattr(self.preview, 'url'):
+            return self.preview.url
 
     def save(self, *args, **kwargs):
         # check to see if this save means a draft is being published and

@@ -6,47 +6,52 @@
 {% endblock %}
 
 {% block content %}
-<h1>
-    <a href="{% url 'idea-page' thought.idea.slug %}">{{ thought.idea }}</a> >> {{ thought.title }}
-    {% if thought.is_draft %}[Draft]{% endif %}
-</h1>
-<p class="thought-author">by {{ thought.author }} on {{ thought.date_published }}</p>
+<p class="idea"><a href="{% url 'idea-page' thought.idea.slug %}">{{ thought.idea }}</a></p>
+<p class="title">{{ thought.title }} {% if thought.is_draft %}[Draft]{% endif %}</p>
+<p class="subtitle">by {{ thought.author }} on {{ thought.date_published }}
+    {% if not thought.date_published == thought.date_edited %}
+    (Edited {{ thought.date_edited|date:"F j, Y g:i A" }})
+    {% endif %}
+</p>
 
 {% if thought.preview %}
 <img src="{{ thought.preview.url }}">
 {% else %}
-<img src="{{ thought.idea.icon_large.url }}">
+<img src="{{ thought.idea.icon.url }}">
 {% endif %}
 
 <p>{{ thought.content|safe }}</p>
 
-{% if not thought.date_published == thought.date_edited %}
-<p>{{ thought.date_edited }}</p>
-{% endif %}
+<p>[Comments section]</p>
 {% endblock %}
 
 {% block side %}
-<h3>Navigation:</h3>
-<hr>
-<table class="thought-history">
+{% if next_thoughts %}
+<table class="thought-nav">
     <tbody>
+    <tr><th>Next</th></tr>
     {% for next_thought in next_thoughts reversed %}
     <tr>
-        <th>Next:</th>
         <td><a href="{% url 'thought-page' next_thought.idea.slug next_thought.slug %}">{{ next_thought.title }}</a></td>
     </tr>
-    {% empty %}
-    <tr><th>This is the Latest Thought.</th></tr>
     {% endfor %}
     </tbody>
 </table>
+{% endif %}
 
-<table class="thought-history">
+{% if next_thoughts and prev_thoughts %}<hr>{% endif %}
+
+<table class="thought-nav">
     <tbody>
+    <tr><th>Previous</th></tr>
     {% for prev_thought in prev_thoughts reversed %}
     <tr>
-        <th>Prev:</th>
-        <td><a href="{% url 'thought-page' prev_thought.idea.slug prev_thought.slug %}">{{ prev_thought.title }}</a></td>
+        <td>
+            <img src="{{ prev_thought.get_preview|default_if_none:thought.idea.icon.url }}">
+            <p>
+                <a href="{% url 'thought-page' prev_thought.idea.slug prev_thought.slug %}">{{ prev_thought.title }}</a>
+            </p>
+        </td>
     </tr>
     {% empty %}
     <tr><th>This is the Earliest Thought.</th></tr>

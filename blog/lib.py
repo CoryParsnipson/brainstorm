@@ -15,7 +15,8 @@ import paths
 MAX_UPLOAD_SIZE = 104857600  # (1024 * 1024 bits * 100)
 
 THOUGHT_PREVIEW_IMAGE_SIZE = (600, 300)
-IDEA_PREVIEW_IMAGE_SIZE = (600, 150)
+IDEA_PREVIEW_IMAGE_SMALL_SIZE = (600, 150)
+IDEA_PREVIEW_IMAGE_SIZE = (600, 300)
 
 DEFAULT_TRUNCATE_LENGTH = 70
 ALLOWED_TAGS = [
@@ -128,6 +129,16 @@ def upload_file(f):
     return True, file_url
 
 
+def get_center_coord(box, rect):
+    """ given a tuple (x, y) "box" representing a rectangle where x is the
+        width of the rectangle in pixels and y is the height, and another
+        tuple "rect", return a coordinate pair (x_offset, y_offset) such that
+        box will be centered inside rect.
+    """
+    return (max(0, int(float(rect[0] - box[0]) / 2)),
+            max(0, int(float(rect[1] - box[1]) / 2)))
+
+
 def resize_image(filename, new_size=THOUGHT_PREVIEW_IMAGE_SIZE):
     """ Given a filename to an existing image file, resize the
         file to the given dimensions (new_size). If no dimensions
@@ -156,8 +167,7 @@ def resize_image(filename, new_size=THOUGHT_PREVIEW_IMAGE_SIZE):
         # image is already the perfect size, don't do anything
         return
 
-    offset_x = (image_size[0] - new_size[0]) / 2
-    offset_y = (image_size[1] - new_size[1]) / 2
+    (offset_x, offset_y) = get_center_coord(new_size, image_size)
     crop_box = (offset_x, offset_y, offset_x + new_size[0], offset_y + new_size[1])
 
     cropped_image = image.crop(crop_box)
