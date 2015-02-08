@@ -93,11 +93,12 @@
 
     <div id="footer">
         <div class="row collapse">
-            {% block footer %}
             <div class="large-8 medium-8 small-12 columns">
+                {% block footer %}
                 <h3>Yo This is Whats Cool Right Now</h3>
                 <p>asdkfaksjdf</p>
                 <p>asdkjflsakdjf</p>
+                {% endblock %}
             </div>
             <div class="large-4 medium-4 small-12 columns">
                 <h3>Contact</h3>
@@ -108,7 +109,6 @@
                 <a href="https://twitter.com/CoryParsnipson" target="_blank"><img class="link-icon left" src="{% static 'images/link_twitter.png' %}"></a>
                 <a href="https://github.com/CoryParsnipson" target="_blank"><img class="link-icon left" src="{% static 'images/link_github.png' %}"></a>
             </div>
-            {% endblock %}
         </div>
         <div class="row collapse">
             <div class="large-12 columns">
