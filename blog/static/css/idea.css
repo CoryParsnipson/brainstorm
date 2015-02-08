@@ -13,15 +13,17 @@ div.idea-banner {
 
 div.idea-banner img {
   width: 100%;
-  margin-bottom: 1rem;
 }
 
 div.idea-banner h1 {
+  height: 100%;
   width: 100%;
-  //background-color: rgba(0, 0, 0, 0.75);
+  background: -webkit-linear-gradient(left, rgba(0, 0, 0, 1), rgba(0, 0, 0, 0) 75%);
+  background: -o-linear-gradient(left, rgba(0, 0, 0, 1), rgba(0, 0, 0, 0) 75%);
+  background: -moz-linear-gradient(left, rgba(0, 0, 0, 1), rgba(0, 0, 0, 0) 75%);
+  background: linear-gradient(left, rgba(0, 0, 0, 1), rgba(0, 0, 0, 0) 75%);
   position: absolute;
   top: 0;
-  //bottom: 0;
   padding: 5px;
 }
 
