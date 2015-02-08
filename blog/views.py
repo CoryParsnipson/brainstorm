@@ -91,14 +91,11 @@ def idea_detail(request, idea_slug=None):
 def thought_detail(request, idea_slug=None, thought_slug=None):
     thought = get_object_or_404(Thought, slug=thought_slug)
 
-    next_thoughts = get_adjacent_thought(thought_slug=thought.slug, get_next=True, num=1)
-    prev_thoughts = get_adjacent_thought(thought_slug=thought.slug, get_next=False, num=3)
-
     context = {
         'page_title': thought.title,
         'thought': thought,
-        'next_thoughts': next_thoughts,
-        'prev_thoughts': prev_thoughts
+        'next_thoughts': thought.get_next_thoughts(num=1),
+        'prev_thoughts': thought.get_prev_thoughts(num=3),
     }
     return render(request, 'blog/thought.html', context)
 
@@ -345,48 +342,6 @@ def upload(request):
 ###############################################################################
 # helper functions
 ###############################################################################
-def get_adjacent_thought(thought_slug, get_next=True, num=1, include_drafts=False, include_trash=False):
-    """ get the next or previous Thought in the same Idea and return the
-        thought object
-    """
-    try:
-        thought = Thought.objects.get(slug=thought_slug)
-    except ValueError as e:
-        print e.message
-        return []
-
-    query_params = {
-        'idea': thought.idea,
-        'is_draft': False,
-        'is_trash': False,
-    }
-
-    if include_drafts:
-        del query_params['is_draft']
-
-    if include_trash:
-        del query_params['is_trash']
-
-    thought_list = Thought.objects.filter(**query_params)
-
-    current_thought_idx = -1
-    for idx, item in enumerate(thought_list):
-        if thought == item:
-            current_thought_idx = idx
-
-    try:
-        if get_next:
-            start_idx = current_thought_idx + 1
-            adjacent_thoughts = thought_list[start_idx:start_idx + num]
-        else:
-            start_idx = max(current_thought_idx - num, 0)
-            adjacent_thoughts = thought_list[start_idx:current_thought_idx]
-    except (AssertionError, IndexError) as e:
-        return []
-
-    return adjacent_thoughts
-
-
 def safe_delete_idea(idea_slug):
     """ delete a given idea (identified by idea_slug) only if it has no
         associated thoughts. Else do not delete and raise ValidationError

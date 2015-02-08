@@ -33,10 +33,17 @@
     {% for next_thought in next_thoughts reversed %}
     <tr>
         <td>
+            {% if next_thought %}
             <a href="{% url 'thought-page' next_thought.idea.slug next_thought.slug %}">
                 <img src="{{ next_thought.get_preview|default_if_none:thought.idea.icon.url }}">
                 <p>{{ next_thought.title }}</p>
             </a>
+            {% else %}
+            <div class="nav-placeholder">
+                <p>&nbsp;</p>
+                <span>SP</span>
+            </div>
+            {% endif %}
         </td>
     </tr>
     {% endfor %}
@@ -50,13 +57,20 @@
 <table class="thought-nav">
     <tbody>
     <tr><th>Previous</th></tr>
-    {% for prev_thought in prev_thoughts reversed %}
+    {% for prev_thought in prev_thoughts %}
     <tr>
         <td>
+            {% if prev_thought %}
             <a href="{% url 'thought-page' prev_thought.idea.slug prev_thought.slug %}">
                 <img src="{{ prev_thought.get_preview|default_if_none:thought.idea.icon.url }}">
                 <p>{{ prev_thought.title }}</p>
             </a>
+            {% else %}
+            <div class="nav-placeholder">
+                <p>&nbsp;</p>
+                <span>SP</span>
+            </div>
+            {% endif %}
         </td>
     </tr>
     {% endfor %}

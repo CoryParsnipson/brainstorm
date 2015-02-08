@@ -142,6 +142,52 @@ class Thought(models.Model):
         if self.preview and hasattr(self.preview, 'url'):
             return self.preview.url
 
+    def get_next_thoughts(self, num=1, include_drafts=False, include_trash=False):
+        """ get the next "num" thoughts in the same Idea and return a list
+            of Thought objects. This list will be padded with None types such
+            that it will be of length "num" always.
+        """
+        query_params = {
+            'idea': self.idea,
+            'is_draft': include_drafts,
+            'is_trash': include_trash,
+            'date_published__gt': self.date_published,
+        }
+
+        # note: assumes Thoughts are ordered chronologically. Reasonable
+        # assumption; may change in the far future, don't worry about it
+        thought_list = Thought.objects.filter(**query_params).order_by('date_published')[:num]
+
+        # pull out thoughts in reverse order
+        adjacent_thoughts = [t for idx, t in enumerate(thought_list)]
+
+        # add padding
+        adjacent_thoughts += [None] * (num - len(adjacent_thoughts))
+        return adjacent_thoughts
+
+    def get_prev_thoughts(self, num=1, include_drafts=False, include_trash=False):
+        """ get the previous "num" thoughts in the same Idea and return a list
+            of Thought objects. This list will be padded with None types such
+            that it will be of length "num" always.
+        """
+        query_params = {
+            'idea': self.idea,
+            'is_draft': include_drafts,
+            'is_trash': include_trash,
+            'date_published__lt': self.date_published,
+        }
+
+        # note: assumes Thoughts are ordered chronologically. Reasonable
+        # assumption; may change in the far future, don't worry about it
+        thought_list = Thought.objects.filter(**query_params).order_by('-date_published')[:num]
+
+        # pull out thoughts in reverse order
+        adjacent_thoughts = [t for idx, t in enumerate(thought_list)]
+
+        # add padding
+        adjacent_thoughts += [None] * (num - len(adjacent_thoughts))
+        return adjacent_thoughts
+
     def save(self, *args, **kwargs):
         # check to see if this save means a draft is being published and
         # change date_published to now
