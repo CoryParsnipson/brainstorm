@@ -32,7 +32,12 @@
     <tr><th>Next</th></tr>
     {% for next_thought in next_thoughts reversed %}
     <tr>
-        <td><a href="{% url 'thought-page' next_thought.idea.slug next_thought.slug %}">{{ next_thought.title }}</a></td>
+        <td>
+            <a href="{% url 'thought-page' next_thought.idea.slug next_thought.slug %}">
+                <img src="{{ next_thought.get_preview|default_if_none:thought.idea.icon.url }}">
+                <p>{{ next_thought.title }}</p>
+            </a>
+        </td>
     </tr>
     {% endfor %}
     </tbody>
@@ -47,10 +52,10 @@
     {% for prev_thought in prev_thoughts reversed %}
     <tr>
         <td>
-            <img src="{{ prev_thought.get_preview|default_if_none:thought.idea.icon.url }}">
-            <p>
-                <a href="{% url 'thought-page' prev_thought.idea.slug prev_thought.slug %}">{{ prev_thought.title }}</a>
-            </p>
+            <a href="{% url 'thought-page' prev_thought.idea.slug prev_thought.slug %}">
+                <img src="{{ prev_thought.get_preview|default_if_none:thought.idea.icon.url }}">
+                <p>{{ prev_thought.title }}</p>
+            </a>
         </td>
     </tr>
     {% empty %}
