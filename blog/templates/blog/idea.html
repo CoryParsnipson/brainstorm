@@ -6,8 +6,10 @@
 {% endblock %}
 
 {% block content %}
-<h1>{{ idea.name }}</h1>
-<img class="idea-banner" src="{{ idea.icon_small.url }}">
+<div class="idea-banner">
+    <h1>{{ idea.name }}</h1>
+    <img class="idea-banner" src="{{ idea.icon_small.url }}">
+</div>
 
 {% for thought in thoughts %}
 <div class="thought">

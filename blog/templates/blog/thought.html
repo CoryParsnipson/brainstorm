@@ -46,6 +46,7 @@
 
 {% if next_thoughts and prev_thoughts %}<hr>{% endif %}
 
+{% if prev_thoughts %}
 <table class="thought-nav">
     <tbody>
     <tr><th>Previous</th></tr>
@@ -58,11 +59,10 @@
             </a>
         </td>
     </tr>
-    {% empty %}
-    <tr><th>This is the Earliest Thought.</th></tr>
     {% endfor %}
     </tbody>
 </table>
+{% endif %}
 {% endblock %}
 
 {% block footer %}
