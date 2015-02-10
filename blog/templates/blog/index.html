@@ -23,7 +23,7 @@
             <p class="title">No content yet!</p>
             <p>There are no thoughts in the database yet!!</p>
             {% else %}
-            <p class="idea">{{ latest_thought.idea }}</p>
+            <p class="idea"><a href="{% url 'idea-page' latest_thought.idea.slug %}">{{ latest_thought.idea }}</a></p>
             <p class="title" title="{{ latest_thought.slug }}">{{ latest_thought.title }}</p>
             <p class="subtitle">by {{ latest_thought.author }} on {{ latest_thought.date_published|date:"F j, Y" }}</p>
             <p>{{ latest_thought.content|safe }}</p>
@@ -34,7 +34,9 @@
 
     <div class="large-12 columns showcase-splitter">
         <p>Something interesting here?</p>
-        <p>[]</p>
+        <p>[User comments?]</p>
+        <p>[Annoucements???]</p>
+        <p>[Scratch pad?]</p>
     </div>
 </div>
 
@@ -54,7 +56,7 @@
             </div>
         </a>
 
-        <p class="idea">{{ thought.idea }}</p>
+        <p class="idea"><a href="{% url 'idea-page' thought.idea.slug %}">{{ thought.idea }}</a></p>
         <p class="title">
             <a href="{% url 'thought-page' thought.idea.slug thought.slug %}">{{ thought.title }}</a>
         </p>

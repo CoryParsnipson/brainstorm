@@ -80,6 +80,9 @@ def idea_detail(request, idea_slug=None):
     idea = get_object_or_404(Idea, slug=idea_slug)
     thoughts = Thought.objects.filter(idea=idea_slug, is_draft=False, is_trash=False).order_by('-date_published')
 
+    for t in thoughts:
+        t.content = t.truncate()
+
     context = {
         'page_title': idea.name,
         'idea': idea,

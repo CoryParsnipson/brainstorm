@@ -39,39 +39,8 @@ div.text-overlay p:not([class]) {
  * after showcase area
  *****************************************************************************/
 .showcase-splitter {
-  height: 100px;
   color: #383838;
   background-color: salmon;
   margin: 15px 0;
   padding: 5px;
-}
-
-/******************************************************************************
- * thought styles
- *****************************************************************************/
-.placeholder {
-  font-size: 110pt;
-  font-family: 'Eurostile Black';
-  position: absolute;
-  left: 0;
-  right: 0;
-  top: 50%;
-  text-align: center;
-  margin-top: -0.5rem;
-}
-
-/******************************************************************************
- * block grid stories styles
- *****************************************************************************/
-ul.small-stories div.img-placeholder {
-  height: 150px;
-  background-color: #F8C118;
-  background-size: cover;
-  position: relative;
-  overflow: hidden;
-  margin-bottom: 5px;
-}
-
-ul.small-stories div.img-placeholder .placeholder {
-  color: #A80505;
 }

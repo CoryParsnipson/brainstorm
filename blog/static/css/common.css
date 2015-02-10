@@ -333,6 +333,22 @@ textarea {
 }
 
 /******************************************************************************
+ * block grid stories styles
+ *****************************************************************************/
+ul.small-stories div.img-placeholder {
+  height: 150px;
+  background-color: #F8C118;
+  background-size: cover;
+  position: relative;
+  overflow: hidden;
+  margin-bottom: 5px;
+}
+
+ul.small-stories div.img-placeholder .placeholder {
+  color: #A80505;
+}
+
+/******************************************************************************
  * thought styles
  *****************************************************************************/
 p.idea {
@@ -356,4 +372,15 @@ p.subtitle {
   color: #B7B7B7;
   font-size: 9pt;
   margin-bottom: 0.5rem;
+}
+
+.placeholder {
+  font-size: 110pt;
+  font-family: 'Eurostile Black';
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 50%;
+  text-align: center;
+  margin-top: -0.5rem;
 }
