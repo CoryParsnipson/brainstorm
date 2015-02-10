@@ -29,6 +29,9 @@ ALLOWED_TAGS = [
 PAGINATION_PER_PAGE = 10
 PAGINATION_PAGES_TO_LEAD = 2
 
+PAGINATION_FRONT_PER_PAGE = 9
+PAGINATION_FRONT_PAGES_TO_LEAD = 0
+
 
 ###############################################################################
 # methods and code common to entire blog app

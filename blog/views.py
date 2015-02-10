@@ -23,23 +23,37 @@ from serializers import UserSerializer, IdeaSerializer, ThoughtSerializer
 # Site skeleton views
 ###############################################################################
 def index(request):
-    latest_thoughts = Thought.objects.filter(is_draft=False, is_trash=False).order_by("-date_published")[:9]
+    thoughts = Thought.objects.filter(is_draft=False, is_trash=False).order_by("-date_published")
 
-    small_stories = latest_thoughts[1:]
-    for t in small_stories:
-        t.content = t.truncate()
-
-    # prepare html output for big story
-    if len(latest_thoughts):
-        latest_thought = latest_thoughts[0]
+    latest_thought = thoughts[0]
+    if latest_thought:
         latest_thought.content = latest_thought.truncate(max_length=240)
-    else:
-        latest_thought = None
+
+    thoughts = thoughts[1:]
+
+    paginator = Paginator(thoughts, lib.PAGINATION_FRONT_PER_PAGE + 1)
+    page = request.GET.get('p')
+    try:
+        thoughts_on_page = paginator.page(page)
+    except PageNotAnInteger:
+        thoughts_on_page = paginator.page(1)
+    except EmptyPage:
+        thoughts_on_page = paginator.page(paginator.num_pages)
+
+    for t in thoughts_on_page:
+        t.content = t.truncate()
 
     context = {
         'page_title': 'Home',
         'latest_thought': latest_thought,
-        'latest_thoughts': small_stories,
+        'latest_thoughts': thoughts_on_page,
+        'paginator': paginator,
+        'pagination': lib.create_pagination(
+            thoughts,
+            page,
+            per_page=lib.PAGINATION_FRONT_PER_PAGE,
+            page_lead=lib.PAGINATION_FRONT_PAGES_TO_LEAD,
+        ),
     }
     return render(request, 'blog/index.html', context)
 

@@ -43,9 +43,7 @@
     {% endfor %}
 </ul>
 
-{% if thoughts %}
-{% include "blog/templates/template_pagination.html" with idea=idea paginator=paginator p=pagination %}
-{% endif %}
+{% include "blog/templates/template_pagination.html" with paginator=paginator pages=pagination %}
 {% endblock %}
 
 {% block side %}
@@ -61,7 +59,7 @@
 </div>
 <hr>
 
-{% include "blog/templates/template_pagination.html" with idea=idea paginator=paginator p=pagination_side %}
+{% include "blog/templates/template_pagination.html" with paginator=paginator pages=pagination_side %}
 {% endblock %}
 
 {% block footer %}
