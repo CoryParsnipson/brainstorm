@@ -15,7 +15,9 @@
     {% for thought in thoughts %}
     <li>
         <p class="title">
-            <a href="{% url 'thought-page' thought.idea.slug thought.slug %}">{{ thought.title }}</a>
+            <a name="{{ thought.slug }}" href="{% url 'thought-page' thought.idea.slug thought.slug %}">
+                {{ thought.title }}
+            </a>
         </p>
         <p class="subtitle">by {{ thought.author }} on {{ thought.date_published|date:"F j, Y" }}</p>
 
@@ -44,11 +46,6 @@
 {% if thoughts %}
 <p>[pagination]</p>
 {% endif %}
-
-{% endblock %}
-
-{% block footer %}
-Ideas similar to this:
 {% endblock %}
 
 {% block side %}
@@ -56,7 +53,18 @@ Ideas similar to this:
 <p>{{ idea.description }}</p>
 <hr>
 
-<h3>Thought History</h3>
-<p>[List of thoughts on page]</p>
+<h3>Thoughts on this Page...</h3>
+<div class="thought-history">
+    {% for t in thoughts %}
+    <p><a href="#{{ t.slug }}">{{ t.title }}</a></p>
+    {% endfor %}
+</div>
+<hr>
+
 <p>[pagination here]</p>
 {% endblock %}
+
+{% block footer %}
+Ideas similar to this:
+{% endblock %}
+

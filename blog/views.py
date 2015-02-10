@@ -31,7 +31,7 @@ def index(request):
     # prepare html output for big story
     if len(latest_thoughts):
         latest_thought = latest_thoughts[0]
-        latest_thought.content = latest_thought.truncate()
+        latest_thought.content = latest_thought.truncate(max_length=240)
     else:
         latest_thought = None
 
