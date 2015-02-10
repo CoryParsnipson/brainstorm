@@ -11,6 +11,8 @@
     <img class="idea-banner" src="{{ idea.icon_small.url }}">
 </div>
 
+{% include "blog/templates/template_pagination.html" with idea=idea paginator=paginator p=pagination %}
+
 <ul class="small-block-grid-1 small-stories">
     {% for thought in thoughts %}
     <li>
@@ -44,7 +46,7 @@
 </ul>
 
 {% if thoughts %}
-<p>[pagination]</p>
+{% include "blog/templates/template_pagination.html" with idea=idea paginator=paginator p=pagination %}
 {% endif %}
 {% endblock %}
 
@@ -61,7 +63,7 @@
 </div>
 <hr>
 
-<p>[pagination here]</p>
+{% include "blog/templates/template_pagination.html" with idea=idea paginator=paginator p=pagination_side %}
 {% endblock %}
 
 {% block footer %}

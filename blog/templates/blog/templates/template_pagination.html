@@ -1,0 +1,43 @@
+{% if paginator.num_pages > 1 %}
+<ul class="pagination group">
+    <li>
+        {% if p.first == p.current %}
+        <span class="inactive">First</span>
+        {% else %}
+        <a href="{% url 'idea-page' idea.slug %}?p=1">First</a>
+        {% endif %}
+    </li>
+    <li>
+        {% if p.prev %}
+        <a href="{% url 'idea-page' idea.slug %}?p={{ p.prev }}">Prev</a>
+        {% else %}
+        <span class="inactive">Prev</span>
+        {% endif %}
+    </li>
+
+    {% for page in p.pages %}
+    <li>
+        {% if p.current == page %}
+        <span class="inactive">{{ page }}</span>
+        {% else %}
+        <a href="{% url 'idea-page' idea.slug %}?p={{ page }}">{{ page }}</a>
+        {% endif %}
+    </li>
+    {% endfor %}
+
+    <li>
+        {% if p.next %}
+        <a href="{% url 'idea-page' idea.slug %}?p={{ p.next }}">Next</a>
+        {% else %}
+        <span class="inactive">Next</span>
+        {% endif %}
+    </li>
+    <li>
+        {% if p.last == p.current %}
+        <span class="inactive">Last</span>
+        {% else %}
+        <a href="{% url 'idea-page' idea.slug %}?p={{ p.num_pages }}">Last</a>
+        {% endif %}
+    </li>
+</ul>
+{% endif %}

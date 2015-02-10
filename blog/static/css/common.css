@@ -287,6 +287,65 @@ ul.messages .error {
 }
 
 /******************************************************************************
+ * list styles - pagination
+ *****************************************************************************/
+ul.pagination {
+  color: #FFFFFF;
+  font-size: 10pt;
+  list-style-type: none;
+  margin: 2rem auto;
+}
+
+ul.pagination li {
+  float: left;
+}
+
+ul.pagination li * {
+  background-color: #494949;
+  padding: 10px 15px;
+}
+
+ul.pagination li a:hover {
+  background-color: #B7B7B7;
+}
+
+ul.pagination li:first-child a, ul.pagination li:first-child .inactive {
+  border-radius: 4px 0 0 4px;
+}
+
+ul.pagination li:last-child a, ul.pagination li:last-child .inactive {
+  border-radius: 0 4px 4px 0;
+}
+
+ul.pagination .inactive {
+  font-style: italic;
+}
+
+/* Append "<<" to first child of pagination list (should say "First") */
+ul.pagination li:first-child a:before, ul.pagination li:first-child .inactive:before {
+  content: "\00AB";
+  padding-right: 5px;
+}
+
+/* Append "<" to second child of pagination list (should say "Prev") */
+ul.pagination li:nth-child(2) a:before, ul.pagination li:nth-child(2) .inactive:before {
+  content: "\2039";
+  padding-right: 5px;
+}
+
+/* Append ">" to second to last child of pagination list (should say "Next") */
+ul.pagination li:nth-last-child(2) a:after, ul.pagination li:nth-last-child(2) .inactive:after {
+  content: "\203A";
+  padding-left: 5px;
+}
+
+/* Append ">>" to last child of pagination list (should say "Last") */
+ul.pagination li:last-child a:after, ul.pagination li:last-child .inactive:after {
+  content: "\00BB";
+  padding-left: 5px;
+}
+
+/******************************************************************************
  * table styles - general
  *****************************************************************************/
 .expand {
@@ -365,6 +424,7 @@ p.idea a {
 p.title {
   color: #F8C118;
   font-size: 14pt;
+  text-align: left;
   margin-bottom: 0.1em;
 }
 

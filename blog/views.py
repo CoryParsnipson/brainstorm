@@ -1,6 +1,7 @@
 from django.core.urlresolvers import reverse
 from django.core.exceptions import FieldError, ValidationError
 from django.core.context_processors import csrf
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.http import JsonResponse
 from django.views.generic import View
 from django.utils.http import urlencode
@@ -56,12 +57,16 @@ def login_page(request):
 
 
 def logout_page(request):
-    context = {'page_title': 'Logout'}
+    context = {
+        'page_title': 'Logout'
+    }
     return render(request, 'blog/logout.html', context)
 
 
 def about(request):
-    context = {'page_title': 'About'}
+    context = {
+        'page_title': 'About'
+    }
     return render(request, 'blog/about.html', context)
 
 
@@ -71,8 +76,10 @@ def ideas(request):
     for idea in idea_list:
         idea.description = idea.truncate()
 
-    context = {'page_title': 'Ideas',
-               'ideas': idea_list}
+    context = {
+        'page_title': 'Ideas',
+        'ideas': idea_list
+    }
     return render(request, 'blog/ideas.html', context)
 
 
@@ -80,13 +87,25 @@ def idea_detail(request, idea_slug=None):
     idea = get_object_or_404(Idea, slug=idea_slug)
     thoughts = Thought.objects.filter(idea=idea_slug, is_draft=False, is_trash=False).order_by('-date_published')
 
-    for t in thoughts:
+    paginator = Paginator(thoughts, lib.PAGINATION_PER_PAGE)
+    page = request.GET.get('p')
+    try:
+        thoughts_on_page = paginator.page(page)
+    except PageNotAnInteger:
+        thoughts_on_page = paginator.page(1)
+    except EmptyPage:
+        thoughts_on_page = paginator.page(paginator.num_pages)
+
+    for t in thoughts_on_page:
         t.content = t.truncate()
 
     context = {
         'page_title': idea.name,
         'idea': idea,
-        'thoughts': thoughts
+        'thoughts': thoughts_on_page,
+        'paginator': paginator,
+        'pagination': lib.create_pagination(thoughts, page),
+        'pagination_side': lib.create_pagination(thoughts, page, page_lead=0),
     }
     return render(request, 'blog/idea.html', context)
 
@@ -581,7 +600,10 @@ class ThoughtViewSet(viewsets.ModelViewSet):
             except ValueError:
                 thought_range = 1
 
-            adjacent_thoughts = get_adjacent_thought(thought_slug=thought.slug, get_next=get_next, num=thought_range)
+            if request.GET['next']:
+                adjacent_thoughts = thought.get_next_thoughts(num=thought_range)
+            else:
+                adjacent_thoughts = thought.get_prev_thoughts(num=thought_range)
 
             if adjacent_thoughts:
                 data = [ThoughtSerializer(t).data for t in adjacent_thoughts]

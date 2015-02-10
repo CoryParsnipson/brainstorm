@@ -12,7 +12,6 @@ div.showcase {
   background-color: #A80505;
   background-repeat: no-repeat;
   background-size: cover;
-  overflow: hidden;
   position: relative;
 }
 
@@ -23,16 +22,20 @@ div.showcase .placeholder {
 div.text-overlay {
   width: 200px;
   height: 100%;
-  overflow: hidden;
-  text-overflow: ellipsis; /* doesn't seem to work with the current styles... */
   text-align: left;
   background-color: rgba(0, 0, 0, 0.75);
   z-index: 10;
-  padding: 10px;
+  padding: 3px 7px 10px 7px;
 }
 
 div.text-overlay p:not([class]) {
   color: #FFFFFF;
+}
+
+div.text-overlay div {
+  height: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis; /* doesn't seem to work with the current styles... */
 }
 
 /******************************************************************************

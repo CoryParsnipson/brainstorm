@@ -7,6 +7,8 @@ import PIL
 from PIL import Image
 import bleach
 
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+
 import paths
 
 ###############################################################################
@@ -23,6 +25,9 @@ ALLOWED_TAGS = [
     'abbr', 'ul', 'blockquote', 'code', 'em', 'strong', 'li', 'ol',
     'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'hr', 'br'
 ]
+
+PAGINATION_PER_PAGE = 10
+PAGINATION_PAGES_TO_LEAD = 2
 
 
 ###############################################################################
@@ -172,3 +177,50 @@ def resize_image(filename, new_size=THOUGHT_PREVIEW_IMAGE_SIZE):
 
     cropped_image = image.crop(crop_box)
     cropped_image.save(filename, 'PNG')
+
+
+def create_pagination(queryset, current_page, per_page=PAGINATION_PER_PAGE, page_lead=PAGINATION_PAGES_TO_LEAD):
+    """ given a queryset or list, return a dict of items to construct a
+        paginated list in template
+
+        The dict is as follows:
+        {
+          'first': [page number]
+          'last': [page number]
+          'next': [page number]
+          'prev': [page number]
+          'pages': [list of page numbers] (may contain 'None' for '...')
+        }
+    """
+    paginator = Paginator(queryset, per_page)
+    pagination = {
+        'first': 1,
+        'last': paginator.num_pages,
+        'pages': [],
+    }
+
+    try:
+        current_page = paginator.page(current_page)
+    except (EmptyPage, PageNotAnInteger):
+        current_page = paginator.page(1)
+
+    pagination['current'] = current_page.number
+
+    try:
+        pagination['next'] = current_page.next_page_number()
+    except EmptyPage:
+        # current page is last page
+        pagination['next'] = None
+
+    try:
+        pagination['prev'] = current_page.previous_page_number()
+    except EmptyPage:
+        # current page is first page
+        pagination['prev'] = None
+
+    if page_lead > 0:
+        lower_pages = range(max(current_page.number - page_lead, 1), current_page.number)
+        upper_pages = range(current_page.number, min(current_page.number + page_lead, paginator.num_pages) + 1)
+        pagination['pages'] = lower_pages + upper_pages
+
+    return pagination
