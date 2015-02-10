@@ -11,8 +11,6 @@
     <img class="idea-banner" src="{{ idea.icon_small.url }}">
 </div>
 
-{% include "blog/templates/template_pagination.html" with idea=idea paginator=paginator p=pagination %}
-
 <ul class="small-block-grid-1 small-stories">
     {% for thought in thoughts %}
     <li>
