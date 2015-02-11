@@ -4,7 +4,7 @@
         {% if pages.first == pages.current %}
         <span class="inactive">First</span>
         {% else %}
-        <a href="{{ request.path }}?p=1">First</a>
+        <a href="{{ request.path }}?p={{ pages.first }}">First</a>
         {% endif %}
     </li>
     <li>
@@ -36,7 +36,7 @@
         {% if pages.last == pages.current %}
         <span class="inactive">Last</span>
         {% else %}
-        <a href="{{ request.path }}?p={{ pages.num_pages }}">Last</a>
+        <a href="{{ request.path }}?p={{ pages.last }}">Last</a>
         {% endif %}
     </li>
 </ul>
