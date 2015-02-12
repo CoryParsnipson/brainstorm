@@ -12,11 +12,11 @@
     </tr>
 
     <tr>
-        <td class="editable-header">Title</td>
-        <td class="editable-header">Slug</td>
-        <td class="editable-header">Content</td>
-        <td></td>
-        <td></td>
+        <td class="shrink">Title</td>
+        <td class="shrink">Slug</td>
+        <td class="expand">Content</td>
+        <td class="shrink"></td>
+        <td class="shrink"></td>
     </tr>
 
     {% for t in thought_list %}
@@ -25,9 +25,9 @@
         <input type="hidden" name="next" value="{% url 'dashboard-trash' %}" />
         {% csrf_token %}
         <tr>
-            <td class="shrink">{{ t.title }}</td>
+            <td>{{ t.title }}</td>
             <td class="shrink">{{ t.slug }}</td>
-            <td>{{ t.content }}</td>
+            <td class="expand">{{ t.content }}</td>
             <td class="shrink">
                 <input type="submit" name="untrash" value="untrash"/>
             </td>

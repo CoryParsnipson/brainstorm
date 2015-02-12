@@ -67,7 +67,7 @@
 
                     <td class="shrink">{{ idea.order }}</td>
                     <td class="shrink">
-                        <a class="expand button editable-button" href="{% url 'dashboard-thoughts' %}?idea_slug={{ idea.slug }}">
+                        <a class="expand button" href="{% url 'dashboard-thoughts' %}?idea_slug={{ idea.slug }}">
                             {{ idea.name }}
                         </a>
                     </td>
@@ -76,7 +76,7 @@
                     <td class="shrink"><input type="submit" name="order_up" value="v"></td>
                     <td class="shrink"><input type="submit" name="order_down" value="^"></td>
                     <td class="shrink">
-                        <a class="button editable-button" href="{% url 'dashboard-ideas' %}?i={{ idea.slug }}">e</a>
+                        <a class="button" href="{% url 'dashboard-ideas' %}?i={{ idea.slug }}">e</a>
                     </td>
                     <td class="shrink"><input type="submit" name="delete_idea" value="x"></td>
                 </form>

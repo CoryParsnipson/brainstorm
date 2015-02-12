@@ -67,7 +67,7 @@
  *****************************************************************************/
 table.editable {
   width: 100%;
-  border-collapse: separate;
+  border-collapse: collapse;
   border-spacing: 3px;
 }
 
@@ -75,6 +75,10 @@ table.editable tr:first-child td {
   font-weight: bold;
   background-color: #494949;
   text-align: center;
+}
+
+table.editable tr:nth-of-type(even) {
+  background-color: #656565;
 }
 
 table.editable td {
@@ -88,6 +92,10 @@ table.editable td {
 .add-idea {
   margin-bottom: 0.5rem;
   border-spacing: 0;
+}
+
+.add-idea tr:nth-of-type(odd) {
+  background-color: #656565;
 }
 
 .add-idea td {
@@ -123,6 +131,10 @@ table.editable td {
   max-width: 100%;
   font-weight: normal;
   resize: none;
+}
+
+.add-idea #id_submit:hover {
+  color: #FFFFFF;
 }
 
 /******************************************************************************

@@ -385,6 +385,7 @@ label {
 }
 
 .button:hover, input[type="button"]:hover, input[type="submit"]:hover {
+  color: #FFFFFF;
   background-color: #B7B7B7;
 }
 
