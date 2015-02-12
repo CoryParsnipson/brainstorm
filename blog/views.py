@@ -282,14 +282,14 @@ def dashboard_backend(request):
                 thought = Thought.objects.get(slug=thought_slug)
 
                 if trash:
-                    be_msg = "Thought %s was trashed. " % thought.slug
-                    be_msg += "<form action='%s' method='post'>" % reverse('dashboard-backend')
+                    be_msg = "<form action='%s' method='post' class='group'>" % reverse('dashboard-backend')
                     be_msg += "<input type='hidden' name='csrfmiddlewaretoken' value='%s' />" % unicode(csrf(request)['csrf_token'])
                     be_msg += "<input type='hidden' name='thought_slug' value='%s' />" % thought.slug
 
                     if 'next' in request.POST:
                         be_msg += '<input type="hidden" name="next" value="%s" />' % request.POST['next']
 
+                    be_msg += "<p>Thought %s was trashed.</p>" % thought.slug
                     be_msg += "<input type='submit' name='untrash' value='Undo' />"
                     be_msg += "</form>"
                     messages.add_message(request, messages.SUCCESS, be_msg)

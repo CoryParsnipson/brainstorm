@@ -250,6 +250,14 @@ ul.messages li {
   padding: 10px;
 }
 
+ul.messages p {
+  margin-bottom: 0;
+}
+
+ul.messages form * {
+  float: left;
+}
+
 ul.messages .success {
   color: #157A2D;
   background-color: #71E38C;
@@ -258,6 +266,21 @@ ul.messages .success {
 ul.messages .error {
   color: #F8C118;
   background-color: #A80505;
+}
+
+ul.messages .success input[type="submit"], ul.messages .success input[type="button"] {
+  color: #157A2D;
+  background-color: transparent;
+  float: left;
+  font-size: 10pt;
+  font-weight: bold;
+  font-family: Roboto, "San Serif";
+  border: none;
+  padding: 3px 7px;
+}
+
+ul.messages .success input[type="submit"]:hover, ul.messages .success input[type="button"]:hover {
+  color: #FFFFFF;
 }
 
 /******************************************************************************
