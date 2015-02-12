@@ -192,17 +192,10 @@ span.footer-copyleft {
 #content {
   color: #FFFFFF;
   background-color: #383838;
-  -webkit-box-shadow: 3px 0px 10px 0px rgba(0,0,0,0.15),
-                      -3px 0px 10px 0px rgba(0,0,0,0.15);
-  -moz-box-shadow: 3px 0px 10px 0px rgba(0,0,0,0.15),
-                   -3px 0px 10px 0px rgba(0,0,0,0.15);
-  box-shadow: 3px 0px 10px 0px rgba(0,0,0,0.15),
-              -3px 0px 10px 0px rgba(0,0,0,0.15);
   padding: 15px 20px;
 }
 
 #content-main {
-
 }
 
 #content-side {

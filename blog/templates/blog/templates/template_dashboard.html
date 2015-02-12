@@ -6,6 +6,19 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>SP :: Dashboard :: {{ page_title }}</title>
 
+    <script type="text/javascript">
+    (function() {
+        var path = '//easy.myfonts.net/v2/js?sid=4276(font-family=Eurostile+Regular)&sid=4277(font-family=Eurostile+Bold)&sid=4279(font-family=Eurostile+Black)&sid=4280(font-family=Eurostile+Medium)&key=Dq99rML4bs',
+            protocol = ('https:' == document.location.protocol ? 'https:' : 'http:'),
+            trial = document.createElement('script');
+        trial.type = 'text/javascript';
+        trial.async = true;
+        trial.src = protocol + path;
+        var head = document.getElementsByTagName("head")[0];
+        head.appendChild(trial);
+    })();
+    </script>
+
     <!-- css includes -->
     <link href='http://fonts.googleapis.com/css?family=Sigmar+One|Roboto' rel='stylesheet' type='text/css'>
     <link rel="stylesheet" type="text/css" href="{% static 'css/foundation/foundation.min.css' %}">
@@ -141,11 +154,11 @@
     <div id="header">
         <div class="row collapse">
             <!-- top bar -->
-            <div class="large-6 medium-6 small-10 columns">
+            <div class="large-6 medium-6 small-12 columns">
                 <span class="logo">Slacker Paradise</span>
             </div>
 
-            <div class="large-4 medium-4 small-10 columns end">
+            <div class="large-4 medium-4 small-12 columns end">
                 <nav role="navigation">
                     <ul class="right">
                         <li><a href="{% url 'index' %}">Site Index</a></li>
@@ -160,7 +173,7 @@
     </div>
 
 <div id="content" class="row">
-    <div class="large-10 medium-10 small-10 columns">
+    <div id="content-main" class="large-10 medium-10 small-12 columns">
         {% if messages %}
         <!-- flash message area -->
         <ul class="messages">
@@ -177,24 +190,24 @@
     </div>
 
     <!-- side content -->
-    <div id="side" class="large-2 medium-2 small-2 columns">
+    <div id="content-side" class="large-2 medium-2 small-12 columns">
         {% block side %}
         <ul>
-            <li>Analytics/Statistics</li>
-            <hr>
-            <li>Manage new comments...</li>
-            <hr>
+            <li><a href="#">Analytics/Statistics</a></li>
+            <li class="divider"></li>
+            <li><a href="#">Manage new comments...</a></li>
+            <li class="divider"></li>
             <li><a href="{% url 'dashboard-ideas' %}">Manage Content</a></li>
-            <hr>
+            <li class="divider"></li>
             <li><a href="{% url 'dashboard-author' %}">Post New Thought</a></li>
             <li><a href="{% url 'dashboard-drafts' %}">Drafts</a></li>
             <li><a href="{% url 'dashboard-trash' %}">Trash</a></li>
-            <hr>
-            <li>Export Database</li>
-            <li>Import Database</li>
-            <hr>
-            <li>User Profile</li>
-            <li>Settings</li>
+            <li class="divider"></li>
+            <li><a href="#">Export Database</a></li>
+            <li><a href="#">Import Database</a></li>
+            <li class="divider"></li>
+            <li><a href="#">User Profile</a></li>
+            <li><a href="#">Settings</a></li>
         </ul>
         {% endblock %}
     </div>
@@ -203,7 +216,7 @@
 <!-- footer -->
 <div id="footer">
     <div class="row">
-        <div class="large-10 medium-10 small-10 columns">
+        <div class="large-10 medium-10 small-12 columns">
             {% block footer %}
             Some kind of useful breadcrumb navigation bullshit.
             {% endblock %}
