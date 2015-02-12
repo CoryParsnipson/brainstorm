@@ -3,18 +3,14 @@
 
 {% block content %}
 <h1>Drafts</h1>
-
+{% for idea, thoughts in drafts.items %}
+<p>{{ idea }}</p>
 <table class="editable">
     <tbody>
-    {% for idea, thoughts in drafts.items %}
     <tr>
-        <th colspan="4">{{ idea }}</th>
-    </tr>
-
-    <tr>
-        <td class="editable-header">Title</td>
-        <td class="editable-header">Slug</td>
-        <td class="editable-header">Content</td>
+        <td>Title</td>
+        <td>Slug</td>
+        <td>Content</td>
         <td></td>
         <td></td>
     </tr>
@@ -29,7 +25,7 @@
             <td class="shrink">{{ draft.slug }}</td>
             <td>{{ draft.content|safe }}</td>
             <td class="shrink">
-                <a class="editable-button" href="{% url 'dashboard-author' %}?thought_slug={{ draft.slug }}">edit</a>
+                <a class="button" href="{% url 'dashboard-author' %}?thought_slug={{ draft.slug }}">edit</a>
             </td>
             <td class="shrink">
                 <input type="submit" name="trash" value="discard" />
@@ -37,9 +33,9 @@
         </tr>
     </form>
     {% endfor %}
-    {% empty %}
-    <tr><td>There are no drafts in database.</td></tr>
-    {% endfor %}
     </tbody>
 </table>
+    {% empty %}
+    <tr><td>There are no drafts in database.</td></tr>
+{% endfor %}
 {% endblock %}

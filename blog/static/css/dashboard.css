@@ -69,6 +69,7 @@ table.editable {
   width: 100%;
   border-collapse: collapse;
   border-spacing: 3px;
+  margin-bottom: 2rem;
 }
 
 table.editable tr:first-child td {
@@ -78,7 +79,16 @@ table.editable tr:first-child td {
 }
 
 table.editable tr:nth-of-type(even) {
-  background-color: #656565;
+  border-top: 1px solid #656565;
+  border-bottom: 1px solid #656565;
+}
+
+table.editable tr:nth-of-type(2) {
+  border-top: none;
+}
+
+table.editable tr:last-child {
+  border-bottom: none;
 }
 
 table.editable td {
@@ -89,51 +99,62 @@ table.editable td {
 /******************************************************************************
  * add idea form styles
  *****************************************************************************/
-.add-idea {
+table.add-idea {
   margin-bottom: 0.5rem;
+  border-collapse: collapse;
   border-spacing: 0;
 }
 
-.add-idea tr:nth-of-type(odd) {
-  background-color: #656565;
+table.add-idea tr:nth-of-type(odd) {
+  //background-color: #656565;
+  border-top: 1px solid #656565;
+  border-bottom: 1px solid #656565;
 }
 
-.add-idea td {
+table.add-idea tr:first-child {
+  border-top: none;
+}
+
+table.add-idea tr:last-child {
+  border-bottom: none;
+}
+
+table.add-idea td {
   font-weight: bold;
   vertical-align: middle;
   padding: 5px;
   margin: 0;
 }
 
-.add-idea td:first-child {
+table.add-idea td:first-child {
   text-align: right;
 }
 
-.add-idea td:last-child {
+table.add-idea td:last-child {
   padding-right: 0;
 }
 
-.add-idea label {
+table.add-idea label {
   font-size: 10pt;
   font-weight: bold;
 }
 
-.add-idea textarea {
+table.add-idea textarea {
   height: 10px;
 }
 
-.add-idea #id_name, .add-idea #id_slug {
+table.add-idea #id_name, table.add-idea #id_slug {
   max-width: 300px;
   font-weight: bold;
 }
 
-.add-idea #id_description {
+table.add-idea #id_description {
   max-width: 100%;
   font-weight: normal;
   resize: none;
 }
 
-.add-idea #id_submit:hover {
+table.add-idea #id_submit:hover {
   color: #FFFFFF;
 }
 
