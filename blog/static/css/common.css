@@ -64,6 +64,10 @@ h1 a, h2 a, h3 a, h4 a, h5 a, h6 a {
   font-weight: normal;
 }
 
+h3 {
+  font-size: 12pt;
+}
+
 div#footer h3 {
   color: #A80505;
   font-size: 11pt;
@@ -270,6 +274,8 @@ ul.pagination {
 
 ul.pagination li {
   float: left;
+  margin: 0;
+  padding: 0;
 }
 
 ul.pagination li * {
@@ -349,11 +355,16 @@ input[type="url"],
 input[type="color"],
 textarea {
   width: 100%;
-  font-family: Roboto;
+  font-family: inherit;
+  padding: 3px;
 }
 
 input[type="file"] {
   background-color: #494949;
+}
+
+label {
+  padding: 3px;
 }
 
 /******************************************************************************

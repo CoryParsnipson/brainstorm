@@ -4,23 +4,35 @@
 {% block content %}
 <div class="row">
     <div class="large-12 columns">
-        <h3>Manage Ideas</h3>
+        <h2>Manage Ideas</h2>
+        <hr>
+
         <!-- new idea form section -->
+        <h3>Create New Idea</h3>
         <form action="{% url 'forms-idea' %}" method="post" enctype="multipart/form-data">
             {% csrf_token %}
             <input type="hidden" name="url_pass" value="dashboard-ideas" />
             <table class="add-idea">
                 <tbody>
                 <tr>
-                    <td id="name-cell">{{ new_idea_form.name.label_tag }}{{ new_idea_form.name }}</td>
-                    <td id="slug-cell">{{ new_idea_form.slug.label_tag }}{{ new_idea_form.slug }}</td>
-                    <td id="description-cell">{{ new_idea_form.description.label_tag }}{{ new_idea_form.description }}</td>
-                    <td>
-                        {{ new_idea_form.icon.label_tag }}
-                        {{ new_idea_form.icon }}
-                    </td>
-                    <td id="submit-cell" class="shrink">
-                         <label>&nbsp;</label>
+                    <td class="shrink">{{ new_idea_form.name.label_tag }}</td>
+                    <td>{{ new_idea_form.name }}</td>
+                </tr>
+                <tr>
+                    <td class="shrink">{{ new_idea_form.slug.label_tag }}</td>
+                    <td class="shrink">{{ new_idea_form.slug }}</td>
+                </tr>
+                <tr>
+                    <td class="shrink">{{ new_idea_form.icon.label_tag }}</td>
+                    <td>{{ new_idea_form.icon }}</td>
+                </tr>
+                <tr>
+                    <td class="shrink">{{ new_idea_form.description.label_tag }}</td>
+                    <td class="expand">{{ new_idea_form.description }}</td>
+                </tr>
+                <tr>
+                    <td class="shrink"></td>
+                    <td id="submit-cell" class="shrink" colspan="3">
                         {% if "i" in request.GET %}
                         <input id="id_submit" type="submit" value="Edit">
                         {% else %}
@@ -32,9 +44,11 @@
             </table>
         </form>
 
+        <hr>
         <!-- manage ideas form -->
+        <h3>Idea List</h3>
         <table class="editable">
-            <tr class="header">
+            <tr>
                 <td>#</td>
                 <td>Name</td>
                 <td>Slug</td>

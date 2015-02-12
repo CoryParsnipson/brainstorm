@@ -74,42 +74,31 @@ table.editable {
 table.editable tr:first-child td {
   font-weight: bold;
   background-color: #494949;
-  //padding: 5px;
-}
-
-table.editable tr:first-child td:first-child {
-  border: none;
+  text-align: center;
 }
 
 table.editable td {
   font-size: 9pt;
   padding: 5px;
-  padding-right: 2px;
-  //border: 1px solid yellow;
-}
-
-table.editable tr td:last-child {
-  padding-right: 5px;
-}
-
-table.editable tr:nth-of-type(odd) {
-  //border: 1px solid #B7B7B7;
 }
 
 /******************************************************************************
  * add idea form styles
  *****************************************************************************/
 .add-idea {
-  width: 100%;
   margin-bottom: 0.5rem;
+  border-spacing: 0;
 }
 
 .add-idea td {
   font-weight: bold;
-  vertical-align: top;
-  padding: 0;
-  padding-right: 5px;
+  vertical-align: middle;
+  padding: 5px;
   margin: 0;
+}
+
+.add-idea td:first-child {
+  text-align: right;
 }
 
 .add-idea td:last-child {
@@ -121,34 +110,19 @@ table.editable tr:nth-of-type(odd) {
   font-weight: bold;
 }
 
-.add-idea textarea[rows] {
-  height: 1.5rem;
+.add-idea textarea {
+  height: 10px;
 }
 
-.add-idea #name-cell {
-  width: 150px;
-}
-
-.add-idea #id_name {
-  width: 100%;
-}
-
-.add-idea #slug-cell {
-  width: 110px;
-}
-
-.add-idea #id_slug {
-  width: 100%;
+.add-idea #id_name, .add-idea #id_slug {
+  max-width: 300px;
+  font-weight: bold;
 }
 
 .add-idea #id_description {
-  width: 100%;
+  max-width: 100%;
   font-weight: normal;
   resize: none;
-}
-
-.add-idea #id_submit {
-  font-size: 10pt;
 }
 
 /******************************************************************************
