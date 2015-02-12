@@ -4,7 +4,7 @@
 {% block content %}
 <div class="row">
     <div class="large-12 columns">
-        <h3>Dashboard :: Manage Ideas</h3>
+        <h3>Manage Ideas</h3>
         <!-- new idea form section -->
         <form action="{% url 'forms-idea' %}" method="post" enctype="multipart/form-data">
             {% csrf_token %}
@@ -43,7 +43,6 @@
                 <td></td>
                 <td></td>
                 <td></td>
-                <td></td>
             </tr>
             {% for idea in ideas %}
             <tr>
@@ -53,16 +52,17 @@
                     {% csrf_token %}
 
                     <td class="shrink">{{ idea.order }}</td>
-                    <td class="shrink">{{ idea.name }}</td>
+                    <td class="shrink">
+                        <a class="expand button editable-button" href="{% url 'dashboard-thoughts' %}?idea_slug={{ idea.slug }}">
+                            {{ idea.name }}
+                        </a>
+                    </td>
                     <td class="shrink">{{ idea.slug }}</td>
                     <td>{{ idea.description }}</td>
-                    <td class="shrink">
-                        <a class="editable-button" href="{% url 'dashboard-thoughts' %}?idea_slug={{ idea.slug }}">see thoughts...</a>
-                    </td>
                     <td class="shrink"><input type="submit" name="order_up" value="v"></td>
                     <td class="shrink"><input type="submit" name="order_down" value="^"></td>
                     <td class="shrink">
-                        <a class="editable-button" href="{% url 'dashboard-ideas' %}?i={{ idea.slug }}">e</a>
+                        <a class="button editable-button" href="{% url 'dashboard-ideas' %}?i={{ idea.slug }}">e</a>
                     </td>
                     <td class="shrink"><input type="submit" name="delete_idea" value="x"></td>
                 </form>

@@ -29,27 +29,6 @@ body {
   clear: both;
 }
 
-.top-button {
-  color: #FFFFFF;
-  background-color: #959595;
-  text-align: center;
-  position: fixed;
-  opacity: 0;
-  bottom: 0;
-  right: 0;
-  padding: 10px 30px;
-}
-
-.top-button h1 {
-  color: #FFFFFF;
-  text-transform: uppercase;
-  margin: 0;
-}
-
-.top-button:hover {
-  opacity: 1;
-}
-
 /******************************************************************************
  * hr styles
  *****************************************************************************/
@@ -343,6 +322,7 @@ ul.pagination li:last-child a:after, ul.pagination li:last-child .inactive:after
  *****************************************************************************/
 .expand {
   width: 100%;
+  text-align: center;
 }
 
 .shrink {
@@ -370,6 +350,54 @@ input[type="color"],
 textarea {
   width: 100%;
   font-family: Roboto;
+}
+
+input[type="file"] {
+  background-color: #494949;
+}
+
+/******************************************************************************
+ * button styles
+ *****************************************************************************/
+.button, input[type="button"], input[type="submit"] {
+  border: none;
+  color: #F8C118;
+  background-color: #494949;
+  display: inline-block;
+  cursor: pointer;
+  line-height: 1;
+  padding: 0.5rem 1rem;
+  margin: 0;
+}
+
+.button {
+  /* there's 1 px difference between input styles for some reason... */
+  border-bottom: 1px solid #494949;
+}
+
+.button:hover, input[type="button"]:hover, input[type="submit"]:hover {
+  background-color: #B7B7B7;
+}
+
+.top-button {
+  color: #FFFFFF;
+  background-color: #959595;
+  text-align: center;
+  position: fixed;
+  opacity: 0;
+  bottom: 0;
+  right: 0;
+  padding: 10px 30px;
+}
+
+.top-button h1 {
+  color: #FFFFFF;
+  text-transform: uppercase;
+  margin: 0;
+}
+
+.top-button:hover {
+  opacity: 1;
 }
 
 /******************************************************************************
