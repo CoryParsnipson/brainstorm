@@ -73,7 +73,6 @@ div#footer h3 {
   font-size: 11pt;
   font-family: 'Eurostile Black';
   text-transform: uppercase;
-  text-shadow: 0px 0px 2px rgba(168, 5, 5, 0.3);
 }
 
 p {
@@ -144,7 +143,7 @@ span.logo {
   font-size: 20pt;
   display: block;
   text-transform: uppercase;
-  text-shadow: 0px 0px 2px rgba(168, 5, 5, 0.3);
+  text-shadow: 0px 0px 1px rgba(168, 5, 5, 0.3);
   padding: 10px 5px;
 }
 
@@ -153,7 +152,6 @@ span.footer-copyleft {
   font-size: 8pt;
   font-family: 'Eurostile Black';
   font-weight: bold;
-  text-shadow: 0px 0px 1px rgba(168, 5, 5, 0.3);
 }
 
 /******************************************************************************

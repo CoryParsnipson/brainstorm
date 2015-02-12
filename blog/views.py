@@ -677,18 +677,18 @@ class FormIdeaView(View):
 
         try:
             instance = Idea.objects.get(slug=instance_data['slug'])
-            msgs['msg'] = "Successfully edited Idea %s" % instance.slug
+            msgs['msg'] = "Successfully edited Idea %s" % instance.name
         except Idea.DoesNotExist as e:
             instance = None
-            msgs['msg'] = "Successfully created Idea %s" % instance_data['slug']
+            msgs['msg'] = "Successfully created Idea %s" % instance_data['name']
         idea_form = IdeaForm(instance_data, request.FILES, instance=instance)
 
         if idea_form.is_valid():
             idea_form.save()
             if url_pass:
+                messages.add_message(request, messages.SUCCESS, msgs['msg'])
                 return redirect(reverse(url_pass) + query_string)
-            else:
-                return JsonResponse(msgs)
+            return JsonResponse(msgs)
         else:
             # loop through fields on form and add errors to dict
             errors = {}
@@ -697,6 +697,10 @@ class FormIdeaView(View):
                 errors[field.name] = field.errors
                 i += 1
 
+            if url_pass:
+                msg = errors
+                messages.add_message(request, messages.ERROR, msg)
+                return redirect(reverse(url_pass) + query_string)
             return JsonResponse(errors)
 
 
