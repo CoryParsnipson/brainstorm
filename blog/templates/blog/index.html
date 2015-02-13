@@ -42,6 +42,10 @@
     </div>
 </div>
 
+{% if latest_thoughts %}
+<hr class="story-separator">
+{% endif %}
+
 <ul class="small-block-grid-2 small-stories">
     {% for thought in latest_thoughts %}
     <li>

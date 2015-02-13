@@ -45,6 +45,18 @@
   background-color: #EBB110;
 }
 
+#content-side a.highlight {
+  color: #F8C118;
+  background-color: #A80505;
+  padding-top: 20px;
+  padding-bottom: 20px;
+}
+
+#content-side a.highlight:hover {
+  color: #FFFFFF;
+  background-color: #E85D5D;
+}
+
 /******************************************************************************
  * content-side management menu styles
  *****************************************************************************/
@@ -53,8 +65,8 @@
 }
 
 #content-side ul li.divider {
-  border-top: 1px solid #494949;
-  margin: 5px 7px;
+  border-top: 1px dashed #656565;
+  margin: 2px 7px;
 }
 
 #content-side ul li * {
