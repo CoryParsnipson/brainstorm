@@ -35,10 +35,21 @@ PAGINATION_IDEAS_PAGES_TO_LEAD = 2
 PAGINATION_THOUGHTS_PER_PAGE = 10
 PAGINATION_THOUGHTS_PAGES_TO_LEAD = 2
 
+NUM_RECENT_IDEAS = 3
+
 
 ###############################################################################
 # methods and code common to entire blog app
 ###############################################################################
+def remove_duplicates(seq):
+    """ remove duplicates from a python list; from
+        stackoverflow.com/questions/480214/how-do-you-remove-duplicates-from-a-list-in-python-whilst-preserving-order
+    """
+    seen = set()
+    seen_add = seen.add
+    return [x for x in seq if not (x in seen or seen_add(x))]
+
+
 def slugify(source_str, max_len=20):
     """ create a nice slug given a string; FYI, Django comes with a prebuilt
         slugify function (django.template.defaultfilters) which handles

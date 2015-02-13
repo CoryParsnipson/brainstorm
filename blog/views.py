@@ -101,6 +101,17 @@ def ideas(request):
     for idea in idea_list:
         idea.description = idea.truncate()
 
+    # create more recent ideas list
+    recent_ideas = [t['idea'] for t in Thought.objects.all().order_by('-date_published').values('idea')]
+    recent_ideas = lib.remove_duplicates(recent_ideas)[:lib.NUM_RECENT_IDEAS]
+
+    recent_thoughts = []
+    for idea_slug in recent_ideas:
+        recent_thoughts += Thought.objects.filter(idea=idea_slug).order_by('-date_published')[:1]
+
+    for t in recent_thoughts:
+        t.content = t.truncate(max_length=100)
+
     context = {
         'page_title': 'Ideas',
         'ideas': ideas_on_page,
@@ -111,6 +122,13 @@ def ideas(request):
             per_page=lib.PAGINATION_IDEAS_PER_PAGE,
             page_lead=lib.PAGINATION_IDEAS_PAGES_TO_LEAD,
         ),
+        'pagination_side': lib.create_pagination(
+            queryset=idea_list,
+            current_page=page,
+            per_page=lib.PAGINATION_IDEAS_PER_PAGE,
+            page_lead=0,
+        ),
+        'recent_thoughts': recent_thoughts,
     }
     return render(request, 'blog/ideas.html', context)
 
@@ -141,7 +159,7 @@ def idea_detail(request, idea_slug=None):
             queryset=thoughts,
             current_page=page,
             per_page=lib.PAGINATION_THOUGHTS_PER_PAGE,
-            page_lead=lib.PAGINATION_FRONT_PAGES_TO_LEAD
+            page_lead=0,
         ),
     }
     return render(request, 'blog/idea.html', context)
