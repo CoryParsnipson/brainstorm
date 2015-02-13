@@ -10,9 +10,9 @@
     <tr>
         <td>Date</td>
         <td>Title</td>
-        <td></td>
         <td>Slug</td>
         <td>Content</td>
+        <td></td>
         <td></td>
     </tr>
 
@@ -28,11 +28,11 @@
             <td class="shrink">
                 <a href="{% url 'dashboard-author' %}?thought_slug={{ draft.slug }}">{{ draft.title }}</a>
             </td>
-            <td class="shrink">
-                <a href="{% url 'thought-page' draft.idea.slug draft.slug %}">[view]</a>
-            </td>
             <td class="shrink">{{ draft.slug }}</td>
             <td>{{ draft.content|safe }}</td>
+            <td class="shrink">
+                <a class="button" href="{% url 'thought-page' draft.idea.slug draft.slug %}">view</a>
+            </td>
             <td class="shrink">
                 <input type="submit" name="trash" value="discard" />
             </td>
