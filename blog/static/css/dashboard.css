@@ -161,7 +161,8 @@ table.add-idea #id_submit:hover {
  * thought form styles
  *****************************************************************************/
 .form-thought {
-  width: 100%;
+  max-width: 950px;
+  margin: 0 auto;
   margin-bottom: 20px;
 }
 

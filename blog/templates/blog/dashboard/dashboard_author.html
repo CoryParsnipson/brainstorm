@@ -4,21 +4,23 @@
 {% block content %}
 <div class="row">
     <div class="large-10 large-offset-1 medium-12 small-12 columns">
-        <h2>
-            {% if "thought_slug" in request.GET %}
-            Edit Thought
-            {% else %}
-            Write New Thought
-            {% endif %}
-        </h2>
-
         <form action="{% url 'forms-thought' %}" method="post" enctype="multipart/form-data">
             {% csrf_token %}
             <input type="hidden" name="author" value="{{ request.user.id }}" />
             <input type="hidden" name="next" value="{% url 'dashboard-thoughts' %}?idea_slug=$$idea$$" />
             <input type="hidden" name="old_slug" value="{{ thought_form.slug.value|default_if_none:'' }}" />
-
             <table class="form-thought">
+                <tr>
+                    <td>
+                        <h2>
+                            {% if "thought_slug" in request.GET %}
+                            Edit Thought
+                            {% else %}
+                            Write New Thought
+                            {% endif %}
+                        </h2>
+                    </td>
+                </tr>
                 <tr>
                     <th class="shrink">{{ thought_form.title.label_tag }}</th>
                     <th class="shrink">{{ thought_form.slug.label_tag }}</th>
