@@ -11,12 +11,10 @@
         <div class="large-12 columns showcase"
         {% if latest_thought.preview %}
         style="background-image: url('{{ latest_thought.preview.url }}');"
+        {% else %}
+        style="background-image: url('{{ latest_thought.idea.icon.url }}');"
         {% endif %}
         >
-
-        {% if not latest_thought.preview %}
-        <span class="placeholder">SP</span>
-        {% endif %}
 
         <div class="text-overlay">
             <div>

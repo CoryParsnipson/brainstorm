@@ -26,11 +26,14 @@ ALLOWED_TAGS = [
     'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'hr', 'br'
 ]
 
-PAGINATION_PER_PAGE = 10
-PAGINATION_PAGES_TO_LEAD = 2
-
 PAGINATION_FRONT_PER_PAGE = 9
 PAGINATION_FRONT_PAGES_TO_LEAD = 0
+
+PAGINATION_IDEAS_PER_PAGE = 5
+PAGINATION_IDEAS_PAGES_TO_LEAD = 2
+
+PAGINATION_THOUGHTS_PER_PAGE = 10
+PAGINATION_THOUGHTS_PAGES_TO_LEAD = 2
 
 
 ###############################################################################
@@ -182,7 +185,7 @@ def resize_image(filename, new_size=THOUGHT_PREVIEW_IMAGE_SIZE):
     cropped_image.save(filename, 'PNG')
 
 
-def create_pagination(queryset, current_page, per_page=PAGINATION_PER_PAGE, page_lead=PAGINATION_PAGES_TO_LEAD):
+def create_pagination(queryset, current_page, per_page=PAGINATION_THOUGHTS_PER_PAGE, page_lead=PAGINATION_THOUGHTS_PAGES_TO_LEAD):
     """ given a queryset or list, return a dict of items to construct a
         paginated list in template
 

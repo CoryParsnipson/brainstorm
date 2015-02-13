@@ -25,11 +25,20 @@
     {% endfor %}
     </tbody>
 </table>
+
+{% include "blog/templates/template_pagination.html" with paginator=paginator pages=pagination %}
 {% endblock %}
 
 {% block side %}
 <h3>About Ideas</h3>
-<p>Ideas are like "topics" in other blogs, but here they indicate something more serial, with individual posts (called "Thoughts") in each Idea being very closely related.</p>
-<p>An Idea is centered around a single ongoing project or line of inquiry that may have a beginning, middle, and end.</p>
-<p>This page is a catalog of all the Ideas that I write about on Slacker Paradise.</p>
+<p>This is the Idea Catalog! Here are all the things going on in Slacker Paradise.</p>
+<p>Every thought posted within an idea is related in a series. The thoughts you read are ordered chronologically and should present a logical, coherent progression of their "parent" idea with a beginning, middle, and end.</p>
+
+<hr>
+<h3>Popular Ideas</h3>
+<p>[???]</p>
+
+<hr>
+<h3>Ideas Most Recently Updated</h3>
+<p>[???]</p>
 {% endblock %}
