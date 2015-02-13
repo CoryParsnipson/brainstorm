@@ -80,8 +80,8 @@
 
 <hr>
 
-<p>[related ideas?]</p>
-<p>[idea description?]</p>
+<h3>This Thought is part of <a href="{% url 'idea-page' thought.idea.slug %}">{{ thought.idea.name }}</a></h3>
+<p>{{ thought.idea.description }}</p>
 {% endblock %}
 
 {% block footer %}
