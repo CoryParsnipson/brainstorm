@@ -160,43 +160,42 @@ table.add-idea #id_submit:hover {
 /******************************************************************************
  * thought form styles
  *****************************************************************************/
-.form-thought {
+table.form-thought {
   max-width: 950px;
   margin: 0 auto;
   margin-bottom: 20px;
 }
 
-.form-thought label {
-  font-weight: bold;
-}
-
-.form-thought th {
+table.form-thought th {
   padding: 0 5px;
 }
 
-.form-thought td {
+table.form-thought td {
   padding: 2px;
 }
 
-.form-thought textarea {
+table.form-thought textarea {
   resize: none;
 }
 
-.form-thought select {
+table.form-thought select {
   width: 200px;
   padding: 2px;
 }
 
-.form-thought #id_title {
+table.form-thought #id_title {
   font-weight: bold;
+  margin-bottom: 1rem;
 }
 
-.form-thought #id_slug {
+table.form-thought #id_slug {
   width: 150px;
+  color: #B7B7B7;
+  cursor: default;
   font-weight: bold;
 }
 
-.form-thought p#id_slug {
+table.form-thought p#id_slug {
   font-weight: normal;
   overflow: hidden;
   background-color: #494949;
@@ -205,35 +204,24 @@ table.add-idea #id_submit:hover {
   margin: 0;
 }
 
-.form-thought input[type="submit"],
-.form-thought input[type="button"] {
-  width: 150px;
-  border: none;
-  color: #FFFFFF;
+table.form-thought input[type="button"],
+table.form-thought input[type="submit"] {
+  padding: 15px 25px;
+  margin-left: 5px;
+}
+
+table.form-thought input[type="button"]:first-of-type,
+table.form-thought input[type="submit"]:first-of-type {
+  margin-left: 0;
+}
+
+table.form-thought .publish {
   font-weight: bold;
-  background-color: #DBCB18;
-  margin-right: 5px;
-  padding: 10px 0px;
+  color: #F8C118;
+  background-color: #A80505;
 }
 
-.form-thought input[type="submit"]:hover,
-.form-thought input[type="button"]:hover {
-  background-color: #F0E13C;
-}
-
-.form-thought input[type="submit"]:active,
-.form-thought input[type="button"]:active {
-  background-color: #DBCB18;
-}
-
-.form-thought input[type="submit"].publish {
-  background-color: #DB1818;
-}
-
-.form-thought input[type="submit"].publish:hover {
-  background-color: #F03C3C;
-}
-
-.form-thought tr td input[type="submit"]:last-of-type {
-  margin-right: 0;
+table.form-thought .publish:hover {
+  color: #FFFFFF;
+  background-color: #E85D5D;
 }

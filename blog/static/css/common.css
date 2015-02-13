@@ -379,6 +379,7 @@ input[type="tel"],
 input[type="time"],
 input[type="url"],
 input[type="color"],
+input[type="file"],
 textarea {
   width: 100%;
   font-family: inherit;

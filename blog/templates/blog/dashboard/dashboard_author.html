@@ -22,12 +22,18 @@
                     </td>
                 </tr>
                 <tr>
-                    <th class="shrink">{{ thought_form.title.label_tag }}</th>
-                    <th class="shrink">{{ thought_form.slug.label_tag }}</th>
-                    <th class="shrink">{{ thought_form.idea.label_tag }}</th>
+                    <th class="shrink" colspan="3">{{ thought_form.title.label_tag }}</th>
                 </tr>
                 <tr>
-                    <td class="expand">{{ thought_form.title }}</td>
+                    <td class="expand" colspan="3">{{ thought_form.title }}</td>
+                </tr>
+                <tr>
+                    <th>{{ thought_form.preview.label_tag }}</th>
+                    <th>{{ thought_form.slug.label_tag }}</th>
+                    <th>{{ thought_form.idea.label_tag }}</th>
+                </tr>
+                <tr>
+                    <td class="expand">{{ thought_form.preview }}</td>
                     <td class="shrink">
                         {% if thought_form.slug.value %}
                         <p id="id_slug">{{ thought_form.slug.value }}</p>
@@ -45,15 +51,11 @@
                     <td colspan="3">{{ thought_form.content }}</td>
                 </tr>
                 <tr>
-                    <td colspan="3">
-                        {{ thought_form.preview.label_tag }}
-                        {{ thought_form.preview }}
-                    </td>
                 </tr>
                 <tr>
                     <td colspan="3">
-                        <input id="button_clear" class="left" type="button" value="Clear" />
-                        <input id="button_revert" class="left" type="button" value="Revert Changes" />
+                        <input id="button-clear" class="left" type="button" value="Clear" />
+                        <input id="button-revert" class="left" type="button" value="Revert Changes" />
 
                         {% if thought_form.is_draft.value == True %}
                         <input class="left" type="submit" name="is_draft" value="Save Changes" />
