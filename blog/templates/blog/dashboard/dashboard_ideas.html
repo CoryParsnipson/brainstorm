@@ -67,9 +67,7 @@
 
                     <td class="shrink">{{ idea.order }}</td>
                     <td class="shrink">
-                        <a class="expand button" href="{% url 'dashboard-thoughts' %}?idea_slug={{ idea.slug }}">
-                            {{ idea.name }}
-                        </a>
+                        <a href="{% url 'dashboard-thoughts' %}?idea_slug={{ idea.slug }}">{{ idea.name }}</a>
                     </td>
                     <td class="shrink">{{ idea.slug }}</td>
                     <td>{{ idea.description }}</td>

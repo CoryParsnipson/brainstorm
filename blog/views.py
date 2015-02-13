@@ -1,3 +1,5 @@
+import re
+
 from django.core.urlresolvers import reverse
 from django.core.exceptions import FieldError, ValidationError
 from django.core.context_processors import csrf
@@ -211,11 +213,11 @@ def dashboard_author(request):
             thought_form_instance = Thought.objects.get(slug=thought_slug)
         except Thought.DoesNotExist as e:
             pass
-    new_thought_form = ThoughtForm(instance=thought_form_instance)
+    thought_form = ThoughtForm(instance=thought_form_instance)
 
     context = {
         'page_title': 'Write New Thought',
-        'new_thought_form': new_thought_form,
+        'thought_form': thought_form,
     }
     return render(request, 'blog/dashboard/dashboard_author.html', context)
 
@@ -728,6 +730,7 @@ class FormThoughtView(View):
             request.POST['next'] optional url for redirect on completion
             request.POST['q'] optional query string parameters (urlencoded)
             request.POST['qdict'] optional query string in dictionary form
+            request.POST['old_slug'] may be None, used to edit value of slug
         """
         instance_data = request.POST.copy()
         msgs = {}
@@ -736,6 +739,13 @@ class FormThoughtView(View):
         if 'next' in instance_data:
             callback = instance_data['next']
             del instance_data['next']
+
+            # replace $$[token]$$ with actual value
+            p = re.compile("\$\$(.*)\$\$")
+            matches = p.search(callback)
+
+            for tok in matches.groups():
+                callback = p.sub(instance_data[tok], callback)
 
         if 'is_draft' in instance_data:
             instance_data['is_draft'] = True
@@ -754,17 +764,36 @@ class FormThoughtView(View):
         else:
             instance_data['slug'] = lib.slugify(instance_data['slug'])
 
+        old_slug = lib.slugify(instance_data['old_slug'])
+        del instance_data['old_slug']
+
+        # compare against old slug to check if we have edited the slug or if there is a collision
+        if not old_slug:
+            new_slug = instance_data['slug']
+            slug_collision_index = 2
+
+            while Thought.objects.filter(slug=new_slug).exists():
+                new_slug = instance_data['slug'] + "-" + str(slug_collision_index)
+                slug_collision_index += 1
+
+            instance_data['slug'] = new_slug
+        else:
+            # disallow editing of slugs
+            instance_data['slug'] = old_slug
+
         try:
             instance = Thought.objects.get(slug=instance_data['slug'])
-            msgs['msg'] = "Successfully edited Thought %s" % instance.slug
+            msgs['msg'] = "Successfully edited Thought '%s'" % instance.slug
         except Thought.DoesNotExist as e:
             instance = None
-            msgs['msg'] = "Successfully created Thought %s" % instance_data['slug']
+            msgs['msg'] = "Successfully created Thought '%s'" % instance_data['slug']
         thought_form = ThoughtForm(instance_data, request.FILES, instance=instance)
 
         if thought_form.is_valid():
             thought_form.save()
             idea = Idea.objects.filter(slug=instance_data['idea'])[0]
+
+            messages.add_message(request, messages.SUCCESS, msgs['msg'])
 
             if callback:
                 if callback == 'default':

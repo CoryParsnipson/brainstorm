@@ -15,30 +15,31 @@
         <form action="{% url 'forms-thought' %}" method="post" enctype="multipart/form-data">
             {% csrf_token %}
             <input type="hidden" name="author" value="{{ request.user.id }}" />
-            <input type="hidden" name="next" value="default" />
+            <input type="hidden" name="next" value="{% url 'dashboard-thoughts' %}?idea_slug=$$idea$$" />
+            <input type="hidden" name="old_slug" value="{{ thought_form.slug.value|default_if_none:'' }}" />
 
             <table class="form-thought">
                 <tr>
-                    <th class="shrink">{{ new_thought_form.title.label_tag }}</th>
-                    <th class="shrink">{{ new_thought_form.slug.label_tag }}</th>
-                    <th class="shrink">{{ new_thought_form.idea.label_tag }}</th>
+                    <th class="shrink">{{ thought_form.title.label_tag }}</th>
+                    <th class="shrink">{{ thought_form.slug.label_tag }}</th>
+                    <th class="shrink">{{ thought_form.idea.label_tag }}</th>
                 </tr>
                 <tr>
-                    <td class="expand">{{ new_thought_form.title }}</td>
-                    <td class="shrink">{{ new_thought_form.slug }}</td>
+                    <td class="expand">{{ thought_form.title }}</td>
+                    <td class="shrink">{{ thought_form.slug }}</td>
                     <td class="shrink">
                         {% if not idea %}
-                        {{ new_thought_form.idea }}
+                        {{ thought_form.idea }}
                         {% endif %}
                     </td>
                 </tr>
                 <tr>
-                    <td colspan="3">{{ new_thought_form.content }}</td>
+                    <td colspan="3">{{ thought_form.content }}</td>
                 </tr>
                 <tr>
                     <td colspan="3">
-                        {{ new_thought_form.preview.label_tag }}
-                        {{ new_thought_form.preview }}
+                        {{ thought_form.preview.label_tag }}
+                        {{ thought_form.preview }}
                     </td>
                 </tr>
                 <tr>
@@ -46,7 +47,7 @@
                         <input id="button_clear" class="left" type="button" value="Clear" />
                         <input id="button_revert" class="left" type="button" value="Revert Changes" />
 
-                        {% if new_thought_form.is_draft.value == True %}
+                        {% if thought_form.is_draft.value == True %}
                         <input class="left" type="submit" name="is_draft" value="Save Changes" />
                         <input class="publish right" type="submit" value="Publish" />
                         {% else %}

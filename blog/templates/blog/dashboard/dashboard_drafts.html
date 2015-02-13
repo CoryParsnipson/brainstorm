@@ -21,7 +21,9 @@
         <input type="hidden" name="next" value="{% url 'dashboard-drafts' %}" />
         {% csrf_token %}
         <tr>
-            <td class="shrink">{{ draft.title }}</td>
+            <td class="shrink">
+                <a href="{% url 'thought-page' draft.idea.slug draft.slug %}">{{ draft.title }}</a>
+            </td>
             <td class="shrink">{{ draft.slug }}</td>
             <td>{{ draft.content|safe }}</td>
             <td class="shrink">

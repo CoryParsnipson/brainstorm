@@ -106,7 +106,6 @@ table.add-idea {
 }
 
 table.add-idea tr:nth-of-type(odd) {
-  //background-color: #656565;
   border-top: 1px solid #656565;
   border-bottom: 1px solid #656565;
 }
@@ -137,10 +136,6 @@ table.add-idea td:last-child {
 table.add-idea label {
   font-size: 10pt;
   font-weight: bold;
-}
-
-table.add-idea textarea {
-  height: 10px;
 }
 
 table.add-idea #id_name, table.add-idea #id_slug {
