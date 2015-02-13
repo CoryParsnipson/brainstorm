@@ -8,6 +8,7 @@
 <table class="editable">
     <tbody>
     <tr>
+        <td>Date</td>
         <td>Title</td>
         <td>Slug</td>
         <td>Content</td>
@@ -21,6 +22,9 @@
         <input type="hidden" name="next" value="{% url 'dashboard-drafts' %}" />
         {% csrf_token %}
         <tr>
+            <td class="shrink">
+                {{ draft.date_published|date:"N j, Y" }}
+            </td>
             <td class="shrink">
                 <a href="{% url 'thought-page' draft.idea.slug draft.slug %}">{{ draft.title }}</a>
             </td>

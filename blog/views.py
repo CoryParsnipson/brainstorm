@@ -308,7 +308,12 @@ def dashboard_backend(request):
             'idea_slug': thought.idea.slug,
         })
     elif 'delete_thought' in request.POST:
-        thought_delete(request.POST['thought_slug'])
+        if thought_delete(request.POST['thought_slug']):
+            msg = "Successfully deleted Thought '%s'" % request.POST['thought_slug']
+            messages.add_message(request, messages.SUCCESS, msg)
+        else:
+            msg = "Error: Thought '%s' does not exist." % request.POST['thought_slug']
+            messages.add_message(request, messages.ERROR, msg)
     elif 'delete_idea' in request.POST:
         try:
             safe_delete_idea(request.POST['idea'])
@@ -786,14 +791,20 @@ class FormThoughtView(View):
             msgs['msg'] = "Successfully edited Thought '%s'" % instance.slug
         except Thought.DoesNotExist as e:
             instance = None
-            msgs['msg'] = "Successfully created Thought '%s'" % instance_data['slug']
+            if instance_data['is_draft']:
+                msgs['msg'] = "Saved draft '%s' for later." % instance_data['slug']
+            else:
+                msgs['msg'] = "Successfully created Thought '%s'" % instance_data['slug']
         thought_form = ThoughtForm(instance_data, request.FILES, instance=instance)
 
         if thought_form.is_valid():
             thought_form.save()
             idea = Idea.objects.filter(slug=instance_data['idea'])[0]
 
-            messages.add_message(request, messages.SUCCESS, msgs['msg'])
+            if instance_data['is_draft']:
+                messages.add_message(request, messages.WARNING, msgs['msg'])
+            else:
+                messages.add_message(request, messages.SUCCESS, msgs['msg'])
 
             if callback:
                 if callback == 'default':

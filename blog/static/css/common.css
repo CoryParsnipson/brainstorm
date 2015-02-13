@@ -263,6 +263,11 @@ ul.messages .success {
   background-color: #71E38C;
 }
 
+ul.messages .warning {
+  color: #383838;
+  background-color: #A8C118;
+}
+
 ul.messages .error {
   color: #F8C118;
   background-color: #A80505;

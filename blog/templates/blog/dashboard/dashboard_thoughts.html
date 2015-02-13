@@ -26,7 +26,7 @@
                 <form action="{% url 'dashboard-backend' %}" method="post">
                     {% csrf_token %}
                     <input type="hidden" name="thought_slug" value="{{ thought.slug }}" />
-                    <td class="shrink">{{ thought.date_published|date:"N n Y" }}</td>
+                    <td class="shrink">{{ thought.date_published|date:"N j, Y" }}</td>
                     <td><a href="{% url 'thought-page' thought.idea.slug thought.slug %}">{{ thought.title }}</a></td>
                     <td class="shrink">
                         {{ thought.slug }}

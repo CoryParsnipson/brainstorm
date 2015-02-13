@@ -3,15 +3,12 @@
 
 {% block content %}
 <h1>Trash</h1>
-
+{% for idea, thought_list in thoughts.items %}
+<p>{{ idea }}</p>
 <table class="editable">
     <tbody>
-    {% for idea, thought_list in thoughts.items %}
     <tr>
-        <th colspan="5">{{ idea }}</th>
-    </tr>
-
-    <tr>
+        <td class="shrink">Date</td>
         <td class="shrink">Title</td>
         <td class="shrink">Slug</td>
         <td class="expand">Content</td>
@@ -25,7 +22,8 @@
         <input type="hidden" name="next" value="{% url 'dashboard-trash' %}" />
         {% csrf_token %}
         <tr>
-            <td>{{ t.title }}</td>
+            <td class="shrink">{{ t.date_published|date:"N j, Y" }}</td>
+            <td class="shrink">{{ t.title }}</td>
             <td class="shrink">{{ t.slug }}</td>
             <td class="expand">{{ t.content }}</td>
             <td class="shrink">
