@@ -156,7 +156,6 @@ table.add-idea #id_submit:hover {
 /******************************************************************************
  * thought form styles
  *****************************************************************************/
-
 .form-thought {
   width: 100%;
   margin-bottom: 20px;
@@ -190,6 +189,15 @@ table.add-idea #id_submit:hover {
 .form-thought #id_slug {
   width: 150px;
   font-weight: bold;
+}
+
+.form-thought p#id_slug {
+  font-weight: normal;
+  overflow: hidden;
+  background-color: #494949;
+  vertical-align: middle;
+  padding: 3px 7px;
+  margin: 0;
 }
 
 .form-thought input[type="submit"],

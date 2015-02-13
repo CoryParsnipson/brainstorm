@@ -26,7 +26,13 @@
                 </tr>
                 <tr>
                     <td class="expand">{{ thought_form.title }}</td>
-                    <td class="shrink">{{ thought_form.slug }}</td>
+                    <td class="shrink">
+                        {% if thought_form.slug.value %}
+                        <p id="id_slug">{{ thought_form.slug.value }}</p>
+                        {% else %}
+                        {{ thought_form.slug }}
+                        {% endif %}
+                    </td>
                     <td class="shrink">
                         {% if not idea %}
                         {{ thought_form.idea }}
