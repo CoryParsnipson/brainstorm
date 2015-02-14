@@ -43,6 +43,7 @@ hr {
 
 hr.story-separator {
   border: 0;
+  margin-top: 2rem;
   margin-bottom: 2rem;
   text-align: center;
   background-image: -webkit-linear-gradient(left, rgba(183,183,183,0), rgba(183,183,183,0.75), rgba(183,183,183,0));
@@ -282,12 +283,12 @@ ul.messages form * {
 
 ul.messages .success {
   color: #157A2D;
-  background-color: #71E38C;
+  background-color: #A8C118;
 }
 
 ul.messages .warning {
   color: #383838;
-  background-color: #A8C118;
+  background-color: #F8C118;
 }
 
 ul.messages .error {

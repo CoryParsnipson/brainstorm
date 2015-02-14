@@ -1,6 +1,6 @@
 from django import forms
 
-from blog.models import Idea, Thought
+from blog.models import Idea, Thought, Link
 
 
 class LoginForm(forms.Form):
@@ -41,3 +41,11 @@ class ThoughtForm(forms.ModelForm):
                 'class': 'editor',
             }),
         }
+
+
+class LinkForm(forms.ModelForm):
+    """ Django form class for managing Links
+    """
+    class Meta:
+        model = Link
+        fields = '__all__'

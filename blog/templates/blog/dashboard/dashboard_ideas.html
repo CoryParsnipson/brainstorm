@@ -11,24 +11,24 @@
         <h3>Create New Idea</h3>
         <form action="{% url 'forms-idea' %}" method="post" enctype="multipart/form-data">
             {% csrf_token %}
-            <input type="hidden" name="url_pass" value="dashboard-ideas" />
+            <input type="hidden" name="next" value="{% url 'dashboard-ideas' %}" />
             <table class="add-idea">
                 <tbody>
                 <tr>
-                    <td class="shrink">{{ new_idea_form.name.label_tag }}</td>
-                    <td>{{ new_idea_form.name }}</td>
+                    <td class="shrink">{{ idea_form.name.label_tag }}</td>
+                    <td>{{ idea_form.name }}</td>
                 </tr>
                 <tr>
-                    <td class="shrink">{{ new_idea_form.slug.label_tag }}</td>
-                    <td class="shrink">{{ new_idea_form.slug }}</td>
+                    <td class="shrink">{{ idea_form.slug.label_tag }}</td>
+                    <td class="shrink">{{ idea_form.slug }}</td>
                 </tr>
                 <tr>
-                    <td class="shrink">{{ new_idea_form.icon.label_tag }}</td>
-                    <td>{{ new_idea_form.icon }}</td>
+                    <td class="shrink">{{ idea_form.icon.label_tag }}</td>
+                    <td>{{ idea_form.icon }}</td>
                 </tr>
                 <tr>
-                    <td class="shrink">{{ new_idea_form.description.label_tag }}</td>
-                    <td class="expand">{{ new_idea_form.description }}</td>
+                    <td class="shrink">{{ idea_form.description.label_tag }}</td>
+                    <td class="expand">{{ idea_form.description }}</td>
                 </tr>
                 <tr>
                     <td class="shrink"></td>

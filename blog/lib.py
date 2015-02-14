@@ -19,6 +19,7 @@ MAX_UPLOAD_SIZE = 104857600  # (1024 * 1024 bits * 100)
 THOUGHT_PREVIEW_IMAGE_SIZE = (600, 300)
 IDEA_PREVIEW_IMAGE_SMALL_SIZE = (600, 150)
 IDEA_PREVIEW_IMAGE_SIZE = (600, 300)
+LINK_PREVIEW_IMAGE_SIZE = (200, 150)
 
 DEFAULT_TRUNCATE_LENGTH = 70
 ALLOWED_TAGS = [
@@ -26,7 +27,7 @@ ALLOWED_TAGS = [
     'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'hr', 'br'
 ]
 
-PAGINATION_FRONT_PER_PAGE = 9
+PAGINATION_FRONT_PER_PAGE = 8
 PAGINATION_FRONT_PAGES_TO_LEAD = 0
 
 PAGINATION_IDEAS_PER_PAGE = 5
@@ -34,6 +35,9 @@ PAGINATION_IDEAS_PAGES_TO_LEAD = 2
 
 PAGINATION_THOUGHTS_PER_PAGE = 10
 PAGINATION_THOUGHTS_PAGES_TO_LEAD = 2
+
+PAGINATION_LINKS_PER_PAGE = 10
+PAGINATION_LINKS_PAGES_TO_LEAD = 3
 
 NUM_RECENT_IDEAS = 3
 
@@ -48,6 +52,26 @@ def remove_duplicates(seq):
     seen = set()
     seen_add = seen.add
     return [x for x in seq if not (x in seen or seen_add(x))]
+
+
+def replace_tokens(search_string, token_vals, token_re="\$\$(.*)\$\$"):
+    """ given a string with tokens, a token regular expression, and a dictionary of token values
+        search for tokens in the string and replace them from the dictionary
+
+        Note: default token format is $$<token>$$
+        Note: token_vals should be a dictionary where keys are all values found in place of "token"
+              from token format
+    """
+    p = re.compile(token_re)
+    matches = p.search(search_string)
+
+    if not matches:
+        return search_string
+
+    for tok in matches.groups():
+        search_string = p.sub(token_vals[tok], search_string)
+
+    return search_string
 
 
 def slugify(source_str, max_len=20):

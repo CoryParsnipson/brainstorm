@@ -16,8 +16,8 @@ from django.contrib.auth.decorators import login_required
 from rest_framework import viewsets, response
 
 import lib
-from models import Idea, Thought
-from forms import LoginForm, IdeaForm, ThoughtForm
+from models import Idea, Thought, Link
+from forms import LoginForm, IdeaForm, ThoughtForm, LinkForm
 from serializers import UserSerializer, IdeaSerializer, ThoughtSerializer
 
 
@@ -33,7 +33,7 @@ def index(request):
 
     thoughts = thoughts[1:]
 
-    paginator = Paginator(thoughts, lib.PAGINATION_FRONT_PER_PAGE + 1)
+    paginator = Paginator(thoughts, lib.PAGINATION_FRONT_PER_PAGE)
     page = request.GET.get('p')
     try:
         thoughts_on_page = paginator.page(page)
@@ -45,17 +45,23 @@ def index(request):
     for t in thoughts_on_page:
         t.content = t.truncate()
 
+    # get latest link of the day
+    link = Link.objects.all().order_by('-date_published')[:1]
+    if link:
+        link = link[0]
+
     context = {
         'page_title': 'Home',
         'latest_thought': latest_thought,
         'latest_thoughts': thoughts_on_page,
         'paginator': paginator,
         'pagination': lib.create_pagination(
-            thoughts,
-            page,
+            queryset=thoughts,
+            current_page=page,
             per_page=lib.PAGINATION_FRONT_PER_PAGE,
             page_lead=lib.PAGINATION_FRONT_PAGES_TO_LEAD,
         ),
+        'link': link,
     }
     return render(request, 'blog/index.html', context)
 
@@ -77,6 +83,32 @@ def logout_page(request):
         'page_title': 'Logout'
     }
     return render(request, 'blog/logout.html', context)
+
+
+def links(request):
+    link_list = Link.objects.all().order_by('-date_published')
+
+    paginator = Paginator(link_list, lib.PAGINATION_LINKS_PER_PAGE)
+    page = request.GET.get('p')
+    try:
+        links_on_page = paginator.page(page)
+    except PageNotAnInteger:
+        links_on_page = paginator.page(1)
+    except EmptyPage:
+        links_on_page = paginator.page(paginator.num_pages)
+
+    context = {
+        'page_title': 'Link of the Day',
+        'links': links_on_page,
+        'paginator': paginator,
+        'pagination': lib.create_pagination(
+            queryset=link_list,
+            current_page=page,
+            per_page=lib.PAGINATION_LINKS_PER_PAGE,
+            page_lead=lib.PAGINATION_LINKS_PAGES_TO_LEAD,
+        ),
+    }
+    return render(request, 'blog/links.html', context)
 
 
 def about(request):
@@ -189,6 +221,37 @@ def dashboard(request, *args, **kwargs):
 
 
 @login_required(login_url='index')
+def dashboard_links(request):
+    """ User dashboard page to manage Link of the Day
+    """
+    links = Link.objects.all().order_by('-date_published')
+
+    paginator = Paginator(links, lib.PAGINATION_LINKS_PER_PAGE)
+    page = request.GET.get('p')
+    try:
+        links_on_page = paginator.page(page)
+    except PageNotAnInteger:
+        links_on_page = paginator.page(1)
+    except EmptyPage:
+        links_on_page = paginator.page(paginator.num_pages)
+
+    instance = None
+    if 'link' in request.GET:
+        try:
+            instance = Link.objects.get(id=request.GET['link'])
+        except Link.DoesNotExist:
+            pass
+    link_form = LinkForm(instance=instance)
+
+    context = {
+        'page_title': 'Links',
+        'links': links_on_page,
+        'link_form': link_form,
+    }
+    return render(request, 'blog/dashboard/dashboard_links.html', context)
+
+
+@login_required(login_url='index')
 def dashboard_ideas(request):
     """ User dashboard page to edit/create/manage Idea objects.
 
@@ -207,11 +270,11 @@ def dashboard_ideas(request):
         except Idea.DoesNotExist as e:
             dne_msg = "Cannot edit Idea '%s'" % idea_slug
             messages.add_message(request, messages.ERROR, dne_msg)
-    new_idea_form = IdeaForm(instance=idea_form_instance)
+    idea_form = IdeaForm(instance=idea_form_instance)
 
     context = {
         'page_title': 'Manage Ideas',
-        'new_idea_form': new_idea_form,
+        'idea_form': idea_form,
         'ideas': idea_list,
     }
     return render(request, 'blog/dashboard/dashboard_ideas.html', context)
@@ -346,6 +409,9 @@ def dashboard_backend(request):
         query_string = urlencode({
             'idea_slug': thought.idea.slug,
         })
+
+        msg = "Moved Thought '%s' to Drafts." % thought.slug
+        messages.add_message(request, messages.SUCCESS, msg)
     elif 'delete_thought' in request.POST:
         if thought_delete(request.POST['thought_slug']):
             msg = "Successfully deleted Thought '%s'" % request.POST['thought_slug']
@@ -356,6 +422,8 @@ def dashboard_backend(request):
     elif 'delete_idea' in request.POST:
         try:
             safe_delete_idea(request.POST['idea'])
+            msg = "Successfully deleted Idea '%s'" % request.POST['idea']
+            messages.add_message(request, messages.SUCCESS, msg)
         except ValidationError as e:
             messages.add_message(request, messages.ERROR, e.message)
     elif 'order_up' in request.POST or 'order_down' in request.POST:
@@ -378,6 +446,16 @@ def dashboard_backend(request):
         finally:
             if err_msg:
                 messages.add_message(request, messages.ERROR, err_msg)
+    elif 'delete_link' in request.POST:
+        try:
+            link = Link.objects.get(id=request.POST['link'])
+            link_title = link.title
+            link.delete()
+
+            msg = "Successfully deleted Link '%s'" % link_title
+            messages.add_message(request, messages.SUCCESS, msg)
+        except Link.DoesNotExist:
+            pass
 
     return redirect(next_url + "?" + query_string)
 
@@ -697,24 +775,16 @@ class FormIdeaView(View):
     def post(self, request, *args, **kwargs):
         """ save the POST data for the form into a new Idea
 
-            request.POST['url_pass'] optional url for redirect on completion
-            request.POST['q'] optional query string parameters (urlencoded)
-            request.POST['qdict'] optional query string in dictionary form
+            request.POST['next'] optional url for redirect on completion
         """
         instance_data = request.POST.copy()
         msgs = {}
 
-        url_pass = None
-        if 'url_pass' in instance_data:
-            url_pass = instance_data['url_pass']
-            del instance_data['url_pass']
-
-        query_string = ""
-        if 'q' in instance_data:
-            query_string = "?" + instance_data['q']
-
-        if 'qdict' in instance_data:
-            query_string = "?" + urlencode(instance_data['qdict'])
+        callback = None
+        if 'next' in instance_data:
+            callback = instance_data['next']
+            del instance_data['next']
+            lib.replace_tokens(callback, instance_data)
 
         if 'slug' not in instance_data or not instance_data['slug']:
             instance_data['slug'] = lib.slugify(instance_data['name'])
@@ -731,9 +801,9 @@ class FormIdeaView(View):
 
         if idea_form.is_valid():
             idea_form.save()
-            if url_pass:
+            if callback:
                 messages.add_message(request, messages.SUCCESS, msgs['msg'])
-                return redirect(reverse(url_pass) + query_string)
+                return redirect(callback)
             return JsonResponse(msgs)
         else:
             # loop through fields on form and add errors to dict
@@ -743,10 +813,10 @@ class FormIdeaView(View):
                 errors[field.name] = field.errors
                 i += 1
 
-            if url_pass:
+            if callback:
                 msg = errors
                 messages.add_message(request, messages.ERROR, msg)
-                return redirect(reverse(url_pass) + query_string)
+                return redirect(callback)
             return JsonResponse(errors)
 
 
@@ -772,8 +842,6 @@ class FormThoughtView(View):
         """ save the POST data to create a new Thought
 
             request.POST['next'] optional url for redirect on completion
-            request.POST['q'] optional query string parameters (urlencoded)
-            request.POST['qdict'] optional query string in dictionary form
             request.POST['old_slug'] may be None, used to edit value of slug
         """
         instance_data = request.POST.copy()
@@ -783,25 +851,12 @@ class FormThoughtView(View):
         if 'next' in instance_data:
             callback = instance_data['next']
             del instance_data['next']
-
-            # replace $$[token]$$ with actual value
-            p = re.compile("\$\$(.*)\$\$")
-            matches = p.search(callback)
-
-            for tok in matches.groups():
-                callback = p.sub(instance_data[tok], callback)
+            lib.replace_tokens(callback, instance_data)
 
         if 'is_draft' in instance_data:
             instance_data['is_draft'] = True
         else:
             instance_data['is_draft'] = False
-
-        query_string = ""
-        if 'q' in instance_data:
-            query_string = "?" + instance_data['q']
-
-        if 'qdict' in instance_data:
-            query_string = "?" + urlencode(instance_data['qdict'])
 
         if 'slug' not in instance_data or not instance_data['slug']:
             instance_data['slug'] = lib.slugify(instance_data['title'])
@@ -852,7 +907,7 @@ class FormThoughtView(View):
                         'idea_slug': instance_data['idea'],
                     }
                     callback = reverse('thought-page', kwargs=kwargs)
-                return redirect(callback + query_string)
+                return redirect(callback)
             else:
                 return JsonResponse(msgs)
         else:
@@ -864,6 +919,71 @@ class FormThoughtView(View):
             if callback:
                 err_msg = "<br>".join([k + ": " + " ".join(v) for k, v in errors.items() if v])
                 messages.add_message(request, messages.ERROR, err_msg)
-                return redirect(reverse('dashboard-author') + query_string)
+                return redirect(reverse('dashboard-author'))
+            else:
+                return JsonResponse(errors)
+
+
+class FormLinkView(View):
+    """ API endpoints for forms to manage user interactions and Links
+    """
+    def get(self, request, *args, **kwargs):
+        """ return form body output for a form to create a new link
+        """
+        form = LinkForm()
+        form_html = form.as_table()
+
+        if "output" in request.GET:
+            if request.GET["output"] == "p":
+                form_html = form.as_p()
+            elif request.GET["output"] == "ul":
+                form_html = form.as_ul()
+
+        context = {'form': form_html}
+        return JsonResponse(context)
+
+    def post(self, request, *args, **kwargs):
+        """ Save POST data to create a new Link of the Day
+
+            request.POST['next'] optional url for redirect on completion
+        """
+        instance_data = request.POST.copy()
+
+        callback = None
+        if 'next' in instance_data:
+            callback = instance_data['next']
+            del instance_data['next']
+            lib.replace_tokens(callback, instance_data)
+
+        if 'id' not in instance_data:
+            instance_data['id'] = -1
+
+        try:
+            instance = Link.objects.get(id=instance_data['id'])
+            msg = "Successfully edited Link '%s'" % instance.slug
+        except Link.DoesNotExist as e:
+            instance = None
+            msg = "Successfully created Link '%s'" % instance_data['title']
+
+        link_form = LinkForm(instance_data, request.FILES, instance=instance)
+
+        if link_form.is_valid():
+            link_form.save()
+            messages.add_message(request, messages.SUCCESS, msg)
+
+            if callback:
+                return redirect(callback)
+            else:
+                return JsonResponse({'msg': msg})
+        else:
+            # loop through fields on form and add errors to dict
+            errors = {}
+            for field in link_form:
+                errors[field.name] = field.errors
+
+            if callback:
+                msg = "<br>".join([k + ": " + " ".join(v) for k, v in errors.items() if v])
+                messages.add_message(request, messages.ERROR, msg)
+                return redirect(callback)
             else:
                 return JsonResponse(errors)

@@ -24,6 +24,7 @@ urlpatterns = patterns('',
     url(r'^logout/', views.logout_page, name='logout-page'),
 
     url(r'^dashboard/$', views.dashboard, name='dashboard'),
+    url(r'^dashboard/links/$', views.dashboard_links, name='dashboard-links'),
     url(r'^dashboard/ideas/$', views.dashboard_ideas, name='dashboard-ideas'),
     url(r'^dashboard/thoughts/$', views.dashboard_thoughts, name='dashboard-thoughts'),
     url(r'^dashboard/author/$', views.dashboard_author, name='dashboard-author'),
@@ -32,6 +33,7 @@ urlpatterns = patterns('',
     url(r'^dashboard/backend/$', views.dashboard_backend, name='dashboard-backend'),
 
     url(r'^about/', views.about, name='about'),
+    url(r'^links/', views.links, name='links'),
     url(r'^ideas/$', views.ideas, name='idea-catalog-page'),
     url(r'^ideas/(?P<idea_slug>[a-z0-9\-]+)/$', views.idea_detail, name='idea-page'),
 
@@ -50,6 +52,7 @@ urlpatterns = patterns('',
 
     url(r'^api/forms/idea/', views.FormIdeaView.as_view(), name='forms-idea'),
     url(r'^api/forms/thought/', views.FormThoughtView.as_view(), name='forms-thought'),
+    url(r'^api/forms/link/', views.FormLinkView.as_view(), name='forms-link'),
 )
 
 if settings.DEBUG:

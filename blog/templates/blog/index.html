@@ -32,12 +32,27 @@
         </div>
     </a>
 
+    {% if link %}
     <div class="large-12 columns showcase-splitter">
-        <p>Something interesting here?</p>
-        <p>[User comments?]</p>
-        <p>[Annoucements???]</p>
-        <p>[Scratch pad?]</p>
+        <div class="link">
+            <p class="link-of-the-day"><a href="{% url 'links' %}">Link of the Day</a></p>
+            <p class="title"><a href="{{ link.url }}" target="_blank">{{ link.title }}</a></p>
+            <p class="subtitle"><a href="{{ link.url }}" target="_blank">{{ link.url }}</a></p>
+            <p>{{ link.description }}</p>
+        </div>
+        <a href="{{ link.url }}" target="_blank">
+            <div class="img-placeholder"
+            {% if link.icon %}
+            style="background-image: url('{{ link.icon.url }}');"
+            {% endif %}
+            >
+            {% if not link.icon %}
+            <span class="img-placeholder"><span class="big">LINK</span><br>OF THE DAY</span>
+            {% endif %}
+            </div>
+        </a>
     </div>
+    {% endif %}
 </div>
 
 {% if latest_thoughts %}

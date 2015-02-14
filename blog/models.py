@@ -207,3 +207,41 @@ class Thought(models.Model):
 
         filename = os.path.join(paths.MEDIA_DIR, self.preview.name)
         lib.resize_image(filename, lib.THOUGHT_PREVIEW_IMAGE_SIZE)
+
+
+###############################################################################
+# Link Model
+###############################################################################
+class Link(models.Model):
+    """ On the front page, there is a small section under the product showcase
+        for the Link Of The Day. This model is for that.
+    """
+    title = models.CharField(max_length=300)
+    description = models.CharField(max_length=500)
+    url = models.URLField(max_length=1000)
+    date_published = models.DateTimeField(auto_now_add=True)
+    icon = models.ImageField(
+        upload_to=os.path.basename(paths.MEDIA_IMAGE_ROOT),
+        blank=True,
+        null=True,
+    )
+
+    def truncate(self, max_length=250, allowed_tags=None, strip=True):
+        """ output a form of the description field, truncated to max_length. Tags
+            will be whitelisted, stripped, and balanced to account for
+            truncation.
+        """
+        return lib.truncate(
+            content=self.description,
+            max_length=max_length,
+            allowed_tags=allowed_tags,
+            strip=strip)
+
+    def save(self, *args, **kwargs):
+        # "real" save method
+        super(Link, self).save(*args, **kwargs)
+
+        # crop picture if necessary
+        if self.icon:
+            filename = os.path.join(paths.MEDIA_DIR, self.icon.name)
+            lib.resize_image(filename, lib.LINK_PREVIEW_IMAGE_SIZE)
