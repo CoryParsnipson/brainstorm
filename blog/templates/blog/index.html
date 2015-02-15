@@ -32,22 +32,24 @@
         </div>
     </a>
 
-    {% if link %}
+    {% if highlight %}
     <div class="large-12 columns showcase-splitter">
-        <div class="link">
-            <p class="link-of-the-day"><a class="reverse-color" href="{% url 'links' %}">Link of the Day</a></p>
-            <p class="title"><a href="{{ link.url }}" target="_blank">{{ link.title }}</a></p>
-            <p class="subtitle"><a href="{{ link.url }}" target="_blank">{{ link.url }}</a></p>
-            <p>{{ link.description }}</p>
+        <div class="highlight">
+            <p class="highlight-category"><a class="reverse-color" href="{% url 'highlights' %}">Highlights from the web</a></p>
+            <p class="title"><a href="{{ highlight.url }}" target="_blank">{{ highlight.title }}</a></p>
+            <p class="subtitle"><a href="{{ highlight.url }}" target="_blank">{{ highlight.url }}</a></p>
+            <div class="description">{{ highlight.description|safe }}</div>
         </div>
-        <a href="{{ link.url }}" target="_blank">
+        <a href="{{ highlight.url }}" target="_blank">
             <div class="img-placeholder"
-            {% if link.icon %}
-            style="background-image: url('{{ link.icon.url }}');"
+            {% if highlight.icon %}
+            style="background-image: url('{{ highlight.icon.url }}');"
+            {% else %}
+            style="background-color: #F8C118;"
             {% endif %}
             >
-            {% if not link.icon %}
-            <span class="img-placeholder"><span class="big">LINK</span><br>OF THE DAY</span>
+            {% if not highlight.icon %}
+            <span class="img-placeholder"><span class="big">HIGHLIGHT</span><br>OF THE DAY</span>
             {% endif %}
             </div>
         </a>

@@ -14,8 +14,8 @@ from django.contrib.auth.decorators import login_required
 from rest_framework import viewsets, response
 
 import lib
-from models import Idea, Thought, Link
-from forms import LoginForm, IdeaForm, ThoughtForm, LinkForm
+from models import Idea, Thought, Highlight
+from forms import LoginForm, IdeaForm, ThoughtForm, HighlightForm
 from serializers import UserSerializer, IdeaSerializer, ThoughtSerializer
 
 
@@ -44,9 +44,10 @@ def index(request):
         t.content = t.truncate()
 
     # get latest link of the day
-    link = Link.objects.all().order_by('-date_published')[:1]
-    if link:
-        link = link[0]
+    highlight = Highlight.objects.all().order_by('-date_published')[:1]
+    if highlight:
+        highlight = highlight[0]
+        highlight.description = highlight.truncate(max_length=200)
 
     context = {
         'page_title': 'Home',
@@ -59,7 +60,7 @@ def index(request):
             per_page=lib.PAGINATION_FRONT_PER_PAGE,
             page_lead=lib.PAGINATION_FRONT_PAGES_TO_LEAD,
         ),
-        'link': link,
+        'highlight': highlight,
     }
     return render(request, 'blog/index.html', context)
 
@@ -83,30 +84,30 @@ def logout_page(request):
     return render(request, 'blog/logout.html', context)
 
 
-def links(request):
-    link_list = Link.objects.all().order_by('-date_published')
+def highlights(request):
+    highlight_list = Highlight.objects.all().order_by('-date_published')
 
-    paginator = Paginator(link_list, lib.PAGINATION_LINKS_PER_PAGE)
+    paginator = Paginator(highlight_list, lib.PAGINATION_HIGHLIGHTS_PER_PAGE)
     page = request.GET.get('p')
     try:
-        links_on_page = paginator.page(page)
+        highlights_on_page = paginator.page(page)
     except PageNotAnInteger:
-        links_on_page = paginator.page(1)
+        highlights_on_page = paginator.page(1)
     except EmptyPage:
-        links_on_page = paginator.page(paginator.num_pages)
+        highlights_on_page = paginator.page(paginator.num_pages)
 
     context = {
-        'page_title': 'Link of the Day',
-        'links': links_on_page,
+        'page_title': 'Highlights',
+        'highlights': highlights_on_page,
         'paginator': paginator,
         'pagination': lib.create_pagination(
-            queryset=link_list,
+            queryset=highlight_list,
             current_page=page,
-            per_page=lib.PAGINATION_LINKS_PER_PAGE,
-            page_lead=lib.PAGINATION_LINKS_PAGES_TO_LEAD,
+            per_page=lib.PAGINATION_HIGHLIGHTS_PER_PAGE,
+            page_lead=lib.PAGINATION_HIGHTLIGHTS_PAGES_TO_LEAD,
         ),
     }
-    return render(request, 'blog/links.html', context)
+    return render(request, 'blog/highlights.html', context)
 
 
 def about(request):
@@ -219,34 +220,34 @@ def dashboard(request, *args, **kwargs):
 
 
 @login_required(login_url='index')
-def dashboard_links(request):
+def dashboard_highlights(request):
     """ User dashboard page to manage Link of the Day
     """
-    links = Link.objects.all().order_by('-date_published')
+    highlight_list = Highlight.objects.all().order_by('-date_published')
 
-    paginator = Paginator(links, lib.PAGINATION_LINKS_PER_PAGE)
+    paginator = Paginator(highlight_list, lib.PAGINATION_HIGHLIGHTS_PER_PAGE)
     page = request.GET.get('p')
     try:
-        links_on_page = paginator.page(page)
+        highlights_on_page = paginator.page(page)
     except PageNotAnInteger:
-        links_on_page = paginator.page(1)
+        highlights_on_page = paginator.page(1)
     except EmptyPage:
-        links_on_page = paginator.page(paginator.num_pages)
+        highlights_on_page = paginator.page(paginator.num_pages)
 
     instance = None
-    if 'link' in request.GET:
+    if 'highlight' in request.GET:
         try:
-            instance = Link.objects.get(id=request.GET['link'])
-        except Link.DoesNotExist:
+            instance = Highlight.objects.get(id=request.GET['highlight'])
+        except Highlight.DoesNotExist:
             pass
-    link_form = LinkForm(instance=instance)
+    highlight_form = HighlightForm(instance=instance)
 
     context = {
-        'page_title': 'Links',
-        'links': links_on_page,
-        'link_form': link_form,
+        'page_title': 'Highlights',
+        'highlights': highlights_on_page,
+        'highlight_form': highlight_form,
     }
-    return render(request, 'blog/dashboard/dashboard_links.html', context)
+    return render(request, 'blog/dashboard/dashboard_highlights.html', context)
 
 
 @login_required(login_url='index')
@@ -444,15 +445,15 @@ def dashboard_backend(request):
         finally:
             if err_msg:
                 messages.add_message(request, messages.ERROR, err_msg)
-    elif 'delete_link' in request.POST:
+    elif 'delete_highlight' in request.POST:
         try:
-            link = Link.objects.get(id=request.POST['link'])
-            link_title = link.title
-            link.delete()
+            highlight = Highlight.objects.get(id=request.POST['highlight'])
+            highlight_title = highlight.title
+            highlight.delete()
 
-            msg = "Successfully deleted Link '%s'" % link_title
+            msg = "Successfully deleted Link '%s'" % highlight_title
             messages.add_message(request, messages.SUCCESS, msg)
-        except Link.DoesNotExist:
+        except Highlight.DoesNotExist:
             pass
 
     return redirect(next_url + "?" + query_string)
@@ -928,7 +929,7 @@ class FormLinkView(View):
     def get(self, request, *args, **kwargs):
         """ return form body output for a form to create a new link
         """
-        form = LinkForm()
+        form = HighlightForm()
         form_html = form.as_table()
 
         if "output" in request.GET:
@@ -953,17 +954,17 @@ class FormLinkView(View):
             del instance_data['next']
             lib.replace_tokens(callback, instance_data)
 
-        if 'id' not in instance_data:
+        if 'id' not in instance_data or not instance_data['id']:
             instance_data['id'] = -1
 
         try:
-            instance = Link.objects.get(id=instance_data['id'])
-            msg = "Successfully edited Link '%s'" % instance.id
-        except Link.DoesNotExist as e:
+            instance = Highlight.objects.get(id=instance_data['id'])
+            msg = "Successfully edited Link '%s'" % instance.title
+        except Highlight.DoesNotExist as e:
             instance = None
             msg = "Successfully created Link '%s'" % instance_data['title'] if 'title' in instance_data else None
 
-        link_form = LinkForm(instance_data, request.FILES, instance=instance)
+        link_form = HighlightForm(instance_data, request.FILES, instance=instance)
 
         if link_form.is_valid():
             link_form.save()

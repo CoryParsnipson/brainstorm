@@ -212,12 +212,12 @@ class Thought(models.Model):
 ###############################################################################
 # Link Model
 ###############################################################################
-class Link(models.Model):
+class Highlight(models.Model):
     """ On the front page, there is a small section under the product showcase
-        for the Link Of The Day. This model is for that.
+        for the Highlight. This model is for that.
     """
     title = models.CharField(max_length=300, blank=False, null=False)
-    description = models.CharField(max_length=500)
+    description = models.TextField(max_length=1500)
     url = models.URLField(max_length=1000, blank=False, null=False)
     date_published = models.DateTimeField(auto_now_add=True)
     icon = models.ImageField(
@@ -225,6 +225,11 @@ class Link(models.Model):
         blank=True,
         null=True,
     )
+
+    # non field members
+    allowed_tags = [
+        'p', 'br', 'em', 'strong', 'blockquote', 'quote', 'hr'
+    ]
 
     def truncate(self, max_length=250, allowed_tags=None, strip=True):
         """ output a form of the description field, truncated to max_length. Tags
@@ -234,14 +239,14 @@ class Link(models.Model):
         return lib.truncate(
             content=self.description,
             max_length=max_length,
-            allowed_tags=allowed_tags,
+            allowed_tags=allowed_tags or self.allowed_tags,
             strip=strip)
 
     def save(self, *args, **kwargs):
         # "real" save method
-        super(Link, self).save(*args, **kwargs)
+        super(Highlight, self).save(*args, **kwargs)
 
         # crop picture if necessary
         if self.icon:
             filename = os.path.join(paths.MEDIA_DIR, self.icon.name)
-            lib.resize_image(filename, lib.LINK_PREVIEW_IMAGE_SIZE)
+            lib.resize_image(filename, lib.HIGHLIGHT_PREVIEW_IMAGE_SIZE)

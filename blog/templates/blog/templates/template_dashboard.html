@@ -29,17 +29,6 @@
           var head = document.getElementsByTagName("head")[0];
           head.appendChild(trial);
       })();
-
-      // page specific javascript init shit
-      (function() {
-        // fancy editor window for admins who have javascript
-        initialize_tinymce(
-          'thought-editor',
-          'textarea.editor',
-          'button-clear',
-          'button-revert',
-          ['{% static "css/common.css" %}', 'http://fonts.googleapis.com/css?family=Sigmar+One|Roboto']);
-      })();
     </script>
 
     {% block http_headers %}
@@ -89,7 +78,7 @@
         <div id="content-side" class="large-2 medium-2 small-2 columns">
             {% block side %}
             <ul>
-                <li><a href="{% url 'dashboard-links' %}">Link of the Day</a></li>
+                <li><a href="{% url 'dashboard-highlights' %}">Highlights</a></li>
                 <li class="divider"></li>
                 <li><a class="highlight" href="{% url 'dashboard-author' %}">Post New Thought</a></li>
                 <li><a href="{% url 'dashboard-ideas' %}">Content</a></li>

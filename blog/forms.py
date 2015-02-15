@@ -1,6 +1,6 @@
 from django import forms
 
-from blog.models import Idea, Thought, Link
+from blog.models import Idea, Thought, Highlight
 
 
 class LoginForm(forms.Form):
@@ -37,19 +37,22 @@ class ThoughtForm(forms.ModelForm):
         widgets = {
             # tinymce textarea (when js is enabled)
             'content': forms.Textarea(attrs={
-                'id': 'thought-editor',
                 'class': 'editor',
             }),
         }
 
 
-class LinkForm(forms.ModelForm):
-    """ Django form class for managing Links
+class HighlightForm(forms.ModelForm):
+    """ Django form class for managing Highlights
     """
-    #title = forms.CharField(widget=forms.TextInput(attrs={'disabled': 'True'}))
-    #description = forms.CharField(widget=forms.TextInput(attrs={'disabled': 'True'}))
-    #icon = forms.ImageField(widget=forms.FileInput(attrs={'disabled': 'True'}))
+    id = forms.IntegerField(widget=forms.HiddenInput)
 
     class Meta:
-        model = Link
-        fields = '__all__'
+        model = Highlight
+        fields = ['id', 'title', 'description', 'url', 'icon']
+        widgets = {
+            # tinymce textarea (when js is enabled)
+            'description': forms.Textarea(attrs={
+               'class': 'editor',
+            }),
+        }

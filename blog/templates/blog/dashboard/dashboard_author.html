@@ -1,6 +1,21 @@
 {% extends 'blog/templates/template_dashboard.html' %}
 {% load staticfiles %}
 
+{% block http_headers %}
+<script type="text/javascript">
+  // page specific javascript init shit
+  (function() {
+    // fancy editor window for admins who have javascript
+    initialize_tinymce(
+      'id_content',
+      'textarea.editor',
+      'button-clear',
+      'button-revert',
+      ['{% static "css/common.css" %}', 'http://fonts.googleapis.com/css?family=Sigmar+One|Roboto']);
+  })();
+</script>
+{% endblock %}
+
 {% block content %}
 <div class="row">
     <div class="large-10 large-offset-1 medium-12 small-12 columns">

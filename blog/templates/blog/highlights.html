@@ -6,31 +6,34 @@
 {% endblock %}
 
 {% block content %}
-<h2>Link of the Day</h2>
+<h2>Highlights from the Web</h2>
 
-{% for link in links %}
+{% for highlight in highlights %}
 <div class="showcase-splitter">
-    <div class="link">
-        <p class="title"><a href="{{ link.url }}" target="_blank">{{ link.title }}</a></p>
-        <p class="subtitle"><a href="{{ link.url }}" target="_blank">{{ link.url }}</a></p>
-        <p>{{ link.description }}</p>
-
-        <p class="date">{{ link.date_published|date:"F j, Y" }}</p>
+    <div class="highlight">
+        <p class="title"><a href="{{ highlight.url }}" target="_blank">{{ highlight.title }}</a></p>
+        <p class="subtitle"><a href="{{ highlight.url }}" target="_blank">{{ highlight.url }}</a></p>
+        <div class="description">
+            {{ highlight.description|safe }}
+            <p class="date">{{ highlight.date_published|date:"F j, Y" }}</p>
+        </div>
     </div>
-    <a href="{{ link.url }}" target="_blank">
+    <a href="{{ highlight.url }}" target="_blank">
         <div class="img-placeholder"
-        {% if link.icon %}
-        style="background-image: url('{{ link.icon.url }}');"
+        {% if highlight.icon %}
+        style="background-image: url('{{ highlight.icon.url }}');"
+        {% else %}
+        style="background-color: #F8C118;"
         {% endif %}
         >
-        {% if not link.icon %}
-        <span class="img-placeholder"><span class="big">LINK</span><br>OF THE DAY</span>
+        {% if not highlight.icon %}
+        <span class="img-placeholder"><span class="big">HIGHLIGHT</span><br>OF THE DAY</span>
         {% endif %}
         </div>
     </a>
 </div>
 {% empty %}
-<p>There are no links in the database.</p>
+<p>There are no highlights in the database.</p>
 {% endfor %}
 
 {% include "blog/templates/template_pagination.html" with paginator=paginator pages=pagination %}
@@ -38,9 +41,9 @@
 
 {% block side %}
 <h2>Look at these goddamn links</h2>
-<p>They are from the internet and I think you should waste a whole bunch of your time to look at them.</p>
+<p>Hey maaan, these snippets from the internet are p. cool imo. You should check them out. I think you should waste a bunch of time looking at them. It's totally worth it.</p>
 <hr>
-<h2>Other Cool Links from the Web</h2>
+<h2>Cool Links from the Web</h2>
 <div class="link-box">
     <p><a class="reverse-color sidebar" href="https://www.facebook.com/CaldwellU" target="_blank">Caldwell University</a></p>
     <p><a class="reverse-color sidebar" href="http://standingontheoverpass.blogspot.com/" target="_blank">Standing on the Overpass</a></p>
@@ -61,7 +64,9 @@
     <p><a class="reverse-color sidebar" href="http://threepanelsoul.com/" target="_blank">Three Panel Soul</a></p>
     <p><a class="reverse-color sidebar" href="http://www.lackadaisycats.com/" target="_blank">Lackadaisy Cats</a></p>
     <p><a class="reverse-color sidebar" href="http://www.chickennation.com/comics/" target="_blank">Comics by Patrick Alexander</a></p>
-
-    <p><a class="reverse-color sidebar" href="" target="_blank"></a></p>
+    <hr class="smaller">
+    <p><a class="reverse-color sidebar" href="http://podcasts.joerogan.net/" target="_blank">Joe Rogan Experience</a></p>
+    <p><a class="reverse-color sidebar" href="http://www.siriusxm.com/opieradio" target="_blank">"Opie & Anthony"</a></p>
+    <p><a class="reverse-color sidebar" href="http://dvdasa.com/index.php?title=Main_Page" target="_blank">DVDASA</a></p>
 </div>
 {% endblock %}
