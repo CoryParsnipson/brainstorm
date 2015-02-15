@@ -31,7 +31,7 @@
       })();
 
       // page specific javascript init shit
-      $(function() {
+      (function() {
         // fancy editor window for admins who have javascript
         initialize_tinymce(
           'thought-editor',
@@ -39,7 +39,7 @@
           'button-clear',
           'button-revert',
           ['{% static "css/common.css" %}', 'http://fonts.googleapis.com/css?family=Sigmar+One|Roboto']);
-      });
+      })();
     </script>
 
     {% block http_headers %}

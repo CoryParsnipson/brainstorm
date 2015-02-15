@@ -11,29 +11,35 @@
         <form id="link_form" action="{% url 'forms-link' %}" method="post"  enctype="multipart/form-data">
             <input type="hidden" name="next" value="{% url 'dashboard-links' %}">
             {% csrf_token %}
+            <table>
+                <tbody>
+                <tr>
+                    <td class="shrink">{{ link_form.title.label_tag }}</td>
+                    <td>{{ link_form.title }}</td>
 
-            <tr>
-                <td>{{ link_form.title.label_tag }}</td>
-                <td>{{ link_form.title }}</td>
-            </tr>
-            <tr>
-                <td>{{ link_form.description.label_tag }}</td>
-                <td>{{ link_form.description }}</td>
-            </tr>
-            <tr>
-                <td>{{ link_form.icon.label_tag }}</td>
-                <td>{{ link_form.icon }}</td>
-            </tr>
-            <tr>
-                <td>{{ link_form.url.label_tag }}</td>
-                <td>{{ link_form.url }}</td>
-            </tr>
-
-            {% if 'link' in request.GET %}
-            <input id="id_submit" type="submit" value="Edit">
-            {% else %}
-            <input id="id_submit" type="submit" value="Create">
-            {% endif %}
+                    <td  class="shrink">{{ link_form.icon.label_tag }}</td>
+                    <td>{{ link_form.icon }}</td>
+                </tr>
+                <tr>
+                    <td class="shrink">{{ link_form.description.label_tag }}</td>
+                    <td colspan="3">{{ link_form.description }}</td>
+                </tr>
+                <tr>
+                    <td class="shrink">{{ link_form.url.label_tag }}</td>
+                    <td colspan="3">{{ link_form.url }}</td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td>
+                        {% if 'link' in request.GET %}
+                        <input id="id_submit" type="submit" value="Edit">
+                        {% else %}
+                        <input id="id_submit" type="submit" value="Create">
+                        {% endif %}
+                    </td>
+                </tr>
+                </tbody>
+            </table>
         </form>
 
         <hr>

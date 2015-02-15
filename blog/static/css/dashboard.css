@@ -33,7 +33,7 @@
 }
 
 /******************************************************************************
- * link styles
+ * hyperlink styles
  *****************************************************************************/
 #content-side a {
   color: #A80505;
@@ -245,4 +245,21 @@ table.form-thought input[type="submit"].publish {
 table.form-thought input[type="submit"].publish:hover {
   color: #FFFFFF;
   background-color: #E85D5D;
+}
+
+/******************************************************************************
+ * link form styles
+ *****************************************************************************/
+#link_form table {
+  width: 100%;
+  min-width: 500px;
+  max-width: 950px;
+}
+
+#link_form td {
+  padding: 5px 0;
+}
+
+#link_form label {
+  float: right;
 }
