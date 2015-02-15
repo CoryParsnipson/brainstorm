@@ -48,6 +48,7 @@ def index(request):
     if highlight:
         highlight = highlight[0]
         highlight.description = highlight.truncate(max_length=200)
+    highlight_cut = len(highlight.description) > 200
 
     context = {
         'page_title': 'Home',
@@ -61,6 +62,7 @@ def index(request):
             page_lead=lib.PAGINATION_FRONT_PAGES_TO_LEAD,
         ),
         'highlight': highlight,
+        'highlight_cut': highlight_cut,
     }
     return render(request, 'blog/index.html', context)
 
