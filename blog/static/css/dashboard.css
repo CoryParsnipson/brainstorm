@@ -12,7 +12,9 @@
 }
 
 #content {
+  position: relative;
   padding: 0;
+  z-index: 0;
 }
 
 #content-main {
@@ -24,6 +26,10 @@
   color: #383838;
   background-color: #F8C118;
   text-align: left;
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
   padding: 0;
 }
 

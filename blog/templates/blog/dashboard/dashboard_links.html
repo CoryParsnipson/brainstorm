@@ -50,8 +50,7 @@
             <tr>
                 <td>Date</td>
                 <td>Title</td>
-                <td>Description</td>
-                <td>URL</td>
+                <td></td>
                 <td></td>
             </tr>
 
@@ -66,8 +65,10 @@
                     <td class="shrink">
                         <a href="{% url 'dashboard-links' %}?link={{ link.id }}">{{ link.title }}</a>
                     </td>
-                    <td class="expand">{{ link.description }}</td>
-                    <td class="shrink"><a href="{{ link.url }}" target="_blank">{{ link.url }}</a></td>
+                    <td class="expand">
+                        {{ link.description }}<br>
+                        <a href="{{ link.url }}" target="_blank">{{ link.url}}</a>
+                    </td>
                     <td class="shrink">
                         <input type="submit" name="delete_link" value="x">
                     </td>

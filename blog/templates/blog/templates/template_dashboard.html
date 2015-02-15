@@ -48,10 +48,10 @@
 </head>
 <body name="top">
     <div id="header">
-        <div class="row collapse">
+        <div class="row">
             <!-- top bar -->
             <div class="large-6 medium-6 small-12 columns">
-                <span class="logo">Slacker Paradise</span>
+                <a href="{% url 'dashboard' %}"><span class="logo">Slacker Paradise</span></a>
             </div>
 
             <div class="large-4 medium-4 small-12 columns end">
@@ -68,60 +68,50 @@
         </div>
     </div>
 
-<div id="content" class="row">
-    <div id="content-main" class="large-10 medium-10 small-12 columns">
-        {% if messages %}
-        <!-- flash message area -->
-        <ul class="messages">
-            {% for message in messages %}
-            <li {% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message|safe }}</li>
-            {% endfor %}
-        </ul>
-        {% endif %}
+    <div id="content" class="row">
+        <div id="content-main" class="large-10 medium-10 small-10 columns">
+            {% if messages %}
+            <!-- flash message area -->
+            <ul class="messages">
+                {% for message in messages %}
+                <li {% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message|safe }}</li>
+                {% endfor %}
+            </ul>
+            {% endif %}
 
-        <!-- main content -->
-        {% block content %}
-        There is no content on this page.
-        {% endblock %}
-    </div>
+            <!-- main content -->
+            {% block content %}
+            There is no content on this page.
+            {% endblock %}
+        </div>
 
-    <!-- side content -->
-    <div id="content-side" class="large-2 medium-2 small-12 columns">
-        {% block side %}
-        <ul>
-            <li><a href="#">Analytics/Statistics</a></li>
-            <li class="divider"></li>
-            <li><a href="#">Manage new comments...</a></li>
-            <li class="divider"></li>
-            <li><a class="highlight" href="{% url 'dashboard-author' %}">Post New Thought</a></li>
-            <li><a href="{% url 'dashboard-ideas' %}">Content</a></li>
-            <li><a href="{% url 'dashboard-drafts' %}">Drafts</a></li>
-            <li><a href="{% url 'dashboard-trash' %}">Trash</a></li>
-            <li class="divider"></li>
-            <li><a href="{% url 'dashboard-links' %}">Link of the Day</a></li>
-            <li class="divider"></li>
-            <li><a href="#">Export Database</a></li>
-            <li><a href="#">Import Database</a></li>
-            <li class="divider"></li>
-            <li><a href="#">User Profile</a></li>
-            <li><a href="#">Settings</a></li>
-        </ul>
-        {% endblock %}
-    </div>
-</div>
-
-<!-- footer -->
-<div id="footer">
-    <div class="row">
-        <div class="large-10 medium-10 small-12 columns">
-            {% block footer %}
-            Some kind of useful breadcrumb navigation bullshit.
+        <!-- side content -->
+        <div id="content-side" class="large-2 medium-2 small-2 columns">
+            {% block side %}
+            <ul>
+                <li><a href="{% url 'dashboard-links' %}">Link of the Day</a></li>
+                <li class="divider"></li>
+                <li><a class="highlight" href="{% url 'dashboard-author' %}">Post New Thought</a></li>
+                <li><a href="{% url 'dashboard-ideas' %}">Content</a></li>
+                <li><a href="{% url 'dashboard-drafts' %}">Drafts</a></li>
+                <li class="divider"></li>
+                <li><a href="{% url 'dashboard-trash' %}">Trash</a></li>
+            </ul>
             {% endblock %}
         </div>
     </div>
-</div>
 
-<a href="#top" class="top-button">back to the<br><h1>top</h1></a>
+    <!-- footer -->
+    <div id="footer">
+        <div class="row">
+            <div class="large-10 medium-10 small-10 columns">
+                {% block footer %}
+                Some kind of useful breadcrumb navigation bullshit.
+                {% endblock %}
+            </div>
+        </div>
+    </div>
 
+    <a href="#top" class="top-button">back to the<br><h1>top</h1></a>
 </body>
 </html>
