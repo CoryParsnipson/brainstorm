@@ -1,5 +1,3 @@
-import re
-
 from django.core.urlresolvers import reverse
 from django.core.exceptions import FieldError, ValidationError
 from django.core.context_processors import csrf

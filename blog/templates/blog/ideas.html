@@ -34,8 +34,8 @@
 <p>This is the Idea Catalog! Here are all the things going on in Slacker Paradise.</p>
 <p>Every thought posted within an idea is related in a series. The thoughts you read are ordered chronologically and should present a logical, coherent progression of their "parent" idea with a beginning, middle, and end.</p>
 
+{% if recent_thoughts %}
 <hr>
-
 <h3>Ideas Most Recently Updated</h3>
 <table class="recent-ideas-list">
     <tbody>
@@ -54,6 +54,7 @@
     {% endfor %}
     </tbody>
 </table>
+{% endif %}
 
 {% include "blog/templates/template_pagination.html" with paginator=paginator pages=pagination_side %}
 {% endblock %}
