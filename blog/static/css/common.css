@@ -409,8 +409,13 @@ textarea {
   padding: 3px;
 }
 
+input[type="text"], input[type="url"], textarea {
+  border: 1px solid #333333;
+}
+
 input[type="file"] {
   background-color: #494949;
+  padding: 1px;
 }
 
 label {

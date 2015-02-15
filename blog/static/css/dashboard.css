@@ -75,6 +75,13 @@
 }
 
 /******************************************************************************
+ * input styles
+ *****************************************************************************/
+input[disabled] {
+  background-color: #B7B7B7;
+}
+
+/******************************************************************************
  * editable table styles
  *****************************************************************************/
 table.editable {
@@ -175,6 +182,7 @@ table.form-thought {
   max-width: 950px;
   margin: 0 auto;
   margin-bottom: 20px;
+  border-collapse: collapse;
 }
 
 table.form-thought th {
@@ -226,13 +234,15 @@ table.form-thought input[type="submit"]:first-of-type {
   margin-left: 0;
 }
 
-table.form-thought .publish {
+table.form-thought input[type="submit"].publish {
   font-weight: bold;
   color: #F8C118;
   background-color: #A80505;
+  padding-right: 5rem;
+  padding-left: 5rem;
 }
 
-table.form-thought .publish:hover {
+table.form-thought input[type="submit"].publish:hover {
   color: #FFFFFF;
   background-color: #E85D5D;
 }

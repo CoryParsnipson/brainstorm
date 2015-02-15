@@ -8,10 +8,27 @@
         <hr>
 
         <h3>New Link of the Day</h3>
-        <form action="{% url 'forms-link' %}" method="post"  enctype="multipart/form-data">
+        <form id="link_form" action="{% url 'forms-link' %}" method="post"  enctype="multipart/form-data">
             <input type="hidden" name="next" value="{% url 'dashboard-links' %}">
             {% csrf_token %}
-            {{ link_form }}
+
+            <tr>
+                <td>{{ link_form.title.label_tag }}</td>
+                <td>{{ link_form.title }}</td>
+            </tr>
+            <tr>
+                <td>{{ link_form.description.label_tag }}</td>
+                <td>{{ link_form.description }}</td>
+            </tr>
+            <tr>
+                <td>{{ link_form.icon.label_tag }}</td>
+                <td>{{ link_form.icon }}</td>
+            </tr>
+            <tr>
+                <td>{{ link_form.url.label_tag }}</td>
+                <td>{{ link_form.url }}</td>
+            </tr>
+
             {% if 'link' in request.GET %}
             <input id="id_submit" type="submit" value="Edit">
             {% else %}

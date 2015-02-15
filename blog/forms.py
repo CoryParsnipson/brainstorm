@@ -46,6 +46,10 @@ class ThoughtForm(forms.ModelForm):
 class LinkForm(forms.ModelForm):
     """ Django form class for managing Links
     """
+    #title = forms.CharField(widget=forms.TextInput(attrs={'disabled': 'True'}))
+    #description = forms.CharField(widget=forms.TextInput(attrs={'disabled': 'True'}))
+    #icon = forms.ImageField(widget=forms.FileInput(attrs={'disabled': 'True'}))
+
     class Meta:
         model = Link
         fields = '__all__'

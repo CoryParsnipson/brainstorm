@@ -216,9 +216,9 @@ class Link(models.Model):
     """ On the front page, there is a small section under the product showcase
         for the Link Of The Day. This model is for that.
     """
-    title = models.CharField(max_length=300)
+    title = models.CharField(max_length=300, blank=False, null=False)
     description = models.CharField(max_length=500)
-    url = models.URLField(max_length=1000)
+    url = models.URLField(max_length=1000, blank=False, null=False)
     date_published = models.DateTimeField(auto_now_add=True)
     icon = models.ImageField(
         upload_to=os.path.basename(paths.MEDIA_IMAGE_ROOT),

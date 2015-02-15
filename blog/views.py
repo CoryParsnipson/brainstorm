@@ -960,10 +960,10 @@ class FormLinkView(View):
 
         try:
             instance = Link.objects.get(id=instance_data['id'])
-            msg = "Successfully edited Link '%s'" % instance.slug
+            msg = "Successfully edited Link '%s'" % instance.id
         except Link.DoesNotExist as e:
             instance = None
-            msg = "Successfully created Link '%s'" % instance_data['title']
+            msg = "Successfully created Link '%s'" % instance_data['title'] if 'title' in instance_data else None
 
         link_form = LinkForm(instance_data, request.FILES, instance=instance)
 
