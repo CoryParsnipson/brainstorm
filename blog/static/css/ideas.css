@@ -75,7 +75,7 @@ table.recent-ideas-list {
 }
 
 table.recent-ideas-list tr:nth-of-type(odd) {
-  background-color: #494949;
+  background-color: #404040;
 }
 
 table.recent-ideas-list td {
@@ -91,10 +91,6 @@ p.small-title {
   display: inline-block;
   margin-left: 1.5rem;
   margin-bottom: 0.2rem;
-}
-
-p.small-title a {
-    color: #FFFFFF;
 }
 
 p.subtitle {

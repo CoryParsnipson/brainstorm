@@ -43,14 +43,13 @@ ul.small-stories li {
 }
 
 ul.small-stories li:nth-of-type(even) {
-  background-color: #494949;
+  background-color: #404040;
 }
 
 /******************************************************************************
  * side thought nav styles
  *****************************************************************************/
 div.thought-history {
-  background-color: #494949;
   margin-bottom: 1rem;
 }
 
@@ -58,18 +57,6 @@ div.thought-history p {
   margin: 0;
 }
 
-div.thought-history p a {
-  width: 100%;
-  color: #FFFFFF;
-  display: inline-block;
-  padding: 15px 10px;
-}
-
-div.thought-history p a:hover {
-  color: #F8C118;
-}
-
-div.thought-history p:nth-of-type(even) {
-  background-color: #383838;
-
+div.thought-history p:nth-of-type(odd) {
+  background-color: #404040;
 }

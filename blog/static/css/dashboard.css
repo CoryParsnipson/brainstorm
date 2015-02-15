@@ -98,7 +98,7 @@ table.editable {
 
 table.editable tr:first-child td {
   font-weight: bold;
-  background-color: #494949;
+  background-color: #404040;
   text-align: center;
 }
 
@@ -225,7 +225,7 @@ table.form-thought p#id_slug {
   overflow: hidden;
   background-color: #494949;
   vertical-align: middle;
-  padding: 3px 7px;
+  padding: 2px 7px;
   margin: 0;
 }
 

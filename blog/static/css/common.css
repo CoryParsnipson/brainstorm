@@ -64,8 +64,14 @@ hr.story-separator:after {
   padding-bottom: 5px;
 }
 
+hr.smaller {
+  width: 90%;
+  border-color: #656565;
+  margin: 1rem auto;
+}
+
 /******************************************************************************
- * text styles
+ * hyperlink styles
  *****************************************************************************/
 a {
   color: #F8C118;
@@ -76,15 +82,28 @@ a:hover {
   color: #FFFFFF;
 }
 
+a.reverse-color {
+  color: #FFFFFF;
+}
+
+a.reverse-color:hover {
+  color: #F8C118;
+}
+
+a.sidebar {
+  width: 100%;
+  display: inline-block;
+  padding: 5px 5px;
+}
+
+/******************************************************************************
+ * text styles
+ *****************************************************************************/
 h1, h2, h3, h4, h5, h6 {
   color: #F8C118;
   font-size: 14pt;
   font-weight: normal;
   margin-bottom: 1rem;
-}
-
-h1 a, h2 a, h3 a, h4 a, h5 a, h6 a {
-  font-weight: normal;
 }
 
 h3 {
@@ -328,7 +347,7 @@ ul.pagination li {
 }
 
 ul.pagination li * {
-  background-color: #494949;
+  background-color: #404040;
   padding: 10px 15px;
 }
 
@@ -414,7 +433,7 @@ input[type="text"], input[type="url"], textarea {
 }
 
 input[type="file"] {
-  background-color: #494949;
+  background-color: #404040;
   padding: 1px;
 }
 
@@ -503,10 +522,6 @@ p.idea {
   font-size: 8pt;
   text-transform: uppercase;
   margin: 0;
-}
-
-p.idea a {
-  color: inherit;
 }
 
 p.title {

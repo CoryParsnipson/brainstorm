@@ -54,7 +54,7 @@
 <h3>Thoughts on this Page...</h3>
 <div class="thought-history">
     {% for t in thoughts %}
-    <p><a href="#{{ t.slug }}">{{ t.title }}</a></p>
+    <p><a class="reverse-color sidebar" href="#{{ t.slug }}">{{ t.title }}</a></p>
     {% endfor %}
 </div>
 <hr>
