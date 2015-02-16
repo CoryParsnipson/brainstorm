@@ -10,8 +10,8 @@ Setup
 
 2. Make sure the following python packages are installed on the server environment (pip install recommended):
 
-   django
-   django_imagekit
-   pillow
-   bleach
-   selenium
+   django\n
+   django_imagekit\n
+   pillow\n
+   bleach\n
+   selenium\n
