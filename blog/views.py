@@ -1,22 +1,17 @@
 from django.core.urlresolvers import reverse
-from django.core.exceptions import FieldError, ValidationError
+from django.core.exceptions import ValidationError
 from django.core.context_processors import csrf
-from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.http import JsonResponse
 from django.views.generic import View
 from django.utils.http import urlencode
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from django.contrib.auth import authenticate, login as auth_login, logout as auth_logout
-from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
-
-from rest_framework import viewsets, response
 
 import lib
 from models import Idea, Thought, Highlight
 from forms import LoginForm, IdeaForm, ThoughtForm, HighlightForm
-from serializers import UserSerializer, IdeaSerializer, ThoughtSerializer
 
 
 ###############################################################################
