@@ -7,7 +7,9 @@
 
 {% block content %}
 <div class="row">
+    {% if latest_thought %}
     <a href="{% url 'thought-page' latest_thought.idea.slug latest_thought.slug %}">
+    {% endif %}
         <div class="large-12 columns showcase"
         {% if latest_thought.preview %}
         style="background-image: url('{{ latest_thought.preview.url }}');"
@@ -30,7 +32,9 @@
             </div>
         </div>
         </div>
+    {% if latest_thought %}
     </a>
+    {% endif %}
 
     {% if highlight %}
     <div class="large-12 columns showcase-splitter">

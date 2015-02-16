@@ -20,8 +20,9 @@ from forms import LoginForm, IdeaForm, ThoughtForm, HighlightForm
 def index(request):
     thoughts = Thought.objects.filter(is_draft=False, is_trash=False).order_by("-date_published")
 
-    latest_thought = thoughts[0]
-    if latest_thought:
+    latest_thought = None
+    if len(thoughts):
+        latest_thought = thoughts[0]
         latest_thought.content = latest_thought.truncate(max_length=240)
 
     thoughts = thoughts[1:]
@@ -44,10 +45,11 @@ def index(request):
 
     # get latest link of the day
     highlight = Highlight.objects.all().order_by('-date_published')[:1]
+    highlight_cut = False
     if highlight:
         highlight = highlight[0]
         highlight.description = highlight.truncate(max_length=200)
-    highlight_cut = len(highlight.description) > 200
+        highlight_cut = len(highlight.description) > 200
 
     context = {
         'page_title': 'Home',
