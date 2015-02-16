@@ -4,7 +4,7 @@
 {% block http_headers %}
 <script type="text/javascript">
   // page specific javascript init shit
-  (function() {
+  $(function() {
     // fancy editor window for admins who have javascript
     initialize_tinymce(
       'id_description',
@@ -12,7 +12,7 @@
       'button-clear',
       'button-revert',
       ['{% static "css/common.css" %}', 'http://fonts.googleapis.com/css?family=Sigmar+One|Roboto']);
-  })();
+  });
 </script>
 {% endblock %}
 
@@ -46,15 +46,17 @@
                 </tr>
                 <tr>
                     <td></td>
-                    <td>
+                    <td colspan="3">
                         {% if 'highlight' in request.GET %}
-                        <input id="id_submit" type="submit" value="Edit">
+                        <input id="id_submit" class="publish" type="submit" value="Edit">
                         {% else %}
-                        <input id="id_submit" type="submit" value="Create">
+                        <input id="id_submit" class="publish" type="submit" value="Create">
                         {% endif %}
 
                         <input type="button" id="button-clear" value="Clear" />
-                        <a class="button" href="{% url 'dashboard-highlights' %}">Cancel</a>
+                        <input type="button" id="button-revert" value="Revert" />
+
+                        <input type="submit" name="cancel" value="Cancel" />
                     </td>
                 </tr>
                 </tbody>

@@ -251,8 +251,8 @@ table.form-thought input[type="submit"].publish {
   font-weight: bold;
   color: #F8C118;
   background-color: #A80505;
-  padding-right: 5rem;
-  padding-left: 5rem;
+  padding-right: 4rem;
+  padding-left: 4rem;
 }
 
 table.form-thought input[type="submit"].publish:hover {
@@ -275,4 +275,8 @@ table.form-thought input[type="submit"].publish:hover {
 
 #link_form label {
   float: right;
+}
+
+#link_form .publish {
+  margin-right: 50px;
 }

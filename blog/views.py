@@ -1018,6 +1018,9 @@ class FormHighlightView(View):
             del instance_data['next']
             lib.replace_tokens(callback, instance_data)
 
+        if 'cancel' in instance_data:
+            return redirect(callback)
+
         if 'id' not in instance_data or not instance_data['id']:
             instance_data['id'] = -1
 

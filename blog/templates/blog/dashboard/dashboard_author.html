@@ -4,7 +4,7 @@
 {% block http_headers %}
 <script type="text/javascript">
   // page specific javascript init shit
-  (function() {
+  $(function() {
     // fancy editor window for admins who have javascript
     initialize_tinymce(
       'id_content',
@@ -12,7 +12,7 @@
       'button-clear',
       'button-revert',
       ['{% static "css/common.css" %}', 'http://fonts.googleapis.com/css?family=Sigmar+One|Roboto']);
-  })();
+  });
 </script>
 {% endblock %}
 
@@ -67,19 +67,19 @@
                 </tr>
                 <tr>
                     <td colspan="3">
-                        <input id="button-clear" class="left" type="button" value="Clear" />
-                        <input id="button-revert" class="left" type="button" value="Revert Changes" />
+                        <input id="button-clear" type="button" value="Clear" />
+                        <input id="button-revert" type="button" value="Revert Changes" />
 
                         {% if thought_form.is_draft.value == True %}
-                        <input class="left" type="submit" name="is_draft" value="Save Changes" />
+                        <input type="submit" name="is_draft" value="Save Changes" />
                         <input class="publish right" type="submit" value="Publish" />
                         {% else %}
-                          {% if "thought_slug" in request.GET %}
-                          <input class="publish right" type="submit" value="Edit" />
-                          {% else %}
-                          <input class="left" type="submit" name="is_draft" value="Save as Draft" />
-                          <input class="publish right" type="submit" name="publish" value="Publish" />
-                          {% endif %}
+                        {% if "thought_slug" not in request.GET %}
+                        <input type="submit" name="is_draft" value="Save as Draft" />
+                        <input class="publish right" type="submit" value="Edit" />
+                        {% else %}
+                        <input class="publish right" type="submit" name="publish" value="Publish" />
+                        {% endif %}
                         {% endif %}
                     </td>
                 </tr>
