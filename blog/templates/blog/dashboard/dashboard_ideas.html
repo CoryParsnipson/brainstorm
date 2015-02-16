@@ -74,13 +74,15 @@
                     <td class="shrink"><input type="submit" name="order_up" value="v"></td>
                     <td class="shrink"><input type="submit" name="order_down" value="^"></td>
                     <td class="shrink">
-                        <a class="button" href="{% url 'dashboard-ideas' %}?i={{ idea.slug }}">e</a>
+                        <a class="button" href="{% url 'dashboard-ideas' %}?i={{ idea.slug }}&p={{ request.GET.p }}">e</a>
                     </td>
                     <td class="shrink"><input type="submit" name="delete_idea" value="x"></td>
                 </form>
             </tr>
             {% endfor %}
         </table>
+
+        {% include "blog/templates/template_pagination.html" with paginator=paginator pages=pagination %}
     </div>
 </div>
 {% endblock %}

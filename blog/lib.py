@@ -37,7 +37,13 @@ PAGINATION_THOUGHTS_PER_PAGE = 10
 PAGINATION_THOUGHTS_PAGES_TO_LEAD = 2
 
 PAGINATION_HIGHLIGHTS_PER_PAGE = 10
-PAGINATION_HIGHTLIGHTS_PAGES_TO_LEAD = 3
+PAGINATION_HIGHLIGHTS_PAGES_TO_LEAD = 3
+
+PAGINATION_DASHBOARD_IDEAS_PER_PAGE = 10
+PAGINATION_DASHBOARD_IDEAS_PAGES_TO_LEAD = 2
+
+PAGINATION_DASHBOARD_THOUGHTS_PER_PAGE = 25
+PAGINATION_DASHBOARD_THOUGHTS_PAGES_TO_LEAD = 4
 
 NUM_RECENT_IDEAS = 3
 
@@ -265,3 +271,18 @@ def create_pagination(queryset, current_page, per_page=PAGINATION_THOUGHTS_PER_P
         pagination['pages'] = lower_pages + upper_pages
 
     return pagination
+
+
+def create_paginator(queryset, per_page, page=1):
+    """ given a queryset and two parameters (PAGINATION_<list>_PER_PAGE and
+        PAGINATION_<list>_PAGES_TO_LEAD), create a paginator object and
+        return it
+    """
+    paginator = Paginator(queryset, per_page)
+    try:
+        items_on_page = paginator.page(page)
+    except PageNotAnInteger:
+        items_on_page = paginator.page(1)
+    except EmptyPage:
+        items_on_page = paginator.page(paginator.num_pages)
+    return paginator, items_on_page

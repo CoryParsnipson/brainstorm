@@ -31,14 +31,18 @@ def index(request):
 
     thoughts = thoughts[1:]
 
-    paginator = Paginator(thoughts, lib.PAGINATION_FRONT_PER_PAGE)
     page = request.GET.get('p')
-    try:
-        thoughts_on_page = paginator.page(page)
-    except PageNotAnInteger:
-        thoughts_on_page = paginator.page(1)
-    except EmptyPage:
-        thoughts_on_page = paginator.page(paginator.num_pages)
+    paginator, thoughts_on_page = lib.create_paginator(
+        queryset=thoughts,
+        per_page=lib.PAGINATION_FRONT_PER_PAGE,
+        page=page,
+    )
+    pagination = lib.create_pagination(
+        queryset=thoughts,
+        current_page=page,
+        per_page=lib.PAGINATION_FRONT_PER_PAGE,
+        page_lead=lib.PAGINATION_FRONT_PAGES_TO_LEAD,
+    )
 
     for t in thoughts_on_page:
         t.content = t.truncate()
@@ -55,12 +59,7 @@ def index(request):
         'latest_thought': latest_thought,
         'latest_thoughts': thoughts_on_page,
         'paginator': paginator,
-        'pagination': lib.create_pagination(
-            queryset=thoughts,
-            current_page=page,
-            per_page=lib.PAGINATION_FRONT_PER_PAGE,
-            page_lead=lib.PAGINATION_FRONT_PAGES_TO_LEAD,
-        ),
+        'pagination': pagination,
         'highlight': highlight,
         'highlight_cut': highlight_cut,
     }
@@ -89,25 +88,24 @@ def logout_page(request):
 def highlights(request):
     highlight_list = Highlight.objects.all().order_by('-date_published')
 
-    paginator = Paginator(highlight_list, lib.PAGINATION_HIGHLIGHTS_PER_PAGE)
     page = request.GET.get('p')
-    try:
-        highlights_on_page = paginator.page(page)
-    except PageNotAnInteger:
-        highlights_on_page = paginator.page(1)
-    except EmptyPage:
-        highlights_on_page = paginator.page(paginator.num_pages)
+    paginator, highlights_on_page = lib.create_paginator(
+        queryset=highlight_list,
+        per_page=lib.PAGINATION_HIGHLIGHTS_PER_PAGE,
+        page=page,
+    )
+    pagination = lib.create_pagination(
+        queryset=highlight_list,
+        current_page=page,
+        per_page=lib.PAGINATION_HIGHLIGHTS_PER_PAGE,
+        page_lead=lib.PAGINATION_HIGHLIGHTS_PAGES_TO_LEAD,
+    )
 
     context = {
         'page_title': 'Highlights',
         'highlights': highlights_on_page,
         'paginator': paginator,
-        'pagination': lib.create_pagination(
-            queryset=highlight_list,
-            current_page=page,
-            per_page=lib.PAGINATION_HIGHLIGHTS_PER_PAGE,
-            page_lead=lib.PAGINATION_HIGHTLIGHTS_PAGES_TO_LEAD,
-        ),
+        'pagination': pagination,
     }
     return render(request, 'blog/highlights.html', context)
 
@@ -122,14 +120,25 @@ def about(request):
 def ideas(request):
     idea_list = Idea.objects.all().order_by('order')
 
-    paginator = Paginator(idea_list, lib.PAGINATION_IDEAS_PER_PAGE)
     page = request.GET.get('p')
-    try:
-        ideas_on_page = paginator.page(page)
-    except PageNotAnInteger:
-        ideas_on_page = paginator.page(1)
-    except EmptyPage:
-        ideas_on_page = paginator.page(paginator.num_pages)
+    paginator, ideas_on_page = lib.create_paginator(
+        queryset=idea_list,
+        per_page=lib.PAGINATION_IDEAS_PER_PAGE,
+        page=page,
+    )
+
+    pagination_main = lib.create_pagination(
+        queryset=idea_list,
+        current_page=page,
+        per_page=lib.PAGINATION_IDEAS_PER_PAGE,
+        page_lead=lib.PAGINATION_IDEAS_PAGES_TO_LEAD,
+    )
+    pagination_side = lib.create_pagination(
+        queryset=idea_list,
+        current_page=page,
+        per_page=lib.PAGINATION_IDEAS_PER_PAGE,
+        page_lead=0,
+    ),
 
     for idea in idea_list:
         idea.description = idea.truncate()
@@ -149,18 +158,8 @@ def ideas(request):
         'page_title': 'Ideas',
         'ideas': ideas_on_page,
         'paginator': paginator,
-        'pagination': lib.create_pagination(
-            queryset=idea_list,
-            current_page=page,
-            per_page=lib.PAGINATION_IDEAS_PER_PAGE,
-            page_lead=lib.PAGINATION_IDEAS_PAGES_TO_LEAD,
-        ),
-        'pagination_side': lib.create_pagination(
-            queryset=idea_list,
-            current_page=page,
-            per_page=lib.PAGINATION_IDEAS_PER_PAGE,
-            page_lead=0,
-        ),
+        'pagination': pagination_main,
+        'pagination_side': pagination_side,
         'recent_thoughts': recent_thoughts,
     }
     return render(request, 'blog/ideas.html', context)
@@ -170,14 +169,20 @@ def idea_detail(request, idea_slug=None):
     idea = get_object_or_404(Idea, slug=idea_slug)
     thoughts = Thought.objects.filter(idea=idea_slug, is_draft=False, is_trash=False).order_by('-date_published')
 
-    paginator = Paginator(thoughts, lib.PAGINATION_THOUGHTS_PER_PAGE)
     page = request.GET.get('p')
-    try:
-        thoughts_on_page = paginator.page(page)
-    except PageNotAnInteger:
-        thoughts_on_page = paginator.page(1)
-    except EmptyPage:
-        thoughts_on_page = paginator.page(paginator.num_pages)
+    paginator, thoughts_on_page = lib.create_paginator(
+        queryset=thoughts,
+        per_page=lib.PAGINATION_THOUGHTS_PER_PAGE,
+        page=page,
+    )
+
+    pagination_main = lib.create_pagination(thoughts, page)
+    pagination_side = lib.create_pagination(
+        queryset=thoughts,
+        current_page=page,
+        per_page=lib.PAGINATION_THOUGHTS_PER_PAGE,
+        page_lead=0,
+    )
 
     for t in thoughts_on_page:
         t.content = t.truncate()
@@ -187,13 +192,8 @@ def idea_detail(request, idea_slug=None):
         'idea': idea,
         'thoughts': thoughts_on_page,
         'paginator': paginator,
-        'pagination': lib.create_pagination(thoughts, page),
-        'pagination_side': lib.create_pagination(
-            queryset=thoughts,
-            current_page=page,
-            per_page=lib.PAGINATION_THOUGHTS_PER_PAGE,
-            page_lead=0,
-        ),
+        'pagination': pagination_main,
+        'pagination_side': pagination_side,
     }
     return render(request, 'blog/idea.html', context)
 
@@ -227,14 +227,18 @@ def dashboard_highlights(request):
     """
     highlight_list = Highlight.objects.all().order_by('-date_published')
 
-    paginator = Paginator(highlight_list, lib.PAGINATION_HIGHLIGHTS_PER_PAGE)
-    page = request.GET.get('p')
-    try:
-        highlights_on_page = paginator.page(page)
-    except PageNotAnInteger:
-        highlights_on_page = paginator.page(1)
-    except EmptyPage:
-        highlights_on_page = paginator.page(paginator.num_pages)
+    paginator, highlights_on_page = lib.create_paginator(
+        queryset=highlight_list,
+        per_page=lib.PAGINATION_HIGHLIGHTS_PER_PAGE,
+        page=request.GET.get('p'),
+    )
+
+    pagination = lib.create_pagination(
+        queryset=highlight_list,
+        current_page=request.GET.get('p'),
+        per_page=lib.PAGINATION_HIGHLIGHTS_PER_PAGE,
+        page_lead=lib.PAGINATION_HIGHLIGHTS_PAGES_TO_LEAD,
+    )
 
     instance = None
     if 'highlight' in request.GET:
@@ -248,6 +252,8 @@ def dashboard_highlights(request):
         'page_title': 'Highlights',
         'highlights': highlights_on_page,
         'highlight_form': highlight_form,
+        'paginator': paginator,
+        'pagination': pagination,
     }
     return render(request, 'blog/dashboard/dashboard_highlights.html', context)
 
@@ -260,6 +266,19 @@ def dashboard_ideas(request):
     """
     # obtain all the Ideas
     idea_list = Idea.objects.all().order_by("order")
+
+    page = request.GET.get('p')
+    paginator, ideas_on_page = lib.create_paginator(
+        queryset=idea_list,
+        per_page=lib.PAGINATION_DASHBOARD_IDEAS_PER_PAGE,
+        page=page,
+    )
+    pagination = lib.create_pagination(
+        queryset=idea_list,
+        current_page=page,
+        per_page=lib.PAGINATION_DASHBOARD_IDEAS_PER_PAGE,
+        page_lead=lib.PAGINATION_DASHBOARD_IDEAS_PAGES_TO_LEAD,
+    )
 
     # form for editing/creating a new idea
     idea_form_instance = None
@@ -276,7 +295,9 @@ def dashboard_ideas(request):
     context = {
         'page_title': 'Manage Ideas',
         'idea_form': idea_form,
-        'ideas': idea_list,
+        'ideas': ideas_on_page,
+        'paginator': paginator,
+        'pagination': pagination,
     }
     return render(request, 'blog/dashboard/dashboard_ideas.html', context)
 
@@ -294,10 +315,25 @@ def dashboard_thoughts(request):
         except Idea.DoesNotExist:
             thoughts = []
 
+    page = request.GET.get('p')
+    paginator, thoughts_on_page = lib.create_paginator(
+        queryset=thoughts,
+        per_page=lib.PAGINATION_DASHBOARD_THOUGHTS_PER_PAGE,
+        page=page,
+    )
+    pagination = lib.create_pagination(
+        queryset=thoughts,
+        current_page=page,
+        per_page=lib.PAGINATION_DASHBOARD_THOUGHTS_PER_PAGE,
+        page_lead=lib.PAGINATION_DASHBOARD_THOUGHTS_PAGES_TO_LEAD,
+    )
+
     context = {
         'page_title': 'Manage Thoughts',
-        'thoughts': thoughts,
-        'idea': current_idea
+        'thoughts': thoughts_on_page,
+        'idea': current_idea,
+        'paginator': paginator,
+        'pagination': pagination,
     }
     return render(request, 'blog/dashboard/dashboard_thoughts.html', context)
 

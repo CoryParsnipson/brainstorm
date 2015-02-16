@@ -47,6 +47,8 @@
             {% endfor %}
             </tbody>
         </table>
+
+        {% include "blog/templates/template_pagination.html" with paginator=paginator pages=pagination %}
     </div>
 </div>
 {% endblock %}

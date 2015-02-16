@@ -12,6 +12,7 @@
 }
 
 #content {
+  min-height: 80%;
   position: relative;
   padding: 0;
   z-index: 0;

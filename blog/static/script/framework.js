@@ -45,6 +45,19 @@ function fillout_link_preview(event) {
 }
 
 // ----------------------------------------------------------------------------
+// form functions
+// ----------------------------------------------------------------------------
+function prefill_form(values) {
+  alert(Object.keys($(':input')));
+
+  $(':input').each(function () {
+
+
+    alert('INPUT: ' + $(this).attr('type'));
+  });
+}
+
+// ----------------------------------------------------------------------------
 // tinyMCE functions
 // ----------------------------------------------------------------------------
 function tinymce_snapshot(editor) {

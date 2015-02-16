@@ -1,15 +1,16 @@
 {% if paginator.num_pages > 1 %}
+{% load blog_extras %}
 <ul class="pagination group">
     <li>
         {% if pages.first == pages.current %}
         <span class="inactive">First</span>
         {% else %}
-        <a href="{{ request.path }}?p={{ pages.first }}">First</a>
+        <a href="{% url_qs p=pages.first %}">First</a>
         {% endif %}
     </li>
     <li>
         {% if pages.prev %}
-        <a href="{{ request.path }}?p={{ pages.prev }}">Prev</a>
+        <a href="{% url_qs p=pages.prev %}">Prev</a>
         {% else %}
         <span class="inactive">Prev</span>
         {% endif %}
@@ -19,14 +20,13 @@
         {% if pages.current == page %}
         <span class="inactive">{{ page }}</span>
         {% else %}
-        <a href="{{ request.path }}?p={{ page }}">{{ page }}</a>
+        <a href="{% url_qs p=page %}">{{ page }}</a>
         {% endif %}
     </li>
     {% endfor %}
-
     <li>
         {% if pages.next %}
-        <a href="{{ site_page }}?p={{ pages.next }}">Next</a>
+        <a href="{% url_qs p=pages.next %}">Next</a>
         {% else %}
         <span class="inactive">Next</span>
         {% endif %}
@@ -35,7 +35,7 @@
         {% if pages.last == pages.current %}
         <span class="inactive">Last</span>
         {% else %}
-        <a href="{{ request.path }}?p={{ pages.last }}">Last</a>
+        <a href="{% url_qs p=pages.last %}">Last</a>
         {% endif %}
     </li>
 </ul>
