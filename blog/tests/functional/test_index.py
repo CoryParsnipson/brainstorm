@@ -7,13 +7,14 @@ class TestIndex(TestCase):
     """ web browser level tests for all functions related to the index page
     """
 
+    def setUp(self):
+        self.browser = webdriver.Firefox()
+
+    def tearDown(self):
+        self.browser.quit()
+
     def test_index_title(self):
         """ open a browser in Firefox and check to see if the title is correct
         """
-        browser = webdriver.Firefox()
-        browser.get('http://localhost')
-
-        # browser title should have the correct appellation
-        assert 'SP' in browser.title
-
-        browser.quit()
+        self.browser.get('http://localhost')
+        self.assertIn('SP', self.browser.title)
