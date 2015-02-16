@@ -1,5 +1,3 @@
-import re
-
 from django import template
 
 register = template.Library()
@@ -7,6 +5,21 @@ register = template.Library()
 
 @register.simple_tag(takes_context=True)
 def url_qs(context, **kwargs):
+    """ takes the current url and query string from the request context
+        and accepts named arguments and constructs a complete url string
+        with the query string parameters cleaned swapped out with the
+        named arguments.
+
+        NOTE: needs 'django.core.context_processors.request' under the settings
+        variable TEMPLATE_CONTEXT_PROCESSORS
+
+        e.g.) request.path -> http://www.slackerparadise.com/ideas
+              request.META.QUERY_STRING -> idea=miscellaneous&p=4
+              kwargs -> { 'p' : 23 }
+
+              returns ->
+              http://www.slackerparadise.com/ideas?idea=miscellaneous&p=23
+    """
     request = context['request']
 
     # get query string parameters
@@ -35,9 +48,3 @@ def url_qs(context, **kwargs):
         query_string = '?' + query_string
 
     return request.path + query_string
-
-
-@register.filter
-def remove(value, arg):
-    p = re.compile(arg)
-    return p.sub('', value)
