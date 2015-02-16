@@ -3,20 +3,18 @@
 
 {% block content %}
 <h1>Drafts</h1>
-{% for idea, thoughts in drafts.items %}
-<p>{{ idea }}</p>
 <table class="editable">
     <tbody>
     <tr>
         <td>Date</td>
         <td>Title</td>
-        <td>Slug</td>
+        <td>Idea</td>
         <td>Content</td>
         <td></td>
         <td></td>
     </tr>
 
-    {% for draft in thoughts %}
+    {% for draft in drafts %}
     <form action="{% url 'dashboard-backend' %}" method="post">
         <input type="hidden" name="thought_slug" value="{{ draft.slug }}" />
         <input type="hidden" name="next" value="{% url 'dashboard-drafts' %}" />
@@ -28,8 +26,8 @@
             <td class="shrink">
                 <a href="{% url 'dashboard-author' %}?thought_slug={{ draft.slug }}">{{ draft.title }}</a>
             </td>
-            <td class="shrink">{{ draft.slug }}</td>
-            <td>{{ draft.content|safe }}</td>
+            <td class="shrink">{{ draft.idea }}</td>
+            <td class="expand">{{ draft.content|safe }}</td>
             <td class="shrink">
                 <a class="button" href="{% url 'thought-page' draft.idea.slug draft.slug %}">view</a>
             </td>
@@ -38,14 +36,10 @@
             </td>
         </tr>
     </form>
+    {% empty %}
+    <tr><td colspan="6">There are no drafts in database.</td></tr>
     {% endfor %}
     </tbody>
 </table>
-    {% empty %}
-    <table class="editable">
-        <tbody>
-        <tr><td>There are no drafts in database.</td></tr>
-        </tbody>
-    </table>
-{% endfor %}
+{% include "blog/templates/template_pagination.html" with paginator=paginator pages=pagination %}
 {% endblock %}

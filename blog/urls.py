@@ -52,7 +52,7 @@ urlpatterns = patterns('',
 
     url(r'^api/forms/idea/', views.FormIdeaView.as_view(), name='forms-idea'),
     url(r'^api/forms/thought/', views.FormThoughtView.as_view(), name='forms-thought'),
-    url(r'^api/forms/link/', views.FormLinkView.as_view(), name='forms-link'),
+    url(r'^api/forms/link/', views.FormHighlightView.as_view(), name='forms-highlight'),
 )
 
 if settings.DEBUG:

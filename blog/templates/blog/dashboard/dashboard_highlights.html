@@ -19,11 +19,11 @@
 {% block content %}
 <div class="row">
     <div class="large-12 columns">
-        <h2>Link of the Day</h2>
+        <h2>Highlights on the Web</h2>
         <hr>
 
-        <h3>New Link of the Day</h3>
-        <form id="link_form" action="{% url 'forms-link' %}" method="post"  enctype="multipart/form-data">
+        <h3>New Highlight</h3>
+        <form id="link_form" action="{% url 'forms-highlight' %}" method="post"  enctype="multipart/form-data">
             <input type="hidden" name="id" value="{{ highlight_form.id.value|default_if_none:'' }}" />
             <input type="hidden" name="next" value="{% url 'dashboard-highlights' %}" />
             {% csrf_token %}
@@ -52,6 +52,9 @@
                         {% else %}
                         <input id="id_submit" type="submit" value="Create">
                         {% endif %}
+
+                        <input type="button" id="button-clear" value="Clear" />
+                        <a class="button" href="{% url 'dashboard-highlights' %}">Cancel</a>
                     </td>
                 </tr>
                 </tbody>
@@ -95,6 +98,8 @@
             {% endfor %}
             </tbody>
         </table>
+
+        {% include "blog/templates/template_pagination.html" with paginator=paginator pages=pagination %}
     </div>
 </div>
 {% endblock %}

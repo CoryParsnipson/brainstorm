@@ -122,7 +122,13 @@ table.editable td {
 }
 
 table.editable td:last-child {
-  padding-right: 0;
+  padding-right: 3px;
+}
+
+table.editable .button,
+table.editable input[type="button"],
+table.editable input[type="submit"] {
+  margin: 0 -3px;
 }
 
 /******************************************************************************

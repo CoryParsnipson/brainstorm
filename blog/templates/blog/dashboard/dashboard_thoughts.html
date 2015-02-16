@@ -37,9 +37,9 @@
                         <a class="button" href="{% url 'thought-page' thought.idea.slug thought.slug %}">view</a>
                     </td>
                     <td class="shrink">
-                        <input class="button-box" type="submit" name="unpublish" value="unpublish" />
+                        <input type="submit" name="unpublish" value="unpublish" />
                     </td>
-                    <td class="shrink"><input class="button-box" type="submit" name="trash" value="x" /></td>
+                    <td class="shrink"><input type="submit" name="trash" value="x" /></td>
                 </form>
             </tr>
             {% empty %}

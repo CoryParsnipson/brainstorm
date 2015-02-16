@@ -240,6 +240,9 @@ def dashboard_highlights(request):
         page_lead=lib.PAGINATION_HIGHLIGHTS_PAGES_TO_LEAD,
     )
 
+    for h in highlights_on_page:
+        h.description = h.truncate(max_length=75, allowed_tags=['a'])
+
     instance = None
     if 'highlight' in request.GET:
         try:
@@ -279,6 +282,9 @@ def dashboard_ideas(request):
         per_page=lib.PAGINATION_DASHBOARD_IDEAS_PER_PAGE,
         page_lead=lib.PAGINATION_DASHBOARD_IDEAS_PAGES_TO_LEAD,
     )
+
+    for i in ideas_on_page:
+        i.description = i.truncate(max_length=50)
 
     # form for editing/creating a new idea
     idea_form_instance = None
@@ -365,20 +371,30 @@ def dashboard_author(request):
 def dashboard_drafts(request):
     """ User dashboard page to manage drafts
     """
-    thoughts = Thought.objects.filter(is_draft=True, is_trash=False).order_by('-idea')
+    drafts = Thought.objects.filter(is_draft=True, is_trash=False).order_by('-date_published')
+
+    page = request.GET.get('p')
+    paginator, drafts_on_page = lib.create_paginator(
+        queryset=drafts,
+        per_page=lib.PAGINATION_DASHBOARD_DRAFTS_PER_PAGE,
+        page=page,
+    )
+    pagination = lib.create_pagination(
+        queryset=drafts,
+        current_page=page,
+        per_page=lib.PAGINATION_DASHBOARD_DRAFTS_PER_PAGE,
+        page_lead=lib.PAGINATION_DASHBOARD_DRAFTS_PAGES_TO_LEAD,
+    )
+
     tags = ['a', 'strong', 'em']
-
-    drafts = {}
-    for t in thoughts:
-        t.content = t.truncate(max_length=100, allowed_tags=tags)
-
-        if t.idea not in drafts:
-            drafts[t.idea] = []
-        drafts[t.idea].append(t)
+    for t in drafts_on_page:
+        t.content = t.truncate(max_length=50, allowed_tags=tags)
 
     context = {
         'page_title': 'Drafts',
-        'drafts': drafts,
+        'drafts': drafts_on_page,
+        'paginator': paginator,
+        'pagination': pagination,
     }
     return render(request, 'blog/dashboard/dashboard_drafts.html', context)
 
@@ -387,20 +403,30 @@ def dashboard_drafts(request):
 def dashboard_trash(request):
     """ user dashboard page to manage thoughts in trash
     """
-    thoughts = Thought.objects.filter(is_trash=True).order_by("date_published")
+    trash = Thought.objects.filter(is_trash=True).order_by("date_published")
+
+    page = request.GET.get('p')
+    paginator, trash_on_page = lib.create_paginator(
+        queryset=trash,
+        per_page=lib.PAGINATION_DASHBOARD_DRAFTS_PER_PAGE,
+        page=page,
+    )
+    pagination = lib.create_pagination(
+        queryset=trash,
+        current_page=page,
+        per_page=lib.PAGINATION_DASHBOARD_DRAFTS_PER_PAGE,
+        page_lead=lib.PAGINATION_DASHBOARD_DRAFTS_PAGES_TO_LEAD,
+    )
+
     tags = ['a', 'strong', 'em']
-
-    trash = {}
-    for t in thoughts:
+    for t in trash_on_page:
         t.content = t.truncate(max_length=100, allowed_tags=tags)
-
-        if t.idea not in trash:
-            trash[t.idea] = []
-        trash[t.idea].append(t)
 
     context = {
         'page_title': 'Trash',
-        'thoughts': trash,
+        'trash': trash_on_page,
+        'paginator': paginator,
+        'pagination': pagination,
     }
     return render(request, 'blog/dashboard/dashboard_trash.html', context)
 
@@ -888,7 +914,7 @@ class FormThoughtView(View):
         if 'next' in instance_data:
             callback = instance_data['next']
             del instance_data['next']
-            lib.replace_tokens(callback, instance_data)
+            callback = lib.replace_tokens(callback, instance_data)
 
         if 'is_draft' in instance_data:
             instance_data['is_draft'] = True
@@ -961,7 +987,7 @@ class FormThoughtView(View):
                 return JsonResponse(errors)
 
 
-class FormLinkView(View):
+class FormHighlightView(View):
     """ API endpoints for forms to manage user interactions and Links
     """
     def get(self, request, *args, **kwargs):
