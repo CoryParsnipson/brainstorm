@@ -424,7 +424,6 @@ input[type="url"],
 input[type="color"],
 input[type="file"],
 textarea {
-  font-size: 9pt;
   font-family: inherit;
   line-height: 1.1rem;
   padding: 3px;
@@ -454,7 +453,7 @@ label {
   border: none;
   color: #F8C118;
   background-color: #494949;
-  font-size: 9pt;
+  font-size: 10pt;
   display: inline-block;
   cursor: pointer;
   line-height: 1.1rem;

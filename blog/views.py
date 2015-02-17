@@ -198,6 +198,14 @@ def idea_detail(request, idea_slug=None):
 def thought_detail(request, idea_slug=None, thought_slug=None):
     thought = get_object_or_404(Thought, slug=thought_slug)
 
+    # make sure trashed thoughts and drafts can only be viewed by
+    # an authenticated, admin user
+    if thought.is_draft or thought.is_trash:
+        if not request.user.is_authenticated() or not request.user.is_superuser:
+            msg = "Unauthorized to view Thought..."
+            messages.add_message(request, messages.WARNING, msg)
+            return redirect(reverse('index'))
+
     context = {
         'page_title': thought.title,
         'thought': thought,

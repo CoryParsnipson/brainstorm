@@ -128,6 +128,7 @@ table.editable td:last-child {
 table.editable .button,
 table.editable input[type="button"],
 table.editable input[type="submit"] {
+  font-size: 9pt;
   margin: 0 -3px;
 }
 
