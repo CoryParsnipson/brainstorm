@@ -8,13 +8,20 @@ class TestIndex(TestCase):
     """
 
     def setUp(self):
-        self.browser = webdriver.Firefox()
+        self.browser = {
+            'ff': webdriver.Firefox(),
+            #'chr': webdriver.Chrome(),
+            #'ie': webdriver.Ie(),
+            #'o': webdriver.Opera(),
+        }
 
     def tearDown(self):
-        self.browser.quit()
+        for n, b in self.browser.items():
+            b.quit()
 
     def test_index_title(self):
         """ open a browser in Firefox and check to see if the title is correct
         """
-        self.browser.get('http://localhost')
-        self.assertIn('SP', self.browser.title)
+        for n, b in self.browser.items():
+            b.get('http://localhost')
+            self.assertIn('SP', b.title)
