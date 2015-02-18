@@ -29,6 +29,10 @@ body {
   clear: both;
 }
 
+.twitter-timeline {
+  margin-bottom: 1rem;
+}
+
 /******************************************************************************
  * hr styles
  *****************************************************************************/
@@ -430,6 +434,7 @@ textarea {
 }
 
 input[type="text"],
+input[type="password"],
 input[type="url"],
 input[type="file"],
 textarea {
@@ -547,4 +552,20 @@ p.subtitle {
   top: 50%;
   text-align: center;
   margin-top: -0.5rem;
+}
+
+/******************************************************************************
+ * login form styles
+ *****************************************************************************/
+.login-form table {
+  width: 75%;
+  min-width: 300px;
+  background-color: #404040;
+  border-collapse: separate;
+  border-spacing: 0 10px;
+  padding: 10px;
+}
+
+.login-form table td {
+  padding-right: 5px;
 }
