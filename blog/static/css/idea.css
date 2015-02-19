@@ -52,3 +52,23 @@ ul.small-stories li:nth-of-type(even) {
 div.thought-history {
   margin-bottom: 1rem;
 }
+
+/******************************************************************************
+ * footer styles
+ *****************************************************************************/
+#footer ul[class^=small-block-grid] a {
+  width: 100%;
+  display: block;
+  color: #F8C118;
+  background-color: #494949;
+  text-align: center;
+  padding-top: 5px;
+}
+
+#footer ul[class^=small-block-grid] a:hover {
+  color: #FFFFFF;
+}
+
+#footer ul[class^=small-block-grid] img {
+  margin-top: 5px;
+}

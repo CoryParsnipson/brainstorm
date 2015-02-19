@@ -63,6 +63,16 @@
 {% endblock %}
 
 {% block footer %}
-Ideas similar to this:
+<h3>Other Ideas You Can Waste Time Reading:</h3>
+<ul class="small-block-grid-3"">
+    {% for idea in footer_ideas %}
+    <li>
+        <a href="{% url 'idea-page' idea.slug %}">{{ idea.name }}
+        <img src="{{ idea.icon.url }}" /></a>
+    </li>
+    {% empty %}
+    <li><p>Whoops. Nevermind. There are no other Ideas.</p></li>
+    {% endfor %}
+</ul>
 {% endblock %}
 

@@ -1,3 +1,5 @@
+import random
+
 from django.core.urlresolvers import reverse
 from django.core.exceptions import ValidationError
 from django.core.context_processors import csrf
@@ -184,9 +186,19 @@ def idea_detail(request, idea_slug=None):
     for t in thoughts_on_page:
         t.content = t.truncate()
 
+    # pick from a list, prevent duplicates
+    indices = range(Idea.objects.count() - 2)
+    other_ideas = Idea.objects.exclude(slug=idea_slug)
+    footer_ideas = []
+    while indices or len(footer_ideas) < lib.NUM_IDEAS_FOOTER:
+        idx = random.randint(0, len(indices) - 1)
+        footer_ideas.append(other_ideas[indices[idx]])
+        del indices[idx]
+
     context = {
         'page_title': idea.name,
         'idea': idea,
+        'footer_ideas': footer_ideas,
         'thoughts': thoughts_on_page,
         'paginator': paginator,
         'pagination': pagination_main,

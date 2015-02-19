@@ -47,6 +47,8 @@ PAGINATION_DASHBOARD_TRASH_PAGES_TO_LEAD = 2
 
 NUM_RECENT_IDEAS = 3
 
+NUM_IDEAS_FOOTER = 3
+
 
 ###############################################################################
 # methods and code common to entire blog app
