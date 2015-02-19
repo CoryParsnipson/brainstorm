@@ -20,7 +20,7 @@
     </script>
 
     <!-- css includes -->
-    <link href='http://fonts.googleapis.com/css?family=Sigmar+One|Roboto' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Permanent+Marker|Roboto' rel='stylesheet' type='text/css'>
     <link rel="stylesheet" type="text/css" href="{% static 'css/foundation/foundation.min.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'css/common.css' %}">
 
@@ -84,24 +84,22 @@
         <div class="row collapse">
             <div class="large-8 medium-8 small-12 columns">
                 {% block footer %}
-                <h3>Yo This is Whats Cool Right Now</h3>
-                <p>asdkfaksjdf</p>
-                <p>asdkjflsakdjf</p>
+                <h3>Congratulations</h3>
+                <p>Nice, dude. You made it to the bottom of the page.</p>
+                <p>...Uh, we don't have anything for you to do down here right now. Why don't you move your mouse to the bottom right corner and go back to the top?</p>
                 {% endblock %}
             </div>
             <div class="large-4 medium-4 small-12 columns">
                 <h3>Contact</h3>
-                <p>Cory Parsnipson</p>
-                <p>PO Box 1490641</p>
-                <p>San Francisco, CA 94116</p>
-                <a href="https://www.facebook.com/cory.parsnipson" target="_blank"><img class="link-icon left" src="{% static 'images/link_facebook.png' %}"></a>
-                <a href="https://twitter.com/CoryParsnipson" target="_blank"><img class="link-icon left" src="{% static 'images/link_twitter.png' %}"></a>
-                <a href="https://github.com/CoryParsnipson" target="_blank"><img class="link-icon left" src="{% static 'images/link_github.png' %}"></a>
+                <p><a href="{% url 'about' %}#cory-parsnipson">Cory Parsnipson</a><br>PO Box 190461<br>San Francisco, CA 94119</p>
+                <a href="https://www.facebook.com/cory.parsnipson" target="_blank"><img class="left" src="{% static 'images/link_facebook.png' %}"></a>
+                <a href="https://twitter.com/CoryParsnipson" target="_blank"><img class="left" src="{% static 'images/link_twitter.png' %}"></a>
+                <a href="https://github.com/CoryParsnipson" target="_blank"><img class="left" src="{% static 'images/link_github.png' %}"></a>
             </div>
         </div>
         <div class="row collapse">
             <div class="large-12 columns">
-                <span class="footer-copyleft">THIS WEBSITE IS CALLED SLACKER PARADISE. I MADE THIS. COPYRIGHT 2015 CORY PARSNIPSON HELL YEAH OFFICIAL LOOKING SMALL PRINT</span>
+                <span class="footer-copyleft">SLACKER PARADISE COPYRIGHT 2015 CORY PARSNIPSON ALL RIGHTS RESERVED. HELL YEAH OFFICIAL LOOKING PRINT. WHATEVER. JUST DON'T BE A DICK.</span>
             </div>
         </div>
     </div>

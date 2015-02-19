@@ -52,11 +52,3 @@ ul.small-stories li:nth-of-type(even) {
 div.thought-history {
   margin-bottom: 1rem;
 }
-
-div.thought-history p {
-  margin: 0;
-}
-
-div.thought-history p:nth-of-type(odd) {
-  background-color: #404040;
-}

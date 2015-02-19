@@ -69,6 +69,11 @@
  *****************************************************************************/
 #content-side ul {
   list-style-type: none;
+  margin: 0;
+}
+
+#content-side ul li {
+  padding: 0;
 }
 
 #content-side ul li.divider {

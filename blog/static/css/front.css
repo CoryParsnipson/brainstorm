@@ -105,14 +105,3 @@ div.text-overlay div {
   margin-top: 0.5rem;
   bottom: 0.3rem;
 }
-
-/******************************************************************************
- * link page sidebar
- *****************************************************************************/
-div.link-box p {
-  margin-bottom: 0.3rem;
-}
-
-div.link-box p:nth-of-type(odd) {
-  background-color: #404040;
-}
