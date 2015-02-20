@@ -1,6 +1,7 @@
 from django.core.urlresolvers import resolve, reverse
-from django.test import TestCase
+from django.template.loader import render_to_string
 from django.http import HttpRequest
+from django.test import TestCase
 
 import blog.views as views
 
@@ -25,12 +26,11 @@ class TestIndex(TestCase):
     ###########################################################################
     # view
     ###########################################################################
-    def test_valid_html(self):
+    def test_correct_page(self):
         """ make sure a valid html document is returned for index
         """
         request = HttpRequest()
         response = views.index(request)
 
-        # TODO: more complex text matching?
-        self.assertTrue(response.content.startswith(r'<!DOCTYPE html>'))
-        self.assertTrue(response.content.endswith('</html>'))
+        expected_html = render_to_string('blog/index.html')
+        self.assertEqual(response.content.decode(), expected_html)
