@@ -768,7 +768,7 @@ class FormThoughtView(View):
         if 'next' in instance_data:
             callback = instance_data['next']
             del instance_data['next']
-            callback = lib.replace_tokens(callback, instance_data)
+            callback = lib.replace_tokens(callback, {'idea': instance_data['idea']})
 
         if 'is_draft' in instance_data:
             instance_data['is_draft'] = True

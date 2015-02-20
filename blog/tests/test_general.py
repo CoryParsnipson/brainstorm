@@ -72,34 +72,6 @@ class IdeaFormTestCase(TestCase):
         self.client = Client()
 
 
-class SlugifyTestCase(TestCase):
-    """ unit tests related to slugify contents
-    """
-
-    def test_slugify_text_only(self):
-        """ test slugify
-        """
-        test_string = "This is a test string."
-
-        expected = "this-is-a-test-string"
-        received = lib.slugify(test_string)
-
-        self.assertEqual(expected, received)
-
-    def test_slugify_truncate(self):
-        """ test slugify that should truncate to 20 characters
-        """
-        test_string = "omg this is such a long string it will deinitely be truncated"
-
-        expected = "omg-this-is-such-a-long"
-        received = lib.slugify(test_string, max_len=20)
-
-        self.assertEqual(expected, received)
-
-    def test_slugify_alphanumeric(self):
-        pass
-
-
 class IdeaViewTestCase(TestCase):
     """ unit tests related to Idea view functions
     """

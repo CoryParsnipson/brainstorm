@@ -348,6 +348,7 @@ nav > ul li a:hover {
  *****************************************************************************/
 ul.messages {
   list-style-type: none;
+  margin: 0;
 }
 
 ul.messages li {

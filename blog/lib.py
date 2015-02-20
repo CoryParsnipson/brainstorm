@@ -62,27 +62,28 @@ def remove_duplicates(seq):
     return [x for x in seq if not (x in seen or seen_add(x))]
 
 
-def replace_tokens(search_string, token_vals, token_re="\$\$(.*)\$\$"):
+def replace_tokens(search_string, token_vals):
     """ given a string with tokens, a token regular expression, and a dictionary of token values
         search for tokens in the string and replace them from the dictionary
 
-        Note: default token format is $$<token>$$
+        Note: token format is {token}
         Note: token_vals should be a dictionary where keys are all values found in place of "token"
               from token format
     """
-    p = re.compile(token_re)
-    matches = p.search(search_string)
+    missing_keys = True
 
-    if not matches:
-        return search_string
+    while missing_keys:
+        try:
+            final_string = search_string.format(**token_vals)
+            missing_keys = False
+        except KeyError as e:
+            # if we find a missing token, do not replace it
+            token_vals[e.message] = '{' + e.message + '}'
 
-    for tok in matches.groups():
-        search_string = p.sub(token_vals[tok], search_string)
-
-    return search_string
+    return final_string
 
 
-def slugify(source_str, max_len=20):
+def slugify(source_str, max_len=30):
     """ create a nice slug given a string; FYI, Django comes with a prebuilt
         slugify function (django.template.defaultfilters) which handles
         non-unicode characters too, but doesn't truncate.
@@ -91,17 +92,24 @@ def slugify(source_str, max_len=20):
     :param max_len: maximum length of slug
     :return: a string that is a valid slug
     """
-    urlenc_regex = re.compile(r'[^a-z0-9\-_]+')
-    str_words = source_str.lower().split(" ")
+    # remove non alphanumeric characters
+    urlenc_regex = re.compile(r'[^A-Za-z0-9\-_]+')
+    source_str = urlenc_regex.sub(' ', source_str)
 
-    counted_len = len(str_words[0])
+    # collapse all spaces
+    space_collapse_regex = re.compile(r'\s+')
+    source_str = space_collapse_regex.sub(' ', source_str)
+
+    # strip trailing/leading spaces, convert to lowercase, and split into words
+    str_words = source_str.strip().lower().split(' ')
+
+    counted_len = len(str_words[0]) + 1
     slug_tokens = [str_words.pop(0)]
     while str_words and counted_len + len(str_words[0]) <= max_len:
-        counted_len += len(str_words[0])
+        counted_len += len(str_words[0]) + 1
         slug_tokens.append(str_words.pop(0))
 
     slug = "-".join(slug_tokens)
-    slug = urlenc_regex.sub('', slug)
     return slug
 
 
