@@ -1,9 +1,8 @@
-from django.test import TestCase
-
+from django.test import LiveServerTestCase
 from selenium import webdriver
 
 
-class TestIndex(TestCase):
+class TestIndex(LiveServerTestCase):
     """ web browser level tests for all functions related to the index page
     """
 
@@ -23,5 +22,7 @@ class TestIndex(TestCase):
         """ open a browser in Firefox and check to see if the title is correct
         """
         for n, b in self.browser.items():
-            b.get('http://localhost')
+            b.get(self.live_server_url)
+            # TODO: static files are not served from Django testing framework (DEBUG = false)
+
             self.assertIn('SP', b.title)
