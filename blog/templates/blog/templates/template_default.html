@@ -81,15 +81,15 @@
     </div>
 
     <div id="footer">
-        <div class="row collapse">
-            <div class="large-8 medium-8 small-12 columns">
+        <div class="row">
+            <div class="large-8 medium-8 small-12 columns main">
                 {% block footer %}
                 <h3>Congratulations</h3>
                 <p>Nice, dude. You made it to the bottom of the page.</p>
                 <p>...Uh, we don't have anything for you to do down here right now. Why don't you move your mouse to the bottom right corner and go back to the top?</p>
                 {% endblock %}
             </div>
-            <div class="large-4 medium-4 small-12 columns">
+            <div class="large-4 medium-4 small-12 columns side">
                 <h3>Contact</h3>
                 <p><a href="{% url 'about' %}#cory-parsnipson">Cory Parsnipson</a><br>PO Box 190461<br>San Francisco, CA 94119</p>
                 <a href="https://www.facebook.com/cory.parsnipson" target="_blank"><img class="left" src="{% static 'images/link_facebook.png' %}"></a>

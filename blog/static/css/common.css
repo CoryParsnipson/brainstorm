@@ -132,7 +132,7 @@ h3 {
 
 div#footer h3 {
   color: #A80505;
-  font-size: 16pt;
+  font-size: 20pt;
   font-family: 'Eurostile Black';
   text-transform: uppercase;
   text-shadow: 0px 0px 1px rgba(168, 5, 5, 0.3);
@@ -296,6 +296,10 @@ span.footer-copyleft {
 
 #footer div.columns {
   padding: 10px;
+}
+
+#footer div.side {
+  padding-left: 20px;
 }
 
 /******************************************************************************
