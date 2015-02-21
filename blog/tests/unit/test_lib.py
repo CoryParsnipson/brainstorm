@@ -17,6 +17,7 @@ class TestLib(TestCase):
         test_input = ['1', '3', '5', '7', 2, 53]
 
         received_input = lib.remove_duplicates(test_input)
+
         self.assertEqual(test_input, received_input)
 
     def test_remove_duplicates_typical(self):
@@ -27,6 +28,7 @@ class TestLib(TestCase):
         expected_input = [1, 2, 3, 5, 8]
 
         received_input = lib.remove_duplicates(test_input)
+
         self.assertEqual(expected_input, received_input)
 
     def test_remove_duplicates_all(self):
@@ -36,6 +38,7 @@ class TestLib(TestCase):
         expected_input = [4]
 
         received_input = lib.remove_duplicates(test_input)
+
         self.assertEqual(expected_input, received_input)
 
     def test_remove_duplicates_no_sort(self):
@@ -47,6 +50,7 @@ class TestLib(TestCase):
         expected_input = [8, 23, 77, 12, 5, 32]
 
         received_input = lib.remove_duplicates(test_input)
+
         self.assertEqual(expected_input, received_input)
 
     ###########################################################################
@@ -60,6 +64,7 @@ class TestLib(TestCase):
         expected = test
 
         received = lib.replace_tokens(test, token_vals)
+
         self.assertEqual(expected, received)
 
     def test_replace_tokens_one_token(self):
@@ -73,6 +78,7 @@ class TestLib(TestCase):
         expected = "there is hella token to replace in this string!"
 
         received = lib.replace_tokens(test, token_vals)
+
         self.assertEqual(expected, received)
 
     def test_replace_tokens_many_tokens(self):
@@ -88,6 +94,7 @@ class TestLib(TestCase):
         expected = "I put monkeys cake in the rocket launcher. I love poop!!!"
 
         received = lib.replace_tokens(test, token_vals)
+
         self.assertEqual(expected, received)
 
     def test_replace_tokens_duplicate(self):
@@ -101,6 +108,7 @@ class TestLib(TestCase):
         expected = "One monkeys, Two monkeys, Three monkeys, jumping on the bed"
 
         received = lib.replace_tokens(test, token_vals)
+
         self.assertEqual(expected, received)
 
     def test_replace_tokens_no_token(self):
@@ -116,6 +124,7 @@ class TestLib(TestCase):
         expected = "Where is my {one} cake?!?"
 
         received = lib.replace_tokens(test, token_vals)
+
         self.assertEqual(expected, received)
 
     def test_replace_tokens_multiple_no_tokens(self):
@@ -128,6 +137,7 @@ class TestLib(TestCase):
         expected = "Where is my {one} {two}?!?"
 
         received = lib.replace_tokens(test, token_vals)
+
         self.assertEqual(expected, received)
 
     ###########################################################################
@@ -140,6 +150,7 @@ class TestLib(TestCase):
         expected = "this-is-a-test-string"
 
         received = lib.slugify(test_string)
+
         self.assertEqual(expected, received)
 
     def test_slugify_truncate(self):
@@ -149,6 +160,7 @@ class TestLib(TestCase):
         expected = "omg-this-is-such-a"
 
         received = lib.slugify(test_string, max_len=20)
+
         self.assertEqual(expected, received)
 
     def test_slugify_alphanumeric(self):
@@ -159,6 +171,7 @@ class TestLib(TestCase):
         expected = "what-the-k-sdffkdksf"
 
         received = lib.slugify(test_string, max_len=20)
+
         self.assertEqual(expected, received)
 
     def test_slugify_alphanumeric2(self):
@@ -171,6 +184,7 @@ class TestLib(TestCase):
         expected = ""
 
         received = lib.slugify(test_string)
+
         self.assertEqual(expected, received)
 
     def test_slugify_alphanumerica3(self):
@@ -180,6 +194,7 @@ class TestLib(TestCase):
         expected = "slackerparadise-rulez"
 
         received = lib.slugify(test_string, max_len=25)
+
         self.assertEqual(expected, received)
 
     ###########################################################################
@@ -211,6 +226,7 @@ class TestLib(TestCase):
         expected = ((rect[0] - box[0]) / 2, (rect[1] - box[1]) / 2)
 
         received = lib.get_center_coord(box, rect)
+
         self.assertEqual(expected, received)
 
     def test_get_center_coord_same_size(self):
@@ -221,6 +237,7 @@ class TestLib(TestCase):
         expected = (0, 0)
 
         received = lib.get_center_coord(box, rect)
+
         self.assertEqual(expected, received)
 
     def test_get_center_coord_box_bigger(self):
@@ -231,6 +248,7 @@ class TestLib(TestCase):
         expected = (0, 0)
 
         received = lib.get_center_coord(box, rect)
+
         self.assertEqual(expected, received)
 
     def test_get_center_coord_box_bigger_x(self):
@@ -241,6 +259,7 @@ class TestLib(TestCase):
         expected = (0, 100)
 
         received = lib.get_center_coord(box, rect)
+
         self.assertEqual(expected, received)
 
     def test_get_center_coord_box_bigger_y(self):
@@ -251,6 +270,7 @@ class TestLib(TestCase):
         expected = (150, 0)
 
         received = lib.get_center_coord(box, rect)
+
         self.assertEqual(expected, received)
 
     ###########################################################################
