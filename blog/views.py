@@ -187,11 +187,11 @@ def idea_detail(request, idea_slug=None):
         t.content = t.truncate()
 
     # pick from a list, prevent duplicates
-    indices = range(Idea.objects.count() - 2)
     other_ideas = Idea.objects.exclude(slug=idea_slug)
+    indices = range(0, len(other_ideas))
     footer_ideas = []
-    while indices or len(footer_ideas) < lib.NUM_IDEAS_FOOTER:
-        idx = random.randint(0, len(indices) - 1)
+    while indices and len(footer_ideas) < lib.NUM_IDEAS_FOOTER:
+        idx = random.randint(1, len(indices)) - 1
         footer_ideas.append(other_ideas[indices[idx]])
         del indices[idx]
 
