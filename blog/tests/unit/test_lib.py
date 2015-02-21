@@ -14,7 +14,7 @@ class TestLib(TestCase):
         """ supply remove duplicates with a list containing completely unique
             entries. Should expect the same input back.
         """
-        test_input = ['1', '3', '5', '7', 2, 53]
+        test_input = ['1', '3', '5', '7', 2, 5, 53]
 
         received_input = lib.remove_duplicates(test_input)
 
