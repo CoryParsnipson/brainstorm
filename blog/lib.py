@@ -71,6 +71,7 @@ def replace_tokens(search_string, token_vals):
               from token format
     """
     missing_keys = True
+    final_string = search_string
 
     while missing_keys:
         try:

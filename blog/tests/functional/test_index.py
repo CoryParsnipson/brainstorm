@@ -1,8 +1,8 @@
-from django.contrib.staticfiles.testing import StaticLiveServerTestCase
+from functional import FunctionalTestCase
 from selenium import webdriver
 
 
-class TestIndex(StaticLiveServerTestCase):
+class TestIndex(FunctionalTestCase):
     """ web browser level tests for all functions related to the index page
     """
 
@@ -22,8 +22,6 @@ class TestIndex(StaticLiveServerTestCase):
         """ open a browser in Firefox and check to see if the title is correct
         """
         for n, b in self.browser.items():
-            b.get(self.live_server_url)
-            import time
-            time.sleep(100)
+            b.get(self.server_url)
 
             self.assertIn('SP', b.title)
