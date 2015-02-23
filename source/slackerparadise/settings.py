@@ -15,7 +15,7 @@ import common
 
 
 # instatiate keyring object
-keyring = common.KeyRing(os.path.join(paths.BASE_DIR, 'keyring.txt'))
+keyring = common.KeyRing(os.path.join(paths.KEYRING_DIR, 'keyring.txt'))
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.7/howto/deployment/checklist/
@@ -41,8 +41,6 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
 
     # 3rd party applications
-    'rest_framework',
-    'rest_framework_swagger',
     'imagekit',
 
     # user applications

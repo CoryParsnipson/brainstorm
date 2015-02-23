@@ -1,0 +1,9 @@
+bleach==1.4.1
+Django==1.7.1
+django-appconf==1.0.1
+django-imagekit==3.2.5
+html5lib==0.999
+pilkit==1.1.12
+Pillow==2.7.0
+selenium==2.44.0
+six==1.9.0
