@@ -283,6 +283,10 @@ table.form-thought input[type="submit"].publish:hover {
   float: right;
 }
 
-#link_form .publish {
-  margin-right: 50px;
+#link_form input[type="submit"], #link_form input[type="button"] {
+  margin-left: 10px;
+}
+
+#link_form input[type="submit"].publish {
+  margin-left: 0;
 }
