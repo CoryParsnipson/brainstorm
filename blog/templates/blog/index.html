@@ -9,7 +9,6 @@
 <div class="row">
     {% if latest_thought %}
     <a href="{% url 'thought-page' latest_thought.idea.slug latest_thought.slug %}">
-    {% endif %}
         <div class="large-12 columns showcase"
         {% if latest_thought.preview %}
         style="background-image: url('{{ latest_thought.preview.url }}');"
@@ -20,20 +19,17 @@
 
         <div class="text-overlay">
             <div>
-                {% if not latest_thought %}
-                <p class="title">No content yet!</p>
-                <p>There are no thoughts in the database yet!!</p>
-                {% else %}
                 <p class="idea">{{ latest_thought.idea }}</p>
                 <p class="title" title="{{ latest_thought.slug }}">{{ latest_thought.title }}</p>
                 <p class="subtitle">by {{ latest_thought.author }} on {{ latest_thought.date_published|date:"F j, Y" }}</p>
                 <p>{{ latest_thought.content|safe }}</p>
-                {% endif %}
             </div>
         </div>
         </div>
-    {% if latest_thought %}
     </a>
+    {% else %}
+        <p class="title">No content yet!</p>
+        <p>There are no thoughts in the database yet!!</p>
     {% endif %}
 
     {% if highlight %}
