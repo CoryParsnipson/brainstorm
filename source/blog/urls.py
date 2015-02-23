@@ -40,5 +40,6 @@ urlpatterns = patterns('',
     url(r'^api/forms/link/', views.FormHighlightView.as_view(), name='forms-highlight'),
 )
 
+# setup serving of media asserts on development environment
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT, show_indexes=True)
