@@ -1,5 +1,4 @@
 import os
-import sys
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
@@ -22,8 +21,3 @@ MEDIA_DIR = os.path.join(SITE_DIR, MEDIA_ROOT)
 MEDIA_IMAGE_DIR = os.path.join(BASE_DIR, MEDIA_IMAGE_ROOT)
 MEDIA_VIDEO_DIR = os.path.join(BASE_DIR, MEDIA_VIDEO_ROOT)
 MEDIA_FILE_DIR = os.path.join(BASE_DIR, MEDIA_FILE_ROOT)
-
-VENDOR_DIR = os.path.join(BASE_DIR, "vendor")
-
-# add all user application paths to the project
-sys.path.insert(0, VENDOR_DIR)
