@@ -1,8 +1,8 @@
-from django.test import LiveServerTestCase
+from django.contrib.staticfiles.testing import StaticLiveServerTestCase
 from selenium import webdriver
 
 
-class TestIndex(LiveServerTestCase):
+class TestIndex(StaticLiveServerTestCase):
     """ web browser level tests for all functions related to the index page
     """
 
@@ -23,6 +23,7 @@ class TestIndex(LiveServerTestCase):
         """
         for n, b in self.browser.items():
             b.get(self.live_server_url)
-            # TODO: static files are not served from Django testing framework (DEBUG = false)
+            import time
+            time.sleep(100)
 
             self.assertIn('SP', b.title)
