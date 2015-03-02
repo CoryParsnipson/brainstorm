@@ -10,8 +10,6 @@ https://docs.djangoproject.com/en/1.7/ref/settings/
 
 import os
 
-import dj_database_url  # heroku postgres adapter
-
 import paths
 import common
 
