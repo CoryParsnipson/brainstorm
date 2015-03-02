@@ -1,0 +1,91 @@
+DEAR HUMAN,
+
+If you are reading this, something has gone terribly wrong. It is up to you to ensure the continued future of Slacker Paradise! Please listen closely to the following instructions. Many brave men gave their lives to the advancement of this secret intel.
+
+Installing Python Pillow on the goddamn VPS
+===========================================
+
+Pillow, a friendly fork of PIL (Python Imaging Library) is a pain in the ass, even when you are behind a virtual environment and using pip/easy_install. While most python packages can be compiled into binaries, PIL (and as a result, Pillow) compile into linux modules that have system dependencies on image library modules such as libjpeg.so etc.
+
+The Problem
+-----------
+
+Your hosting server (hereforth known as "the goddamn VPS"), has implemented a jail shell limiting your permissions for certain programs like GCC and you have no superuser access. Obviously, this is a reasonable request, but it makes installing pillow on their machine nearly impossible. NEARLY impossible. So here's how to do that:
+
+Duplicate your VPS Setup
+------------------------
+
+The goddamn VPS in this scenario looks to be running Red Hat Enterprise 6 64 bit. I downloaded CentOS 6, which is a free clone of Red Hat Enterprise and fired up a Virtualbox instance of it.
+
+The important part of picking the version number above is the fact that Centos 6 has a glibc and gcc version which matches up with Red Hat Enterprise 6. Glibc is 2.12.x (a years old release that is not used by any distributions except this extremely stable one!!) and gcc-4.4.7. I'm not exactly sure since I can't run it on the goddamn VPS, but documentation suggests this is the default version.
+
+Upgrade your Python to the Version you Need
+-------------------------------------------
+
+Centos/Red Hat 6 has Python 2.6.6. It's not slotted and it's important for running certain sysadmin tasks so don't fuck with it.
+
+See this guide: https://github.com/h2oai/h2o/wiki/Installing-python-2.7-on-centos-6.3.-Follow-this-sequence-exactly-for-centos-machine-only
+
+Basically, create a copy of python in /usr/local/bin instead of replacing the one in /usr/bin.
+
+For my purposes, I need python 2.7.8. Run these commands from the guide above:
+
+sudo yum groupinstall "Development tools"
+
+sudo yum install zlib-devel
+sudo yum install bzip2-devel
+sudo yum install openssl-devel
+sudo yum install ncurses-devel
+sudo yum install sqlite-devel
+
+Run these commands for PIL image support:
+
+sudo yum install libjpeg-devel
+sudo yum install freetype-devel
+sudo yum install libtiff-devel
+
+Download and install wget to get a python source tarball from the website. Run the configure command like this:
+
+sudo ./configure --prefix=/usr/local --enable-unicode=ucs4
+
+The value after "enable-unicode" can be either ucs2 or ucs4. This refers to the byte width of the unicode data type used by Python. I found out afterwards that the goddamn VPS uses packages that are UCS4 and by default CentOs compiles with UCS2.
+
+Use "which python" to make sure you're using the right one. If necessary, run commands with "/usr/local/bin/python*" or "sudo /usr/local/bin/python*".
+
+Put up a VirtualEnv
+-------------------
+
+Use wget to find an easy_install script. Use easy install to get pip. Once you have pip, everything else should be relatively easy.
+
+Use pip to get virtualenv. Start a new virtualenv with these commands:
+
+which virtualenv (if this is not /usr/local/bin/virtualenv, then use that instead)
+
+virtualenv -p /usr/local/bin/python* --no-site-packages --distribute [name of venv folder]
+
+Enter into the virtualenv:
+
+source [name of venv folder]/bin/activate
+
+which python (make sure this is inside the venv folder)
+
+Run python to check if the version is correct, then exit.
+
+Compile Pillow files
+--------------------
+
+Run:
+
+pip install pillow==2.7.0
+
+Hopefully it compiles just fine (you should also see messages that show support available for various image formats).
+
+There should be files generated from the installation process under "lib/python*/site-packages/PIL" and "lib/python*/site-packages/Pillow-2.7.0-py2.7.egg-info". Upload these to the corresponding site-packages (or virtualenv environment site-packages) on the goddamn VPS. In "[venv folder]/bin" there are now a bunch of pil*.py files. Upload these to the corresponding virtualenv bin folder on the goddamn VPS too.
+
+Test
+----
+
+On the VPS console, activate the virtual environment and run python. Do "from PIL import Image" and see if it works. If nothing happens, congratulations, you've saved Slacker Paradise! Now run manage.py test, fool.
+
+Sincerely,
+Cory Parsnipson
