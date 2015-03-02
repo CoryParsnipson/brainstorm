@@ -94,6 +94,11 @@ MESSAGE_STORAGE = 'django.contrib.messages.storage.session.SessionStorage'
 STATIC_URL = '/' + os.path.basename(paths.STATIC_DIR) + '/'
 STATIC_ROOT = paths.STATIC_DIR
 
+# Simplified static file serving
+# https://warehouse.python.org/project/whitenoise/
+
+STATICFILES_STORAGE = 'whitenoise.django.GzipManifestStaticFilesStorage'
+
 # media files
 MEDIA_URL = '/' + os.path.basename(paths.MEDIA_DIR) + '/'
 MEDIA_ROOT = paths.MEDIA_DIR
