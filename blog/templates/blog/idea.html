@@ -1,0 +1,78 @@
+{% extends 'blog/templates/template_default.html' %}
+{% load staticfiles %}
+
+{% block http_headers %}
+<link rel="stylesheet" type="text/css" href="{% static 'css/idea.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="idea-banner">
+    <h1>{{ idea.name }}</h1>
+    <img class="idea-banner" src="{{ idea.icon_small.url }}">
+</div>
+
+<ul class="small-block-grid-1 small-stories">
+    {% for thought in thoughts %}
+    <li>
+        <p class="title">
+            <a name="{{ thought.slug }}" href="{% url 'thought-page' thought.idea.slug thought.slug %}">
+                {{ thought.title }}
+            </a>
+        </p>
+        <p class="subtitle">by {{ thought.author }} on {{ thought.date_published|date:"F j, Y" }}</p>
+
+        <a href="{% url 'thought-page' thought.idea.slug thought.slug %}">
+            <div class="img-placeholder"
+            {% if thought.preview %}
+            style="background-image: url({{ thought.preview.url }});"
+            {% endif %}
+            >
+
+            {% if not thought.preview %}
+            <span class="placeholder">SP</span>
+            {% endif %}
+            </div>
+        </a>
+        <p style="display: block;">
+            {{ thought.content|safe }}
+            <a href="{% url 'thought-page' thought.idea.slug thought.slug %}">(Read more)</a>
+        </p>
+    </li>
+    {% empty %}
+    <p>This idea has no thoughts yet!</p>
+    {% endfor %}
+</ul>
+
+{% include "blog/templates/template_pagination.html" with paginator=paginator pages=pagination %}
+{% endblock %}
+
+{% block side %}
+<h3>About this Idea</h3>
+<p>{{ idea.description }}</p>
+<hr>
+
+<h3>Thoughts on this Page...</h3>
+<div class="thought-history">
+    {% for t in thoughts %}
+    <a class="reverse-color sidebar" href="#{{ t.slug }}">{{ t.title }}</a>
+    {% endfor %}
+</div>
+<hr>
+
+{% include "blog/templates/template_pagination.html" with paginator=paginator pages=pagination_side %}
+{% endblock %}
+
+{% block footer %}
+<h3>Other Ideas You Can Waste Time Reading:</h3>
+<ul class="small-block-grid-3"">
+    {% for idea in footer_ideas %}
+    <li>
+        <a href="{% url 'idea-page' idea.slug %}">{{ idea.name }}
+        <img src="{{ idea.icon.url }}" /></a>
+    </li>
+    {% empty %}
+    <li><p>Whoops. Nevermind. There are no other Ideas.</p></li>
+    {% endfor %}
+</ul>
+{% endblock %}
+

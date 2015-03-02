@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+{% load staticfiles %}
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SP :: {{ page_title }}</title>
+
+    <script type="text/javascript">
+    (function() {
+        var path = '//easy.myfonts.net/v2/js?sid=4276(font-family=Eurostile+Regular)&sid=4277(font-family=Eurostile+Bold)&sid=4279(font-family=Eurostile+Black)&sid=4280(font-family=Eurostile+Medium)&key=Dq99rML4bs',
+            protocol = ('https:' == document.location.protocol ? 'https:' : 'http:'),
+            trial = document.createElement('script');
+        trial.type = 'text/javascript';
+        trial.async = true;
+        trial.src = protocol + path;
+        var head = document.getElementsByTagName("head")[0];
+        head.appendChild(trial);
+    })();
+    </script>
+
+    <!-- css includes -->
+    <link href='http://fonts.googleapis.com/css?family=Permanent+Marker|Roboto' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/foundation/foundation.min.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/common.css' %}">
+
+    <!-- script includes -->
+    <!-- <script type="text/javascript" src="{% static 'script/jquery-1.11.1.min.js' %}"></script> -->
+
+    {% block http_headers %}
+    <!-- template specific head tags should be added here -->
+    {% endblock %}
+</head>
+<body name="top">
+    <div id="header">
+        <div class="row">
+            <div class="large-6 medium-6 small-12 columns">
+                <a class="logo" href="{% url 'index' %}"><span class="logo">Slacker Paradise</span></a>
+            </div>
+
+            <div class="large-6 medium-6 small-12 columns">
+                <nav role="navigation">
+                    <ul class="group">
+                        <li><a href="{% url 'index' %}">Home</a></li>
+                        <li><a href="{% url 'about' %}">About</a></li>
+                        <li><a href="{% url 'idea-catalog-page' %}">Ideas</a></li>
+                        <li><a href="#">Forum</a></li>
+                        {% if request.user.is_authenticated %}
+                        <li><a href="{% url 'dashboard' %}">Dashboard</a></li>
+                        {% else %}
+                        <li><a href="{% url 'login-page' %}">Login</a></li>
+                        {% endif %}
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </div>
+
+    <div id="content" class="row collapse">
+        <div id="content-main" class="large-8 medium-8 small-12 columns">
+            {% if messages %}
+            <!-- flash message area -->
+            <ul class="messages">
+                {% for message in messages %}
+                <li {% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message|safe }}</li>
+                {% endfor %}
+            </ul>
+            {% endif %}
+
+            {% block content %}
+            There is no content on this page.
+            {% endblock %}
+        </div>
+
+        <div id="content-side" class="large-4 medium-4 small-12 columns">
+            {% block side %}
+            <a class="twitter-timeline" href="https://twitter.com/CoryParsnipson" data-widget-id="545825292225236992" data-chrome="transparent noheader nofooter" data-tweet-limit="2">Tweets by @CoryParsnipson</a>
+            <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+"://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
+            {% endblock %}
+        </div>
+    </div>
+
+    <div id="footer">
+        <div class="row">
+            <div class="large-8 medium-8 small-12 columns main">
+                {% block footer %}
+                <h3>Congratulations</h3>
+                <p>Nice, dude. You made it to the bottom of the page.</p>
+                <p>...Uh, we don't have anything for you to do down here right now. Why don't you move your mouse to the bottom right corner and go back to the top?</p>
+                {% endblock %}
+            </div>
+            <div class="large-4 medium-4 small-12 columns side">
+                <h3>Contact</h3>
+                <p><a href="{% url 'about' %}#cory-parsnipson">Cory Parsnipson</a><br>PO Box 190461<br>San Francisco, CA 94119</p>
+                <a href="https://www.facebook.com/cory.parsnipson" target="_blank"><img class="left" src="{% static 'images/link_facebook.png' %}"></a>
+                <a href="https://twitter.com/CoryParsnipson" target="_blank"><img class="left" src="{% static 'images/link_twitter.png' %}"></a>
+                <a href="https://github.com/CoryParsnipson" target="_blank"><img class="left" src="{% static 'images/link_github.png' %}"></a>
+            </div>
+        </div>
+        <div class="row collapse">
+            <div class="large-12 columns">
+                <span class="footer-copyleft">SLACKER PARADISE COPYRIGHT 2015 CORY PARSNIPSON ALL RIGHTS RESERVED. HELL YEAH OFFICIAL LOOKING PRINT. WHATEVER. JUST DON'T BE A DICK.</span>
+            </div>
+        </div>
+    </div>
+
+<!-- back to top bottom -->
+<a href="#top" class="top-button">back to the<br><h1>top</h1></a>
+
+</body>
+</html>

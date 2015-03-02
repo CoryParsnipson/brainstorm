@@ -1,0 +1,99 @@
+/* ideas.css
+ * Ideas css style for Slacker Paradise
+ *
+ * Cory Parsnipson, 2015
+ */
+
+/******************************************************************************
+ * idea catalog styles
+ *****************************************************************************/
+.catalog {
+  border-collapse: separate;
+  border-spacing: 0 1rem;
+  margin-top: -1rem;
+}
+
+.catalog td {
+  position: relative;
+  overflow: hidden;
+}
+
+.catalog td div.overlay {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 10;
+}
+
+.catalog td:hover div.overlay {
+  background-color: rgba(0, 0, 0, 0.75);
+}
+
+.catalog td:hover p {
+  visibility: visible;
+}
+
+.catalog td h3 {
+  position: absolute;
+  top: 0.5rem;
+  z-index: 20;
+}
+
+.catalog td p {
+  width: 75%;
+  position: absolute;
+  bottom: 0;
+  visibility: hidden;
+  z-index: 20;
+  margin: 0.5rem;
+}
+
+.catalog tr:nth-of-type(odd) h3 {
+  left: 0.5rem;
+}
+
+.catalog tr:nth-of-type(odd) p {
+  right: 0.5rem;
+  text-align: right;
+}
+
+.catalog tr:nth-of-type(even) h3 {
+  right: 0.5rem;
+}
+
+.catalog tr:nth-of-type(even) p {
+  left: 0.5rem;
+  text-align: left;
+}
+
+/******************************************************************************
+ * sidebar styles
+ *****************************************************************************/
+table.recent-ideas-list {
+}
+
+table.recent-ideas-list tr:nth-of-type(odd) {
+  background-color: #404040;
+}
+
+table.recent-ideas-list td {
+  padding: 5px;
+}
+
+p.title {
+  font-size: 11pt;
+  margin-bottom: 0.5rem;
+}
+
+p.small-title {
+  display: inline-block;
+  margin-left: 1.5rem;
+  margin-bottom: 0.2rem;
+}
+
+p.subtitle {
+  margin-left: 1.5rem;
+  margin-right: 1rem;
+}
