@@ -6,23 +6,31 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>SP :: {{ page_title }}</title>
 
-    <script type="text/javascript">
-    (function() {
-        var path = '//easy.myfonts.net/v2/js?sid=4276(font-family=Eurostile+Regular)&sid=4277(font-family=Eurostile+Bold)&sid=4279(font-family=Eurostile+Black)&sid=4280(font-family=Eurostile+Medium)&key=Dq99rML4bs',
-            protocol = ('https:' == document.location.protocol ? 'https:' : 'http:'),
-            trial = document.createElement('script');
-        trial.type = 'text/javascript';
-        trial.async = true;
-        trial.src = protocol + path;
-        var head = document.getElementsByTagName("head")[0];
-        head.appendChild(trial);
-    })();
-    </script>
-
     <!-- css includes -->
-    <link href='http://fonts.googleapis.com/css?family=Permanent+Marker|Roboto' rel='stylesheet' type='text/css'>
-    <link rel="stylesheet" type="text/css" href="{% static 'css/foundation/foundation.min.css' %}">
-    <link rel="stylesheet" type="text/css" href="{% static 'css/common.css' %}">
+    <link href='http://fonts.googleapis.com/css?family=Permanent+Marker|Roboto' rel='stylesheet' type='text/css' />
+    <!--
+      @license
+      MyFonts Webfont Build ID 2983090, 2015-03-02T14:50:19-0500
+
+      The fonts listed in this notice are subject to the End User License
+      Agreement(s) entered into by the website owner. All other parties are
+      explicitly restricted from using the Licensed Webfonts(s).
+
+      You may obtain a valid license at the URLs below.
+
+      Webfont: Eurostile-Bla by URW++
+      URL: http://www.myfonts.com/fonts/urw/eurostile/t-black/
+      Copyright: Copyright 2010 URW++ Design &amp; Development Hamburg
+      Licensed pageviews: 10,000
+
+
+      License: http://www.myfonts.com/viewlicense?type=web&buildid=2983090
+
+      © 2015 MyFonts Inc
+    -->
+    <link rel="stylesheet" type="text/css" href="{% static 'css/MyFontsWebFontKit.css' %}" />
+    <link rel="stylesheet" type="text/css" href="{% static 'css/foundation/foundation.min.css' %}" />
+    <link rel="stylesheet" type="text/css" href="{% static 'css/common.css' %}" />
 
     <!-- script includes -->
     <!-- <script type="text/javascript" src="{% static 'script/jquery-1.11.1.min.js' %}"></script> -->
