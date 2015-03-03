@@ -283,15 +283,16 @@ span.footer-copyleft {
 }
 
 #content {
-  background-color: #383838;
   padding: 15px 20px;
+  padding-top: 30px;
 }
 
 #content-main {
+  max-width: 600px;
 }
 
 #content-side {
-  padding-left: 50px;
+  padding-left: 20px;
 }
 
 #footer {

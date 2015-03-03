@@ -57,9 +57,6 @@
     <a class="reverse-color sidebar" href="#{{ t.slug }}">{{ t.title }}</a>
     {% endfor %}
 </div>
-<hr>
-
-{% include "blog/templates/template_pagination.html" with paginator=paginator pages=pagination_side %}
 {% endblock %}
 
 {% block footer %}

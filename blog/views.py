@@ -132,12 +132,6 @@ def ideas(request):
         per_page=lib.PAGINATION_IDEAS_PER_PAGE,
         page_lead=lib.PAGINATION_IDEAS_PAGES_TO_LEAD,
     )
-    pagination_side = lib.create_pagination(
-        queryset=idea_list,
-        current_page=page,
-        per_page=lib.PAGINATION_IDEAS_PER_PAGE,
-        page_lead=0,
-    ),
 
     for idea in idea_list:
         idea.description = idea.truncate()
@@ -158,7 +152,6 @@ def ideas(request):
         'ideas': ideas_on_page,
         'paginator': paginator,
         'pagination': pagination_main,
-        'pagination_side': pagination_side,
         'recent_thoughts': recent_thoughts,
     }
     return render(request, 'blog/ideas.html', context)
