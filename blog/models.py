@@ -27,7 +27,7 @@ class Idea(models.Model):
     description = models.TextField()
     order = models.IntegerField(unique=True)
     icon = models.ImageField(
-        upload_to=os.path.basename(paths.MEDIA_IMAGE_ROOT),
+        upload_to=paths.MEDIA_IMAGE_DIR,
         blank=False,
         null=False,
     )
@@ -85,8 +85,7 @@ class Idea(models.Model):
         super(Idea, self).save(*args, **kwargs)
 
         if self.icon:
-            filename = os.path.join(paths.MEDIA_ROOT, self.icon.name)
-            lib.resize_image(filename, new_size=lib.IDEA_PREVIEW_IMAGE_SIZE)
+            lib.resize_image(self.icon.name, new_size=lib.IDEA_PREVIEW_IMAGE_SIZE)
 
     def __unicode__(self):
         return self.name
@@ -112,7 +111,7 @@ class Thought(models.Model):
     date_published = models.DateTimeField(auto_now_add=True)
     date_edited = models.DateTimeField(auto_now=True, auto_now_add=True)
     preview = models.ImageField(
-        upload_to=os.path.basename(paths.MEDIA_IMAGE_ROOT),
+        upload_to=paths.MEDIA_IMAGE_DIR,
         blank=True,
         null=True,
     )
@@ -205,8 +204,7 @@ class Thought(models.Model):
         if not self.preview:
             return
 
-        filename = os.path.join(paths.MEDIA_ROOT, self.preview.name)
-        lib.resize_image(filename, lib.THOUGHT_PREVIEW_IMAGE_SIZE)
+        lib.resize_image(self.preview.name, lib.THOUGHT_PREVIEW_IMAGE_SIZE)
 
 
 ###############################################################################
@@ -221,7 +219,7 @@ class Highlight(models.Model):
     url = models.URLField(max_length=1000, blank=False, null=False)
     date_published = models.DateTimeField(auto_now_add=True)
     icon = models.ImageField(
-        upload_to=os.path.basename(paths.MEDIA_IMAGE_ROOT),
+        upload_to=paths.MEDIA_IMAGE_DIR,
         blank=True,
         null=True,
     )
@@ -248,5 +246,4 @@ class Highlight(models.Model):
 
         # crop picture if necessary
         if self.icon:
-            filename = os.path.join(paths.MEDIA_ROOT, self.icon.name)
-            lib.resize_image(filename, lib.HIGHLIGHT_PREVIEW_IMAGE_SIZE)
+            lib.resize_image(self.icon.name, lib.HIGHLIGHT_PREVIEW_IMAGE_SIZE)
