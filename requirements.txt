@@ -1,9 +1,11 @@
 bleach==1.4.1
+boto==2.36.0
 dj-database-url==0.3.0
 Django==1.7.1
 django-appconf==1.0.1
 django-imagekit==3.2.5
 django-postgrespool==0.3.0
+django-storages==1.1.8
 gunicorn==19.2.1
 html5lib==0.999
 pilkit==1.1.12

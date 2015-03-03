@@ -42,6 +42,7 @@ INSTALLED_APPS = (
 
     # 3rd party applications
     'imagekit',
+    'storages',  # for media/static files serving from AWS S3
 
     # user applications
     'blog',
@@ -89,19 +90,25 @@ USE_TZ = True
 # Flash Message settings
 MESSAGE_STORAGE = 'django.contrib.messages.storage.session.SessionStorage'
 
+# AWS S3 storage for media and static files
+AWS_QUERYSTRING_AUTH = False
+AWS_ACCESS_KEY_ID = os.environ['AWS_ACCESS_KEY_ID']
+AWS_SECRET_ACCESS_KEY = os.environ['AWS_SECRET_ACCESS_KEY']
+AWS_STORAGE_BUCKET_NAME = os.environ['S3_BUCKET_NAME']
+
+# media files
+MEDIA_URL = 'http://%s.s3.amazonaws.com/media/' % AWS_STORAGE_BUCKET_NAME
+MEDIA_ROOT = MEDIA_URL
+
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.7/howto/static-files/
-STATIC_URL = '/' + os.path.basename(paths.STATIC_DIR) + '/'
-STATIC_ROOT = paths.STATIC_DIR
+STATIC_URL = 'http://%s.s3.amazonaws.com/media/' % AWS_STORAGE_BUCKET_NAME
+STATIC_ROOT = STATIC_URL
 
 # Simplified static file serving
 # https://warehouse.python.org/project/whitenoise/
-
-STATICFILES_STORAGE = 'whitenoise.django.GzipManifestStaticFilesStorage'
-
-# media files
-MEDIA_URL = '/' + os.path.basename(paths.MEDIA_DIR) + '/'
-MEDIA_ROOT = paths.MEDIA_DIR
+#STATICFILES_STORAGE = 'whitenoise.django.GzipManifestStaticFilesStorage'
+DEFAULT_FILE_STORAGE = "storages.backends.s3boto.S3BotoStorage"
 
 # Template dirs
 # keep global, non-app specific template files here
