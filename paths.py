@@ -11,12 +11,12 @@ TEMPLATE_DIR = os.path.join(BASE_DIR, "template")
 STATIC_DIR = os.path.join(BASE_DIR, "static")
 IMAGE_DIR = os.path.join(STATIC_DIR, "images")
 
-MEDIA_ROOT = "media"
-MEDIA_IMAGE_ROOT = os.path.join(MEDIA_ROOT, "images")
-MEDIA_VIDEO_ROOT = os.path.join(MEDIA_ROOT, "videos")
-MEDIA_FILE_ROOT = os.path.join(MEDIA_ROOT, "files")
+MEDIA_DIR = "media"
+MEDIA_IMAGE_DIR = "images"
+MEDIA_VIDEO_DIR = "videos"
+MEDIA_FILE_DIR = "files"
 
-MEDIA_DIR = os.path.join(BASE_DIR, MEDIA_ROOT)
-MEDIA_IMAGE_DIR = os.path.join(BASE_DIR, MEDIA_IMAGE_ROOT)
-MEDIA_VIDEO_DIR = os.path.join(BASE_DIR, MEDIA_VIDEO_ROOT)
-MEDIA_FILE_DIR = os.path.join(BASE_DIR, MEDIA_FILE_ROOT)
+MEDIA_ROOT = os.path.join(BASE_DIR, MEDIA_DIR)
+MEDIA_IMAGE_ROOT = os.path.join(BASE_DIR, MEDIA_DIR, MEDIA_IMAGE_DIR)
+MEDIA_VIDEO_ROOT = os.path.join(BASE_DIR, MEDIA_DIR, MEDIA_VIDEO_DIR)
+MEDIA_FILE_ROOT = os.path.join(BASE_DIR, MEDIA_DIR, MEDIA_FILE_DIR)

@@ -98,7 +98,10 @@ AWS_STORAGE_BUCKET_NAME = os.environ['S3_BUCKET_NAME']
 
 # media files
 MEDIA_URL = 'http://%s.s3.amazonaws.com/media/' % AWS_STORAGE_BUCKET_NAME
-paths.MEDIA_DIR = MEDIA_URL
+MEDIA_ROOT = MEDIA_URL
+paths.MEDIA_ROOT = MEDIA_URL
+
+DEFAULT_FILE_STORAGE = "storages.backends.s3boto.S3BotoStorage"
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.7/howto/static-files/
@@ -106,7 +109,6 @@ STATIC_URL = 'http://%s.s3.amazonaws.com/static/' % AWS_STORAGE_BUCKET_NAME
 STATIC_ROOT = '/static/'
 paths.STATIC_DIR = STATIC_URL
 
-DEFAULT_FILE_STORAGE = "storages.backends.s3boto.S3BotoStorage"
 STATICFILES_STORAGE = "storages.backends.s3boto.S3BotoStorage"
 
 # Template dirs

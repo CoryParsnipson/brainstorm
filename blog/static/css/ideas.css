@@ -72,6 +72,7 @@
  * sidebar styles
  *****************************************************************************/
 table.recent-ideas-list {
+  width: 100%;
 }
 
 table.recent-ideas-list tr:nth-of-type(odd) {

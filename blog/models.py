@@ -1,4 +1,3 @@
-import os
 import datetime
 
 from imagekit.models import ImageSpecField

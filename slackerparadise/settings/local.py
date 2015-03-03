@@ -95,8 +95,8 @@ STATIC_URL = '/' + os.path.basename(paths.STATIC_DIR) + '/'
 STATIC_ROOT = paths.STATIC_DIR
 
 # media files
-MEDIA_URL = '/' + os.path.basename(paths.MEDIA_DIR) + '/'
-MEDIA_ROOT = paths.MEDIA_DIR
+MEDIA_URL = '/' + paths.MEDIA_DIR + '/'
+MEDIA_ROOT = paths.MEDIA_ROOT
 
 # Template dirs
 # keep global, non-app specific template files here

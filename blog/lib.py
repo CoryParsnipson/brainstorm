@@ -163,13 +163,13 @@ def upload_file(f):
     # determine correct folder depending on content_type
     content_category = f.content_type.split("/")[0]
     if content_category == "image":
-        file_dir = paths.MEDIA_IMAGE_ROOT
+        file_dir = paths.MEDIA_IMAGE_DIR
     elif content_category == "video":
-        file_dir = paths.MEDIA_VIDEO_ROOT
+        file_dir = paths.MEDIA_VIDEO_DIR
     else:
-        file_dir = paths.MEDIA_FILE_ROOT
+        file_dir = paths.MEDIA_FILE_DIR
 
-    file_url = os.path.join(file_dir, generate_upload_filename(f.name))
+    file_url = os.path.join(paths.MEDIA_ROOT, file_dir, generate_upload_filename(f.name))
 
     # enforce file size limit
     if f.size > MAX_UPLOAD_SIZE:
@@ -210,6 +210,8 @@ def resize_image(filename, new_size=THOUGHT_PREVIEW_IMAGE_SIZE):
         value in THOUGHT_PREVIEW_IMAGE_SIZE. The new image will
         be saved over the existing filename.
     """
+    filename = os.path.join(paths.MEDIA_ROOT, filename)
+
     #f = default_storage.open(filename, 'r')
     #image = Image.open(f)
     image = Image.open(filename)
