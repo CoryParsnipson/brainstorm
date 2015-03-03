@@ -8,6 +8,8 @@ DATABASE_DIR = os.path.join(BASE_DIR, "database")
 
 TEMPLATE_DIR = os.path.join(BASE_DIR, "template")
 
+STATIC_ROOT = "static"
+
 STATIC_DIR = os.path.join(BASE_DIR, "static")
 IMAGE_DIR = os.path.join(STATIC_DIR, "images")
 
