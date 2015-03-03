@@ -271,7 +271,7 @@ span.footer-copyleft {
  *****************************************************************************/
 .row {
   /* override foundation style */
-  max-width: 950px;
+  max-width: 1000px;
 }
 
 #header {
@@ -291,7 +291,7 @@ span.footer-copyleft {
 }
 
 #content-side {
-  padding-left: 20px;
+  padding-left: 50px;
 }
 
 #footer {
@@ -614,7 +614,7 @@ p.title {
 }
 
 p.subtitle {
-  color: #B7B7B7;
+  color: #888888;
   font-size: 9pt;
   margin-bottom: 0.5rem;
 }
