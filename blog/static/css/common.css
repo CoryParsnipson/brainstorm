@@ -133,7 +133,7 @@ h3 {
 div#footer h3 {
   color: #A80505;
   font-size: 20pt;
-  font-family: 'Eurostile Black';
+  font-family: 'Eurostile-Black';
   text-transform: uppercase;
   text-shadow: 0px 0px 1px rgba(168, 5, 5, 0.3);
 }
@@ -236,7 +236,7 @@ img.right {
  *****************************************************************************/
 span.logo {
   color: #A80505;
-  font-family: 'Eurostile Black';
+  font-family: 'Eurostile-Black';
   font-size: 24pt;
   line-height: 26pt;
   text-transform: uppercase;
@@ -253,7 +253,7 @@ a.logo {
 span.footer-copyleft {
   color: #A80505;
   font-size: 8pt;
-  font-family: 'Eurostile Black';
+  font-family: 'Eurostile-Black';
   font-weight: bold;
 }
 
@@ -613,7 +613,7 @@ p.subtitle {
 
 .placeholder {
   font-size: 110pt;
-  font-family: 'Eurostile Black';
+  font-family: 'Eurostile-Black';
   position: absolute;
   left: 0;
   right: 0;
