@@ -108,7 +108,7 @@ paths.MEDIA_VIDEO_ROOT = os.path.join(paths.MEDIA_ROOT, paths.MEDIA_VIDEO_DIR)
 paths.MEDIA_FILE_ROOT = os.path.join(paths.MEDIA_ROOT, paths.MEDIA_FILE_DIR)
 
 #DEFAULT_FILE_STORAGE = "storages.backends.s3boto.S3BotoStorage"
-DEFAULT_FILE_STORAGE = "slackerparadise.s3utils.MediaS3BotoStorage"
+DEFAULT_FILE_STORAGE = "slackerparadise.blog.s3utils.MediaS3BotoStorage"
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.7/howto/static-files/
@@ -117,7 +117,7 @@ STATIC_ROOT = '/' + paths.STATIC_ROOT + '/'
 paths.STATIC_DIR = STATIC_URL
 
 #STATICFILES_STORAGE = "storages.backends.s3boto.S3BotoStorage"
-STATICFILES_STORAGE = "slackerparadise.s3utils.StaticS3BotoStorage"
+STATICFILES_STORAGE = "slackerparadise.blog.s3utils.StaticS3BotoStorage"
 
 # Template dirs
 # keep global, non-app specific template files here
