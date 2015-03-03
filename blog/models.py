@@ -205,7 +205,7 @@ class Thought(models.Model):
         if not self.preview:
             return
 
-        filename = os.path.join(paths.MEDIA_IMAGE_ROOT, self.preview.name)
+        filename = os.path.join(paths.MEDIA_ROOT, self.preview.name)
         lib.resize_image(filename, lib.THOUGHT_PREVIEW_IMAGE_SIZE)
 
 
@@ -248,5 +248,5 @@ class Highlight(models.Model):
 
         # crop picture if necessary
         if self.icon:
-            filename = os.path.join(paths.MEDIA_IMAGE_ROOT, self.icon.name)
+            filename = os.path.join(paths.MEDIA_ROOT, self.icon.name)
             lib.resize_image(filename, lib.HIGHLIGHT_PREVIEW_IMAGE_SIZE)
