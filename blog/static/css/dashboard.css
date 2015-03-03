@@ -19,6 +19,7 @@
 }
 
 #content-main {
+  max-width: initial;
   padding: 15px 20px;
   padding-bottom: 2rem;
 }

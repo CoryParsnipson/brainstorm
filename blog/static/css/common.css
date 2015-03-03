@@ -271,7 +271,7 @@ span.footer-copyleft {
  *****************************************************************************/
 .row {
   /* override foundation style */
-  max-width: 1000px;
+  max-width: 950px;
 }
 
 #header {
