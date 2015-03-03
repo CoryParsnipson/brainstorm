@@ -98,8 +98,13 @@ AWS_STORAGE_BUCKET_NAME = os.environ['S3_BUCKET_NAME']
 
 # media files
 MEDIA_URL = 'http://%s.s3.amazonaws.com/media/' % AWS_STORAGE_BUCKET_NAME
-MEDIA_ROOT = MEDIA_URL
+MEDIA_ROOT = paths.MEDIA_DIR
+
+# rebuild media paths
 paths.MEDIA_ROOT = MEDIA_URL
+paths.MEDIA_IMAGE_ROOT = os.path.join(paths.MEDIA_ROOT, paths.MEDIA_IMAGE_DIR)
+paths.MEDIA_VIDEO_ROOT = os.path.join(paths.MEDIA_ROOT, paths.MEDIA_VIDEO_DIR)
+paths.MEDIA_FILE_ROOT = os.path.join(paths.MEDIA_ROOT, paths.MEDIA_FILE_DIR)
 
 DEFAULT_FILE_STORAGE = "storages.backends.s3boto.S3BotoStorage"
 
