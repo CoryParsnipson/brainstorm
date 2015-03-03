@@ -85,7 +85,7 @@ class Idea(models.Model):
         super(Idea, self).save(*args, **kwargs)
 
         if self.icon:
-            filename = os.path.join(paths.MEDIA_IMAGE_ROOT, self.icon.name)
+            filename = os.path.join(paths.MEDIA_ROOT, self.icon.name)
             lib.resize_image(filename, new_size=lib.IDEA_PREVIEW_IMAGE_SIZE)
 
     def __unicode__(self):
