@@ -6,6 +6,7 @@ from imagekit.processors import Crop
 
 from django.db import models
 from django.db.models import Max
+from django.core.files.storage import default_storage
 from django.contrib.auth.models import User
 
 import paths
