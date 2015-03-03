@@ -150,6 +150,15 @@ p {
   text-align: left;
 }
 
+.eurostile-black {
+  font-family: 'Eurostile-Black';
+  font-weight: normal;
+}
+
+span.big {
+  text-transform: uppercase;
+}
+
 /******************************************************************************
  * blockquote and cite styles
  *****************************************************************************/
