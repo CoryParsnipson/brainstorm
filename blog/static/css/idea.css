@@ -60,13 +60,13 @@ div.thought-history {
   width: 100%;
   display: block;
   color: #F8C118;
-  background-color: #494949;
+  background-color: #383838;
   text-align: center;
   padding-top: 5px;
 }
 
 #footer ul[class^=small-block-grid] a:hover {
-  color: #FFFFFF;
+  color: #DEDEDE;
 }
 
 #footer ul[class^=small-block-grid] img {
