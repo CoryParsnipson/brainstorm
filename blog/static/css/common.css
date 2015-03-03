@@ -288,11 +288,18 @@ span.footer-copyleft {
 }
 
 #content-main {
-  max-width: 600px;
+  max-width: 630px;
+  padding-right: 30px;
+}
+
+/* "small" in foundation size */
+@media (max-width: 40em) {
+  #content-main {
+    padding-right: 0;
+  }
 }
 
 #content-side {
-  padding-left: 30px;
 }
 
 #footer {
@@ -307,8 +314,15 @@ span.footer-copyleft {
   padding: 10px;
 }
 
-#footer div.side {
-  padding-left: 20px;
+#footer div.main {
+  padding-right: 30px;
+}
+
+/* "small" in foundation size */
+@media (max-width: 40em) {
+  #footer div.main {
+    padding-right: 10px;
+  }
 }
 
 /******************************************************************************
