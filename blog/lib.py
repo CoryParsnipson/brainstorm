@@ -7,6 +7,7 @@ import PIL
 from PIL import Image
 import bleach
 
+from django.core.files.storage import default_storage
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 import paths
@@ -209,7 +210,8 @@ def resize_image(filename, new_size=THOUGHT_PREVIEW_IMAGE_SIZE):
         value in THOUGHT_PREVIEW_IMAGE_SIZE. The new image will
         be saved over the existing filename.
     """
-    image = Image.open(filename)
+    f = default_storage.open(filename, 'r')
+    image = Image.open(f)
     image_size = image.size
 
     if image_size[0] < new_size[0] or image_size[1] < new_size[1]:

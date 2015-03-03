@@ -6,7 +6,6 @@ from imagekit.processors import Crop
 
 from django.db import models
 from django.db.models import Max
-from django.core.files.storage import default_storage
 from django.contrib.auth.models import User
 
 import paths
@@ -86,7 +85,7 @@ class Idea(models.Model):
         super(Idea, self).save(*args, **kwargs)
 
         if self.icon:
-            filename = os.path.join(paths.MEDIA_DIR, self.icon.name)
+            filename = os.path.join(paths.MEDIA_IMAGE_ROOT, self.icon.name)
             lib.resize_image(filename, new_size=lib.IDEA_PREVIEW_IMAGE_SIZE)
 
     def __unicode__(self):
@@ -206,7 +205,7 @@ class Thought(models.Model):
         if not self.preview:
             return
 
-        filename = os.path.join(paths.MEDIA_DIR, self.preview.name)
+        filename = os.path.join(paths.MEDIA_IMAGE_ROOT, self.preview.name)
         lib.resize_image(filename, lib.THOUGHT_PREVIEW_IMAGE_SIZE)
 
 
@@ -249,5 +248,5 @@ class Highlight(models.Model):
 
         # crop picture if necessary
         if self.icon:
-            filename = os.path.join(paths.MEDIA_DIR, self.icon.name)
+            filename = os.path.join(paths.MEDIA_IMAGE_ROOT, self.icon.name)
             lib.resize_image(filename, lib.HIGHLIGHT_PREVIEW_IMAGE_SIZE)

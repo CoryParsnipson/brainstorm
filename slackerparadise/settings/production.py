@@ -107,6 +107,7 @@ paths.STATIC_DIR = STATIC_URL
 
 # Simplified static file serving
 DEFAULT_FILE_STORAGE = "storages.backends.s3boto.S3BotoStorage"
+STATICFILES_STORAGE = "storages.backends.s3boto.S3BotoStorage"
 
 # Template dirs
 # keep global, non-app specific template files here
