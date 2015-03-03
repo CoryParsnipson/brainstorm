@@ -31,6 +31,10 @@ div.idea-banner h1 {
 /******************************************************************************
  * thought block grid styles
  *****************************************************************************/
+ul.small-stories {
+  margin: 0;
+}
+
 ul.small-stories div.img-placeholder {
   width: 50%;
   float: left;
@@ -38,7 +42,6 @@ ul.small-stories div.img-placeholder {
 }
 
 ul.small-stories li {
-  width: 99%; /* for some reason, padding causes li items to be larger than 100% even with border-box */
   padding: 15px 10px;
 }
 
