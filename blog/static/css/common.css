@@ -15,8 +15,8 @@
 }
 
 body {
-  color: #FFFFFF;
-  background-color: #494949;
+  color: #DEDEDE;
+  background-color: #383838;
   font-family: Roboto, "San-Serif";
   font-size: 11pt;
   text-align: justify;
@@ -87,11 +87,11 @@ a {
 }
 
 a:hover {
-  color: #FFFFFF;
+  color: #DEDEDE;
 }
 
 a.reverse-color {
-  color: #FFFFFF;
+  color: #DEDEDE;
 }
 
 a.reverse-color:hover {
@@ -103,7 +103,7 @@ a.reverse-color:hover {
 }
 
 #footer a:hover {
-  color: #FFFFFF;
+  color: #FFFFFF;;
 }
 
 a.sidebar {
@@ -209,7 +209,7 @@ blockquote.pull-quote {
 
 blockquote.pull-quote:before {
   content: "\201C";
-  color: #FFFFFF;
+  color: #DEDEDE;
   font-family: "Permanent Marker";
   font-size: 32pt;
   display: block;
@@ -220,7 +220,7 @@ blockquote.pull-quote:before {
 
 blockquote.pull-quote:after {
   content: "\201D";
-  color: #FFFFFF;
+  color: #DEDEDE;
   font-family: "Permanent Marker";
   font-size: 32pt;
   display: block;
@@ -283,7 +283,6 @@ span.footer-copyleft {
 }
 
 #content {
-  color: #FFFFFF;
   background-color: #383838;
   padding: 15px 20px;
 }
@@ -415,7 +414,7 @@ ul.messages .success input[type="submit"]:hover, ul.messages .success input[type
  * list styles - pagination
  *****************************************************************************/
 ul.pagination {
-  color: #FFFFFF;
+  color: #DEDEDE;
   font-size: 10pt;
   list-style-type: none;
   margin: 2rem auto;
