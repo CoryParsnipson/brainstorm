@@ -1,12 +1,12 @@
 import os
 import re
+import io
 import random
 import datetime
 
 import PIL
 from PIL import Image
 import bleach
-
 from django.core.files.storage import default_storage
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
@@ -212,9 +212,11 @@ def resize_image(filename, new_size=THOUGHT_PREVIEW_IMAGE_SIZE):
     """
     filename = os.path.join(paths.MEDIA_ROOT, filename)
 
-    #f = default_storage.open(filename, 'r')
-    #image = Image.open(f)
-    image = Image.open(filename)
+    # retrieve file
+    fp = default_storage.open(filename)
+    img_fp = io.BytesIO(fp.read())
+
+    image = Image.open(img_fp)
     image_size = image.size
 
     if image_size[0] < new_size[0] or image_size[1] < new_size[1]:

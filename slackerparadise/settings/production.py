@@ -30,7 +30,6 @@ TEMPLATE_DEBUG = True
 
 ALLOWED_HOSTS = ['*']
 
-
 # Application definition
 INSTALLED_APPS = (
     'django.contrib.admin',
@@ -106,7 +105,6 @@ paths.MEDIA_IMAGE_ROOT = os.path.join(paths.MEDIA_ROOT, paths.MEDIA_IMAGE_DIR)
 paths.MEDIA_VIDEO_ROOT = os.path.join(paths.MEDIA_ROOT, paths.MEDIA_VIDEO_DIR)
 paths.MEDIA_FILE_ROOT = os.path.join(paths.MEDIA_ROOT, paths.MEDIA_FILE_DIR)
 
-#DEFAULT_FILE_STORAGE = "storages.backends.s3boto.S3BotoStorage"
 DEFAULT_FILE_STORAGE = "slackerparadise.s3utils.MediaS3BotoStorage"
 
 # Static files (CSS, JavaScript, Images)
@@ -115,7 +113,6 @@ STATIC_URL = 'http://%s.s3.amazonaws.com/static/' % AWS_STORAGE_BUCKET_NAME
 STATIC_ROOT = '/' + paths.STATIC_ROOT + '/'
 paths.STATIC_DIR = STATIC_URL
 
-#STATICFILES_STORAGE = "storages.backends.s3boto.S3BotoStorage"
 STATICFILES_STORAGE = "slackerparadise.s3utils.StaticS3BotoStorage"
 
 # Template dirs
