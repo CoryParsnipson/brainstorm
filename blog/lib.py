@@ -244,8 +244,8 @@ def resize_image(filename, new_size=THOUGHT_PREVIEW_IMAGE_SIZE):
 
     # save file back to same url
     out_img = io.BytesIO()
-    #cropped_image.save(out_img, 'PNG')
-    #fp.write(out_img.read())
+    cropped_image.save(out_img, 'PNG')
+    fp.write(out_img.read())
     fp.close()
 
 

@@ -245,4 +245,5 @@ class Highlight(models.Model):
 
         # crop picture if necessary
         if self.icon:
-            lib.resize_image(self.icon.name, lib.HIGHLIGHT_PREVIEW_IMAGE_SIZE)
+            pass
+            #lib.resize_image(self.icon.name, lib.HIGHLIGHT_PREVIEW_IMAGE_SIZE)
