@@ -27,6 +27,12 @@
   z-index: 10;
 }
 
+.catalog td div.overlay a {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
 .catalog td:hover div.overlay {
   background-color: rgba(0, 0, 0, 0.75);
 }
