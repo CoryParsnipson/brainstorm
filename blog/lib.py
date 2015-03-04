@@ -241,7 +241,12 @@ def resize_image(filename, new_size=THOUGHT_PREVIEW_IMAGE_SIZE):
     crop_box = (offset_x, offset_y, offset_x + new_size[0], offset_y + new_size[1])
 
     cropped_image = image.crop(crop_box)
-    cropped_image.save(filename, 'PNG')
+
+    # save file back to same url
+    out_img = io.BytesIO()
+    cropped_image.save(out_img, 'PNG')
+    fp.write(out_img.read())
+    fp.close()
 
 
 def create_pagination(queryset, current_page, per_page=PAGINATION_THOUGHTS_PER_PAGE, page_lead=PAGINATION_THOUGHTS_PAGES_TO_LEAD):
