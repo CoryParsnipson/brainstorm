@@ -212,9 +212,14 @@ def resize_image(filename, new_size=THOUGHT_PREVIEW_IMAGE_SIZE):
     """
     filename = os.path.join(paths.MEDIA_ROOT, filename)
 
+    import pdb
+    pdb.set_trace()
+
     # retrieve file
     fp = default_storage.open(filename)
     img_fp = io.BytesIO(fp.read())
+
+    pdb.set_trace()
 
     image = Image.open(img_fp)
     image_size = image.size
