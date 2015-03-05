@@ -43,12 +43,11 @@
                     <td class="expand" colspan="3">{{ thought_form.title }}</td>
                 </tr>
                 <tr>
-                    <th>{{ thought_form.preview.label_tag }}</th>
                     <th>{{ thought_form.slug.label_tag }}</th>
+                    <th>{{ thought_form.preview.label_tag }}</th>
                     <th>{{ thought_form.idea.label_tag }}</th>
                 </tr>
                 <tr>
-                    <td class="expand">{{ thought_form.preview }}</td>
                     <td class="shrink">
                         {% if thought_form.slug.value %}
                         <p id="id_slug">{{ thought_form.slug.value }}</p>
@@ -56,6 +55,7 @@
                         {{ thought_form.slug }}
                         {% endif %}
                     </td>
+                    <td class="expand">{{ thought_form.preview }}</td>
                     <td class="shrink">
                         {% if not idea %}
                         {{ thought_form.idea }}

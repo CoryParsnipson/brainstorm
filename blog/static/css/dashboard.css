@@ -228,8 +228,8 @@ table.form-thought #id_title {
 }
 
 table.form-thought #id_slug {
-  width: 150px;
-  color: #B7B7B7;
+  width: 180px;
+  color: #777777;
   cursor: default;
   font-weight: bold;
 }
