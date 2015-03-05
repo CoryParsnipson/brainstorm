@@ -41,6 +41,13 @@ ul.small-stories div.img-placeholder {
   margin-right: 10px;
 }
 
+@media (max-width: 40rem) {
+  ul.small-stories div.img-placeholder {
+    width: 100%;
+    float: initial;
+  }
+}
+
 ul.small-stories li {
   padding: 15px 10px;
 }
