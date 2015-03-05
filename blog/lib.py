@@ -247,7 +247,7 @@ def resize_image(filename, new_size=THOUGHT_PREVIEW_IMAGE_SIZE):
     out_img = io.BytesIO()
     cropped_image.save(out_img, 'PNG')
     image_file = default_storage.open(filename, 'w')
-    image_file.write(out_img.read())
+    image_file.write(out_img.getvalue())
     image_file.close()
 
     #fp.write(out_img.read())
