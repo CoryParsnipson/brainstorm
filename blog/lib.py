@@ -215,8 +215,7 @@ def resize_image(filename, new_size=THOUGHT_PREVIEW_IMAGE_SIZE):
     if not os.environ['DJANGO_SETTINGS_MODULE'].endswith('production'):
         filename = os.path.join(paths.MEDIA_ROOT, filename)
 
-    image_file = default_storage.open(filename)
-    fp = io.BytesIO(image_file.read())
+    fp = io.BytesIO(default_storage.open(filename).read())
 
     image = Image.open(fp)
     image_size = image.size
@@ -247,6 +246,7 @@ def resize_image(filename, new_size=THOUGHT_PREVIEW_IMAGE_SIZE):
     # save file back to same url
     out_img = io.BytesIO()
     cropped_image.save(out_img, 'PNG')
+    image_file = default_storage.open(filename, 'w')
     image_file.write(out_img.read())
     image_file.close()
 
