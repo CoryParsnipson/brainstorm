@@ -212,19 +212,11 @@ def resize_image(filename, new_size=THOUGHT_PREVIEW_IMAGE_SIZE):
         be saved over the existing filename.
     """
     # retrieve file
-    orig = filename
-    if os.environ['DJANGO_SETTINGS_MODULE'].endswith('production'):
-        filename = os.path.join(paths.MEDIA_DIR, filename)
-        key = boto.connect_s3().get_bucket(os.environ['S3_BUCKET_NAME']).get_key(filename)
-
-        fp = io.BytesIO()
-        key.get_file(fp)
-        fp.seek(0)
-    else:
+    if not os.environ['DJANGO_SETTINGS_MODULE'].endswith('production'):
         filename = os.path.join(paths.MEDIA_ROOT, filename)
-        fp = io.BytesIO(default_storage.open(filename).read())
 
-    fp = io.BytesIO(default_storage.open(orig).read())
+    image_file = default_storage.open(filename)
+    fp = io.BytesIO(image_file.read())
 
     image = Image.open(fp)
     image_size = image.size
@@ -254,16 +246,12 @@ def resize_image(filename, new_size=THOUGHT_PREVIEW_IMAGE_SIZE):
 
     # save file back to same url
     out_img = io.BytesIO()
+    cropped_image.save(out_img, 'PNG')
+    image_file.write(out_img.read())
+    image_file.close()
 
-    if os.environ['DJANGO_SETTINGS_MODULE'].endswith('production'):
-        key = boto.connect_s3().get_bucket(os.environ['S3_BUCKET_NAME']).new_key(filename)
-        key.get_file(out_img)
-
-        key.set_contents_from_string(out_img.getvalue())
-    else:
-        cropped_image.save(out_img, 'PNG')
-        fp.write(out_img.read())
-        fp.close()
+    #fp.write(out_img.read())
+    #fp.close()
 
 
 def create_pagination(queryset, current_page, per_page=PAGINATION_THOUGHTS_PER_PAGE, page_lead=PAGINATION_THOUGHTS_PAGES_TO_LEAD):
