@@ -250,9 +250,6 @@ def resize_image(filename, new_size=THOUGHT_PREVIEW_IMAGE_SIZE):
     image_file.write(out_img.getvalue())
     image_file.close()
 
-    #fp.write(out_img.read())
-    #fp.close()
-
 
 def create_pagination(queryset, current_page, per_page=PAGINATION_THOUGHTS_PER_PAGE, page_lead=PAGINATION_THOUGHTS_PAGES_TO_LEAD):
     """ given a queryset or list, return a dict of items to construct a
