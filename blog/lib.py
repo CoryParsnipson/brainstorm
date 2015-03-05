@@ -224,7 +224,7 @@ def resize_image(filename, new_size=THOUGHT_PREVIEW_IMAGE_SIZE):
         filename = os.path.join(paths.MEDIA_ROOT, filename)
         fp = io.BytesIO(default_storage.open(filename).read())
 
-    fp = default_storage.open(os.path.join(paths.MEDIA_DIR, orig)).read()
+    fp = io.BytesIO(default_storage.open(os.path.join(paths.MEDIA_DIR, orig)).read())
 
     image = Image.open(fp)
     image_size = image.size
