@@ -29,7 +29,7 @@
             </a>
         </div>
 
-        <p style="display: block;">
+        <p>
             {{ thought.content|safe }}
             <a href="{% url 'thought-page' thought.idea.slug thought.slug %}">(Read more)</a>
         </p>

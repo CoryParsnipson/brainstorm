@@ -613,6 +613,12 @@ ul.small-stories div.img-placeholder {
   margin-bottom: 5px;
 }
 
+ul.small-stories div.img-placeholder a {
+  height: 100%;
+  width: 100%;
+  display: block;
+}
+
 ul.small-stories div.img-placeholder span.placeholder {
   color: #A80505;
   font-size: 110pt;
