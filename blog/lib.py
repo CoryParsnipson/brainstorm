@@ -7,6 +7,7 @@ import datetime
 import PIL
 from PIL import Image
 import bleach
+import boto
 from django.core.files.storage import default_storage
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
@@ -212,14 +213,16 @@ def resize_image(filename, new_size=THOUGHT_PREVIEW_IMAGE_SIZE):
     """
     filename = os.path.join(paths.MEDIA_ROOT, filename)
 
-    import pdb
-    pdb.set_trace()
-
     # retrieve file
-    fp = default_storage.open(filename)
-    img_fp = io.BytesIO(fp.read())
+    fp = io.BytesIO()
 
-    pdb.set_trace()
+    if os.environ['DJANGO_SETTINGS_MODULE'].endswith('production'):
+        key = boto.connect_s3().get_bucket(os.environ['S3_BUCKET_NAME']).get_key(filename)
+        key.get_file(fp)
+    else:
+        fp = default_storage.open(filename)
+
+    img_fp = io.BytesIO(fp.read())
 
     image = Image.open(img_fp)
     image_size = image.size
@@ -249,9 +252,16 @@ def resize_image(filename, new_size=THOUGHT_PREVIEW_IMAGE_SIZE):
 
     # save file back to same url
     out_img = io.BytesIO()
-    cropped_image.save(out_img, 'PNG')
-    fp.write(out_img.read())
-    fp.close()
+
+    if os.environ['DJANGO_SETTINGS_MODULE'].endswith('production'):
+        key = boto.connect_s3().get_bucket(os.environ['S3_BUCKET_NAME']).new_key(filename)
+        key.get_file(out_img)
+
+        key.set_contents_from_string(out_img.getvalue())
+    else:
+        cropped_image.save(out_img, 'PNG')
+        fp.write(out_img.read())
+        fp.close()
 
 
 def create_pagination(queryset, current_page, per_page=PAGINATION_THOUGHTS_PER_PAGE, page_lead=PAGINATION_THOUGHTS_PAGES_TO_LEAD):

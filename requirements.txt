@@ -1,3 +1,6 @@
+amqp==1.4.6
+anyjson==0.3.3
+billiard==3.3.0.19
 bleach==1.4.1
 boto==2.36.0
 dj-database-url==0.3.0
@@ -8,9 +11,11 @@ django-postgrespool==0.3.0
 django-storages==1.1.8
 gunicorn==19.2.1
 html5lib==0.999
+kombu==3.0.24
 pilkit==1.1.12
 Pillow==2.7.0
 psycopg2==2.6
+pytz==2014.10
 selenium==2.44.0
 six==1.9.0
 SQLAlchemy==0.9.8
