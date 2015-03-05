@@ -211,15 +211,14 @@ def resize_image(filename, new_size=THOUGHT_PREVIEW_IMAGE_SIZE):
         value in THOUGHT_PREVIEW_IMAGE_SIZE. The new image will
         be saved over the existing filename.
     """
-    filename = os.path.join(paths.MEDIA_ROOT, filename)
-
     # retrieve file
     fp = io.BytesIO()
-
     if os.environ['DJANGO_SETTINGS_MODULE'].endswith('production'):
+        filename = os.path.join(paths.MEDIA_DIR, paths.MEDIA_IMAGE_DIR, filename)
         key = boto.connect_s3().get_bucket(os.environ['S3_BUCKET_NAME']).get_key(filename)
         key.get_file(fp)
     else:
+        filename = os.path.join(paths.MEDIA_ROOT, filename)
         fp = default_storage.open(filename)
 
     img_fp = io.BytesIO(fp.read())
