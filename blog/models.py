@@ -225,7 +225,7 @@ class Highlight(models.Model):
 
     # non field members
     allowed_tags = [
-        'p', 'br', 'em', 'strong', 'blockquote', 'quote', 'hr'
+        'br', 'em', 'strong', 'blockquote', 'quote', 'hr'
     ]
 
     def truncate(self, max_length=250, allowed_tags=None, strip=True):

@@ -10,6 +10,17 @@
 
 {% for highlight in highlights %}
 <div class="showcase-splitter">
+    <div class="img-placeholder">
+        <a href="{{ highlight.url }}" target="_blank">
+            {% if highlight.icon %}
+            <img src="{{ highlight.icon.url }}">
+            {% else %}
+            <span class="img-placeholder">
+                <span class="big">HIGHLIGHT</span><br>OF THE DAY
+            </span>
+            {% endif %}
+        </a>
+    </div>
     <div class="highlight">
         <p class="title"><a href="{{ highlight.url }}" target="_blank">{{ highlight.title }}</a></p>
         <p class="subtitle"><a href="{{ highlight.url }}" target="_blank">{{ highlight.url }}</a></p>
@@ -18,19 +29,6 @@
             <p class="date">{{ highlight.date_published|date:"F j, Y" }}</p>
         </div>
     </div>
-    <a href="{{ highlight.url }}" target="_blank">
-        <div class="img-placeholder"
-        {% if highlight.icon %}
-        style="background-image: url('{{ highlight.icon.url }}');"
-        {% else %}
-        style="background-color: #F8C118;"
-        {% endif %}
-        >
-        {% if not highlight.icon %}
-        <span class="img-placeholder"><span class="big">HIGHLIGHT</span><br>OF THE DAY</span>
-        {% endif %}
-        </div>
-    </a>
 </div>
 {% empty %}
 <p>There are no highlights in the database.</p>

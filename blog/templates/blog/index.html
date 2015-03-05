@@ -7,33 +7,43 @@
 
 {% block content %}
 <div class="row">
-    {% if latest_thought %}
-    <a href="{% url 'thought-page' latest_thought.idea.slug latest_thought.slug %}">
-        <div class="large-12 columns showcase"
-        {% if latest_thought.preview %}
-        style="background-image: url('{{ latest_thought.preview.url }}');"
-        {% else %}
-        style="background-image: url('{{ latest_thought.idea.icon.url }}');"
-        {% endif %}
-        >
-
-        <div class="text-overlay">
-            <div>
-                <p class="idea">{{ latest_thought.idea }}</p>
-                <p class="title" title="{{ latest_thought.slug }}">{{ latest_thought.title }}</p>
-                <p class="subtitle">by {{ latest_thought.author }} on {{ latest_thought.date_published|date:"F j, Y" }}</p>
-                <p>{{ latest_thought.content|safe }}</p>
-            </div>
-        </div>
-        </div>
-    </a>
-    {% else %}
+    {% if not latest_thought %}
         <p class="title">No content yet!</p>
         <p>There are no thoughts in the database yet!!</p>
+    {% else %}
+        <div class="large-12 columns showcase">
+            <a href="{% url 'thought-page' latest_thought.idea.slug latest_thought.slug %}">
+                {% if latest_thought.preview %}
+                <img src="{{ latest_thought.preview.url }}">
+                {% else %}
+                <img src="{{ latest_thought.idea.icon.url }}">
+                {% endif %}
+
+                <div class="text-overlay">
+                    <div>
+                        <p class="idea">{{ latest_thought.idea }}</p>
+                        <p class="title" title="{{ latest_thought.slug }}">{{ latest_thought.title }}</p>
+                        <p class="subtitle">by {{ latest_thought.author }} on {{ latest_thought.date_published|date:"F j, Y" }}</p>
+                        <p>{{ latest_thought.content|safe }}</p>
+                    </div>
+                </div>
+            </a>
+        </div>
     {% endif %}
 
     {% if highlight %}
     <div class="large-12 columns showcase-splitter">
+        <div class="img-placeholder">
+            <a href="{{ highlight.url }}" target="_blank">
+                {% if highlight.icon %}
+                <img src="{{ highlight.icon.url }}">
+                {% else %}
+                <span class="img-placeholder">
+                    <span class="big">HIGHLIGHT</span><br>OF THE DAY
+                </span>
+                {% endif %}
+            </a>
+        </div>
         <div class="highlight">
             <p class="highlight-category"><a class="reverse-color" href="{% url 'highlights' %}">Highlights from the web</a></p>
             <p class="title"><a href="{{ highlight.url }}" target="_blank">{{ highlight.title }}</a></p>
@@ -45,22 +55,8 @@
                 {% endif %}
             </div>
         </div>
-        <a href="{{ highlight.url }}" target="_blank">
-            <div class="img-placeholder"
-            {% if highlight.icon %}
-            style="background-image: url('{{ highlight.icon.url }}');"
-            {% else %}
-            style="background-color: #F8C118;"
-            {% endif %}
-            >
-            {% if not highlight.icon %}
-            <span class="img-placeholder"><span class="big">HIGHLIGHT</span><br>OF THE DAY</span>
-            {% endif %}
-            </div>
-        </a>
     </div>
     {% endif %}
-</div>
 
 {% if latest_thoughts %}
 <hr class="story-separator">
@@ -69,18 +65,13 @@
 <ul class="medium-block-grid-2 small-block-grid-1 small-stories">
     {% for thought in latest_thoughts %}
     <li>
-        <a href="{% url 'thought-page' thought.idea.slug thought.slug %}">
-            <div class="img-placeholder"
-            {% if thought.preview %}
-            style="background-image: url({{ thought.preview.url }});"
-            {% endif %}
-            >
-
-            {% if not thought.preview %}
-            <span class="placeholder">SP</span>
-            {% endif %}
-            </div>
-        </a>
+        <div class="img-placeholder" {% if thought.preview %}style="background-image: url({{ thought.preview.url }})" {% endif %}>
+            <a href="{% url 'thought-page' thought.idea.slug thought.slug %}">
+                {% if not thought.preview %}
+                <span class="placeholder">SP</span>
+                {% endif %}
+            </a>
+        </div>
 
         <p class="idea"><a class="reverse-color" href="{% url 'idea-page' thought.idea.slug %}">{{ thought.idea }}</a></p>
         <p class="title">
@@ -93,4 +84,5 @@
 </ul>
 
 {% include "blog/templates/template_pagination.html" with paginator=paginator pages=pagination %}
+</div>
 {% endblock %}

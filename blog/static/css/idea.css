@@ -59,6 +59,10 @@ div.thought-history {
 /******************************************************************************
  * footer styles
  *****************************************************************************/
+#footer ul[class^=small-block-grid] li.empty {
+  width: 100%;
+}
+
 #footer ul[class^=small-block-grid] a {
   width: 100%;
   display: block;
