@@ -137,7 +137,8 @@ def ideas(request):
         idea.description = idea.truncate()
 
     # create more recent ideas list
-    recent_ideas = [t['idea'] for t in Thought.objects.all().order_by('-date_published').values('idea')]
+    thoughts = Thought.objects.filter(is_draft=False, is_trash=False)
+    recent_ideas = [t['idea'] for t in thoughts.order_by('-date_published').values('idea')]
     recent_ideas = lib.remove_duplicates(recent_ideas)[:lib.NUM_RECENT_IDEAS]
 
     recent_thoughts = []
