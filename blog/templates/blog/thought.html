@@ -97,45 +97,52 @@
 
 {% block footer %}
 <h3>More in <a href="{% url 'idea-page' thought.idea.slug %}">{{ thought.idea.name }}</a>:</h3>
-<table class="thought-nav">
-    <tbody>
-    <tr><th>Previous</th></tr>
-    <tr>
-        <td>
-            {% if prev_thoughts and prev_thoughts.0 %}
-            <a href="{% url 'thought-page' prev_thoughts.0.idea.slug prev_thoughts.0.slug %}">
-                <img src="{{ prev_thoughts.0.get_preview|default_if_none:prev_thoughts.0.idea.icon.url }}">
-                <p>{{ prev_thoughts.0.title }}</p>
-            </a>
-            {% else %}
-            <div class="nav-placeholder">
-                <p>&nbsp;</p>
-                <span>SP</span>
-            </div>
-            {% endif %}
-        </td>
-    </tr>
-    </tbody>
-</table>
-
-<table class="thought-nav">
-    <tbody>
-    <tr><th>Next</th></tr>
-    <tr>
-        <td>
-            {% if next_thoughts and next_thoughts.0 %}
-            <a href="{% url 'thought-page' next_thoughts.0.idea.slug next_thoughts.0.slug %}">
-                <img src="{{ next_thoughts.0.get_preview|default_if_none:next_thoughts.0.idea.icon.url }}">
-                <p>{{ next_thoughts.0.title }}</p>
-            </a>
-            {% else %}
-            <div class="nav-placeholder">
-                <p>&nbsp;</p>
-                <span>SP</span>
-            </div>
-            {% endif %}
-        </td>
-    </tr>
-    </tbody>
-</table>
+<ul class="small-block-grid-1 medium-block-grid-2">
+    <li>
+        <table class="thought-nav">
+            <tbody>
+            <tr><th>Previous</th></tr>
+            <tr>
+                <td>
+                    {% if prev_thoughts and prev_thoughts.0 %}
+                    <div class="nav-placeholder" style="background-image: url('{{ prev_thoughts.0.get_preview|default_if_none:prev_thoughts.0.idea.icon.url }}')">
+                        <a href="{% url 'thought-page' prev_thoughts.0.idea.slug prev_thoughts.0.slug %}">
+                            <p>{{ prev_thoughts.0.title }}</p>
+                        </a>
+                    </div>
+                    {% else %}
+                    <div class="nav-placeholder">
+                        <p>&nbsp;</p>
+                        <span>SP</span>
+                    </div>
+                    {% endif %}
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </li>
+    <li>
+        <table class="thought-nav">
+            <tbody>
+            <tr><th>Next</th></tr>
+            <tr>
+                <td>
+                    {% if next_thoughts and next_thoughts.0 %}
+                    <div class="nav-placeholder" style="background-image: url('{{ next_thoughts.0.get_preview|default_if_none:next_thoughts.0.idea.icon.url }}')">
+                        <a href="{% url 'thought-page' next_thoughts.0.idea.slug next_thoughts.0.slug %}">
+                            <p>{{ next_thoughts.0.title }}</p>
+                        </a>
+                    </div>
+                    {% else %}
+                    <div class="nav-placeholder">
+                        <p>&nbsp;</p>
+                        <span>SP</span>
+                    </div>
+                    {% endif %}
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </li>
+</ul>
 {% endblock %}

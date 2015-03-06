@@ -41,7 +41,14 @@ table.thought-nav p {
 
 div.nav-placeholder {
   height: 140px;
+  background-size: cover;
   background-color: #494949;
+}
+
+div.nav-placeholder a {
+  height: 100%;
+  width: 100%;
+  display: block;
 }
 
 div.nav-placeholder span {
@@ -60,7 +67,7 @@ div.nav-placeholder span {
  * thought footer navigation styles
  *****************************************************************************/
 div#footer table.thought-nav {
-  width: 50%;
+  width: 100%;
   border-spacing: 0;
   float: left;
   padding: 0 1rem;
