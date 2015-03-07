@@ -79,6 +79,7 @@ div.text-overlay p:not([class]) {
     position: relative;
     margin-left: 0;
   }
+}
 
 .showcase-splitter span.img-placeholder {
   color: #A80505;
