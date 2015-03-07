@@ -79,7 +79,6 @@ div.text-overlay p:not([class]) {
     position: relative;
     margin-left: 0;
   }
-}
 
 .showcase-splitter span.img-placeholder {
   color: #A80505;
@@ -109,6 +108,12 @@ div.text-overlay p:not([class]) {
   min-height: 150px;
   padding: 5px 7px;
   margin-right: 203px;
+}
+
+@media (max-width: 40rem) {
+  .showcase-splitter div.highlight {
+    margin-right: 0;
+  }
 }
 
 .showcase-splitter div.highlight p:last-of-type {
