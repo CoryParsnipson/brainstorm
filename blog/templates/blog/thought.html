@@ -15,9 +15,9 @@
 </p>
 
 {% if thought.preview %}
-<img src="{{ thought.preview.url }}">
+<img class="preview" src="{{ thought.preview.url }}">
 {% else %}
-<img src="{{ thought.idea.icon.url }}">
+<img class="preview" src="{{ thought.idea.icon.url }}">
 {% endif %}
 
 <div class="content">{{ thought.content|safe }}</div>

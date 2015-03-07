@@ -20,7 +20,7 @@ body {
   font-family: Roboto, "San-Serif";
   font-size: 11pt;
   text-align: justify;
-  line-height: 1.2rem;
+  line-height: 1.7rem;
 }
 
 .group {
@@ -242,25 +242,19 @@ img.right {
 /******************************************************************************
  * logo styles
  *****************************************************************************/
-span.logo {
+a.logo {
   color: #A80505;
+  line-height: 27pt;
   font-family: 'Eurostile-Black';
   font-size: 24pt;
-  line-height: 26pt;
   text-transform: uppercase;
-  vertical-align: middle;
-}
-
-a.logo {
-  width: 100%;
-  display: block;
-  padding: 0.2rem 10px;
 }
 
 span.footer-copyleft {
   color: #A80505;
   font-size: 8pt;
   font-family: 'Eurostile-Black';
+  line-height: 1.2rem;
   font-weight: bold;
 }
 
@@ -340,6 +334,7 @@ ul li {
  * list styles - navigation
  *****************************************************************************/
 nav {
+  line-height: 1.2rem;
   float: right;
 }
 
@@ -637,6 +632,7 @@ ul.small-stories div.img-placeholder span.placeholder {
 p.idea {
   color: #FFFFFF;
   font-size: 8pt;
+  line-height: 1.2rem;
   text-transform: uppercase;
   margin: 0;
 }
@@ -645,12 +641,14 @@ p.title {
   color: #F8C118;
   font-size: 14pt;
   text-align: left;
+  line-height: 1.2rem;
   margin-bottom: 0.1em;
 }
 
 p.subtitle {
   color: #888888;
   font-size: 9pt;
+  line-height: 1.2rem;
   margin-bottom: 0.5rem;
 }
 

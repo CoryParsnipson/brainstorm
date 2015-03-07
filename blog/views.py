@@ -50,8 +50,8 @@ def index(request):
     highlight_cut = False
     if highlight:
         highlight = highlight[0]
-        highlight.description = highlight.truncate(max_length=180)
-        highlight_cut = len(highlight.description) > 180
+        highlight.description = highlight.truncate(max_length=90)
+        highlight_cut = len(highlight.description) > 90
 
     context = {
         'page_title': 'Home',
