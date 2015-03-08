@@ -27,15 +27,23 @@
     {% csrf_token %}
     <table>
         <tbody>
-        <tr><td class="shrink">{{ highlight_form.title.label_tag }}</td></tr>
-        <tr><td>{{ highlight_form.title }}</td></tr>
-        <tr><td class="shrink">{{ highlight_form.icon.label_tag }}</td></tr>
-        <tr><td>{{ highlight_form.icon }}</td></tr>
-        <tr><td class="shrink">{{ highlight_form.url.label_tag }}</td></tr>
-        <tr><td>{{ highlight_form.url }}</td></tr>
-        <tr><td>{{ highlight_form.description }}</td></tr>
         <tr>
-            <td>
+            <td class="shrink">{{ highlight_form.title.label_tag }}</td>
+            <td>{{ highlight_form.title }}</td>
+        </tr>
+        <tr>
+            <td class="shrink">{{ highlight_form.icon.label_tag }}</td>
+            <td>{{ highlight_form.icon }}</td>
+        </tr>
+        <tr>
+            <td class="shrink">{{ highlight_form.url.label_tag }}</td>
+            <td>{{ highlight_form.url }}</td>
+        </tr>
+        <tr>
+            <td colspan="2">{{ highlight_form.description }}</td>
+        </tr>
+        <tr>
+            <td colspan="2">
                 {% if 'highlight' in request.GET %}
                 <input id="id_submit" class="publish" type="submit" value="Edit">
                 {% else %}

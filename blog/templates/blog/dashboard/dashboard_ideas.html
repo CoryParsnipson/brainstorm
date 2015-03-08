@@ -5,54 +5,12 @@
 <div class="row">
     <div class="large-12 columns">
         <h2>Manage Ideas</h2>
-        <hr>
+        <hr class="header">
 
-        <!-- new idea form section -->
-        <h3>Create New Idea</h3>
-        <form action="{% url 'forms-idea' %}" method="post" enctype="multipart/form-data">
-            {% csrf_token %}
-            <input type="hidden" name="next" value="{% url 'dashboard-ideas' %}" />
-            <table class="add-idea">
-                <tbody>
-                <tr>
-                    <td class="shrink">{{ idea_form.name.label_tag }}</td>
-                    <td>{{ idea_form.name }}</td>
-                </tr>
-                <tr>
-                    <td class="shrink">{{ idea_form.slug.label_tag }}</td>
-                    <td class="shrink">{{ idea_form.slug }}</td>
-                </tr>
-                <tr>
-                    <td class="shrink">{{ idea_form.icon.label_tag }}</td>
-                    <td>{{ idea_form.icon }}</td>
-                </tr>
-                <tr>
-                    <td class="shrink">{{ idea_form.description.label_tag }}</td>
-                    <td class="expand">{{ idea_form.description }}</td>
-                </tr>
-                <tr>
-                    <td class="shrink"></td>
-                    <td id="submit-cell" class="shrink" colspan="3">
-                        {% if "i" in request.GET %}
-                        <input id="id_submit" type="submit" value="Edit">
-                        {% else %}
-                        <input id="id_submit" type="submit" value="Create">
-                        {% endif %}
-                    </td>
-                </tr>
-                </tbody>
-            </table>
-        </form>
-
-        <hr>
-        <!-- manage ideas form -->
-        <h3>Idea List</h3>
         <table class="editable">
             <tr>
                 <td>#</td>
-                <td>Name</td>
-                <td>Slug</td>
-                <td>Description</td>
+                <td></td>
                 <td></td>
                 <td></td>
                 <td></td>
@@ -66,11 +24,10 @@
                     {% csrf_token %}
 
                     <td class="shrink">{{ idea.order }}</td>
-                    <td class="shrink">
-                        <a href="{% url 'dashboard-thoughts' %}?idea_slug={{ idea.slug }}">{{ idea.name }}</a>
+                    <td class="expand">
+                        <a href="{% url 'dashboard-thoughts' %}?idea_slug={{ idea.slug }}">{{ idea.name }}</a><br>
+                        {{ idea.description }}
                     </td>
-                    <td class="shrink">{{ idea.slug }}</td>
-                    <td>{{ idea.description }}</td>
                     <td class="shrink"><input type="submit" name="order_up" value="v"></td>
                     <td class="shrink"><input type="submit" name="order_down" value="^"></td>
                     <td class="shrink">
@@ -85,4 +42,43 @@
         {% include "blog/templates/template_pagination.html" with paginator=paginator pages=pagination %}
     </div>
 </div>
+{% endblock %}
+
+{% block side %}
+<!-- new idea form section -->
+<h3>Create New Idea</h3>
+<form action="{% url 'forms-idea' %}" method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    <input type="hidden" name="next" value="{% url 'dashboard-ideas' %}" />
+    <table class="add-idea">
+        <tbody>
+        <tr>
+            <td class="shrink">{{ idea_form.name.label_tag }}</td>
+            <td>{{ idea_form.name }}</td>
+        </tr>
+        <tr>
+            <td class="shrink">{{ idea_form.slug.label_tag }}</td>
+            <td class="shrink">{{ idea_form.slug }}</td>
+        </tr>
+        <tr>
+            <td class="shrink">{{ idea_form.icon.label_tag }}</td>
+            <td>{{ idea_form.icon }}</td>
+        </tr>
+        <tr>
+            <td class="shrink">{{ idea_form.description.label_tag }}</td>
+            <td class="expand">{{ idea_form.description }}</td>
+        </tr>
+        <tr>
+            <td></td>
+            <td id="submit-cell" class="shrink">
+                {% if "i" in request.GET %}
+                <input id="id_submit" type="submit" value="Edit">
+                {% else %}
+                <input id="id_submit" type="submit" value="Create">
+                {% endif %}
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</form>
 {% endblock %}
