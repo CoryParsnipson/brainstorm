@@ -50,9 +50,9 @@
                 <a class="logo" href="{% url 'dashboard' %}"><span class="logo">Slacker Paradise</span></a>
             </div>
 
-            <div class="large-4 medium-4 small-12 columns end">
+            <div class="large-6 medium-6 small-12 columns end">
                 <nav role="navigation">
-                    <ul class="right">
+                    <ul>
                         <li><a href="{% url 'index' %}">Site Index</a></li>
                         <li class="divider"></li>
                         <li><a href="{% url 'dashboard' %}">Dashboard</a></li>
@@ -63,9 +63,26 @@
             </div>
         </div>
     </div>
+    <div id="header-2">
+        <div class="row">
+            <div class="small-12 columns dashboard-nav">
+                <nav role="navigation">
+                    <ul class="group">
+                        <li><a href="{% url 'dashboard-highlights' %}">Highlights</a></li>
+                        <li class="divider">&nbsp;</li>
+                        <li><a class="highlight" href="{% url 'dashboard-author' %}">Post New Thought</a></li>
+                        <li><a href="{% url 'dashboard-ideas' %}">Content</a></li>
+                        <li><a href="{% url 'dashboard-drafts' %}">Drafts</a></li>
+                        <li class="divider">&nbsp;</li>
+                        <li><a href="{% url 'dashboard-trash' %}">Trash</a></li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </div>
 
     <div id="content" class="row">
-        <div id="content-main" class="large-10 medium-10 small-10 columns">
+        <div id="content-main" class="large-8 medium-8 small-12 columns">
             {% if messages %}
             <!-- flash message area -->
             <ul class="messages">
@@ -82,17 +99,8 @@
         </div>
 
         <!-- side content -->
-        <div id="content-side" class="large-2 medium-2 small-2 columns">
+        <div id="content-side" class="large-4 medium-4 small-12 columns">
             {% block side %}
-            <ul>
-                <li><a href="{% url 'dashboard-highlights' %}">Highlights</a></li>
-                <li class="divider"></li>
-                <li><a class="highlight" href="{% url 'dashboard-author' %}">Post New Thought</a></li>
-                <li><a href="{% url 'dashboard-ideas' %}">Content</a></li>
-                <li><a href="{% url 'dashboard-drafts' %}">Drafts</a></li>
-                <li class="divider"></li>
-                <li><a href="{% url 'dashboard-trash' %}">Trash</a></li>
-            </ul>
             {% endblock %}
         </div>
     </div>

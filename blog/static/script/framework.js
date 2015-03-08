@@ -114,6 +114,7 @@ function initialize_tinymce(editor_id, selector, clear_button_id, revert_button_
     plugins: 'advlist anchor autoresize autosave charmap code contextmenu emoticons hr image link media paste preview save searchreplace tabfocus table textcolor visualblocks wordcount',
     autoresize_min_height: 300,
     autoresize_max_height: 600,
+    width: "100%",
     content_css: css_sheets,
     resize: false,
     menubar: false,

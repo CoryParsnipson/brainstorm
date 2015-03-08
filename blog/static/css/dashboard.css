@@ -7,32 +7,11 @@
 /******************************************************************************
  * custom grid styles
  *****************************************************************************/
-.row {
-  max-width: 100%;
-}
-
-#content {
-  min-height: 80%;
-  position: relative;
-  padding: 0;
-  z-index: 0;
-}
-
-#content-main {
-  max-width: initial;
-  padding: 15px 20px;
-  padding-bottom: 2rem;
-}
-
-#content-side {
-  color: #383838;
-  background-color: #F8C118;
-  text-align: left;
-  position: absolute;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  padding: 0;
+#header-2 {
+  background-color: #D1A51D;
+  -webkit-box-shadow: 0px 5px 10px -1px rgba(0,0,0,0.25);
+  -moz-box-shadow: 0px 5px 10px -1px rgba(0,0,0,0.25);
+  box-shadow-bottom: 0px 5px 10px -1px rgba(0,0,0,0.25);
 }
 
 #footer {
@@ -43,24 +22,62 @@
 /******************************************************************************
  * hyperlink styles
  *****************************************************************************/
-#content-side a {
+//#content-side a {
   color: #A80505;
   display: block;
 }
 
-#content-side a:hover {
+//#content-side a:hover {
   color: #FFFFFF;
   background-color: #EBB110;
 }
 
-#content-side a.highlight {
+//#content-side a.highlight {
   color: #F8C118;
-  background-color: #A80505;
+  background-color: #C22817;
+  //background-color: #A80505;
   padding-top: 20px;
   padding-bottom: 20px;
 }
 
-#content-side a.highlight:hover {
+//#content-side a.highlight:hover {
+  color: #FFFFFF;
+  background-color: #E85D5D;
+}
+
+/******************************************************************************
+ * dashboard navigation
+ *****************************************************************************/
+.dashboard-nav nav {
+  width: 100%;
+}
+
+.dashboard-nav nav ul {
+  width: 100%;
+}
+
+.dashboard-nav nav ul li.divider {
+  width: 0;
+  border-right: 1px dashed #755904;
+  padding: 6px 0;
+  margin: 4px 5px;
+}
+
+.dashboard-nav nav ul li a {
+  color: #A80505;
+}
+
+.dashboard-nav nav ul li a:hover {
+  color: #FFFFFF;
+  background-color: #F8C118;
+}
+
+.dashboard-nav nav ul li a.highlight {
+  color: #F8C118;
+  background-color: #C22817;
+}
+
+.dashboard-nav nav ul li a.highlight:hover {
   color: #FFFFFF;
   background-color: #E85D5D;
 }
@@ -200,6 +217,7 @@ table.add-idea #id_submit:hover {
  *****************************************************************************/
 table.form-thought {
   max-width: 950px;
+  min-width: 100px;
   margin: 0 auto;
   margin-bottom: 20px;
   border-collapse: collapse;
