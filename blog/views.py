@@ -226,8 +226,12 @@ def thought_detail(request, idea_slug=None, thought_slug=None):
 ###############################################################################
 @login_required(login_url='index')
 def dashboard(request, *args, **kwargs):
+    # collect dashboard stats
+    stats = dashboard_stats()
+
     context = {
         'page_title': 'Main',
+        'stats': stats,
     }
     return render(request, 'blog/dashboard/dashboard.html', context)
 
@@ -304,7 +308,7 @@ def dashboard_ideas(request):
             # sanitize query parameter
             idea_slug = lib.slugify(request.GET['i'])
             idea_form_instance = Idea.objects.get(slug=idea_slug)
-        except Idea.DoesNotExist as e:
+        except Idea.DoesNotExist:
             dne_msg = "Cannot edit Idea '%s'" % idea_slug
             messages.add_message(request, messages.ERROR, dne_msg)
     idea_form = IdeaForm(instance=idea_form_instance)
@@ -331,6 +335,8 @@ def dashboard_thoughts(request):
             thoughts = Thought.objects.filter(idea=current_idea, is_draft=False, is_trash=False)
         except Idea.DoesNotExist:
             thoughts = []
+    else:
+        thoughts = Thought.objects.filter(is_draft=False, is_trash=False)
 
     page = request.GET.get('p')
     paginator, thoughts_on_page = lib.create_paginator(
@@ -345,10 +351,14 @@ def dashboard_thoughts(request):
         page_lead=lib.PAGINATION_DASHBOARD_THOUGHTS_PAGES_TO_LEAD,
     )
 
+    # collect dashboard stats
+    stats = dashboard_stats()
+
     context = {
         'page_title': 'Manage Thoughts',
         'thoughts': thoughts_on_page,
         'idea': current_idea,
+        'stats': stats,
         'paginator': paginator,
         'pagination': pagination,
     }
@@ -406,6 +416,7 @@ def dashboard_drafts(request):
         'drafts': drafts_on_page,
         'paginator': paginator,
         'pagination': pagination,
+        'stats': dashboard_stats(),
     }
     return render(request, 'blog/dashboard/dashboard_drafts.html', context)
 
@@ -438,6 +449,7 @@ def dashboard_trash(request):
         'trash': trash_on_page,
         'paginator': paginator,
         'pagination': pagination,
+        'stats': dashboard_stats(),
     }
     return render(request, 'blog/dashboard/dashboard_trash.html', context)
 
@@ -501,8 +513,8 @@ def dashboard_backend(request):
         except ValidationError as e:
             messages.add_message(request, messages.ERROR, e.message)
     elif 'order_up' in request.POST or 'order_down' in request.POST:
+        err_msg = None
         try:
-            err_msg = None
             idea_slug = lib.slugify(request.POST['idea'])
             idea = Idea.objects.get(slug=idea_slug)
 
@@ -660,6 +672,21 @@ def thought_delete(thought_slug):
     except Thought.DoesNotExist:
         return False
     return True
+
+
+def dashboard_stats():
+    """ compile statistics from database and return a dictionary object.
+
+        Stat keys:
+
+    """
+    stats = {
+        'thought_count': Thought.objects.filter(is_draft=False, is_trash=False).count(),
+        'draft_count': Thought.objects.filter(is_draft=True, is_trash=False).count(),
+        'trash_count': Thought.objects.filter(is_trash=True).count(),
+        'idea_count': Idea.objects.all().count(),
+    }
+    return stats
 
 
 ###############################################################################

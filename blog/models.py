@@ -207,7 +207,7 @@ class Thought(models.Model):
 
 
 ###############################################################################
-# Link Model
+# Highlight Model
 ###############################################################################
 class Highlight(models.Model):
     """ On the front page, there is a small section under the product showcase
@@ -246,3 +246,26 @@ class Highlight(models.Model):
         # crop picture if necessary
         if self.icon:
             lib.resize_image(self.icon.name, lib.HIGHLIGHT_PREVIEW_IMAGE_SIZE)
+
+
+###############################################################################
+# Task (To Do list items)
+###############################################################################
+class Task(models.Model):
+    """ To do list that you see in the dashboard. This shouldn't be public
+    """
+    content = models.TextField(max_length=1500)
+
+
+###############################################################################
+# Task (To Do list items)
+###############################################################################
+class Note(models.Model):
+    """ written notes for things to research or write about. These also
+        shouldn't be public. The idea is to write down information that
+        isn't coherent enough for a thought, but are good seeds for
+        later. Notes should be able to be linked to ideas, but it is
+        not necessary, as they shouldn't represent fully formed thoughts.
+    """
+    idea = models.ForeignKey(Idea, blank=True, null=True)
+    content = models.TextField()

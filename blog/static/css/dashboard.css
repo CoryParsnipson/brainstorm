@@ -65,6 +65,48 @@
 }
 
 /******************************************************************************
+ * dashboard main page styles
+ *****************************************************************************/
+.stat-box {
+  font-size: 10pt;
+  line-height: 1.2rem;
+  background-color: #444444;
+  padding: 5px 10px;
+  margin-bottom: 2rem;
+}
+
+.stat-box p {
+  border-top: 4px solid #555555;
+  background-color: #363738;
+  padding: 2px 5px 5px 5px;
+  margin-bottom: 0;
+}
+
+.stat-box p.blue {
+  border-top: 4px solid #565B99;
+}
+
+.stat-box p.green {
+  border-top: 4px solid #50804A;
+}
+
+.stat-box p.yellow {
+  border-top: 4px solid #F8C118;
+}
+
+.stat-box p.orange {
+  border-top: 4px solid #9E763E;
+}
+
+.stat-box p.red {
+  border-top: 4px solid #BA4545;
+}
+
+.stat-box p.purple {
+  border-top: 4px solid #7A5F87;
+}
+
+/******************************************************************************
  * tinymce styles
  *****************************************************************************/
 /* this is the precise div that lets all buttons in the mcetoolbar to collapse

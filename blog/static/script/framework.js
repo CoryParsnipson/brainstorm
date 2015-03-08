@@ -107,7 +107,14 @@ tinymceFileBrowser = function (field_name, url, type, win) {
   $(file_upload).change({file_upload: $(file_upload)}, post_select);
 };
 
-function initialize_tinymce(editor_id, selector, clear_button_id, revert_button_id, css_sheets) {
+function initialize_tinymce(
+  editor_id,
+  selector,
+  clear_button_id,
+  revert_button_id,
+  css_sheets
+)
+{
   var params = {
     auto_focus: editor_id,
     selector: selector,
@@ -137,14 +144,18 @@ function initialize_tinymce(editor_id, selector, clear_button_id, revert_button_
   tinymce.init(params);
 
   // clear editor window function
-  tinymce_clear = function () {
-    tinyMCE.get(editor_id).setContent('');
-  };
-  $('#' + clear_button_id).click(tinymce_clear);
+  if (clear_button_id) {
+    tinymce_clear = function () {
+      tinyMCE.get(editor_id).setContent('');
+    };
+    $('#' + clear_button_id).click(tinymce_clear);
+  }
 
   // revert editor window function
-  tinymce_revert = function () {
-    tinyMCE.get(editor_id).setContent(original_state);
-  };
-  $('#' + revert_button_id).click(tinymce_revert);
+  if (revert_button_id) {
+    tinymce_revert = function () {
+      tinyMCE.get(editor_id).setContent(original_state);
+    };
+    $('#' + revert_button_id).click(tinymce_revert);
+  }
 }

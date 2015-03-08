@@ -1,33 +1,31 @@
 {% extends 'blog/templates/template_dashboard.html' %}
 {% load staticfiles %}
 
-{% block content %}
-<h1>{{ request.user.username }}'s Dashboard<hr class="header"></h1>
+{% block http_headers %}
+<script type="text/javascript">
+</script>
+{% endblock %}
 
-<!-- two column layout -->
-<div class="row">
-    <div class="large-6 columns">
-        <div class="dashboard-panel">
-            <p>Welcome to your dashboard, {{ request.user.username }}!</p>
-            <p>Here you can {write new thoughts} or come up with {new ideas}.</p>
-            <p>Take a look at your ideas.</p>
-            <p>Take a look at your thoughts.</p>
-        </div>
-    </div>
-    <div class="large-6 columns">
-        <div class="dashboard-panel">
-            <p>I'm in a box to the right!</p>
-            <p>View analytics. See trending thoughts/ideas.</p>
-            <p>Statistics</p>
-            <p>Moderate comments</p>
-            <p>Export/Import database</p>
-            <p>User Profile</p>
-            <p>Site Settings</p>
-        </div>
-    </div>
-</div>
+{% block content %}
+<h2>{{ request.user.username }}'s Dashboard</h2>
+<hr class="header">
+
+<p>Add Note</p>
+<p>Latest Thoughts</p>
+<p>Manage To Do List</p>
 {% endblock %}
 
 {% block side %}
-        Little cocks
+<div class="stat-box">
+    <h3>Statistics</h3>
+    <p class="purple"><a href="{% url 'dashboard-thoughts' %}">Thoughts</a>: <span class="right">{{ stats.thought_count }}</span></p>
+    <p class="blue"><a href="{% url 'dashboard-drafts' %}">Drafts</a>: <span class="right">{{ stats.draft_count }}</span></p>
+    <p class="red"><a href="{% url 'dashboard-trash' %}">Trash</a>: <span class="right">{{ stats.trash_count }}</span></p>
+    <p class="green"><a href="{% url 'dashboard-ideas' %}">Ideas</a>: <span class="right">{{ stats.idea_count }}</span></p>
+</div>
+
+<h3>To Do</h3>
+<p>List items pending</p>
+<h3>Notes</h3>
+<p>Notes pending</p>
 {% endblock %}
