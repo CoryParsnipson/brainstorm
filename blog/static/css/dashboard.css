@@ -14,16 +14,22 @@
   box-shadow-bottom: 0px 5px 10px -1px rgba(0,0,0,0.25);
 }
 
-#content-main {
-  margin-bottom: 50px;
-}
+@media (max-width: 40rem) {
+  #content-main {
+    margin-bottom: 50px;
+  }
 
-#content-side {
-  margin-bottom: 50px;
+  #content-side {
+    margin-bottom: 50px;
+  }
 }
 
 #footer {
   min-height: 1.5rem;
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
 }
 
 /******************************************************************************
