@@ -56,12 +56,13 @@
 
 @media (max-width: 40rem) {
   .dashboard-nav nav ul li.divider {
-    width: 100%;
+    width: 97%;
     height: 0px;
     border: 0;
     border-bottom: 1px dashed #755904;
     padding: 0;
-    margin: 2px 12px;
+    margin: 2px 0;
+    margin-left: 6px;
   }
 
   .dashboard-nav nav ul li {
