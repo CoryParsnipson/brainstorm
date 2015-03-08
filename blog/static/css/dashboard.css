@@ -14,35 +14,21 @@
   box-shadow-bottom: 0px 5px 10px -1px rgba(0,0,0,0.25);
 }
 
+#content-main {
+  margin-bottom: 50px;
+}
+
+#content-side {
+  margin-bottom: 50px;
+}
+
 #footer {
   min-height: 1.5rem;
   text-align: right;
-}
-
-/******************************************************************************
- * hyperlink styles
- *****************************************************************************/
-//#content-side a {
-  color: #A80505;
-  display: block;
-}
-
-//#content-side a:hover {
-  color: #FFFFFF;
-  background-color: #EBB110;
-}
-
-//#content-side a.highlight {
-  color: #F8C118;
-  background-color: #C22817;
-  //background-color: #A80505;
-  padding-top: 20px;
-  padding-bottom: 20px;
-}
-
-//#content-side a.highlight:hover {
-  color: #FFFFFF;
-  background-color: #E85D5D;
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
 }
 
 /******************************************************************************
@@ -80,28 +66,6 @@
 .dashboard-nav nav ul li a.highlight:hover {
   color: #FFFFFF;
   background-color: #E85D5D;
-}
-
-/******************************************************************************
- * content-side management menu styles
- *****************************************************************************/
-#content-side ul {
-  list-style-type: none;
-  margin: 0;
-}
-
-#content-side ul li {
-  padding: 0;
-}
-
-#content-side ul li.divider {
-  border-top: 1px dashed #656565;
-  margin: 2px 7px;
-}
-
-#content-side ul li * {
-  width: 100%;
-  padding: 10px 15px;
 }
 
 /******************************************************************************

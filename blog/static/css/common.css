@@ -45,6 +45,10 @@ hr {
   margin: 2.5rem 0;
 }
 
+hr.header {
+  margin-top: 0;
+}
+
 #content-side hr {
   margin: 2rem 0;
 }
@@ -417,6 +421,7 @@ ul.pagination {
 ul.pagination li {
   float: left;
   margin: 0;
+  margin-bottom: 9px;
   padding: 0;
 }
 

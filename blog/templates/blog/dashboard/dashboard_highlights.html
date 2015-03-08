@@ -20,7 +20,7 @@
 <div class="row">
     <div class="large-12 columns">
         <h2>Highlights on the Web</h2>
-        <hr>
+        <hr class="header">
 
         <h3>New Highlight</h3>
         <form id="link_form" action="{% url 'forms-highlight' %}" method="post"  enctype="multipart/form-data">
@@ -32,21 +32,21 @@
                 <tr>
                     <td class="shrink">{{ highlight_form.title.label_tag }}</td>
                     <td>{{ highlight_form.title }}</td>
-
+                </tr>
+                <tr>
                     <td  class="shrink">{{ highlight_form.icon.label_tag }}</td>
                     <td>{{ highlight_form.icon }}</td>
                 </tr>
                 <tr>
                     <td class="shrink">{{ highlight_form.url.label_tag }}</td>
-                    <td colspan="3">{{ highlight_form.url }}</td>
+                    <td colspan="2">{{ highlight_form.url }}</td>
                 </tr>
                 <tr>
                     <td></td>
-                    <td colspan="3">{{ highlight_form.description }}</td>
+                    <td colspan="2">{{ highlight_form.description }}</td>
                 </tr>
                 <tr>
-                    <td></td>
-                    <td colspan="3">
+                    <td colspan="2">
                         {% if 'highlight' in request.GET %}
                         <input id="id_submit" class="publish" type="submit" value="Edit">
                         {% else %}
@@ -56,52 +56,46 @@
                         <input type="submit" class="right" name="cancel" value="Cancel" />
                         <input type="button" id="button-revert" class="right" value="Revert" />
                         <input type="button" id="button-clear" class="right" value="Clear" />
-
                     </td>
                 </tr>
                 </tbody>
             </table>
         </form>
-
-        <hr>
-        <h3>Manage Highlights</h3>
-        <table class="editable">
-            <tbody>
-
-            <tr>
-                <td>Date</td>
-                <td>Title</td>
-                <td></td>
-                <td></td>
-            </tr>
-
-            {% for highlight in highlights %}
-            <tr>
-                <form action="{% url 'dashboard-backend' %}" method="post">
-                    <input type="hidden" name="highlight" value="{{ highlight.id }}" />
-                    <input type="hidden" name="next" value="{% url 'dashboard-highlights' %}" />
-                    {% csrf_token %}
-
-                    <td class="shrink">{{ highlight.date_published|date:"N j, Y" }}</td>
-                    <td class="shrink">
-                        <a href="{% url 'dashboard-highlights' %}?highlight={{ highlight.id }}">{{ highlight.title }}</a>
-                    </td>
-                    <td class="expand">
-                        {{ highlight.description }}<br>
-                        <a href="{{ highlight.url }}" target="_blank">{{ highlight.url}}</a>
-                    </td>
-                    <td class="shrink">
-                        <input type="submit" name="delete_highlight" value="x">
-                    </td>
-                </form>
-            </tr>
-            {% empty %}
-            <tr><td>There are no links in the database.</td></tr>
-            {% endfor %}
-            </tbody>
-        </table>
-
-        {% include "blog/templates/template_pagination.html" with paginator=paginator pages=pagination %}
     </div>
 </div>
+{% endblock %}
+
+{% block side %}
+<h3>Highlights</h3>
+<table class="editable">
+    <tbody>
+    <tr>
+        <td>Date</td>
+        <td></td>
+        <td></td>
+    </tr>
+
+    {% for highlight in highlights %}
+    <tr>
+        <form action="{% url 'dashboard-backend' %}" method="post">
+            <input type="hidden" name="highlight" value="{{ highlight.id }}" />
+            <input type="hidden" name="next" value="{% url 'dashboard-highlights' %}" />
+            {% csrf_token %}
+
+            <td class="shrink">{{ highlight.date_published|date:"N j, Y" }}</td>
+            <td class="expand">
+                <a href="{% url 'dashboard-highlights' %}?highlight={{ highlight.id }}">{{ highlight.title }}</a><br>
+            </td>
+            <td class="shrink">
+                <input type="submit" name="delete_highlight" value="x">
+            </td>
+        </form>
+    </tr>
+    {% empty %}
+    <tr><td>There are no links in the database.</td></tr>
+    {% endfor %}
+    </tbody>
+</table>
+
+{% include "blog/templates/template_pagination.html" with paginator=paginator pages=pagination narrow=True %}
 {% endblock %}

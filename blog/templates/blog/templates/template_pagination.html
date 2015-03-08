@@ -3,16 +3,16 @@
 <ul class="pagination group">
     <li>
         {% if pages.first == pages.current %}
-        <span class="inactive">First</span>
+        <span class="inactive">{% if not narrow %}First{% endif %}</span>
         {% else %}
-        <a href="{% url_qs p=pages.first %}">First</a>
+        <a href="{% url_qs p=pages.first %}">{% if not narrow %}First{% endif %}</a>
         {% endif %}
     </li>
     <li>
         {% if pages.prev %}
-        <a href="{% url_qs p=pages.prev %}">Prev</a>
+        <a href="{% url_qs p=pages.prev %}">{% if not narrow %}Prev{% endif %}</a>
         {% else %}
-        <span class="inactive">Prev</span>
+        <span class="inactive">{% if not narrow %}Prev{% endif %}</span>
         {% endif %}
     </li>
     {% for page in pages.pages %}
@@ -26,16 +26,16 @@
     {% endfor %}
     <li>
         {% if pages.next %}
-        <a href="{% url_qs p=pages.next %}">Next</a>
+        <a href="{% url_qs p=pages.next %}">{% if not narrow %}Next{% endif %}</a>
         {% else %}
-        <span class="inactive">Next</span>
+        <span class="inactive">{% if not narrow %}Next{% endif %}</span>
         {% endif %}
     </li>
     <li>
         {% if pages.last == pages.current %}
-        <span class="inactive">Last</span>
+        <span class="inactive">{% if not narrow %}Last{% endif %}</span>
         {% else %}
-        <a href="{% url_qs p=pages.last %}">Last</a>
+        <a href="{% url_qs p=pages.last %}">{% if not narrow %}Last{% endif %}</a>
         {% endif %}
     </li>
 </ul>

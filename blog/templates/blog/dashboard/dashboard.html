@@ -2,7 +2,7 @@
 {% load staticfiles %}
 
 {% block content %}
-<h1>{{ request.user.username }}'s Dashboard<hr></h1>
+<h1>{{ request.user.username }}'s Dashboard<hr class="header"></h1>
 
 <!-- two column layout -->
 <div class="row">
@@ -26,4 +26,8 @@
         </div>
     </div>
 </div>
+{% endblock %}
+
+{% block side %}
+        Little cocks
 {% endblock %}
