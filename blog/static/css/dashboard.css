@@ -25,10 +25,6 @@
 #footer {
   min-height: 1.5rem;
   text-align: right;
-  position: fixed;
-  left: 0;
-  right: 0;
-  bottom: 0;
 }
 
 /******************************************************************************
