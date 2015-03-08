@@ -48,6 +48,27 @@
   color: #A80505;
 }
 
+@media (max-width: 40rem) {
+  .dashboard-nav nav ul li.divider {
+    width: 100%;
+    height: 0px;
+    border: 0;
+    border-bottom: 1px dashed #755904;
+    padding: 0;
+    margin: 2px 12px;
+  }
+
+  .dashboard-nav nav ul li {
+    width: 100%;
+  }
+
+  .dashboard-nav nav ul li a {
+    width: 100%;
+    display: block;
+    float: none;
+  }
+}
+
 .dashboard-nav nav ul li a:hover {
   color: #FFFFFF;
   background-color: #F8C118;
