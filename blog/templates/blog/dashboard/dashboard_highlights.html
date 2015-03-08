@@ -17,52 +17,39 @@
 {% endblock %}
 
 {% block content %}
-<div class="row">
-    <div class="large-12 columns">
-        <h2>Highlights on the Web</h2>
-        <hr class="header">
+<h2>Highlights on the Web</h2>
+<hr class="header">
 
-        <h3>New Highlight</h3>
-        <form id="link_form" action="{% url 'forms-highlight' %}" method="post"  enctype="multipart/form-data">
-            <input type="hidden" name="id" value="{{ highlight_form.id.value|default_if_none:'' }}" />
-            <input type="hidden" name="next" value="{% url 'dashboard-highlights' %}" />
-            {% csrf_token %}
-            <table>
-                <tbody>
-                <tr>
-                    <td class="shrink">{{ highlight_form.title.label_tag }}</td>
-                    <td>{{ highlight_form.title }}</td>
-                </tr>
-                <tr>
-                    <td  class="shrink">{{ highlight_form.icon.label_tag }}</td>
-                    <td>{{ highlight_form.icon }}</td>
-                </tr>
-                <tr>
-                    <td class="shrink">{{ highlight_form.url.label_tag }}</td>
-                    <td colspan="2">{{ highlight_form.url }}</td>
-                </tr>
-                <tr>
-                    <td></td>
-                    <td colspan="2">{{ highlight_form.description }}</td>
-                </tr>
-                <tr>
-                    <td colspan="2">
-                        {% if 'highlight' in request.GET %}
-                        <input id="id_submit" class="publish" type="submit" value="Edit">
-                        {% else %}
-                        <input id="id_submit" class="publish" type="submit" value="Create">
-                        {% endif %}
+<h3>New Highlight</h3>
+<form id="link_form" action="{% url 'forms-highlight' %}" method="post"  enctype="multipart/form-data">
+    <input type="hidden" name="id" value="{{ highlight_form.id.value|default_if_none:'' }}" />
+    <input type="hidden" name="next" value="{% url 'dashboard-highlights' %}" />
+    {% csrf_token %}
+    <table>
+        <tbody>
+        <tr><td class="shrink">{{ highlight_form.title.label_tag }}</td></tr>
+        <tr><td>{{ highlight_form.title }}</td></tr>
+        <tr><td class="shrink">{{ highlight_form.icon.label_tag }}</td></tr>
+        <tr><td>{{ highlight_form.icon }}</td></tr>
+        <tr><td class="shrink">{{ highlight_form.url.label_tag }}</td></tr>
+        <tr><td>{{ highlight_form.url }}</td></tr>
+        <tr><td>{{ highlight_form.description }}</td></tr>
+        <tr>
+            <td>
+                {% if 'highlight' in request.GET %}
+                <input id="id_submit" class="publish" type="submit" value="Edit">
+                {% else %}
+                <input id="id_submit" class="publish" type="submit" value="Create">
+                {% endif %}
 
-                        <input type="submit" class="right" name="cancel" value="Cancel" />
-                        <input type="button" id="button-revert" class="right" value="Revert" />
-                        <input type="button" id="button-clear" class="right" value="Clear" />
-                    </td>
-                </tr>
-                </tbody>
-            </table>
-        </form>
-    </div>
-</div>
+                <input type="submit" class="right" name="cancel" value="Cancel" />
+                <input type="button" id="button-revert" class="right" value="Revert" />
+                <input type="button" id="button-clear" class="right" value="Clear" />
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</form>
 {% endblock %}
 
 {% block side %}

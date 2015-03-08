@@ -65,6 +65,15 @@
 }
 
 /******************************************************************************
+ * tinymce styles
+ *****************************************************************************/
+/* this is the precise div that lets all buttons in the mcetoolbar to collapse
+   for small screen layouts */
+div#mceu_29 * {
+  float: left;
+}
+
+/******************************************************************************
  * input styles
  *****************************************************************************/
 input[disabled] {
@@ -250,20 +259,15 @@ table.form-thought input[type="submit"].publish:hover {
  *****************************************************************************/
 #link_form table {
   width: 100%;
-  min-width: 500px;
-  max-width: 950px;
 }
 
 #link_form td {
-  padding: 5px 0;
-}
-
-#link_form label {
-  float: right;
+  padding: 2px 0;
 }
 
 #link_form input[type="submit"], #link_form input[type="button"] {
   margin-left: 10px;
+  margin-bottom: 10px;
 }
 
 #link_form input[type="submit"].publish {
