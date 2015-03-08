@@ -14,8 +14,7 @@
             <tbody>
             <tr>
                 <td>Date</td>
-                <td>Title</td>
-                <td>Slug</td>
+                <td>Thought</td>
                 <td></td>
                 <td></td>
                 <td></td>
@@ -28,9 +27,7 @@
                     <input type="hidden" name="thought_slug" value="{{ thought.slug }}" />
                     <td class="shrink">{{ thought.date_published|date:"N j, Y" }}</td>
                     <td>
-                        <a href="{% url 'dashboard-author' %}?thought_slug={{ thought.slug }}">{{ thought.title }}</a>
-                    </td>
-                    <td class="shrink">
+                        <a href="{% url 'dashboard-author' %}?thought_slug={{ thought.slug }}">{{ thought.title }}</a><br>
                         {{ thought.slug }}
                     </td>
                     <td class="shrink">
@@ -51,4 +48,12 @@
         {% include "blog/templates/template_pagination.html" with paginator=paginator pages=pagination %}
     </div>
 </div>
+{% endblock %}
+
+{% block footer %}
+<p>
+    <a href="{% url 'dashboard' %}">Dashboard</a> //
+    <a href="{% url 'dashboard-ideas' %}">Content</a> //
+    Thoughts // {{ request.user }}
+</p>
 {% endblock %}

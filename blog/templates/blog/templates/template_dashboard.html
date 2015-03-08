@@ -108,6 +108,9 @@
                 <p class="red"><a href="{% url 'dashboard-trash' %}">Trash</a>: <span class="right">{{ stats.trash_count }}</span></p>
                 <p class="green"><a href="{% url 'dashboard-ideas' %}">Ideas</a>: <span class="right">{{ stats.idea_count }}</span></p>
             </div>
+
+            <h3>To Do</h3>
+            <p>Latest To Do list items</p>
             {% endblock %}
         </div>
     </div>
@@ -117,7 +120,7 @@
         <div class="row">
             <div class="large-12 medium-12 small-12 columns">
                 {% block footer %}
-                Some kind of useful breadcrumb navigation bullshit.
+                <p><a href="{% url 'dashboard' %}">Dashboard</a> // {{ request.user }}</p>
                 {% endblock %}
             </div>
         </div>

@@ -94,3 +94,7 @@
 
 {% include "blog/templates/template_pagination.html" with paginator=paginator pages=pagination narrow=True %}
 {% endblock %}
+
+{% block footer %}
+<p><a href="{% url 'dashboard' %}">Dashboard</a> // Highlights // {{ request.user }}</p>
+{% endblock %}

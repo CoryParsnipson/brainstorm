@@ -41,3 +41,7 @@
 </table>
 {% include "blog/templates/template_pagination.html" with paginator=paginator pages=pagination %}
 {% endblock %}
+
+{% block footer %}
+<p><a href="{% url 'dashboard' %}">Dashboard</a> // Drafts // {{ request.user }}</p>
+{% endblock %}

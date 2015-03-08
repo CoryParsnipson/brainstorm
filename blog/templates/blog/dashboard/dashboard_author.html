@@ -87,3 +87,19 @@
 <h2>To Do</h2>
 <p>Relevant to do list items.</p>
 {% endblock %}
+
+{% block footer %}
+<p>
+    <a href="{% url 'dashboard' %}">Dashboard</a> //
+    {% if "thought_slug" in request.GET %}
+    <a href="{% url 'dashboard-ideas' %}">{{ thought_form.idea.value }}</a> //
+    <a href="{% url 'dashboard-thoughts' %}?idea_slug={{ thought_form.idea.value }}">{{ thought_form.title.value }}</a> //
+    Edit Thought //
+    {% else %}
+    <a href="{% url 'dashboard-ideas' %}">Content</a> //
+    <a href="{% url 'dashboard-thoughts' %}">Thoughts</a> //
+    Post New Thought //
+    {% endif %}
+    {{ request.user }}
+</p>
+{% endblock %}

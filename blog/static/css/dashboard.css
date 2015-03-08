@@ -24,7 +24,6 @@
 
 #footer {
   min-height: 1.5rem;
-  text-align: right;
 }
 
 /******************************************************************************
@@ -62,6 +61,19 @@
 .dashboard-nav nav ul li a.highlight:hover {
   color: #FFFFFF;
   background-color: #E85D5D;
+}
+
+#footer p {
+  color: #A80505;
+  font-size: 9pt;
+  font-weight: bold;
+  line-height: 1.2rem;
+  text-transform: uppercase;
+  margin: 0;
+}
+
+#footer p a {
+  font-weight: bold;
 }
 
 /******************************************************************************

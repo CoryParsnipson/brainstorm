@@ -82,3 +82,7 @@
     </table>
 </form>
 {% endblock %}
+
+{% block footer %}
+<p><a href="{% url 'dashboard' %}">Dashboard</a> // Content // {{ request.user }}</p>
+{% endblock %}
