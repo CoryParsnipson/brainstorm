@@ -46,7 +46,7 @@
 
 {% block side %}
 <!-- new idea form section -->
-<h3>Create New Idea</h3>
+<h3>Create New Idea</h3><hr class="header">
 <form action="{% url 'forms-idea' %}" method="post" enctype="multipart/form-data">
     {% csrf_token %}
     <input type="hidden" name="next" value="{% url 'dashboard-ideas' %}" />

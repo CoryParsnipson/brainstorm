@@ -185,8 +185,7 @@ table.add-idea #id_submit:hover {
  * thought form styles
  *****************************************************************************/
 table.form-thought {
-  max-width: 950px;
-  min-width: 100px;
+  width: 100%;
   margin: 0 auto;
   margin-bottom: 20px;
   border-collapse: collapse;
@@ -211,7 +210,6 @@ table.form-thought select {
 
 table.form-thought #id_title {
   font-weight: bold;
-  margin-bottom: 1rem;
 }
 
 table.form-thought #id_slug {
@@ -234,6 +232,7 @@ table.form-thought input[type="button"],
 table.form-thought input[type="submit"] {
   padding: 15px 25px;
   margin-left: 5px;
+  margin-bottom: 10px;
 }
 
 table.form-thought input[type="button"]:first-of-type,
@@ -244,7 +243,7 @@ table.form-thought input[type="submit"]:first-of-type {
 table.form-thought input[type="submit"].publish {
   font-weight: bold;
   color: #F8C118;
-  background-color: #A80505;
+  background-color: #C22817;
   padding-right: 4rem;
   padding-left: 4rem;
 }
@@ -252,6 +251,22 @@ table.form-thought input[type="submit"].publish {
 table.form-thought input[type="submit"].publish:hover {
   color: #FFFFFF;
   background-color: #E85D5D;
+}
+
+@media (max-width: 40rem) {
+  table.form-thought input[type="submit"].publish {
+    float: none !important;
+    margin-left: 0;
+    margin-right: 10px;
+  }
+
+  table.form-thought input[type="button"],
+  table.form-thought input[type="submit"] {
+    width: 100%;
+    float: none;
+    margin: 0;
+    margin-bottom: 3px;
+  }
 }
 
 /******************************************************************************

@@ -45,7 +45,7 @@ hr {
   margin: 2.5rem 0;
 }
 
-hr.header {
+hr.header, #content-side hr.header {
   margin-top: 0;
 }
 
