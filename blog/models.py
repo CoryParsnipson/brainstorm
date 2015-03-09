@@ -249,11 +249,27 @@ class Highlight(models.Model):
 
 
 ###############################################################################
+# Reading List
+###############################################################################
+class ReadingListItem(models.Model):
+    """ Recently read books list, favorite books, etc. Woohoo
+    """
+    title = models.CharField(max_length=150)
+    author = models.CharField(max_length=150)
+
+    favorite = models.BooleanField(default=False)
+    cover = models.ImageField(
+        upload_to=paths.MEDIA_IMAGE_DIR,
+        blank=False,
+        null=False,
+    )
+
+###############################################################################
 # Task (To Do list items)
 ###############################################################################
-class Task(models.Model):
-    """ To do list that you see in the dashboard. This shouldn't be public
-    """
+"""class Task(models.Model):
+    ""/" To do list that you see in the dashboard. This shouldn't be public
+    ""/"
     content = models.TextField(max_length=1500)
 
 
@@ -261,11 +277,11 @@ class Task(models.Model):
 # Task (To Do list items)
 ###############################################################################
 class Note(models.Model):
-    """ written notes for things to research or write about. These also
+    ""/" written notes for things to research or write about. These also
         shouldn't be public. The idea is to write down information that
         isn't coherent enough for a thought, but are good seeds for
         later. Notes should be able to be linked to ideas, but it is
         not necessary, as they shouldn't represent fully formed thoughts.
-    """
+    ""/"
     idea = models.ForeignKey(Idea, blank=True, null=True)
-    content = models.TextField()
+    content = models.TextField()"""

@@ -685,6 +685,7 @@ def dashboard_stats():
         'draft_count': Thought.objects.filter(is_draft=True, is_trash=False).count(),
         'trash_count': Thought.objects.filter(is_trash=True).count(),
         'idea_count': Idea.objects.all().count(),
+        'highlight_count': Highlight.objects.all().count(),
     }
     return stats
 
