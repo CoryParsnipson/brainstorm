@@ -87,11 +87,11 @@ function fillout_book_data(data) {
   results_html = "";
 
   book_preview_html = "<div class='aws-book-result group'>";
-  book_preview_html += "<a class='overlay' href='#'></a>";
-  book_preview_html += "<img src='{0}' class='left'>";
-  book_preview_html += "<p class='title'>{1}</p>";
-  book_preview_html += "<p class='author'>{2}</p>";
-  book_preview_html += "<a class='link' href='{3}' target='_blank'></a>";
+  book_preview_html += "<a id='{0}' class='overlay' href='#'></a>";
+  book_preview_html += "<img src='{1}' class='left'>";
+  book_preview_html += "<p class='title'>{2}</p>";
+  book_preview_html += "<p class='author'>{3}</p>";
+  book_preview_html += "<a class='link' href='{4}' target='_blank'></a>";
   book_preview_html += "</div>";
 
   if (data.length == 0) {
@@ -100,16 +100,35 @@ function fillout_book_data(data) {
     results_html += "</div>";
   }
 
+  values = []
   for (var i = 0; i < data.length; i++) {
+    // prepare form values
+    values[i] = {
+      'id_title': decodeURIComponent(data[i].title).replace(/\+/g, ' '),
+      'id_author': decodeURIComponent(data[i].author).replace(/\+/g, ' '),
+      'id_link': decodeURIComponent(data[i].url).replace(/\+/g, ' '),
+      'id_cover': decodeURIComponent(data[i].cover).replace(/\+/g, ' '),
+    };
+
     results_html += book_preview_html.format(
-      decodeURIComponent(data[i].cover).replace(/\+/g, ' '),
-      decodeURIComponent(data[i].title).replace(/\+/g, ' '),
-      decodeURIComponent(data[i].author).replace(/\+/g, ' '),
-      decodeURIComponent(data[i].url).replace(/\+/g, ' ')
+      'id_prefill_' + i,
+      values[i]['id_cover'],
+      values[i]['id_title'],
+      values[i]['id_author'],
+      values[i]['id_link']
     );
   }
 
   document.getElementById('aws-results').innerHTML = results_html;
+
+  // bind fill form action to overlay links
+  for (var i = 0; i < data.length; i++) {
+    $('#id_prefill_' + i).click(
+      function (idx) {
+        return function () { prefill_form('reading-list-form', values[idx]); }
+      }(i)
+    );
+  }
 }
 
 // ----------------------------------------------------------------------------
