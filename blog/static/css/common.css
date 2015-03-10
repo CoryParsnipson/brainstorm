@@ -487,6 +487,16 @@ ul.pagination li:last-child a:after, ul.pagination li:last-child .inactive:after
   white-space: nowrap;
 }
 
+td.divider {
+  background: repeating-linear-gradient(
+    45deg,
+    #444444,
+    #444444 10px,
+    #3D3D3D 10px,
+    #3D3D3D 20px
+  );
+}
+
 /******************************************************************************
  * input styles
  *****************************************************************************/

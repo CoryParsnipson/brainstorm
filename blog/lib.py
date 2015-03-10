@@ -76,6 +76,9 @@ class Amazon:
               'author' => author of th ebook
               'cover' => thumbnail url of image
         """
+        if not keywords:
+            return []
+
         try:
             results = self.api.item_search(
                 'Books',

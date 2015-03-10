@@ -412,17 +412,22 @@ table.form-thought input[type="submit"].publish:hover {
 
 .aws-book-result {
   width: 100%;
+  position: relative;
   padding: 5px;
-  margin-bottom: 0.4rem;
 }
 
 .aws-book-result:nth-of-type(odd) {
   background-color: #494949;
 }
 
+.aws-book-result:hover {
+  background-color: #656565;
+}
+
 .aws-book-result p.title {
   color: #F8C118;
   font-size: 10pt;
+  margin-bottom: 0.2rem;
 }
 
 .aws-book-result p.author {
@@ -430,6 +435,29 @@ table.form-thought input[type="submit"].publish:hover {
   font-size: 8pt;
   line-height: 1.2rem;
   margin-bottom: 0.2rem;
+}
+
+.aws-book-result a.link {
+  width: 20px;
+  height: 20px;
+  font-size: 8pt;
+  line-height: 1.2rem;
+  background-image: url('../images/external_link.png');
+  position: absolute;
+  bottom: 5px;
+  right: 5px;
+}
+
+.aws-book-result a.link:hover {
+  background-image: url('../images/external_link_on.png');
+}
+
+.aws-book-result a.overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
 }
 
 .form-readinglist {

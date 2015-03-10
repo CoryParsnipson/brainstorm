@@ -87,9 +87,11 @@ function fillout_book_data(data) {
   results_html = "";
 
   book_preview_html = "<div class='aws-book-result group'>";
+  book_preview_html += "<a class='overlay' href='#'></a>";
   book_preview_html += "<img src='{0}' class='left'>";
   book_preview_html += "<p class='title'>{1}</p>";
   book_preview_html += "<p class='author'>{2}</p>";
+  book_preview_html += "<a class='link' href='{3}' target='_blank'></a>";
   book_preview_html += "</div>";
 
   if (data.length == 0) {
@@ -102,7 +104,8 @@ function fillout_book_data(data) {
     results_html += book_preview_html.format(
       decodeURIComponent(data[i].cover).replace(/\+/g, ' '),
       decodeURIComponent(data[i].title).replace(/\+/g, ' '),
-      decodeURIComponent(data[i].author).replace(/\+/g, ' ')
+      decodeURIComponent(data[i].author).replace(/\+/g, ' '),
+      decodeURIComponent(data[i].url).replace(/\+/g, ' ')
     );
   }
 
@@ -113,16 +116,17 @@ function fillout_book_data(data) {
 // form functions
 // ----------------------------------------------------------------------------
 function prefill_form(form_id, values) {
-  var inputs = $('#' + form_id + ' :input');
-
-  
-
-  msg = "";
+  var inputs = $('#' + form_id + ' :input, textarea');
   inputs.each(function () {
-    msg += 'INPUT: ' + $(this).attr('id') + '\n\r';
-  });
+    if ($(this).attr('type') == "hidden") { return; }
 
-  alert(msg);
+    if ($(this).attr('type') == "text" ||
+        $(this).attr('type') == "url" ||
+        $(this).attr('type') == "password" ||
+        this.nodeName.toLowerCase() == "textarea") {
+      $(this).val(values[$(this).attr('id')]);
+    }
+  });
 }
 
 // ----------------------------------------------------------------------------

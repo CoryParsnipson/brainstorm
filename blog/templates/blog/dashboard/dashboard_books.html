@@ -45,6 +45,11 @@ LIST O BOOKS
             <td colspan="3">{{ reading_list_item_form.link }}</td>
         </tr>
         <tr>
+            <td class="shrink">{{ reading_list_item_form.cover.label_tag }}</td>
+            <td colspan="3">{{ reading_list_item_form.cover }}</td>
+        </tr>
+        <tr><td class="divider" colspan="4"></td></tr>
+        <tr>
             <td class="shrink">{{ reading_list_item_form.description.label_tag }}</td>
             <td colspan="3">{{ reading_list_item_form.description }}</td>
         </tr>
@@ -54,10 +59,6 @@ LIST O BOOKS
 
             <td class="shrink">{{ reading_list_item_form.favorite.label_tag }}</td>
             <td>{{ reading_list_item_form.favorite }}</td>
-        </tr>
-        <tr>
-            <td class="shrink">{{ reading_list_item_form.cover.label_tag }}</td>
-            <td colspan="3">{{ reading_list_item_form.cover }}</td>
         </tr>
         </tbody>
     </table>
