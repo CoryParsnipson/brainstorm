@@ -35,6 +35,7 @@
 
     <!-- script includes -->
     <script type="text/javascript" src="{% static 'script/jquery-1.11.1.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'script/jquery.formatDateTime.min.js' %}"></script>
     <script type="text/javascript" src="{% static 'script/tinymce/tinymce.min.js' %}"></script>
     <script type="text/javascript" src="{% static 'script/framework.js' %}"></script>
 
@@ -69,6 +70,8 @@
                 <nav role="navigation">
                     <ul class="group">
                         <li><a href="{% url 'dashboard-highlights' %}">Highlights</a></li>
+                        <li class="divider">&nbsp;</li>
+                        <li><a href="{% url 'dashboard-books' %}">Reading List</a></li>
                         <li class="divider">&nbsp;</li>
                         <li><a class="highlight" href="{% url 'dashboard-author' %}">Post New Thought</a></li>
                         <li><a href="{% url 'dashboard-ideas' %}">Content</a></li>
@@ -107,6 +110,7 @@
                 <p class="blue"><a href="{% url 'dashboard-drafts' %}">Drafts</a>: <span class="right">{{ stats.draft_count }}</span></p>
                 <p class="red"><a href="{% url 'dashboard-trash' %}">Trash</a>: <span class="right">{{ stats.trash_count }}</span></p>
                 <p class="green"><a href="{% url 'dashboard-ideas' %}">Ideas</a>: <span class="right">{{ stats.idea_count }}</span></p>
+                <p class="orange"><a href="{% url 'dashboard-highlights' %}">Highlights</a>: <span class="right">{{ stats.highlight_count }}</span></p>
             </div>
 
             <h3>To Do</h3>

@@ -15,7 +15,10 @@ class KeyRing:
 
     keyring = {}
 
-    def __init__(self, keyfile):
+    def __init__(self, keyfile=None):
+        if not keyfile:
+            return
+
         f = None
 
         try:
@@ -29,7 +32,7 @@ class KeyRing:
             tokens = line.split(":")
 
             if len(tokens) == 2:
-                self.keyring[tokens[0]] = tokens[1]
+                self.keyring[tokens[0]] = tokens[1].replace("\n", "")
 
         f.close()
 
@@ -54,3 +57,14 @@ class KeyRing:
             return self.keyring[key]
         except KeyError:
             return ""
+
+    def set(self, key, value):
+        """ set the value of a specific key
+        """
+        try:
+            old_value = self.keyring[key]
+        except KeyError:
+            old_value = ""
+
+        self.keyring[key] = value
+        return old_value

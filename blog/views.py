@@ -6,6 +6,7 @@ from django.core.context_processors import csrf
 from django.http import JsonResponse
 from django.views.generic import View
 from django.utils.http import urlencode
+from django.utils.encoding import smart_str
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from django.contrib.auth import authenticate, login as auth_login, logout as auth_logout
@@ -109,9 +110,16 @@ def highlights(request):
     return render(request, 'blog/highlights.html', context)
 
 
+def books(request):
+    context = {
+        'page_title': 'Reading List',
+    }
+    return render(request, 'blog/books.html', context)
+
+
 def about(request):
     context = {
-        'page_title': 'About'
+        'page_title': 'About',
     }
     return render(request, 'blog/about.html', context)
 
@@ -226,19 +234,53 @@ def thought_detail(request, idea_slug=None, thought_slug=None):
 ###############################################################################
 @login_required(login_url='index')
 def dashboard(request, *args, **kwargs):
-    # collect dashboard stats
-    stats = dashboard_stats()
-
     context = {
         'page_title': 'Main',
-        'stats': stats,
+        'stats': dashboard_stats(),
     }
     return render(request, 'blog/dashboard/dashboard.html', context)
 
 
 @login_required(login_url='index')
+def dashboard_books(request):
+    """ User dashboard page to manage reading list
+    """
+    items = lib.Amazon.api.item_search(
+        'Books',
+        Keywords='John Dies at the End',
+        ResponseGroup="Images,Small,EditorialReview"
+    )
+
+    book_limit = 5
+    book_idx = 0
+    book_list = []
+    for i in items:
+        if book_idx > book_limit:
+            break
+        book_idx += 1
+
+        try:
+            book_list.append({
+                'DetailPageURL': i.DetailPageURL,
+                'SmallImage': i.SmallImage,
+                'Title': i.ItemAttributes.Title,
+                'Author': i.ItemAttributes.Author,
+                'Summary': smart_str(i.EditorialReviews.EditorialReview.Content),
+            })
+        except AttributeError:
+            pass
+
+    context = {
+        'page_title': 'Books',
+        'book_list': book_list,
+        'stats': dashboard_stats(),
+    }
+    return render(request, 'blog/dashboard/dashboard_books.html', context)
+
+
+@login_required(login_url='index')
 def dashboard_highlights(request):
-    """ User dashboard page to manage Link of the Day
+    """ User dashboard page to manage Highlights on the Web
     """
     highlight_list = Highlight.objects.all().order_by('-date_published')
 
@@ -326,7 +368,6 @@ def dashboard_ideas(request):
 @login_required(login_url='index')
 def dashboard_thoughts(request):
     # thought data
-    thoughts = []
     current_idea = None
 
     if 'idea_slug' in request.GET:

@@ -7,11 +7,12 @@ import datetime
 import PIL
 from PIL import Image
 import bleach
-import boto
+import amazonproduct
 from django.core.files.storage import default_storage
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 import paths
+import common
 
 ###############################################################################
 # app level defines
@@ -50,6 +51,18 @@ PAGINATION_DASHBOARD_TRASH_PAGES_TO_LEAD = 2
 NUM_RECENT_IDEAS = 3
 
 NUM_IDEAS_FOOTER = 3
+
+
+###############################################################################
+# classes
+###############################################################################
+class Amazon:
+    api = amazonproduct.API(cfg={
+        'access_key': common.KeyRing().get('AWS_ACCESS_KEY_ID'),
+        'secret_key': common.KeyRing().get('AWS_SECRET_ACCESS_KEY'),
+        'associate_tag': common.KeyRing().get('AWS_ASSOCIATE_TAG'),
+        'locale': 'us',
+    })
 
 
 ###############################################################################
