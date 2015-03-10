@@ -15,8 +15,26 @@ function get_absolute_url(relative_path) {
   var url = window.location.protocol + "//";
   url += window.location.hostname;
 
-  url += "/" + relative_path;
+  if (relative_path.indexOf('/') != 0)
+    url += "/";
+  url += relative_path;
   return url;
+}
+
+// ----------------------------------------------------------------------------
+// modify String prototype with sprintf like equivelant
+// (stackoverflow.com/questions/610406/javascript-equivalent-to-printf-string-format)
+// ----------------------------------------------------------------------------
+if (!String.prototype.format) {
+  String.prototype.format = function() {
+    var args = arguments;
+    return this.replace(/{(\d+)}/g, function(match, number) {
+      return typeof args[number] != 'undefined'
+        ? args[number]
+        : match
+      ;
+    });
+  };
 }
 
 // ----------------------------------------------------------------------------
@@ -45,16 +63,66 @@ function fillout_link_preview(event) {
 }
 
 // ----------------------------------------------------------------------------
+// reading list amazon aws prefill
+// ----------------------------------------------------------------------------
+function aws_search_enter_triggered(event) {
+  if (event.which == 13)
+    aws_search(event);
+}
+
+function aws_search(event) {
+  // show ajax loader
+  $('#aws-results .loader').css({ 'display': 'block' });
+
+  $.ajax({
+    url: $('#aws-search-url').val() + $('#aws-search-bar').val() + '?n=3',
+    method: "get",
+    dataType: 'json',
+    success: fillout_book_data,
+    error: function(data) { alert('boohoo!'); },
+  });
+}
+
+function fillout_book_data(data) {
+  results_html = "";
+
+  book_preview_html = "<div class='aws-book-result group'>";
+  book_preview_html += "<img src='{0}' class='left'>";
+  book_preview_html += "<p class='title'>{1}</p>";
+  book_preview_html += "<p class='author'>{2}</p>";
+  book_preview_html += "</div>";
+
+  if (data.length == 0) {
+    results_html = "<div class='aws-book-result'>";
+    results_html += "<p class='author center-align'>No results found.</p>";
+    results_html += "</div>";
+  }
+
+  for (var i = 0; i < data.length; i++) {
+    results_html += book_preview_html.format(
+      decodeURIComponent(data[i].cover).replace(/\+/g, ' '),
+      decodeURIComponent(data[i].title).replace(/\+/g, ' '),
+      decodeURIComponent(data[i].author).replace(/\+/g, ' ')
+    );
+  }
+
+  document.getElementById('aws-results').innerHTML = results_html;
+}
+
+// ----------------------------------------------------------------------------
 // form functions
 // ----------------------------------------------------------------------------
-function prefill_form(values) {
-  alert(Object.keys($(':input')));
+function prefill_form(form_id, values) {
+  var inputs = $('#' + form_id + ' :input');
 
-  $(':input').each(function () {
+  
 
-
-    alert('INPUT: ' + $(this).attr('type'));
+  msg = "";
+  inputs.each(function () {
+    msg += 'INPUT: ' + $(this).attr('id') + '\n\r';
   });
+
+  alert(msg);
 }
 
 // ----------------------------------------------------------------------------

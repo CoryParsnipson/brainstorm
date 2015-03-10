@@ -1,18 +1,65 @@
 {% extends 'blog/templates/template_dashboard.html' %}
 {% load staticfiles %}
 
-{% block content %}
-Cocks
+{% block http_headers %}
+<script type="text/javascript">
+  $(function() {
+    /* add event to search bar on enter keypress */
+    $('#aws-search-bar').keypress(aws_search_enter_triggered);
 
-<ul>
-    {% for b in book_list %}
-    <li>
-        <img src="{{ b.cover }}"><br>
-        {{ b.title }}<br>
-        {{ b.author }}<br>
-    </li>
-    {% empty %}
-    <li>No results returned.</li>
-    {% endfor %}
-</ul>
+    /* add event to search bar button on click */
+    $('#aws-search img').click(aws_search);
+  });
+</script>
+{% endblock %}
+
+{% block content %}
+LIST O BOOKS
+{% endblock %}
+
+{% block side %}
+<h3>Add New Book to Reading List:</h3>
+<div id="aws-search" class="group">
+    <input id="aws-search-url" type="hidden" value="{% url 'search-aws' '' %}">
+    <input id="aws-search-bar" type="text" placeholder="Search Amazon AWS" class="search-bar left" />
+    <img src="{% static 'images/search.png' %}" class="left">
+</div>
+<div id="aws-results">
+    <img class="loader" src="{% static 'images/loading.gif' %}">
+</div>
+<hr>
+<form id="reading-list-form" action="" method="post">
+    {% csrf_token %}
+    <table class="form-readinglist">
+        <tbody>
+        <tr>
+            <td class="shrink">{{ reading_list_item_form.title.label_tag }}</td>
+            <td colspan="3">{{ reading_list_item_form.title }}</td>
+        </tr>
+        <tr>
+            <td class="shrink">{{ reading_list_item_form.author.label_tag }}</td>
+            <td colspan="3">{{ reading_list_item_form.author }}</td>
+        </tr>
+        <tr>
+            <td class="shrink">{{ reading_list_item_form.link.label_tag }}</td>
+            <td colspan="3">{{ reading_list_item_form.link }}</td>
+        </tr>
+        <tr>
+            <td class="shrink">{{ reading_list_item_form.description.label_tag }}</td>
+            <td colspan="3">{{ reading_list_item_form.description }}</td>
+        </tr>
+        <tr>
+            <td class="shrink">{{ reading_list_item_form.wishlist.label_tag }}</td>
+            <td>{{ reading_list_item_form.wishlist }}</td>
+
+            <td class="shrink">{{ reading_list_item_form.favorite.label_tag }}</td>
+            <td>{{ reading_list_item_form.favorite }}</td>
+        </tr>
+        <tr>
+            <td class="shrink">{{ reading_list_item_form.cover.label_tag }}</td>
+            <td colspan="3">{{ reading_list_item_form.cover }}</td>
+        </tr>
+        </tbody>
+    </table>
+</form>
 {% endblock %}

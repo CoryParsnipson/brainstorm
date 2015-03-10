@@ -260,11 +260,7 @@ class ReadingListItem(models.Model):
     description = models.CharField(max_length=500)
     wishlist = models.BooleanField(default=False)
     favorite = models.BooleanField(default=False)
-    cover = models.ImageField(
-        upload_to=paths.MEDIA_IMAGE_DIR,
-        blank=False,
-        null=False,
-    )
+    cover = models.URLField()
 
 ###############################################################################
 # Task (To Do list items)

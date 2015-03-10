@@ -66,7 +66,7 @@ class Amazon:
         'locale': 'us',
     })
 
-    def search(self, keywords):
+    def search(self, keywords, max_len=NUM_AMAZON_RESULTS):
         """ given a string containing keywords, make a call to the
             amazon API and return a list of results
 
@@ -76,16 +76,19 @@ class Amazon:
               'author' => author of th ebook
               'cover' => thumbnail url of image
         """
-        results = self.api.item_search(
-            'Books',
-            Keywords=keywords,
-            ResponseGroup="Images,Small",
-        )
+        try:
+            results = self.api.item_search(
+                'Books',
+                Keywords=keywords,
+                ResponseGroup="Images,Small",
+            )
+        except amazonproduct.NoExactMatchesFound:
+            results = {}
 
         books = []
         book_idx = 0
         for book in results:
-            if book_idx > NUM_AMAZON_RESULTS:
+            if book_idx >= max_len:
                 break
 
             book_idx += 1
@@ -98,7 +101,7 @@ class Amazon:
                     'author': book.ItemAttributes.Author,
                 })
             except AttributeError:
-                pass
+                book_idx -= 1
 
         return books
 

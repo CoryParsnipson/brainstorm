@@ -130,6 +130,10 @@ p {
   text-align: left;
 }
 
+.center-align {
+  text-align: center;
+}
+
 .eurostile-black {
   font-family: 'Eurostile-Black';
   font-weight: normal;

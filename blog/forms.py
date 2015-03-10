@@ -1,6 +1,6 @@
 from django import forms
 
-from blog.models import Idea, Thought, Highlight
+from blog.models import Idea, Thought, Highlight, ReadingListItem
 
 
 class LoginForm(forms.Form):
@@ -56,3 +56,11 @@ class HighlightForm(forms.ModelForm):
                'class': 'editor',
             }),
         }
+
+
+class ReadingListItemForm(forms.ModelForm):
+    """ Django form class for managing ReadingListItems
+    """
+    class Meta:
+        model = ReadingListItem
+        fields = '__all__'

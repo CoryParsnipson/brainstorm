@@ -12,8 +12,8 @@ from django.contrib.auth import authenticate, login as auth_login, logout as aut
 from django.contrib.auth.decorators import login_required
 
 import lib
-from models import Idea, Thought, Highlight
-from forms import LoginForm, IdeaForm, ThoughtForm, HighlightForm
+from models import Idea, Thought, Highlight, ReadingListItem
+from forms import LoginForm, IdeaForm, ThoughtForm, HighlightForm, ReadingListItemForm
 
 
 ###############################################################################
@@ -244,11 +244,13 @@ def dashboard(request, *args, **kwargs):
 def dashboard_books(request):
     """ User dashboard page to manage reading list
     """
+    reading_list_item_form = ReadingListItemForm()
 
     context = {
         'page_title': 'Books',
         'book_list': lib.Amazon().search(keywords='John Dies at the End'),
         'stats': dashboard_stats(),
+        'reading_list_item_form': reading_list_item_form,
     }
     return render(request, 'blog/dashboard/dashboard_books.html', context)
 
@@ -605,7 +607,14 @@ def upload(request):
 def search_aws(request, keywords):
     """ REST request to Amazon Product Advertising API
     """
-    data = lib.Amazon().search(keywords=keywords)
+    try:
+        max_len = lib.NUM_AMAZON_RESULTS
+        if 'n' in request.GET and int(request.GET['n']) in range(lib.NUM_AMAZON_RESULTS):
+            max_len = int(request.GET['n'])
+    except (IndexError, ValueError):
+        max_len = lib.NUM_AMAZON_RESULTS
+
+    data = lib.Amazon().search(keywords=keywords, max_len=max_len)
     for d in data:
         for k, v in d.items():
             d[k] = urlquote_plus(v)

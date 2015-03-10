@@ -85,14 +85,12 @@
 
     <div id="content" class="row">
         <div id="content-main" class="large-8 medium-8 small-12 columns">
-            {% if messages %}
             <!-- flash message area -->
             <ul class="messages">
                 {% for message in messages %}
                 <li {% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message|safe }}</li>
                 {% endfor %}
             </ul>
-            {% endif %}
 
             <!-- main content -->
             {% block content %}
