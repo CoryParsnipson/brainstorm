@@ -7,10 +7,9 @@ Cocks
 <ul>
     {% for b in book_list %}
     <li>
-        <img src="{{ b.SmallImage.URL }}"><br>
-        {{ b.Title }}<br>
-        {{ b.Author }}<br>
-        <span style="font-size: 6pt;">{{ b.Summary|safe }}</span>
+        <img src="{{ b.cover }}"><br>
+        {{ b.title }}<br>
+        {{ b.author }}<br>
     </li>
     {% empty %}
     <li>No results returned.</li>

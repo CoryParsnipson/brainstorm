@@ -52,6 +52,8 @@ NUM_RECENT_IDEAS = 3
 
 NUM_IDEAS_FOOTER = 3
 
+NUM_AMAZON_RESULTS = 5
+
 
 ###############################################################################
 # classes
@@ -63,6 +65,42 @@ class Amazon:
         'associate_tag': common.KeyRing().get('AWS_ASSOCIATE_TAG'),
         'locale': 'us',
     })
+
+    def search(self, keywords):
+        """ given a string containing keywords, make a call to the
+            amazon API and return a list of results
+
+            Each result is a dictionary with the following keys:
+              'url' => url to amazon page
+              'title' => title of book
+              'author' => author of th ebook
+              'cover' => thumbnail url of image
+        """
+        results = self.api.item_search(
+            'Books',
+            Keywords=keywords,
+            ResponseGroup="Images,Small",
+        )
+
+        books = []
+        book_idx = 0
+        for book in results:
+            if book_idx > NUM_AMAZON_RESULTS:
+                break
+
+            book_idx += 1
+
+            try:
+                books.append({
+                    'url': book.DetailPageURL,
+                    'cover': book.SmallImage.URL,
+                    'title': book.ItemAttributes.Title,
+                    'author': book.ItemAttributes.Author,
+                })
+            except AttributeError:
+                pass
+
+        return books
 
 
 ###############################################################################
@@ -184,6 +222,25 @@ def upload_file(f):
         file_dir = paths.MEDIA_FILE_DIR
 
     file_url = os.path.join(paths.MEDIA_ROOT, file_dir, generate_upload_filename(f.name))
+
+
+    """
+    # retrieve file
+    if not os.environ['DJANGO_SETTINGS_MODULE'].endswith('production'):
+        filename = os.path.join(paths.MEDIA_ROOT, filename)
+
+    fp = io.BytesIO(default_storage.open(filename).read())
+
+    image = Image.open(fp)
+    image_size = image.size
+
+    # save file back to same url
+    out_img = io.BytesIO()
+    cropped_image.save(out_img, 'PNG')
+    image_file = default_storage.open(filename, 'w')
+    image_file.write(out_img.getvalue())
+    image_file.close()
+    """
 
     # enforce file size limit
     if f.size > MAX_UPLOAD_SIZE:

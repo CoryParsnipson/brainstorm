@@ -256,7 +256,9 @@ class ReadingListItem(models.Model):
     """
     title = models.CharField(max_length=150)
     author = models.CharField(max_length=150)
-
+    link = models.URLField()
+    description = models.CharField(max_length=500)
+    wishlist = models.BooleanField(default=False)
     favorite = models.BooleanField(default=False)
     cover = models.ImageField(
         upload_to=paths.MEDIA_IMAGE_DIR,

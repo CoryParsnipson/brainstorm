@@ -36,6 +36,7 @@ urlpatterns = patterns('',
     url(r'^api/login/', views.login, name='login'),
     url(r'^api/logout/', views.logout, name='logout'),
     url(r'^api/upload/', views.upload, name='upload'),
+    url(r'^api/search_aws/(?P<keywords>.*)', views.search_aws, name='search-aws'),
 
     url(r'^api/forms/idea/', views.FormIdeaView.as_view(), name='forms-idea'),
     url(r'^api/forms/thought/', views.FormThoughtView.as_view(), name='forms-thought'),

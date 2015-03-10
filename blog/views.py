@@ -5,8 +5,7 @@ from django.core.exceptions import ValidationError
 from django.core.context_processors import csrf
 from django.http import JsonResponse
 from django.views.generic import View
-from django.utils.http import urlencode
-from django.utils.encoding import smart_str
+from django.utils.http import urlencode, urlquote_plus
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from django.contrib.auth import authenticate, login as auth_login, logout as auth_logout
@@ -245,34 +244,10 @@ def dashboard(request, *args, **kwargs):
 def dashboard_books(request):
     """ User dashboard page to manage reading list
     """
-    items = lib.Amazon.api.item_search(
-        'Books',
-        Keywords='John Dies at the End',
-        ResponseGroup="Images,Small,EditorialReview"
-    )
-
-    book_limit = 5
-    book_idx = 0
-    book_list = []
-    for i in items:
-        if book_idx > book_limit:
-            break
-        book_idx += 1
-
-        try:
-            book_list.append({
-                'DetailPageURL': i.DetailPageURL,
-                'SmallImage': i.SmallImage,
-                'Title': i.ItemAttributes.Title,
-                'Author': i.ItemAttributes.Author,
-                'Summary': smart_str(i.EditorialReviews.EditorialReview.Content),
-            })
-        except AttributeError:
-            pass
 
     context = {
         'page_title': 'Books',
-        'book_list': book_list,
+        'book_list': lib.Amazon().search(keywords='John Dies at the End'),
         'stats': dashboard_stats(),
     }
     return render(request, 'blog/dashboard/dashboard_books.html', context)
@@ -624,6 +599,18 @@ def upload(request):
 
         return JsonResponse(files)
     return JsonResponse({'msg': 'Unsupported method for Upload. (POST only)'})
+
+
+@login_required(login_url='index')
+def search_aws(request, keywords):
+    """ REST request to Amazon Product Advertising API
+    """
+    data = lib.Amazon().search(keywords=keywords)
+    for d in data:
+        for k, v in d.items():
+            d[k] = urlquote_plus(v)
+
+    return JsonResponse(data, safe=False)
 
 
 ###############################################################################
