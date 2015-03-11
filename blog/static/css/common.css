@@ -725,6 +725,11 @@ div.book-list p.empty, .aws-book-result p.empty {
   margin: 0;
 }
 
+div.book-list p.empty a {
+  width: 100%;
+  display: block;
+}
+
 .aws-book-result {
   width: 100%;
   min-height: 90px;
