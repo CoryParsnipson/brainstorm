@@ -386,7 +386,7 @@ nav > ul li a:hover {
   color: #FFFFFF;
 }
 
-/******************************************************************************
+/*****************************************************************************
  * list styles - flash messages
  *****************************************************************************/
 ul.messages {
@@ -400,6 +400,10 @@ ul.messages li {
   border-radius: 3px;
   margin-bottom: 10px;
   padding: 10px;
+}
+
+ul.messages li:last-child {
+  margin-bottom: 2rem;
 }
 
 ul.messages p {
@@ -536,16 +540,6 @@ ul.pagination li:last-child a:after, ul.pagination li:last-child .inactive:after
 .shrink {
   width: 1px; /* as small as possible! */
   white-space: nowrap;
-}
-
-td.divider {
-  background: repeating-linear-gradient(
-    45deg,
-    #444444,
-    #444444 10px,
-    #3D3D3D 10px,
-    #3D3D3D 20px
-  );
 }
 
 /******************************************************************************
@@ -724,10 +718,11 @@ div.book-list {
   margin-bottom: 2rem;
 }
 
-div.book-list p.empty {
+div.book-list p.empty, .aws-book-result p.empty {
   font-size: 10pt;
   text-align: center;
   padding: 0 10px;
+  margin: 0;
 }
 
 .aws-book-result {
@@ -752,7 +747,8 @@ div.book-list p.empty {
 .aws-book-result p.title {
   color: #F8C118;
   font-size: 10pt;
-  margin-bottom: 0.2rem;
+  line-height: 1rem;
+  margin-bottom: 0;
 }
 
 .aws-book-result p.author {

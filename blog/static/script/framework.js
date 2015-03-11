@@ -5,6 +5,7 @@
 // init function
 // ----------------------------------------------------------------------------
 $(function () {
+  init_flash_messages();
 });
 
 // ----------------------------------------------------------------------------
@@ -18,6 +19,39 @@ function get_absolute_url(relative_path) {
     url += "/";
   url += relative_path;
   return url;
+}
+
+// fade out messages one by one after a certain amount of time
+function fade_flash_messages() {
+  var messages = $('ul.messages li');
+  $(messages[0])
+    .delay(2000)
+    .fadeTo(1000, 0)
+    .slideUp(400)
+    .queue(function () { $(this).remove(); fade_flash_messages(); });
+}
+
+// setup mouseover pause on flash messages
+function pause_flash_message_fade() {
+  $('ul.messages').hover(
+    function () {
+      var first_li = $(this).children('li')[0];
+
+      if ($(first_li).css('opacity', 0)) {
+        $(first_li).stop(true, false).slideDown(400);
+      }
+
+      if (!$(first_li).css('opacity', 1)) {
+        $(first_li).fadeTo(400, 1);
+      }
+    },
+    fade_flash_messages
+  );
+}
+
+function init_flash_messages() {
+  pause_flash_message_fade();
+  fade_flash_messages();
 }
 
 // modify String prototype with sprintf like equivelant
@@ -96,7 +130,7 @@ function fillout_book_data(data) {
 
   if (data.length == 0) {
     results_html = "<div class='aws-book-result'>";
-    results_html += "<p class='author center-align'>No results found.</p>";
+    results_html += "<p class='empty center-align'>No results found.</p>";
     results_html += "</div>";
   }
 

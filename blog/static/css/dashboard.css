@@ -409,6 +409,7 @@ table.form-thought input[type="submit"].publish:hover {
 }
 
 #aws-results .aws-book-result {
+  min-height: initial;
   max-height: 100px;
 }
 
