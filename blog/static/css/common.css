@@ -714,7 +714,6 @@ p.subtitle {
  * book list styles
  *****************************************************************************/
 div.book-list {
-  background-color: #444444;
   margin-bottom: 2rem;
 }
 
@@ -734,15 +733,15 @@ div.book-list p.empty a {
   width: 100%;
   min-height: 90px;
   position: relative;
-  padding: 5px;
+  padding: 7px;
 }
 
 .aws-book-result:nth-of-type(odd) {
-  background-color: #494949;
+  background-color: #404040;
 }
 
-.aws-book-result-hover:hover {
-  background-color: #656565;
+.aws-book-result-hover:hover, p.empty:hover {
+  background-color: #494949;
 }
 
 .aws-book-result p {
@@ -785,6 +784,7 @@ div.book-list p.empty a {
   height: 17px;
   font-size: 8pt;
   line-height: 1.2rem;
+  background-color: transparent;
   background-image: url('../images/external_link.png');
   position: absolute;
   bottom: 5px;
@@ -795,25 +795,6 @@ div.book-list p.empty a {
 
 .aws-book-result a.link:hover {
   background-image: url('../images/external_link_on.png');
-}
-
-.aws-book-result a.edit {
-  bottom: 25px;
-  background-image: url('../images/edit.png');
-}
-
-.aws-book-result a.edit:hover {
-  background-image: url('../images/edit_on.png');
-}
-
-.aws-book-result input[type="submit"].delete {
-  bottom: 45px;
-  background-image: url('../images/delete.png');
-}
-
-.aws-book-result input[type="submit"].delete:hover {
-  background-color: transparent;
-  background-image: url('../images/delete_on.png');
 }
 
 .aws-book-result a.overlay {

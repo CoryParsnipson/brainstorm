@@ -416,3 +416,21 @@ table.form-thought input[type="submit"].publish:hover {
 .aws-book-result p {
   margin-right: 25px;
 }
+
+.aws-book-result a.edit {
+  bottom: 25px;
+  background-image: url('../images/edit.png');
+}
+
+.aws-book-result a.edit:hover {
+  background-image: url('../images/edit_on.png');
+}
+
+.aws-book-result input[type="submit"].delete {
+  bottom: 45px;
+  background-image: url('../images/delete.png');
+}
+
+.aws-book-result input[type="submit"].delete:hover {
+  background-image: url('../images/delete_on.png');
+}
