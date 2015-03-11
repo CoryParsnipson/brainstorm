@@ -61,6 +61,8 @@ class HighlightForm(forms.ModelForm):
 class ReadingListItemForm(forms.ModelForm):
     """ Django form class for managing ReadingListItems
     """
+    id = forms.IntegerField(widget=forms.HiddenInput)
+
     class Meta:
         model = ReadingListItem
         fields = '__all__'

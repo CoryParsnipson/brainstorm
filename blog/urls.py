@@ -40,7 +40,8 @@ urlpatterns = patterns('',
 
     url(r'^api/forms/idea/', views.FormIdeaView.as_view(), name='forms-idea'),
     url(r'^api/forms/thought/', views.FormThoughtView.as_view(), name='forms-thought'),
-    url(r'^api/forms/link/', views.FormHighlightView.as_view(), name='forms-highlight'),
+    url(r'^api/forms/highlight/', views.FormHighlightView.as_view(), name='forms-highlight'),
+    url(r'^api/forms/readinglistitem/', views.FormReadingListView.as_view(), name='forms-readinglistitem'),
 )
 
 # setup serving of media asserts on development environment

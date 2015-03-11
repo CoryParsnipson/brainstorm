@@ -70,6 +70,7 @@ function aws_search_enter_triggered(event) {
     aws_search(event);
 }
 
+// run an ajax call to the amazon product api through slackerparadise RPC
 function aws_search(event) {
   // show ajax loader
   $('#aws-results .loader').css({ 'display': 'block' });
@@ -83,6 +84,8 @@ function aws_search(event) {
   });
 }
 
+// ajax success callback that takes the Amazon product JSON data and populates
+// a target div with the formatted output
 function fillout_book_data(data) {
   results_html = "";
 
@@ -91,7 +94,7 @@ function fillout_book_data(data) {
   book_preview_html += "<img src='{1}' class='left'>";
   book_preview_html += "<p class='title'>{2}</p>";
   book_preview_html += "<p class='author'>{3}</p>";
-  book_preview_html += "<a class='link' href='{4}' target='_blank'></a>";
+  book_preview_html += "<a class='link' href='{4}' target='_blank' title='Open External Link'></a>";
   book_preview_html += "</div>";
 
   if (data.length == 0) {
@@ -134,6 +137,10 @@ function fillout_book_data(data) {
 // ----------------------------------------------------------------------------
 // form functions
 // ----------------------------------------------------------------------------
+
+// given a form id, get all the form inputs and populate them with the values
+// specified by the values parameter. The values parameter should be an Object
+// where the keys are the id attributes of the input elements.
 function prefill_form(form_id, values) {
   var inputs = $('#' + form_id + ' :input, textarea');
   inputs.each(function () {
@@ -144,6 +151,10 @@ function prefill_form(form_id, values) {
         $(this).attr('type') == "password" ||
         this.nodeName.toLowerCase() == "textarea") {
       $(this).val(values[$(this).attr('id')]);
+    }
+
+    if ($(this).attr('type') == "checkbox") {
+      $(this).prop('checked', values[$(this).attr('id')]);
     }
   });
 }

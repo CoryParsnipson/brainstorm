@@ -34,6 +34,8 @@ PAGINATION_FRONT_PER_PAGE = 8
 PAGINATION_IDEAS_PER_PAGE = 5
 PAGINATION_THOUGHTS_PER_PAGE = 10
 PAGINATION_HIGHLIGHTS_PER_PAGE = 10
+PAGINATION_DASHBOARD_READINGLIST_PER_PAGE = 15
+PAGINATION_DASHBOARD_HIGHLIGHTS_PER_PAGE = 10
 PAGINATION_DASHBOARD_IDEAS_PER_PAGE = 10
 PAGINATION_DASHBOARD_THOUGHTS_PER_PAGE = 25
 PAGINATION_DASHBOARD_DRAFTS_PER_PAGE = 25
@@ -43,6 +45,8 @@ PAGINATION_FRONT_PAGES_TO_LEAD = 0
 PAGINATION_IDEAS_PAGES_TO_LEAD = 2
 PAGINATION_THOUGHTS_PAGES_TO_LEAD = 2
 PAGINATION_HIGHLIGHTS_PAGES_TO_LEAD = 3
+PAGINATION_DASHBOARD_READINGLIST_PAGES_TO_LEAD = 2
+PAGINATION_DASHBOARD_HIGHLIGHTS_PAGES_TO_LEAD = 0
 PAGINATION_DASHBOARD_IDEAS_PAGES_TO_LEAD = 2
 PAGINATION_DASHBOARD_THOUGHTS_PAGES_TO_LEAD = 4
 PAGINATION_DASHBOARD_DRAFTS_PAGES_TO_LEAD = 2
@@ -368,8 +372,12 @@ def create_pagination(queryset, current_page, per_page=PAGINATION_THOUGHTS_PER_P
 
     if page_lead > 0:
         lower_pages = range(max(current_page.number - page_lead, 1), current_page.number)
-        upper_pages = range(current_page.number, min(current_page.number + page_lead, paginator.num_pages) + 1)
-        pagination['pages'] = lower_pages + upper_pages
+        upper_pages = range(current_page.number + 1, min(current_page.number + page_lead + 1, paginator.num_pages + 1))
+    else:
+        lower_pages = []
+        upper_pages = []
+
+    pagination['pages'] = lower_pages + [current_page.number] + upper_pages
 
     return pagination
 

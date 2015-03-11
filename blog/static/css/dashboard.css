@@ -14,14 +14,12 @@
   box-shadow-bottom: 0px 5px 10px -1px rgba(0,0,0,0.25);
 }
 
-@media (max-width: 40rem) {
-  #content-main {
-    margin-bottom: 50px;
-  }
+#content-main {
+  margin-bottom: 50px;
+}
 
-  #content-side {
-    margin-bottom: 50px;
-  }
+#content-side {
+  margin-bottom: 50px;
 }
 
 #footer {
@@ -410,8 +408,17 @@ table.form-thought input[type="submit"].publish:hover {
   padding: 10px 0;
 }
 
+#aws-results .aws-book-result {
+  max-height: 100px;
+}
+
+#aws-results .aws-book-result:hover {
+  background-color: #656565;
+}
+
 .aws-book-result {
   width: 100%;
+  min-height: 90px;
   position: relative;
   padding: 5px;
 }
@@ -420,8 +427,9 @@ table.form-thought input[type="submit"].publish:hover {
   background-color: #494949;
 }
 
-.aws-book-result:hover {
-  background-color: #656565;
+.aws-book-result p {
+  text-align: left;
+  margin-right: 25px;
 }
 
 .aws-book-result p.title {
@@ -437,19 +445,57 @@ table.form-thought input[type="submit"].publish:hover {
   margin-bottom: 0.2rem;
 }
 
-.aws-book-result a.link {
-  width: 20px;
-  height: 20px;
+.aws-book-result p.description {
+  font-size: 10pt;
+  line-height: 1.2rem;
+  margin-bottom: 0.2rem;
+}
+
+.aws-book-result p.date {
+  color: #B7B7B7;
+  font-size: 8pt;
+  line-height: 1rem;
+  text-align: right;
+  margin-bottom: 0;
+  position: absolute;
+  right: 10px;
+  bottom: 3px;
+}
+
+.aws-book-result a.link, .aws-book-result input[type="submit"] {
+  width: 17px;
+  height: 17px;
   font-size: 8pt;
   line-height: 1.2rem;
   background-image: url('../images/external_link.png');
   position: absolute;
   bottom: 5px;
   right: 5px;
+  margin: 0;
+  padding: 0;
 }
 
 .aws-book-result a.link:hover {
   background-image: url('../images/external_link_on.png');
+}
+
+.aws-book-result a.edit {
+  bottom: 25px;
+  background-image: url('../images/edit.png');
+}
+
+.aws-book-result a.edit:hover {
+  background-image: url('../images/edit_on.png');
+}
+
+.aws-book-result input[type="submit"].delete {
+  bottom: 45px;
+  background-image: url('../images/delete.png');
+}
+
+.aws-book-result input[type="submit"].delete:hover {
+  background-color: transparent;
+  background-image: url('../images/delete_on.png');
 }
 
 .aws-book-result a.overlay {
@@ -476,4 +522,23 @@ table.form-thought input[type="submit"].publish:hover {
 .form-readinglist label {
   float: right;
   padding: 0 3px;
+}
+
+.form-readinglist input[type="button"] {
+  margin-left: 20px;
+}
+
+div.book-list {
+  background-color: #444444;
+  margin-bottom: 2rem;
+}
+
+span.favorite {
+  color: #F8C118;
+  font-size: 14pt;
+  cursor: default;
+  text-shadow: 0 0 2px #F8C118;
+  position: absolute;
+  top: 3px;
+  right: 7px;
 }

@@ -22,7 +22,7 @@
 
 <h3>New Highlight</h3>
 <form id="link_form" action="{% url 'forms-highlight' %}" method="post"  enctype="multipart/form-data">
-    <input type="hidden" name="id" value="{{ highlight_form.id.value|default_if_none:'' }}" />
+    {{ highlight_form.id }}
     <input type="hidden" name="next" value="{% url 'dashboard-highlights' %}" />
     {% csrf_token %}
     <table>

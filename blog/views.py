@@ -244,13 +244,36 @@ def dashboard(request, *args, **kwargs):
 def dashboard_books(request):
     """ User dashboard page to manage reading list
     """
-    reading_list_item_form = ReadingListItemForm()
+    instance = None
+    if 'b' in request.GET:
+        try:
+            instance = ReadingListItem.objects.get(id=request.GET['b'])
+        except ReadingListItem.DoesNotExist:
+            pass
+    reading_list_item_form = ReadingListItemForm(instance=instance)
+
+    read_list_total = ReadingListItem.objects.filter(wishlist=False)
+    paginator, read_list = lib.create_paginator(
+        queryset=read_list_total,
+        per_page=lib.PAGINATION_DASHBOARD_READINGLIST_PER_PAGE,
+        page=request.GET.get('p'),
+    )
+
+    pagination = lib.create_pagination(
+        queryset=read_list_total,
+        current_page=request.GET.get('p'),
+        per_page=lib.PAGINATION_DASHBOARD_READINGLIST_PER_PAGE,
+        page_lead=lib.PAGINATION_DASHBOARD_READINGLIST_PAGES_TO_LEAD,
+    )
 
     context = {
         'page_title': 'Books',
-        'book_list': lib.Amazon().search(keywords='John Dies at the End'),
+        'wish_list': ReadingListItem.objects.filter(wishlist=True),
+        'read_list': read_list,
         'stats': dashboard_stats(),
         'reading_list_item_form': reading_list_item_form,
+        'paginator': paginator,
+        'pagination': pagination
     }
     return render(request, 'blog/dashboard/dashboard_books.html', context)
 
@@ -263,15 +286,15 @@ def dashboard_highlights(request):
 
     paginator, highlights_on_page = lib.create_paginator(
         queryset=highlight_list,
-        per_page=lib.PAGINATION_HIGHLIGHTS_PER_PAGE,
+        per_page=lib.PAGINATION_DASHBOARD_HIGHLIGHTS_PER_PAGE,
         page=request.GET.get('p'),
     )
 
     pagination = lib.create_pagination(
         queryset=highlight_list,
         current_page=request.GET.get('p'),
-        per_page=lib.PAGINATION_HIGHLIGHTS_PER_PAGE,
-        page_lead=lib.PAGINATION_HIGHLIGHTS_PAGES_TO_LEAD,
+        per_page=lib.PAGINATION_DASHBOARD_HIGHLIGHTS_PER_PAGE,
+        page_lead=lib.PAGINATION_DASHBOARD_HIGHLIGHTS_PAGES_TO_LEAD,
     )
 
     for h in highlights_on_page:
@@ -556,9 +579,19 @@ def dashboard_backend(request):
             highlight_title = highlight.title
             highlight.delete()
 
-            msg = "Successfully deleted Link '%s'" % highlight_title
+            msg = "Successfully deleted Highlight '%s'" % highlight_title
             messages.add_message(request, messages.SUCCESS, msg)
         except Highlight.DoesNotExist:
+            pass
+    elif 'delete_book' in request.POST:
+        try:
+            book = ReadingListItem.objects.get(id=request.POST['id'])
+            book_identifier = book.title + " (#" + str(book.id) + ")"
+            book.delete()
+
+            msg = "Successfully deleted Book '%s'" % book_identifier
+            messages.add_message(request, messages.SUCCESS, msg)
+        except ReadingListItem.DoesNotExist:
             pass
 
     return redirect(next_url + "?" + query_string)
@@ -939,10 +972,10 @@ class FormHighlightView(View):
 
         try:
             instance = Highlight.objects.get(id=instance_data['id'])
-            msg = "Successfully edited Link '%s'" % instance.title
+            msg = "Successfully edited Highlight '%s'" % instance.title
         except Highlight.DoesNotExist as e:
             instance = None
-            msg = "Successfully created Link '%s'" % instance_data['title'] if 'title' in instance_data else None
+            msg = "Successfully created Highlight '%s'" % instance_data['title']
 
         link_form = HighlightForm(instance_data, request.FILES, instance=instance)
 
@@ -958,6 +991,68 @@ class FormHighlightView(View):
             # loop through fields on form and add errors to dict
             errors = {}
             for field in link_form:
+                errors[field.name] = field.errors
+
+            if callback:
+                msg = "<br>".join([k + ": " + " ".join(v) for k, v in errors.items() if v])
+                messages.add_message(request, messages.ERROR, msg)
+                return redirect(callback)
+            else:
+                return JsonResponse(errors)
+
+
+class FormReadingListView(View):
+    """ API endpoints to manage ReadingListItems
+    """
+    def get(self, request, *args, **kwargs):
+        form = ReadingListItemForm()
+        form_html = form.as_table()
+
+        if "output" in request.GET:
+            if request.GET["output"] == "p":
+                form_html = form.as_p()
+            elif request.GET["output"] == "ul":
+                form_html = form.as_ul()
+
+        context = {'form': form_html}
+        return JsonResponse(context)
+
+    def post(self, request, *args, **kwargs):
+        instance_data = request.POST.copy()
+
+        callback = None
+        if 'next' in instance_data:
+            callback = instance_data['next']
+            del instance_data['next']
+            lib.replace_tokens(callback, instance_data)
+
+        if 'cancel' in instance_data:
+            return redirect(callback)
+
+        if 'id' not in instance_data or not instance_data['id']:
+            instance_data['id'] = -1
+
+        try:
+            instance = ReadingListItem.objects.get(id=instance_data['id'])
+            msg = "Successfully edited Book List Item '%s'" % instance.title
+        except ReadingListItem.DoesNotExist as e:
+            instance = None
+            msg = "Successfully created Book List Item '%s'" % instance_data['title']
+
+        reading_list_form = ReadingListItemForm(instance_data, instance=instance)
+
+        if reading_list_form.is_valid():
+            reading_list_form.save()
+            messages.add_message(request, messages.SUCCESS, msg)
+
+            if callback:
+                return redirect(callback)
+            else:
+                return JsonResponse({'msg': msg})
+        else:
+            # loop through fields on form and add errors to dict
+            errors = {}
+            for field in reading_list_form:
                 errors[field.name] = field.errors
 
             if callback:

@@ -9,12 +9,76 @@
 
     /* add event to search bar button on click */
     $('#aws-search img').click(aws_search);
+
+    /* javascript clear button */
+    $('#button-clear').click(function () {
+      prefill_form('reading-list-form', {
+        'id_title': '',
+        'id_author': '',
+        'id_link': '',
+        'id_cover': '',
+        'id_description': '',
+        'id_wishlist': false,
+        'id_favorite': false,
+      });
+    });
   });
 </script>
 {% endblock %}
 
 {% block content %}
-LIST O BOOKS
+<h2>Recently Read Books</h2>
+<hr class="header">
+
+<h3>Currently Reading</h3>
+<div class="book-list">
+    {% for book in wish_list %}
+    <div class="aws-book-result group">
+        <img src="{{ book.cover }}" class="left">
+        <p class="title">{{ book.title }}</p>
+        <p class="author">{{ book.author }}</p>
+        <p class="description">{{ book.description }}</p>
+        <p class="date">Added on {{ book.date_published|date:"F j, Y g:i A" }}</p>
+        {% if book.favorite %}<span class="favorite" title="Cory's Favorites">&#x2605;</span>{% endif %}
+        <a class="link" href="{{ book.link }}" target="_blank" title="Open external link"></a>
+        <a class="link edit" href="{% url 'dashboard-books' %}?b={{ book.id }}" title="Edit"></a>
+        <form action="{% url 'dashboard-backend' %}" method="post">
+            <input type="hidden" name="id" value="{{ book.id }}" />
+            <input type="hidden" name="next" value="{% url 'dashboard-books' %}" />
+            {% csrf_token %}
+            <input class="link delete" type="submit" value="" name="delete_book" title="Delete" />
+        </form>
+    </div>
+    {% empty %}
+    <p>There are no books in your currently reading list.</p>
+    {% endfor %}
+</div>
+
+<h3>Recently Read</h3>
+<div class="book-list">
+    {% for book in read_list %}
+    <div class="aws-book-result group">
+        <img src="{{ book.cover }}" class="left">
+        <p class="title">{{ book.title }}</p>
+        <p class="author">{{ book.author }}</p>
+        <p class="description">{{ book.description }}</p>
+        <p class="date">Added on {{ book.date_published|date:"F j, Y g:i A" }}</p>
+        {% if book.favorite %}<span class="favorite" title="Cory's Favorites">&#x2605;</span>{% endif %}
+        <a class="link" href="{{ book.link }}" target="_blank" title="Open external link"></a>
+        <a class="link edit" href="{% url 'dashboard-books' %}?b={{ book.id }}" title="Edit"></a>
+        <form action="{% url 'dashboard-backend' %}" method="post">
+            <input type="hidden" name="id" value="{{ book.id }}" />
+            <input type="hidden" name="next" value="{% url 'dashboard-books' %}" />
+            {% csrf_token %}
+            <input class="link delete" type="submit" value="" name="delete_book" title="Delete" />
+        </form>
+    </div>
+    {% empty %}
+    <p>There are no books in your recently read list.</p>
+    {% endfor %}
+</div>
+
+{% include "blog/templates/template_pagination.html" with paginator=paginator pages=pagination %}
 {% endblock %}
 
 {% block side %}
@@ -28,7 +92,9 @@ LIST O BOOKS
     <img class="loader" src="{% static 'images/loading.gif' %}">
 </div>
 <hr>
-<form id="reading-list-form" action="" method="post">
+<form id="reading-list-form" action="{% url 'forms-readinglistitem' %}" method="post">
+    {{ reading_list_item_form.id }}
+    <input type="hidden" name="next" value="{% url 'dashboard-books' %}" />
     {% csrf_token %}
     <table class="form-readinglist">
         <tbody>
@@ -59,6 +125,16 @@ LIST O BOOKS
 
             <td class="shrink">{{ reading_list_item_form.favorite.label_tag }}</td>
             <td>{{ reading_list_item_form.favorite }}</td>
+        </tr>
+        <tr>
+            <td colspan="4">
+                {% if "b" in request.GET %}
+                <input class="left" type="submit" value="Edit" />
+                {% else %}
+                <input class="left" type="submit" value="Add" />
+                {% endif %}
+                <input id="button-clear" class="left" type="button" value="Clear" />
+            </td>
         </tr>
         </tbody>
     </table>
