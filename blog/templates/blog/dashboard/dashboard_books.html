@@ -22,6 +22,14 @@
         'id_favorite': false,
       });
     });
+
+    /* add confirm dialog to delete buttons on book lists */
+    $('.book-list').delegate('.delete', 'click', function () {
+      var msg = 'Really delete ?';
+      if (!confirm(msg)) {
+        event.preventDefault();
+      }
+    });
   });
 </script>
 {% endblock %}

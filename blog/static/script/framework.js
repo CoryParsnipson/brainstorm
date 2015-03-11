@@ -5,7 +5,6 @@
 // init function
 // ----------------------------------------------------------------------------
 $(function () {
-  //$('#id_url').change(fillout_link_preview);
 });
 
 // ----------------------------------------------------------------------------
@@ -21,10 +20,8 @@ function get_absolute_url(relative_path) {
   return url;
 }
 
-// ----------------------------------------------------------------------------
 // modify String prototype with sprintf like equivelant
 // (stackoverflow.com/questions/610406/javascript-equivalent-to-printf-string-format)
-// ----------------------------------------------------------------------------
 if (!String.prototype.format) {
   String.prototype.format = function() {
     var args = arguments;
