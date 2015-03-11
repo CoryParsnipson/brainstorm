@@ -2,5 +2,49 @@
 {% load staticfiles %}
 
 {% block content %}
-Little cocks
+<h2>Cory's Reading List</h2>
+<hr class="header">
+
+<h3>Currently Reading/Wish List</h3>
+<div class="book-list">
+    {% for book in wish_list %}
+    <div class="aws-book-result aws-book-result-hover group">
+        <img src="{{ book.cover }}" class="left">
+        <p class="title">{{ book.title }}</p>
+        <p class="author">{{ book.author }}</p>
+        {% if book.favorite %}<span class="favorite" title="Cory's Favorites">&#x2605;</span>{% endif %}
+        <a class="overlay" href="{{ book.link }}" target="_blank"></a>
+    </div>
+    {% empty %}
+    <p class="empty">There are no books in the list.</p>
+    {% endfor %}
+</div>
+
+<h3>Recently Read</h3>
+<div class="book-list">
+    {% for book in read_list %}
+    <div class="aws-book-result aws-book-result-hover group">
+        <img src="{{ book.cover }}" class="left">
+        <p class="title">{{ book.title }}</p>
+        <p class="author">{{ book.author }}</p>
+        <p class="description">{{ book.description }}</p>
+        <p class="date">Added on {{ book.date_published|date:"F j, Y g:i A" }}</p>
+        {% if book.favorite %}<span class="favorite" title="Cory's Favorites">&#x2605;</span>{% endif %}
+        <a class="overlay" href="{{ book.link }}" target="_blank"></a>
+    </div>
+    {% empty %}
+    <p class="empty">There are no books in the list.</p>
+    {% endfor %}
+</div>
+
+{% include "blog/templates/template_pagination.html" with paginator=paginator pages=pagination %}
+{% endblock %}
+
+{% block side %}
+<h2>Cory's favorite types of books...</h2>
+<p>...are old science fiction, and really convoluted comedy books (fictional or otherwise). In particular, he enjoys <a href="http://www.amazon.com/Infinite-Jest-David-Foster-Wallace/dp/0316066524%3FSubscriptionId%3DAKIAILBDKYIUC2P45PPA%26tag%3Dslackparad-20%26linkCode%3Dxm2%26camp%3D2025%26creative%3D165953%26creativeASIN%3D0316066524" target="_blank">Infinite Jest</a> by <a href="http://en.wikipedia.org/wiki/David_Foster_Wallace" target="_blank">David Foster Wallace</a> and <a href="http://johndiesattheend.com/" target="_blank">John Dies at the End</a> by <a href="http://johndiesattheend.com/about.php" target="_blank">David Wong</a>. You can find those two and many more in this list right here.</p>
+
+
+<h2>Books are awesome</h2>
+<p>Slackers should totally read a lot of books. It sounds kind of counterintuitive, but actually it's quite useful. For instance, you can pretend to read a book on the beach and then accidentally on purpose fall asleep on the beach. A book can also be used to avoid talking to someone who would take a lot of effort to talk to. This is because the fact that you have a book open and grimacing at it makes it seem like you are working hard when in reality, you are thinking about ice cream. Sometimes if you are sitting in the right place, people will take a picture of you doing this, thinking you are famous and super smart.</p>
 {% endblock %}

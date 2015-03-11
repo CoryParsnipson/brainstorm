@@ -33,6 +33,34 @@ body {
   margin-bottom: 1rem;
 }
 
+.grey {
+  color: #B7B7B7;
+}
+
+.green {
+  color: #50804A;
+}
+
+.purple {
+  color: #7A5F87;
+}
+
+.red {
+  color: #BA4545;
+}
+
+.orange {
+  color: #9E763E;
+}
+
+.yellow {
+  color: #D1A51D;
+}
+
+.blue {
+  color: #565B99;
+}
+
 /******************************************************************************
  * hr styles
  *****************************************************************************/
@@ -450,6 +478,11 @@ ul.pagination .inactive {
   font-style: italic;
 }
 
+ul.pagination span.minimize {
+  background-color: transparent;
+  padding: 0;
+}
+
 /* Append "<<" to first child of pagination list (should say "First") */
 ul.pagination li:first-child a:before, ul.pagination li:first-child .inactive:before {
   content: "\00AB";
@@ -472,6 +505,24 @@ ul.pagination li:nth-last-child(2) a:after, ul.pagination li:nth-last-child(2) .
 ul.pagination li:last-child a:after, ul.pagination li:last-child .inactive:after {
   content: "\00BB";
   padding-left: 5px;
+}
+
+@media (max-width: 40rem) {
+  ul.pagination li span.minimize {
+    display: none;
+  }
+
+  ul.pagination li.pages *,
+  ul.pagination li:first-child a:after,
+  ul.pagination li:first-child .inactive:before,
+  ul.pagination li:nth-child(2) a:after,
+  ul.pagination li:nth-child(2) .inactive:before,
+  ul.pagination li:nth-last-child(2) a:after,
+  ul.pagination li:nth-last-child(2) .inactive:before,
+  ul.pagination li:last-child a:after,
+  ul.pagination li:last-child .inactive:before {
+    font-size: 10pt;
+  }
 }
 
 /******************************************************************************
@@ -668,3 +719,139 @@ p.subtitle {
 /******************************************************************************
  * book list styles
  *****************************************************************************/
+div.book-list {
+  background-color: #444444;
+  margin-bottom: 2rem;
+}
+
+div.book-list p.empty {
+  font-size: 10pt;
+  text-align: center;
+  padding: 0 10px;
+}
+
+.aws-book-result {
+  width: 100%;
+  min-height: 90px;
+  position: relative;
+  padding: 5px;
+}
+
+.aws-book-result:nth-of-type(odd) {
+  background-color: #494949;
+}
+
+.aws-book-result-hover:hover {
+  background-color: #656565;
+}
+
+.aws-book-result p {
+  text-align: left;
+}
+
+.aws-book-result p.title {
+  color: #F8C118;
+  font-size: 10pt;
+  margin-bottom: 0.2rem;
+}
+
+.aws-book-result p.author {
+  color: #B7B7B7;
+  font-size: 8pt;
+  line-height: 1.2rem;
+  margin-bottom: 0.2rem;
+}
+
+.aws-book-result p.description {
+  font-size: 10pt;
+  line-height: 1.2rem;
+  margin-bottom: 0.8rem;
+}
+
+.aws-book-result p.date {
+  color: #B7B7B7;
+  font-size: 8pt;
+  line-height: 1rem;
+  text-align: right;
+  margin-bottom: 0;
+  position: absolute;
+  right: 10px;
+  bottom: 3px;
+}
+
+.aws-book-result a.link, .aws-book-result input[type="submit"] {
+  width: 17px;
+  height: 17px;
+  font-size: 8pt;
+  line-height: 1.2rem;
+  background-image: url('../images/external_link.png');
+  position: absolute;
+  bottom: 5px;
+  right: 5px;
+  margin: 0;
+  padding: 0;
+}
+
+.aws-book-result a.link:hover {
+  background-image: url('../images/external_link_on.png');
+}
+
+.aws-book-result a.edit {
+  bottom: 25px;
+  background-image: url('../images/edit.png');
+}
+
+.aws-book-result a.edit:hover {
+  background-image: url('../images/edit_on.png');
+}
+
+.aws-book-result input[type="submit"].delete {
+  bottom: 45px;
+  background-image: url('../images/delete.png');
+}
+
+.aws-book-result input[type="submit"].delete:hover {
+  background-color: transparent;
+  background-image: url('../images/delete_on.png');
+}
+
+.aws-book-result a.overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}
+
+.form-readinglist {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.form-readinglist tr:nth-of-type(odd) {
+  background-color: #3D3D3D;
+}
+
+.form-readinglist td {
+  padding: 6px 3px;
+}
+
+.form-readinglist label {
+  float: right;
+  padding: 0 3px;
+}
+
+.form-readinglist input[type="button"] {
+  margin-left: 20px;
+}
+
+span.favorite {
+  color: #F8C118;
+  font-size: 14pt;
+  cursor: default;
+  text-shadow: 0 0 2px #F8C118;
+  z-index: 1;
+  position: absolute;
+  top: 3px;
+  right: 7px;
+}

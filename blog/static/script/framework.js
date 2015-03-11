@@ -86,7 +86,7 @@ function aws_search(event) {
 function fillout_book_data(data) {
   results_html = "";
 
-  book_preview_html = "<div class='aws-book-result group'>";
+  book_preview_html = "<div class='aws-book-result aws-book-result-hover group'>";
   book_preview_html += "<a id='{0}' class='overlay' href='#'></a>";
   book_preview_html += "<img src='{1}' class='left'>";
   book_preview_html += "<p class='title'>{2}</p>";

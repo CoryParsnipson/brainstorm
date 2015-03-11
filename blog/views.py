@@ -61,6 +61,7 @@ def index(request):
         'pagination': pagination,
         'highlight': highlight,
         'highlight_cut': highlight_cut,
+        'read_list': ReadingListItem.objects.filter(wishlist=False).order_by('-date_published')[:3],
     }
     return render(request, 'blog/index.html', context)
 
@@ -110,8 +111,27 @@ def highlights(request):
 
 
 def books(request):
+    read_book_list_total = ReadingListItem.objects.filter(wishlist=False).order_by('-date_published')
+
+    page = request.GET.get('p')
+    paginator, read_list = lib.create_paginator(
+        queryset=read_book_list_total,
+        per_page=lib.PAGINATION_READINGLIST_PER_PAGE,
+        page=page,
+    )
+    pagination = lib.create_pagination(
+        queryset=read_book_list_total,
+        current_page=page,
+        per_page=lib.PAGINATION_READINGLIST_PER_PAGE,
+        page_lead=lib.PAGINATION_READINGLIST_PAGES_TO_LEAD,
+    )
+
     context = {
         'page_title': 'Reading List',
+        'wish_list': ReadingListItem.objects.filter(wishlist=True).order_by('-date_published'),
+        'read_list': read_list,
+        'paginator': paginator,
+        'pagination': pagination,
     }
     return render(request, 'blog/books.html', context)
 
@@ -252,7 +272,7 @@ def dashboard_books(request):
             pass
     reading_list_item_form = ReadingListItemForm(instance=instance)
 
-    read_list_total = ReadingListItem.objects.filter(wishlist=False)
+    read_list_total = ReadingListItem.objects.filter(wishlist=False).order_by('-date_published')
     paginator, read_list = lib.create_paginator(
         queryset=read_list_total,
         per_page=lib.PAGINATION_DASHBOARD_READINGLIST_PER_PAGE,
@@ -268,7 +288,7 @@ def dashboard_books(request):
 
     context = {
         'page_title': 'Books',
-        'wish_list': ReadingListItem.objects.filter(wishlist=True),
+        'wish_list': ReadingListItem.objects.filter(wishlist=True).order_by('-date_published'),
         'read_list': read_list,
         'stats': dashboard_stats(),
         'reading_list_item_form': reading_list_item_form,
@@ -756,6 +776,9 @@ def dashboard_stats():
         'trash_count': Thought.objects.filter(is_trash=True).count(),
         'idea_count': Idea.objects.all().count(),
         'highlight_count': Highlight.objects.all().count(),
+        'read_book_count': ReadingListItem.objects.filter(wishlist=False).count(),
+        'wish_book_count': ReadingListItem.objects.filter(wishlist=True).count(),
+        'total_book_count': ReadingListItem.objects.all().count(),
     }
     return stats
 

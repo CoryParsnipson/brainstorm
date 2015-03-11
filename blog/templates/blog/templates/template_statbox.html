@@ -1,0 +1,16 @@
+<div class="stat-box">
+    <h3>Statistics</h3>
+    <p class="purple"><a href="{% url 'dashboard-thoughts' %}">Thoughts</a>: <span class="right">{{ stats.thought_count }}</span></p>
+    <p class="blue"><a href="{% url 'dashboard-drafts' %}">Drafts</a>: <span class="right">{{ stats.draft_count }}</span></p>
+    <p class="red"><a href="{% url 'dashboard-trash' %}">Trash</a>: <span class="right">{{ stats.trash_count }}</span></p>
+    <p class="green"><a href="{% url 'dashboard-ideas' %}">Ideas</a>: <span class="right">{{ stats.idea_count }}</span></p>
+    <p class="orange"><a href="{% url 'dashboard-highlights' %}">Highlights</a>: <span class="right">{{ stats.highlight_count }}</span></p>
+    <p class="yellow">
+        <a href="{% url 'dashboard-books' %}">Books</a>:&nbsp;
+        <span class="right grey">
+            <span class="green">W-</span>{{ stats.wish_book_count }}&nbsp;
+            <span class="red">R-</span>{{ stats.read_book_count }}&nbsp;
+            <span class="purple">T-</span>{{ stats.total_book_count }}
+        </span>
+    </p>
+</div>

@@ -82,8 +82,23 @@
             <a class="twitter-timeline" href="https://twitter.com/CoryParsnipson" data-widget-id="545825292225236992" data-chrome="transparent noheader nofooter" data-tweet-limit="1">Tweets by @CoryParsnipson</a>
             <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+"://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
 
-            <h3>Cory's Reading List</h3>
-            <a href="{% url 'books' %}">Click here to see my cock</a>
+            <h3>Recently Read</h3>
+            <div class="book-list">
+                {% for book in read_list %}
+                <div class="aws-book-result aws-book-result-hover group">
+                    <img src="{{ book.cover }}" class="left">
+                    <p class="title">{{ book.title }}</p>
+                    <p class="author">{{ book.author }}</p>
+                    <p class="description">{{ book.description }}</p>
+                    <p class="date">Added on {{ book.date_published|date:"F j, Y g:i A" }}</p>
+                    {% if book.favorite %}<span class="favorite" title="Cory's Favorites">&#x2605;</span>{% endif %}
+                    <a class="overlay" href="{{ book.link }}" target="_blank"></a>
+                </div>
+                {% empty %}
+                <p class="empty">Cory hasn't read any books yet!</p>
+                {% endfor %}
+                <p class="empty"><a href="{% url 'books' %}">(See More)</a></p>
+            </div>
             {% endblock %}
         </div>
     </div>

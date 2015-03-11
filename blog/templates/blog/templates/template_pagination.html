@@ -3,20 +3,20 @@
 <ul class="pagination group">
     <li>
         {% if pages.first == pages.current %}
-        <span class="inactive">{% if not narrow %}First{% endif %}</span>
+        <span class="inactive"><span class="minimize">{% if not narrow %}First{% endif %}</span></span>
         {% else %}
-        <a href="{% url_qs p=pages.first %}">{% if not narrow %}First{% endif %}</a>
+        <a href="{% url_qs p=pages.first %}"><span class="minimize">{% if not narrow %}First{% endif %}</span></a>
         {% endif %}
     </li>
     <li>
         {% if pages.prev %}
-        <a href="{% url_qs p=pages.prev %}">{% if not narrow %}Prev{% endif %}</a>
+        <a href="{% url_qs p=pages.prev %}"><span class="minimize">{% if not narrow %}Prev{% endif %}</span></a>
         {% else %}
-        <span class="inactive">{% if not narrow %}Prev{% endif %}</span>
+        <span class="inactive"><span class="minimize">{% if not narrow %}Prev{% endif %}</span></span>
         {% endif %}
     </li>
     {% for page in pages.pages %}
-    <li>
+    <li class="pages">
         {% if pages.current == page %}
         <span class="inactive">{{ page }}</span>
         {% else %}
@@ -26,16 +26,16 @@
     {% endfor %}
     <li>
         {% if pages.next %}
-        <a href="{% url_qs p=pages.next %}">{% if not narrow %}Next{% endif %}</a>
+        <a href="{% url_qs p=pages.next %}"><span class="minimize">{% if not narrow %}Next{% endif %}</span></a>
         {% else %}
-        <span class="inactive">{% if not narrow %}Next{% endif %}</span>
+        <span class="inactive"><span class="minimize">{% if not narrow %}Next{% endif %}</span></span>
         {% endif %}
     </li>
     <li>
         {% if pages.last == pages.current %}
-        <span class="inactive">{% if not narrow %}Last{% endif %}</span>
+        <span class="inactive"><span class="minimize">{% if not narrow %}Last{% endif %}</span></span>
         {% else %}
-        <a href="{% url_qs p=pages.last %}">{% if not narrow %}Last{% endif %}</a>
+        <a href="{% url_qs p=pages.last %}"><span class="minimize">{% if not narrow %}Last{% endif %}</span></a>
         {% endif %}
     </li>
 </ul>
