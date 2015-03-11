@@ -101,6 +101,7 @@ div.text-overlay p:not([class]) {
 
 .showcase-splitter p.highlight-category, .showcase-splitter p.highlight-category a {
   font-size: 8pt;
+  line-height: 1.2rem;
   text-transform: uppercase;
   margin: 0;
 }
