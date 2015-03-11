@@ -448,7 +448,7 @@ table.form-thought input[type="submit"].publish:hover {
 .aws-book-result p.description {
   font-size: 10pt;
   line-height: 1.2rem;
-  margin-bottom: 0.2rem;
+  margin-bottom: 0.8rem;
 }
 
 .aws-book-result p.date {
