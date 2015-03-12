@@ -21,6 +21,10 @@ function get_absolute_url(relative_path) {
   return url;
 }
 
+// ----------------------------------------------------------------------------
+// flash message functions
+// ----------------------------------------------------------------------------
+
 // fade out messages one by one after a certain amount of time
 function fade_flash_messages() {
   var messages = $('ul.messages li');
@@ -54,6 +58,17 @@ function init_flash_messages() {
   fade_flash_messages();
 }
 
+// add a flash message to the flash message area
+// msg - contents of message
+// msg_type - can be either "success", "error", or "warning"
+function add_flash_message(msg, msg_type) {
+  if (msg_type != "success" && msg_type != "error" && msg_type != "warning") {
+    msg_type = "warning";
+  }
+
+  $('ul.messages').append('<li class="' + msg_type + '">' + msg + '</li>');
+}
+
 // modify String prototype with sprintf like equivelant
 // (stackoverflow.com/questions/610406/javascript-equivalent-to-printf-string-format)
 if (!String.prototype.format) {
@@ -69,33 +84,9 @@ if (!String.prototype.format) {
 }
 
 // ----------------------------------------------------------------------------
-// link auto fillout functions
-// ----------------------------------------------------------------------------
-function fillout_link_preview(event) {
-  // TODO: finish this function; running into cross origin policy errors
-  var link_url = $('#id_url').val();
-
-  fillout_link_field = function (data) {
-    alert('hnnng');
-  };
-
-  retrieve_error = function (data) {
-    // do nothing on error...
-  };
-
-  $.ajax({
-    url: link_url,
-    method: "get",
-    dataType: 'jsonp',
-    beforeSend: function(xhr) { xhr.setRequestHeader('Access-Control-Allow-Origin', '*'); },
-    success: fillout_link_field,
-    error: retrieve_error,
-  });
-}
-
-// ----------------------------------------------------------------------------
 // reading list amazon aws prefill
 // ----------------------------------------------------------------------------
+
 function aws_search_enter_triggered(event) {
   if (event.which == 13)
     aws_search(event);
@@ -193,6 +184,7 @@ function prefill_form(form_id, values) {
 // ----------------------------------------------------------------------------
 // tinyMCE functions
 // ----------------------------------------------------------------------------
+
 function tinymce_snapshot(editor) {
   editor.on('loadContent', function () {
     // save snapshot on load for "revert changes" button
