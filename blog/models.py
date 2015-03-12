@@ -59,7 +59,7 @@ class Idea(models.Model):
         except IndexError:
             return None
 
-    def truncate(self, max_length=500, allowed_tags=None, strip=True):
+    def truncate(self, max_length=270, allowed_tags=None, strip=True):
         """ output a form of the content field, truncated to max_length. Tags
             will be whitelisted, stripped, and balanced to account for
             truncation.
