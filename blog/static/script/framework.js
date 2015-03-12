@@ -61,12 +61,18 @@ function init_flash_messages() {
 // add a flash message to the flash message area
 // msg - contents of message
 // msg_type - can be either "success", "error", or "warning"
-function add_flash_message(msg, msg_type) {
+function add_flash_message(msg, msg_type, enable_fade) {
+  enable_fade = typeof enable_fade !== 'undefined' ? enable_fade : false;
+
   if (msg_type != "success" && msg_type != "error" && msg_type != "warning") {
     msg_type = "warning";
   }
 
   $('ul.messages').append('<li class="' + msg_type + '">' + msg + '</li>');
+
+  if (enable_fade) {
+    init_flash_messages();
+  }
 }
 
 // modify String prototype with sprintf like equivelant
@@ -102,7 +108,12 @@ function aws_search(event) {
     method: "get",
     dataType: 'json',
     success: fillout_book_data,
-    error: function(data) { alert('boohoo!'); },
+    error: function () {
+      add_flash_message('Amazon Product API Error', 'error', true);
+
+      // re-hide loading gif
+      $('#aws-results .loader').css({ 'display': 'none' });
+    },
   });
 }
 
