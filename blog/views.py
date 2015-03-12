@@ -73,14 +73,16 @@ def login_page(request):
 
     context = {
         'page_title': 'Login',
-        'login_form': LoginForm()
+        'login_form': LoginForm(),
+        'read_list': ReadingListItem.objects.filter(wishlist=False).order_by('-date_published')[:3]
     }
     return render(request, 'blog/login.html', context)
 
 
 def logout_page(request):
     context = {
-        'page_title': 'Logout'
+        'page_title': 'Logout',
+        'read_list': ReadingListItem.objects.filter(wishlist=False).order_by('-date_published')[:3]
     }
     return render(request, 'blog/logout.html', context)
 
