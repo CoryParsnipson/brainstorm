@@ -37,6 +37,11 @@
   background-color: rgba(0, 0, 0, 0.75);
 }
 
+.catalog p {
+  font-size: 10pt;
+  line-height: 1.2rem;
+}
+
 .catalog td:hover p {
   visibility: visible;
 }
