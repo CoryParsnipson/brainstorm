@@ -111,6 +111,8 @@ keyring.set("AWS_ASSOCIATE_TAG", AWS_ASSOCIATE_TAG)
 MEDIA_URL = 'http://%s.s3.amazonaws.com/media/' % AWS_STORAGE_BUCKET_NAME
 MEDIA_ROOT = paths.MEDIA_DIR
 
+keyring.set('MEDIA_URL', MEDIA_URL)
+
 # rebuild media paths
 paths.MEDIA_ROOT = MEDIA_URL
 paths.MEDIA_IMAGE_ROOT = os.path.join(paths.MEDIA_ROOT, paths.MEDIA_IMAGE_DIR)

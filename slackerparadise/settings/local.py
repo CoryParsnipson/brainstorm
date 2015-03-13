@@ -96,6 +96,7 @@ STATIC_ROOT = paths.STATIC_DIR
 # media files
 MEDIA_URL = '/' + paths.MEDIA_DIR + '/'
 MEDIA_ROOT = paths.MEDIA_ROOT
+keyring.set('MEDIA_URL', MEDIA_URL)
 
 # Template dirs
 # keep global, non-app specific template files here

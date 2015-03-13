@@ -1,3 +1,4 @@
+import urllib
 import random
 
 from django.core.urlresolvers import reverse
@@ -656,6 +657,14 @@ def upload(request):
 
         return JsonResponse(files)
     return JsonResponse({'msg': 'Unsupported method for Upload. (POST only)'})
+
+
+@login_required(login_url='index')
+def generate_upload_filename(request, filename, full_path=None):
+    """ server call to calculate filename of uploaded file
+    """
+    filename = urllib.unquote(urlquote_plus(filename))
+    return JsonResponse(lib.generate_upload_filename(filename, full_path), safe=False)
 
 
 @login_required(login_url='index')

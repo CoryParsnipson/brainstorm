@@ -11,7 +11,9 @@
       'textarea.editor',
       'button-clear',
       'button-revert',
-      ['{% static "css/common.css" %}', 'http://fonts.googleapis.com/css?family=Sigmar+One|Roboto']);
+      ['{% static "css/common.css" %}', 'http://fonts.googleapis.com/css?family=Sigmar+One|Roboto'],
+      "{% url 'upload' %}",
+      "{% url 'generate-upload-filename' '/full' '' %}");
   });
 </script>
 {% endblock %}

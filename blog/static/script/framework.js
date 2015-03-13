@@ -12,11 +12,18 @@ $(function () {
 // general lib functions
 // ----------------------------------------------------------------------------
 function get_absolute_url(relative_path) {
+  if (relative_path.slice(0, 4) == 'http') {
+    // if relative path is actually an absolute url, don't do anything
+    return relative_path;
+  }
+
   var url = window.location.protocol + "//";
   url += window.location.hostname;
 
-  if (relative_path.indexOf('/') != 0)
+  if (relative_path.indexOf('/') != 0) {
     url += "/";
+  }
+
   url += relative_path;
   return url;
 }
@@ -196,6 +203,8 @@ function prefill_form(form_id, values) {
 // tinyMCE functions
 // ----------------------------------------------------------------------------
 
+// given a tinymce editor instance, get the contents of the editor
+// window
 function tinymce_snapshot(editor) {
   editor.on('loadContent', function () {
     // save snapshot on load for "revert changes" button
@@ -203,52 +212,69 @@ function tinymce_snapshot(editor) {
   });
 }
 
-tinymceFileBrowser = function (field_name, url, type, win) {
-  var lfieldname = field_name;
-  var lwin = win;
+// closure containing function handler for file upload management
+tinymceFileBrowser = function (upload_url, filename_url) {
+  return function (field_name, url, type, win) {
+    // remember tinymce elements to place url into
+    var lfieldname = field_name;
+    var lwin = win;
 
-  var file_upload = document.createElement("input");
-  file_upload.type = "file";
-  file_upload.name = "file_upload";
-  file_upload.style.display = "none";
+    // create OS file browser
+    var file_upload = document.createElement("input");
+    file_upload.type = "file";
+    file_upload.name = "file_upload";
+    file_upload.style.display = "none";
+    file_upload.click();  // open os dialog window
 
-  /* open os dialog window */
-  file_upload.click();
+    // add event listener to "ok" button on file browser window to do actual upload
+    $('button:contains("Ok")').click({ file_upload: file_upload }, function (event) {
+      var formData = new FormData();
+      formData.append('file_upload', event.data.file_upload.files[0]);
+      formData.append('csrfmiddlwaretoken', $('input[name="csrfmiddlewaretoken"]').val());
 
-  var test = function (data) {
-    for (filename in data) {
-      lwin.document.getElementById(lfieldname).value = get_absolute_url(data[filename]);
-    }
-  }
-
-  var post_select = function(event) {
-    //mystr = $(file_upload).val();
-
-    var form_action = "{% url 'upload' %}";
-
-    var formData = new FormData();
-    formData.append('file_upload', event.data.file_upload[0].files[0]);
-    formData.append('csrfmiddlewaretoken', "{{ csrf_token }}");
-
-    $.ajax({
-      url: form_action,
-      method: "post",
-      data: formData,
-      contentType: false,
-      processData: false,
-      success: test,
+      $.ajax({
+        url: upload_url,
+        method: "post",
+        data: formData,
+        contentType: false,
+        processData: false,
+        success: function (data) {
+          lwin.document.getElementById(lfieldname).value = get_absolute_url(data['filename']);
+        },
+        error: function (data) {
+          add_flash_message(JSON.stringify(data), 'error', false);
+        },
+      });
     });
-  }
 
-  $(file_upload).change({file_upload: $(file_upload)}, post_select);
-};
+    // fill out url
+    $(file_upload).change({ file_upload: file_upload }, function () {
+      $.ajax({
+        url: filename_url + file_upload.value,
+        method: "get",
+        success: function (filename) {
+          lwin.document.getElementById(lfieldname).value = get_absolute_url(filename);
+        },
+        error: function () {
+          add_flash_message('Invalid image filename...', 'error', true);
+        },
+      });
+    });
+  };
+}
 
+// function to summon a tinymce editor window on the page
+// you need to specify the target DOM element to place the window along
+// with some key parameters. The function body contains more tinymce
+// specific parameters
 function initialize_tinymce(
   editor_id,
   selector,
   clear_button_id,
   revert_button_id,
-  css_sheets
+  css_sheets,
+  upload_url,
+  filename_url
 )
 {
   var params = {
@@ -273,7 +299,7 @@ function initialize_tinymce(
       'styleselect formatselect fontselect fontsizeselect | link image media emoticons charmap'
     ],
     setup: tinymce_snapshot,
-    file_browser_callback: tinymceFileBrowser,
+    file_browser_callback: tinymceFileBrowser(upload_url, filename_url),
   };
 
   // initialize editor window

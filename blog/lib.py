@@ -1,8 +1,6 @@
 import os
 import re
 import io
-import random
-import datetime
 
 import PIL
 from PIL import Image
@@ -200,17 +198,34 @@ def truncate(content, max_length=DEFAULT_TRUNCATE_LENGTH, allowed_tags=ALLOWED_T
     return truncated_str
 
 
-def generate_upload_filename(filename):
+def generate_upload_filename(filename, full_path=None):
     """ given a string (presumably an original filename with extension),
         generate a non-conflicting filename for user uploads
     """
-    filename, ext = os.path.splitext(filename)
-    filename = "%s-%s" % (datetime.datetime.now().strftime("%Y%m%d%H%M%S"), str(int(random.random() * 1000)))
+    filename = os.path.basename(filename)
+    name, ext = os.path.splitext(filename)
 
-    if ext == '.':
-        ext = '.txt'
+    if ext.lower() in ['.bmp', '.png', '.gif', '.jpg', '.jpeg', '.tiff']:
+        file_url = paths.MEDIA_IMAGE_ROOT
+        file_dir = paths.MEDIA_IMAGE_DIR
+    elif ext.lower() in ['.mp4', '.mpg', '.avi', '.xvid', '.divx', '.ogm']:
+        file_url = paths.MEDIA_VIDEO_ROOT
+        file_dir = paths.MEDIA_VIDEO_DIR
+    else:
+        file_url = paths.MEDIA_FILE_ROOT
+        file_dir = paths.MEDIA_FILE_DIR
 
-    return filename + ext
+    # check for existence
+    file_idx = 1
+    while default_storage.exists(os.path.join(file_url, name + ext))\
+            or default_storage.exists(os.path.join(paths.MEDIA_DIR, file_dir, name + ext)):
+        name += "-" + str(file_idx)
+        file_idx += 1
+
+    if full_path:
+        keyring = common.KeyRing()
+        return os.path.join(keyring.get("MEDIA_URL"), file_dir, name + ext)
+    return name + ext
 
 
 def upload_file(f):
