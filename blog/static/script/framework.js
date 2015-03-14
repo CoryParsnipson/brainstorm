@@ -253,6 +253,7 @@ tinymceFileBrowser = function (upload_url, filename_url) {
         url: filename_url + encodeURIComponent(file_upload.value),
         method: "get",
         success: function (filename) {
+          console.log( filename + " | | " + file_upload.value);
           lwin.document.getElementById(lfieldname).value = get_absolute_url(filename);
         },
         error: function () {
