@@ -20,6 +20,9 @@ function get_absolute_url(relative_path) {
   var url = window.location.protocol + "//";
   url += window.location.hostname;
 
+  // account for slashes
+  relative_path = relative_path.replace('\\', '/');
+
   if (relative_path.indexOf('/') != 0) {
     url += "/";
   }
@@ -240,7 +243,6 @@ tinymceFileBrowser = function (upload_url, filename_url) {
         contentType: false,
         processData: false,
         success: function (data) {
-          console.log(JSON.stringify(data));
         },
         error: function (data) {
           add_flash_message(JSON.stringify(data), 'error', false);

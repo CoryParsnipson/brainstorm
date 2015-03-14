@@ -221,7 +221,9 @@ def generate_upload_filename(filename, full_path=None):
         file_idx += 1
 
     if full_path:
-        return os.path.normpath(os.path.join(settings.MEDIA_URL, file_dir, name + ext))
+        file_url = os.path.normpath(os.path.join(file_dir, name + ext))
+        file_url = os.path.join(settings.MEDIA_URL, file_url)
+        return file_url
     return name + ext
 
 
