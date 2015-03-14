@@ -12,8 +12,6 @@ $(function () {
 // general lib functions
 // ----------------------------------------------------------------------------
 function get_absolute_url(relative_path) {
-  console.log(relative_path);
-
   if (relative_path.slice(0, 4) == 'http') {
     // if relative path is actually an absolute url, don't do anything
     return relative_path;
@@ -29,7 +27,7 @@ function get_absolute_url(relative_path) {
     url += "/";
   }
 
-  url += relative_path; console.log(url);
+  url += relative_path;
   return url;
 }
 
