@@ -283,8 +283,10 @@ def resize_image(filename, new_size=THOUGHT_PREVIEW_IMAGE_SIZE):
         be saved over the existing filename.
     """
     # retrieve file
-    if not os.environ['DJANGO_SETTINGS_MODULE'].endswith('production'):
-        filename = os.path.join(paths.MEDIA_ROOT, filename)
+    import pdb
+    pdb.set_trace()
+
+    filename = os.path.join(settings.MEDIA_URL, filename)
 
     fp = io.BytesIO(default_storage.open(filename).read())
 
