@@ -30,6 +30,7 @@
     <input type="hidden" name="author" value="{{ request.user.id }}" />
     <input type="hidden" name="next" value="{% url 'dashboard-thoughts' %}?idea_slug={idea}" />
     <input type="hidden" name="old_slug" value="{{ thought_form.slug.value|default_if_none:'' }}" />
+    {{ thought_form.upload_url }}
     <table class="form-thought">
         <tr>
             <th class="shrink">{{ thought_form.title.label_tag }}</th>

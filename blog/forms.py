@@ -1,4 +1,5 @@
 from django import forms
+from django.core.urlresolvers import reverse
 
 from blog.models import Idea, Thought, Highlight, ReadingListItem
 
@@ -31,6 +32,11 @@ class IdeaForm(forms.ModelForm):
 class ThoughtForm(forms.ModelForm):
     """ Django form class for managing thoughts
     """
+    # fields for tinymce parameters
+    upload_url = forms.CharField(widget=forms.HiddenInput(attrs={
+        #'value': reverse('upload'),
+    }))
+
     class Meta:
         model = Thought
         fields = ['title', 'slug', 'content', 'idea', 'author', 'is_draft', 'is_trash', 'preview']

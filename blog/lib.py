@@ -6,6 +6,7 @@ import PIL
 from PIL import Image
 import bleach
 import amazonproduct
+from django.conf import settings
 from django.core.files.storage import default_storage
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
@@ -224,8 +225,7 @@ def generate_upload_filename(filename, full_path=None):
         file_idx += 1
 
     if full_path:
-        keyring = common.KeyRing()
-        return os.path.join(keyring.get("MEDIA_URL"), file_dir, name + ext)
+        return os.path.join(settings.MEDIA_URL, file_dir, name + ext)
     return name + ext
 
 
@@ -256,9 +256,9 @@ def upload_file(f):
         return False, "%s exceeds maximum upload size!" % f.name
 
     try:
-        file = default_storage.open(file_url, 'wb')
-        file.write(f.read())
-        file.close()
+        uploaded_file = default_storage.open(file_url, 'wb')
+        uploaded_file.write(f.read())
+        uploaded_file.close()
     except Exception as e:
         return False, e.message
 

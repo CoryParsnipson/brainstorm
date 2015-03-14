@@ -302,6 +302,7 @@ table.form-thought #id_slug {
 table.form-thought p#id_slug {
   font-weight: normal;
   overflow: hidden;
+  line-height: 1.2rem;
   background-color: #494949;
   vertical-align: middle;
   padding: 2px 7px;
