@@ -234,6 +234,7 @@ tinymceFileBrowser = function (upload_url, filename_url) {
 
       $.ajax({
         url: upload_url,
+        async: false,
         method: "post",
         data: formData,
         contentType: false,
