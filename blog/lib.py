@@ -203,7 +203,7 @@ def generate_upload_filename(filename, full_path=None):
         generate a non-conflicting filename for user uploads
     """
     filename = os.path.basename(filename)
-    name, ext = os.path.splitext(filename)
+    basename, ext = os.path.splitext(filename)
 
     if ext.lower() in ['.bmp', '.png', '.gif', '.jpg', '.jpeg', '.tiff']:
         file_url = paths.MEDIA_IMAGE_ROOT
@@ -217,9 +217,10 @@ def generate_upload_filename(filename, full_path=None):
 
     # check for existence
     file_idx = 1
+    name = basename
     while default_storage.exists(os.path.join(file_url, name + ext))\
             or default_storage.exists(os.path.join(paths.MEDIA_DIR, file_dir, name + ext)):
-        name += "-" + str(file_idx)
+        name = basename + "-" + str(file_idx)
         file_idx += 1
 
     if full_path:
@@ -250,44 +251,17 @@ def upload_file(f):
 
     file_url = os.path.join(paths.MEDIA_ROOT, file_dir, generate_upload_filename(f.name))
 
-
-    """
-    # retrieve file
-    if not os.environ['DJANGO_SETTINGS_MODULE'].endswith('production'):
-        filename = os.path.join(paths.MEDIA_ROOT, filename)
-
-    fp = io.BytesIO(default_storage.open(filename).read())
-
-    image = Image.open(fp)
-    image_size = image.size
-
-    # save file back to same url
-    out_img = io.BytesIO()
-    cropped_image.save(out_img, 'PNG')
-    image_file = default_storage.open(filename, 'w')
-    image_file.write(out_img.getvalue())
-    image_file.close()
-    """
-
     # enforce file size limit
     if f.size > MAX_UPLOAD_SIZE:
         return False, "%s exceeds maximum upload size!" % f.name
 
     try:
-        os.makedirs(file_dir)
-    except OSError:
-        # if there is a file with the same name as the intended directory,
-        # fail, else directory exists and everything is ok
-        if os.path.exists(file_dir) and not os.path.isdir(file_dir):
-            return False, "%s cannot be created." % file_dir
+        file = default_storage.open(file_url, 'wb')
+        file.write(f.read())
+        file.close()
+    except Exception as e:
+        return False, e.message
 
-    if os.path.exists(file_url):
-        # file already exists, return file_url
-        return True, file_url
-
-    with open(file_url, 'wb+') as destination:
-        for chunk in f.chunks():
-            destination.write(chunk)
     return True, file_url
 
 

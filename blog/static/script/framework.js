@@ -230,7 +230,7 @@ tinymceFileBrowser = function (upload_url, filename_url) {
     $('button:contains("Ok")').click({ file_upload: file_upload }, function (event) {
       var formData = new FormData();
       formData.append('file_upload', event.data.file_upload.files[0]);
-      formData.append('csrfmiddlwaretoken', $('input[name="csrfmiddlewaretoken"]').val());
+      formData.append('csrfmiddlewaretoken', $('input[name="csrfmiddlewaretoken"]').val());
 
       $.ajax({
         url: upload_url,
@@ -239,7 +239,7 @@ tinymceFileBrowser = function (upload_url, filename_url) {
         contentType: false,
         processData: false,
         success: function (data) {
-          lwin.document.getElementById(lfieldname).value = get_absolute_url(data['filename']);
+          console.log(JSON.stringify(data));
         },
         error: function (data) {
           add_flash_message(JSON.stringify(data), 'error', false);
@@ -250,7 +250,7 @@ tinymceFileBrowser = function (upload_url, filename_url) {
     // fill out url
     $(file_upload).change({ file_upload: file_upload }, function () {
       $.ajax({
-        url: filename_url + file_upload.value,
+        url: filename_url + encodeURIComponent(file_upload.value),
         method: "get",
         success: function (filename) {
           lwin.document.getElementById(lfieldname).value = get_absolute_url(filename);
