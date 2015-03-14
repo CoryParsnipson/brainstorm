@@ -12,6 +12,8 @@ $(function () {
 // general lib functions
 // ----------------------------------------------------------------------------
 function get_absolute_url(relative_path) {
+  console.log(relative_path);
+
   if (relative_path.slice(0, 4) == 'http') {
     // if relative path is actually an absolute url, don't do anything
     return relative_path;
@@ -27,7 +29,7 @@ function get_absolute_url(relative_path) {
     url += "/";
   }
 
-  url += relative_path;
+  url += relative_path; console.log(url);
   return url;
 }
 
@@ -279,8 +281,8 @@ function initialize_tinymce(
 )
 {
   // obtain upload_url and filename url (should be hidden values in form element)
-  upload_url = $('#id_upload_url').val();
-  filename_url = $('#id_filename_url').val();
+  var upload_url = $('#id_upload_url').val();
+  var filename_url = $('#id_filename_url').val();
 
   // default tinymce parameters
   var params = {
