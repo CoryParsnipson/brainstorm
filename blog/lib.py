@@ -216,7 +216,7 @@ def generate_upload_filename(filename, full_path=None):
     # check for existence
     file_idx = 1
     name = basename
-    while default_storage.exists(os.path.join(settings.MEDIA_ROOT, file_dir, name + ext)):
+    while default_storage.exists(os.path.join(file_dir, name + ext)):
         name = basename + "-" + str(file_idx)
         file_idx += 1
 
@@ -245,7 +245,7 @@ def upload_file(f):
     else:
         file_dir = paths.MEDIA_FILE_DIR
 
-    file_url = os.path.join(paths.MEDIA_ROOT, file_dir, generate_upload_filename(f.name))
+    file_url = os.path.join(file_dir, generate_upload_filename(f.name))
 
     # enforce file size limit
     if f.size > MAX_UPLOAD_SIZE:
