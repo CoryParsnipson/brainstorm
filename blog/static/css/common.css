@@ -30,6 +30,9 @@ body {
 }
 
 .twitter-timeline {
+  width: 100%;
+  display: block;
+  text-align: center;
   margin-bottom: 1rem;
 }
 
@@ -433,11 +436,12 @@ ul.messages .success input[type="submit"], ul.messages .success input[type="butt
   color: #157A2D;
   background-color: transparent;
   float: left;
-  font-size: 10pt;
+  font-size: 11pt;
   font-weight: bold;
   font-family: Roboto, "San Serif";
   border: none;
-  padding: 3px 7px;
+  margin-top: 0.3rem;
+  padding: 0px 7px;
 }
 
 ul.messages .success input[type="submit"]:hover, ul.messages .success input[type="button"]:hover {

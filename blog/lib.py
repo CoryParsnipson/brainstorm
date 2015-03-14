@@ -281,10 +281,7 @@ def resize_image(filename, new_size=THOUGHT_PREVIEW_IMAGE_SIZE):
         be saved over the existing filename.
     """
     # retrieve file
-    filename = os.path.join(settings.MEDIA_URL, filename)
-
     fp = io.BytesIO(default_storage.open(filename).read())
-
     image = Image.open(fp)
     image_size = image.size
 
@@ -314,7 +311,7 @@ def resize_image(filename, new_size=THOUGHT_PREVIEW_IMAGE_SIZE):
     # save file back to same url
     out_img = io.BytesIO()
     cropped_image.save(out_img, 'PNG')
-    image_file = default_storage.open(filename, 'w')
+    image_file = default_storage.open(filename, 'wb')
     image_file.write(out_img.getvalue())
     image_file.close()
 

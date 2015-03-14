@@ -1,5 +1,4 @@
 import os
-import re
 import urllib
 import random
 
@@ -543,10 +542,10 @@ def dashboard_backend(request):
                     be_msg += "<input type='hidden' name='thought_slug' value='%s' />" % thought.slug
 
                     if 'next' in request.POST:
-                        be_msg += '<input type="hidden" name="next" value="%s" />' % request.POST['next']
+                        be_msg += '<input type="hidden" name="next" value="%s" />' % next_url
 
                     be_msg += "<p>Thought %s was trashed.</p>" % thought.slug
-                    be_msg += "<input type='submit' name='untrash' value='Undo' />"
+                    be_msg += "<input class='button-undo' type='submit' name='untrash' value='Undo' />"
                     be_msg += "</form>"
                     messages.add_message(request, messages.SUCCESS, be_msg)
 
