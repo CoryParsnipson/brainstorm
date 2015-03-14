@@ -207,20 +207,16 @@ def generate_upload_filename(filename, full_path=None):
     basename, ext = os.path.splitext(filename)
 
     if ext.lower() in ['.bmp', '.png', '.gif', '.jpg', '.jpeg', '.tiff']:
-        file_url = paths.MEDIA_IMAGE_ROOT
         file_dir = paths.MEDIA_IMAGE_DIR
     elif ext.lower() in ['.mp4', '.mpg', '.avi', '.xvid', '.divx', '.ogm']:
-        file_url = paths.MEDIA_VIDEO_ROOT
         file_dir = paths.MEDIA_VIDEO_DIR
     else:
-        file_url = paths.MEDIA_FILE_ROOT
         file_dir = paths.MEDIA_FILE_DIR
 
     # check for existence
     file_idx = 1
     name = basename
-    while default_storage.exists(os.path.join(file_url, name + ext))\
-            or default_storage.exists(os.path.join(paths.MEDIA_DIR, file_dir, name + ext)):
+    while default_storage.exists(os.path.join(settings.MEDIA_ROOT, file_dir, name + ext)):
         name = basename + "-" + str(file_idx)
         file_idx += 1
 
@@ -283,9 +279,6 @@ def resize_image(filename, new_size=THOUGHT_PREVIEW_IMAGE_SIZE):
         be saved over the existing filename.
     """
     # retrieve file
-    import pdb
-    pdb.set_trace()
-
     filename = os.path.join(settings.MEDIA_URL, filename)
 
     fp = io.BytesIO(default_storage.open(filename).read())
