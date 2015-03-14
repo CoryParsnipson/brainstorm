@@ -11,9 +11,8 @@
       'textarea.editor',
       'button-clear',
       'button-revert',
-      ['{% static "css/common.css" %}', 'http://fonts.googleapis.com/css?family=Sigmar+One|Roboto'],
-      "{% url 'upload' %}",
-      "{% url 'generate-upload-filename' '/full' '' %}");
+      ['{% static "css/common.css" %}', 'http://fonts.googleapis.com/css?family=Sigmar+One|Roboto']
+    );
   });
 </script>
 {% endblock %}
@@ -27,6 +26,9 @@
     {{ highlight_form.id }}
     <input type="hidden" name="next" value="{% url 'dashboard-highlights' %}" />
     {% csrf_token %}
+    {{ thought_form.filename_url }}
+    {{ thought_form.upload_url }}
+
     <table>
         <tbody>
         <tr>

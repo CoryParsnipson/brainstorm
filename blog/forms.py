@@ -1,5 +1,5 @@
 from django import forms
-from django.core.urlresolvers import reverse
+from django.core.urlresolvers import reverse_lazy
 
 from blog.models import Idea, Thought, Highlight, ReadingListItem
 
@@ -34,7 +34,13 @@ class ThoughtForm(forms.ModelForm):
     """
     # fields for tinymce parameters
     upload_url = forms.CharField(widget=forms.HiddenInput(attrs={
-        #'value': reverse('upload'),
+        'value': reverse_lazy('upload')
+    }))
+    filename_url = forms.CharField(widget=forms.HiddenInput(attrs={
+        'value': reverse_lazy('generate-upload-filename', kwargs={
+            'full_path': '/full',
+            'filename': '',
+        })
     }))
 
     class Meta:

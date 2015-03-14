@@ -275,11 +275,14 @@ function initialize_tinymce(
   selector,
   clear_button_id,
   revert_button_id,
-  css_sheets,
-  upload_url,
-  filename_url
+  css_sheets
 )
 {
+  // obtain upload_url and filename url (should be hidden values in form element)
+  upload_url = $('#id_upload_url').val();
+  filename_url = $('#id_filename_url').val();
+
+  // default tinymce parameters
   var params = {
     auto_focus: editor_id,
     selector: selector,
