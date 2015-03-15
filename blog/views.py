@@ -400,6 +400,8 @@ def dashboard_thoughts(request):
     else:
         thoughts = Thought.objects.filter(is_draft=False, is_trash=False)
 
+    thoughts = thoughts.order_by('-date_published')
+
     page = request.GET.get('p')
     paginator, thoughts_on_page = lib.create_paginator(
         queryset=thoughts,

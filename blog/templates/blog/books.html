@@ -2,7 +2,12 @@
 {% load staticfiles %}
 
 {% block content %}
-<h2>Cory's Reading List</h2>
+<h2>
+    Cory's Reading List
+    {% if request.user.is_authenticated and request.user.is_superuser %}
+    <a class="edit" href="{% url 'dashboard-books' %}">edit</a>
+    {% endif %}
+</h2>
 <hr class="header">
 
 <h3>Currently Reading/Wish List</h3>
@@ -10,7 +15,12 @@
     {% for book in wish_list %}
     <div class="aws-book-result aws-book-result-hover group">
         <img src="{{ book.cover }}" class="left">
-        <p class="title">{{ book.title }}</p>
+        <p class="title">
+            {{ book.title }}
+            {% if request.user.is_authenticated and request.user.is_superuser %}
+            <a class="edit" href="{% url 'dashboard-books' %}?b={{ book.id }}">edit</a>
+            {% endif %}
+        </p>
         <p class="author">{{ book.author }}</p>
         {% if book.favorite %}<span class="favorite" title="Cory's Favorites">&#x2605;</span>{% endif %}
         <a class="overlay" href="{{ book.link }}" target="_blank"></a>
@@ -25,7 +35,12 @@
     {% for book in read_list %}
     <div class="aws-book-result aws-book-result-hover group">
         <img src="{{ book.cover }}" class="left">
-        <p class="title">{{ book.title }}</p>
+        <p class="title">
+            {{ book.title }}
+            {% if request.user.is_authenticated and request.user.is_superuser %}
+            <a class="edit" href="{% url 'dashboard-books' %}?b={{ book.id }}">edit</a>
+            {% endif %}
+        </p>
         <p class="author">{{ book.author }}</p>
         <p class="description">{{ book.description }}</p>
         <p class="date">Added on {{ book.date_published|date:"F j, Y g:i A" }}</p>

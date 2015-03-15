@@ -6,7 +6,12 @@
 {% endblock %}
 
 {% block content %}
-<h2>Highlights from the Web</h2>
+<h2>
+    Highlights from the Web
+    {% if request.user.is_authenticated and request.user.is_superuser %}
+    <a class="edit" href="{% url 'dashboard-highlights' %}">Add New Highlight</a>
+    {% endif %}
+</h2>
 
 {% for highlight in highlights %}
 <div class="showcase-splitter">
@@ -22,7 +27,12 @@
         </a>
     </div>
     <div class="highlight">
-        <p class="title"><a href="{{ highlight.url }}" target="_blank">{{ highlight.title }}</a></p>
+        <p class="title">
+            <a href="{{ highlight.url }}" target="_blank">{{ highlight.title }}</a>
+            {% if request.user.is_authenticated and request.user.is_superuser %}
+            <a class="edit" href="{% url 'dashboard-highlights' %}?highlight={{ highlight.id }}">edit</a>
+            {% endif %}
+        </p>
         <p class="subtitle"><a href="{{ highlight.url }}" target="_blank">{{ highlight.url }}</a></p>
         <div class="description">
             {{ highlight.description|safe }}

@@ -7,7 +7,12 @@
 
 {% block content %}
 <p class="idea"><a class="reverse-color" href="{% url 'idea-page' thought.idea.slug %}">{{ thought.idea }}</a></p>
-<p class="title">{{ thought.title }} {% if thought.is_draft %}[Draft]{% endif %}</p>
+<p class="title">{{ thought.title }}
+    {% if thought.is_draft %}<span class="edit">draft</span>{% endif %}
+    {% if request.user.is_authenticated and request.user.is_superuser %}
+    <a class="edit" href="{% url 'dashboard-author' %}?thought_slug={{ thought.slug }}">edit</a>
+    {% endif %}
+</p>
 <p class="subtitle">by {{ thought.author }} on {{ thought.date_published|date:"F j, Y g:i A" }}
     {% if thought.is_edited %}
     (Edited {{ thought.date_edited|date:"F j, Y g:i A" }})

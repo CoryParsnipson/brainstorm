@@ -7,7 +7,12 @@
 
 {% block content %}
 <div class="idea-banner">
-    <h1>{{ idea.name }}</h1>
+    <h1>
+        {{ idea.name }}
+        {% if request.user.is_authenticated and request.user.is_superuser %}
+        <a class="edit" href="{% url 'dashboard-ideas' %}?i={{ idea.slug }}">edit</a>
+        {% endif %}
+    </h1>
     <img class="idea-banner" src="{{ idea.icon_small.url }}">
 </div>
 
@@ -18,6 +23,9 @@
             <a name="{{ thought.slug }}" href="{% url 'thought-page' thought.idea.slug thought.slug %}">
                 {{ thought.title }}
             </a>
+            {% if request.user.is_authenticated and request.user.is_superuser %}
+            <a class="edit" href="{% url 'dashboard-author' %}?thought_slug={{ thought.slug }}">edit</a>
+            {% endif %}
         </p>
         <p class="subtitle">by {{ thought.author }} on {{ thought.date_published|date:"F j, Y" }}</p>
 

@@ -373,6 +373,28 @@ table.form-thought input[type="submit"].publish:hover {
 /******************************************************************************
  * reading list styles
  *****************************************************************************/
+.form-readinglist {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.form-readinglist tr:nth-of-type(even) {
+  background-color: #3B3B3B;
+}
+
+.form-readinglist td {
+  padding: 6px 3px;
+}
+
+.form-readinglist label {
+  float: right;
+  padding: 0 3px;
+}
+
+.form-readinglist input[type="button"] {
+  margin-left: 10px;
+}
+
 #aws-search {
   width: 100%;
   margin-left: 5px;
