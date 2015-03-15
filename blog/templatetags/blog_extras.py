@@ -1,4 +1,9 @@
 from django import template
+from django.core.urlresolvers import reverse
+from django.utils.dateformat import DateFormat
+
+from blog import lib
+from blog.models import ReadingListItem
 
 register = template.Library()
 
@@ -48,3 +53,38 @@ def url_qs(context, **kwargs):
         query_string = '?' + query_string
 
     return request.path + query_string
+
+
+@register.simple_tag
+def recently_read(**kwargs):
+    """ return html containing data from the recently read list
+        Specify an argument n=[int] to determine how many entries
+        are rendered in the list.
+    """
+    num_entries = int(kwargs['n']) if 'n' in kwargs else lib.NUM_READ_LIST
+    read_list = ReadingListItem.objects.filter(wishlist=False).order_by('-date_published')[:num_entries]
+
+    list_html = "<h3>Recently Read</h3><div class=\"book-list\">"
+    for book in read_list:
+        list_html += "<div class='aws-book-result aws-book-result-hover group'>"
+        list_html += "<img src='%s' class='left'>" % book.cover
+        list_html += "<p class='title'>%s</p>" % book.title
+        list_html += "<p class='author'>%s</p>" % book.author
+        list_html += "<p class='description'>%s</p>" % book.description
+
+        dt = DateFormat(book.date_published)
+        list_html += "<p class='date'>Added on %s</p>" % dt.format("F j, Y g:i A")
+
+        if book.favorite:
+            list_html += "<span class='favorite' title='Cory\'s Favorites'>&#x2605;</span>"
+
+        list_html += "<a class='overlay' href='%s' target='_blank'></a>" % book.link
+        list_html += "</div>"
+
+    if len(read_list) == 0:
+        list_html += "<p class='empty'>Cory hasn't read any books yet!</p>"
+
+    list_html += "<p class='empty'><a href='%s'>(See More)</a></p>" % reverse('books')
+    list_html += "</div>"
+
+    return list_html

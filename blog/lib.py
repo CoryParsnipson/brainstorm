@@ -58,6 +58,7 @@ NUM_RECENT_IDEAS = 3
 NUM_IDEAS_FOOTER = 3
 
 NUM_AMAZON_RESULTS = 5
+NUM_READ_LIST = 3
 
 
 ###############################################################################

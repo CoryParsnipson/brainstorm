@@ -63,7 +63,6 @@ def index(request):
         'pagination': pagination,
         'highlight': highlight,
         'highlight_cut': highlight_cut,
-        'read_list': ReadingListItem.objects.filter(wishlist=False).order_by('-date_published')[:3],
     }
     return render(request, 'blog/index.html', context)
 
@@ -76,7 +75,6 @@ def login_page(request):
     context = {
         'page_title': 'Login',
         'login_form': LoginForm(),
-        'read_list': ReadingListItem.objects.filter(wishlist=False).order_by('-date_published')[:3]
     }
     return render(request, 'blog/login.html', context)
 
@@ -84,7 +82,6 @@ def login_page(request):
 def logout_page(request):
     context = {
         'page_title': 'Logout',
-        'read_list': ReadingListItem.objects.filter(wishlist=False).order_by('-date_published')[:3]
     }
     return render(request, 'blog/logout.html', context)
 
