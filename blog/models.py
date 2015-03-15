@@ -186,6 +186,15 @@ class Thought(models.Model):
         adjacent_thoughts += [None] * (num - len(adjacent_thoughts))
         return adjacent_thoughts
 
+    def is_edited(self, delta=datetime.timedelta(minutes=1)):
+        """ compare date_published and date_edited with margin of error and
+            return a boolean (True if date_published != date_edited and
+            False if date_published == date_edited, within margin of error)
+        """
+        if self.date_edited - self.date_published < delta:
+            return False
+        return True
+
     def save(self, *args, **kwargs):
         # check to see if this save means a draft is being published and
         # change date_published to now

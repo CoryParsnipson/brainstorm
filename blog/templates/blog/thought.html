@@ -9,17 +9,12 @@
 <p class="idea"><a class="reverse-color" href="{% url 'idea-page' thought.idea.slug %}">{{ thought.idea }}</a></p>
 <p class="title">{{ thought.title }} {% if thought.is_draft %}[Draft]{% endif %}</p>
 <p class="subtitle">by {{ thought.author }} on {{ thought.date_published|date:"F j, Y g:i A" }}
-    {% if not thought.date_published == thought.date_edited %}
+    {% if thought.is_edited %}
     (Edited {{ thought.date_edited|date:"F j, Y g:i A" }})
     {% endif %}
 </p>
 
-{% if thought.preview %}
-<img class="preview" src="{{ thought.preview.url }}">
-{% else %}
-<img class="preview" src="{{ thought.idea.icon.url }}">
-{% endif %}
-
+<img class="preview" src="{{ thought.get_preview|default_if_none:thought.idea.icon.url }}" />
 <div class="content">{{ thought.content|safe }}</div>
 
 <div id="disqus_thread"></div>
