@@ -1,5 +1,6 @@
 {% extends 'blog/templates/template_dashboard.html' %}
 {% load staticfiles %}
+{% load blog_extras %}
 
 {% block http_headers %}
 <script type="text/javascript">
@@ -16,7 +17,7 @@
 {% endblock %}
 
 {% block side %}
-{% include "blog/templates/template_statbox.html" %}
+{% stat_box %}
 
 <h3>To Do</h3>
 <p>List items pending</p>

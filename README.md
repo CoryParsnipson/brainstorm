@@ -1,7 +1,7 @@
 Slacker Paradise
 ==========
 
-Fuck work; let's skate lol
+Fuck work; let's skate
 
 Hey You. Yeah You. The One Looking At Me Like An Idiot. Don't Point Its Rude
 --------------------------------------------------------------------------

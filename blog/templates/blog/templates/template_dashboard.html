@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 {% load staticfiles %}
+{% load blog_extras %}
 <html>
 <head lang="en">
     <meta charset="utf-8">
@@ -101,7 +102,7 @@
         <!-- side content -->
         <div id="content-side" class="large-4 medium-4 small-12 columns">
             {% block side %}
-            {% include "blog/templates/template_statbox.html" %}
+            {% stat_box %}
 
             <h3>To Do</h3>
             <p>Latest To Do list items</p>

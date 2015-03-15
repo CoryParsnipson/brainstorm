@@ -108,7 +108,7 @@
 .stat-box {
   font-size: 10pt;
   line-height: 1.2rem;
-  background-color: #444444;
+  background-color: #404040;
   padding: 5px 10px;
   margin-bottom: 2rem;
 }
@@ -142,6 +142,10 @@
 
 .stat-box p.purple {
   border-top: 4px solid #7A5F87;
+}
+
+.stat-box span {
+  margin-left: 10px;
 }
 
 /******************************************************************************
@@ -373,6 +377,10 @@ table.form-thought input[type="submit"].publish:hover {
 /******************************************************************************
  * reading list styles
  *****************************************************************************/
+#reading-list-form {
+  margin-bottom: 2rem;
+}
+
 .form-readinglist {
   width: 100%;
   border-collapse: collapse;

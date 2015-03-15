@@ -1,5 +1,6 @@
 {% extends 'blog/templates/template_dashboard.html' %}
 {% load staticfiles %}
+{% load blog_extras %}
 
 {% block http_headers %}
 <script type="text/javascript">
@@ -146,4 +147,6 @@
         </tbody>
     </table>
 </form>
+
+{% stat_box %}
 {% endblock %}

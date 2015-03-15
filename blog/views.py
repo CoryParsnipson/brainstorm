@@ -256,7 +256,6 @@ def thought_detail(request, idea_slug=None, thought_slug=None):
 def dashboard(request, *args, **kwargs):
     context = {
         'page_title': 'Main',
-        'stats': dashboard_stats(),
     }
     return render(request, 'blog/dashboard/dashboard.html', context)
 
@@ -291,7 +290,6 @@ def dashboard_books(request):
         'page_title': 'Books',
         'wish_list': ReadingListItem.objects.filter(wishlist=True).order_by('-date_published'),
         'read_list': read_list,
-        'stats': dashboard_stats(),
         'reading_list_item_form': reading_list_item_form,
         'paginator': paginator,
         'pagination': pagination
@@ -422,7 +420,6 @@ def dashboard_thoughts(request):
         'page_title': 'Manage Thoughts',
         'thoughts': thoughts_on_page,
         'idea': current_idea,
-        'stats': stats,
         'paginator': paginator,
         'pagination': pagination,
     }
@@ -480,7 +477,6 @@ def dashboard_drafts(request):
         'drafts': drafts_on_page,
         'paginator': paginator,
         'pagination': pagination,
-        'stats': dashboard_stats(),
     }
     return render(request, 'blog/dashboard/dashboard_drafts.html', context)
 
@@ -513,7 +509,6 @@ def dashboard_trash(request):
         'trash': trash_on_page,
         'paginator': paginator,
         'pagination': pagination,
-        'stats': dashboard_stats(),
     }
     return render(request, 'blog/dashboard/dashboard_trash.html', context)
 

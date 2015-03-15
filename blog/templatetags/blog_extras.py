@@ -4,6 +4,7 @@ from django.utils.dateformat import DateFormat
 
 from blog import lib
 from blog.models import ReadingListItem
+from blog.views import dashboard_stats
 
 register = template.Library()
 
@@ -85,6 +86,53 @@ def recently_read(**kwargs):
         list_html += "<p class='empty'>Cory hasn't read any books yet!</p>"
 
     list_html += "<p class='empty'><a href='%s'>(See More)</a></p>" % reverse('books')
+    list_html += "</div>"
+
+    return list_html
+
+
+@register.simple_tag(takes_context=True)
+def stat_box(context):
+    """ creates a stat box "widget"
+    """
+
+    # stats are only for logged in users
+    if not context['request'].user.is_authenticated():
+        return
+
+    stats = dashboard_stats()
+    list_html = "<div class='stat-box'>"
+    list_html += "<h3>Stats</h3>"
+
+    list_html += "<p class='green'>"
+    list_html += "<a href='%s'>Ideas</a>:<span class='right'>%s</span>" % (reverse('dashboard-ideas'), stats['idea_count'])
+    list_html += "</p>"
+
+    list_html += "<p class='purple'>"
+    list_html += "<a href='%s'>Thoughts</a>:<span class='right'>%s</span>" % (reverse('dashboard-thoughts'), stats['thought_count'])
+    list_html += "</p>"
+
+    list_html += "<p class='blue'>"
+    list_html += "<a href='%s'>Drafts</a>:<span class='right'>%s</span>" % (reverse('dashboard-drafts'), stats['draft_count'])
+    list_html += "</p>"
+
+    list_html += "<p class='red'>"
+    list_html += "<a href='%s'>Trash</a>:<span class='right'>%s</span>" % (reverse('dashboard-trash'), stats['trash_count'])
+    list_html += "</p>"
+
+    list_html += "<p class='orange'>"
+    list_html += "<a href='%s'>Highlights</a>:<span class='right'>%s</span>" % (reverse('dashboard-highlights'), stats['highlight_count'])
+    list_html += "</p>"
+
+    list_html += "<p class='yellow'>"
+    list_html += "<a href='%s'>Books</a>:" % reverse('dashboard-books')
+    list_html += "<span class='right grey'>"
+    list_html += "<span class='green'>W-</span>%s&nbsp;" % stats['wish_book_count']
+    list_html += "<span class='red'>R-</span>%s&nbsp;" % stats['read_book_count']
+    list_html += "<span class='purple'>T-</span>%s" % stats['total_book_count']
+    list_html += "</span>"
+    list_html += "</p>"
+
     list_html += "</div>"
 
     return list_html
