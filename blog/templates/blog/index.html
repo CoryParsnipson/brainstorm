@@ -28,6 +28,10 @@
                     </div>
                 </div>
             </a>
+
+            {% if request.user.is_authenticated and request.user.is_superuser %}
+            <a class="edit" href="{% url 'dashboard-author' %}?thought_slug={{ latest_thought.slug }}">edit</a>
+            {% endif %}
         </div>
     {% endif %}
 
