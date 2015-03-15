@@ -49,7 +49,7 @@
         <p class="date">Added on {{ book.date_published|date:"F j, Y g:i A" }}</p>
         {% if book.favorite %}<span class="favorite" title="Cory's Favorites">&#x2605;</span>{% endif %}
         <a class="link" href="{{ book.link }}" target="_blank" title="Open external link"></a>
-        <a class="link edit" href="{% url 'dashboard-books' %}?b={{ book.id }}" title="Edit"></a>
+        <a class="link edit-icon" href="{% url 'dashboard-books' %}?b={{ book.id }}" title="Edit"></a>
         <form action="{% url 'dashboard-backend' %}" method="post">
             <input type="hidden" name="id" value="{{ book.id }}" />
             <input type="hidden" name="next" value="{% url 'dashboard-books' %}" />
@@ -73,7 +73,7 @@
         <p class="date">Added on {{ book.date_published|date:"F j, Y g:i A" }}</p>
         {% if book.favorite %}<span class="favorite" title="Cory's Favorites">&#x2605;</span>{% endif %}
         <a class="link" href="{{ book.link }}" target="_blank" title="Open external link"></a>
-        <a class="link edit" href="{% url 'dashboard-books' %}?b={{ book.id }}" title="Edit"></a>
+        <a class="link edit-icon" href="{% url 'dashboard-books' %}?b={{ book.id }}" title="Edit"></a>
         <form action="{% url 'dashboard-backend' %}" method="post">
             <input type="hidden" name="id" value="{{ book.id }}" />
             <input type="hidden" name="next" value="{% url 'dashboard-books' %}" />

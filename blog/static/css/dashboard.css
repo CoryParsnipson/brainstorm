@@ -440,12 +440,12 @@ table.form-thought input[type="submit"].publish:hover {
   margin-right: 25px;
 }
 
-.aws-book-result a.edit {
+.aws-book-result a.edit-icon {
   bottom: 25px;
   background-image: url('../images/edit.png');
 }
 
-.aws-book-result a.edit:hover {
+.aws-book-result a.edit-icon:hover {
   background-image: url('../images/edit_on.png');
 }
 
