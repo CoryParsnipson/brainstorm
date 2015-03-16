@@ -197,6 +197,14 @@ p {
   font-style: italic;
 }
 
+@media (max-width: 40rem) {
+  .small-center {
+    float: none !important;
+    padding: 0 3px;
+    margin: 0 auto !important;
+  }
+}
+
 .eurostile-black {
   font-family: 'Eurostile-Black';
   font-weight: normal;
@@ -372,6 +380,10 @@ span.footer-copyleft {
 @media (max-width: 40em) {
   #footer div.main {
     padding-right: 10px;
+  }
+
+  #footer div.side {
+    text-align: center;
   }
 }
 
