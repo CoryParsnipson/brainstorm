@@ -9,6 +9,51 @@ from blog.views import dashboard_stats
 register = template.Library()
 
 
+@register.simple_tag
+def thought_nav(thought, **kwargs):
+    """ takes a "current thought" object and enumerates adjacent thoughts on
+        the page.
+
+        Parameters:
+        kwargs['direction'] -> 'next' or 'prev'
+        kwargs['length'] -> maximum number of thoughts in direction to pull
+        kwargs['header'] -> text to display in header above thoughts
+        kwargs['blockgridclass'] -> classes of ul block grid
+    """
+    header = kwargs['header'] if 'header' in kwargs else 'Thoughts'
+    direction = kwargs['direction'] if 'direction' in kwargs else 'next'
+    length = kwargs['length'] if 'length' in kwargs else 1
+    block_grid_class = kwargs['blockgridclass'] if 'blockgridclass' in kwargs else 'small-block-grid-1'
+    placeholder_html = "<div class='nav-placeholder'><p>&nbsp;</p><span>SP</span></div>"
+
+    list_html = "<ul class='%s thought-nav'>" % block_grid_class
+    list_html += "<li><div class='header strong'>%s</div></li>" % header
+
+    if not thought:
+        list_html += "<li>" + placeholder_html + "</li></ul>"
+        return list_html
+
+    if direction == 'next':
+        adj_thoughts = reversed(thought.get_next_thoughts(num=length))
+    else:
+        adj_thoughts = thought.get_prev_thoughts(num=length)
+
+    for t in adj_thoughts:
+        if not t:
+            list_html += "<li>" + placeholder_html + "</li>"
+        else:
+            url = reverse('thought-page', kwargs={'idea_slug': t.idea.slug, 'thought_slug': t.slug})
+
+            list_html += "<li><div class='nav'>"
+            list_html += "<a class='overlay' href='%s'></a>" % url
+            list_html += "<p>%s</p>" % t.title
+            list_html += "<img src='%s' />" % t.get_preview()
+            list_html += "</div></li>"
+
+    list_html += "</ul>"
+    return list_html
+
+
 @register.simple_tag(takes_context=True)
 def url_qs(context, **kwargs):
     """ takes the current url and query string from the request context

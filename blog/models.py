@@ -154,6 +154,7 @@ class Thought(models.Model):
         """
         if self.preview and hasattr(self.preview, 'url'):
             return self.preview.url
+        return self.idea.icon.url
 
     def get_next_thoughts(self, num=1, include_drafts=False, include_trash=False):
         """ get the next "num" thoughts in the same Idea and return a list

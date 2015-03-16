@@ -252,8 +252,6 @@ def thought_detail(request, idea_slug=None, thought_slug=None):
     context = {
         'page_title': thought.title,
         'thought': thought,
-        'next_thoughts': thought.get_next_thoughts(num=1),
-        'prev_thoughts': thought.get_prev_thoughts(num=3),
     }
     return render(request, 'blog/thought.html', context)
 
