@@ -212,6 +212,7 @@ function tinymce_snapshot(editor) {
   editor.on('loadContent', function () {
     // save snapshot on load for "revert changes" button
     original_state = editor.getContent();
+    console.log(original_state);
   });
 }
 
@@ -270,60 +271,55 @@ tinymceFileBrowser = function (upload_url, filename_url) {
 // you need to specify the target DOM element to place the window along
 // with some key parameters. The function body contains more tinymce
 // specific parameters
-function initialize_tinymce(
-  editor_id,
-  selector,
-  clear_button_id,
-  revert_button_id,
-  css_sheets
-)
-{
-  // obtain upload_url and filename url (should be hidden values in form element)
-  var upload_url = $('#id_upload_url').val();
-  var filename_url = $('#id_filename_url').val();
+function initialize_tinymce(params) {
+  var default_params = {
+    clear_button_id: params.clear_button_id || 'button-clear',
+    revert_button_id: params.revert_button_id || 'button-revert',
+    upload_url: $('#id_upload_url').val() || '/api/upload/',
+    filename_url: $('#id_filename_url').val() || '/api/generate_upload_filename/full/',
+  }
 
-  // default tinymce parameters
-  var params = {
-    auto_focus: editor_id,
-    selector: selector,
-    plugins: 'advlist anchor autoresize autosave charmap code contextmenu emoticons hr image link media paste preview save searchreplace tabfocus table textcolor visualblocks wordcount',
-    autoresize_min_height: 300,
-    autoresize_max_height: 600,
-    content_css: css_sheets,
-    resize: false,
-    menubar: false,
-    skin: "light",
-    relative_urls: false,
-    font_formats: "Roboto=Roboto;"+
-                  "Arial=arial,helvetica,sans-serif;"+
-                  "Courier New=courier new,courier;"+
-                  "Comic Sans MS=comic sans ms,sans-serif;"+
-                  "Helvetica=helvetica;"+
-                  "Times New Roman=times new roman,times;",
-    toolbar: [
-      'undo redo | forecolor backcolor | alignleft aligncenter alignright | superscript subscript | removeformat | outdent indent | blockquote | bullist numlist | table | visualblocks preview code',
-      'styleselect formatselect fontselect fontsizeselect | link image media emoticons charmap'
-    ],
-    setup: tinymce_snapshot,
-    file_browser_callback: tinymceFileBrowser(upload_url, filename_url),
+  var default_mce_params = {
+    auto_focus: params.auto_focus || '',
+    selector: params.selector || 'textarea.editor',
+    plugins: params.plugins || 'advlist anchor autoresize autosave charmap code ' +
+                               'contextmenu emoticons hr image link media paste ' +
+                               'preview save searchreplace tabfocus table ' +
+                               'textcolor visualblocks wordcount ',
+    autoresize_min_height: params.autoresize_min_height || 300,
+    autoresize_max_height: params.autoresize_max_height || 600,
+    content_css: params.content_css || '',
+    resize: params.resize || false,
+    menubar: params.menubar || false,
+    skin: params.skin || 'light',
+    relative_urls: params.relative_urls || false,
+    font_formats: params.font_formats || "Roboto=Roboto;Arial=arial,'Helvetica Neue',sans-serif;" +
+                                         "Courier New=courier new,courier;Comic Sans MS=comic sans ms,sans-serif;" +
+                                         "Helvetica=helvetica;Times New Roman=times new roman,times;",
+    toolbar: params.toolbar || ['undo redo forecolor backcolor outdent indent bullist numlist ' +
+                                'link image media emoticons charmap visualblocks',
+                                'removeformat styleselect formatselect fontselect fontsizeselect preview code'],
+    setup: typeof params.setup !== 'undefined' ? params.setup : tinymce_snapshot,
+    file_browser_callback: params.file_browser_callback ||
+      tinymceFileBrowser(default_params.upload_url, default_params.filename_url),
   };
 
   // initialize editor window
-  tinymce.init(params);
+  tinymce.init(default_mce_params);
 
   // clear editor window function
-  if (clear_button_id) {
+  if (default_params.clear_button_id) {
     tinymce_clear = function () {
-      tinyMCE.get(editor_id).setContent('');
+      tinyMCE.get(default_mce_params.auto_focus).setContent('');
     };
-    $('#' + clear_button_id).click(tinymce_clear);
+    $('#' + default_params.clear_button_id).click(tinymce_clear);
   }
 
   // revert editor window function
-  if (revert_button_id) {
+  if (default_params.revert_button_id) {
     tinymce_revert = function () {
-      tinyMCE.get(editor_id).setContent(original_state);
+      tinyMCE.get(default_mce_params.auto_focus).setContent(original_state);
     };
-    $('#' + revert_button_id).click(tinymce_revert);
+    $('#' + default_params.revert_button_id).click(tinymce_revert);
   }
 }

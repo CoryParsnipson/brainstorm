@@ -153,7 +153,7 @@
  *****************************************************************************/
 /* this is the precise div that lets all buttons in the mcetoolbar to collapse
    for small screen layouts */
-div#mceu_29 * {
+div.mce-toolbar * {
   float: left;
 }
 

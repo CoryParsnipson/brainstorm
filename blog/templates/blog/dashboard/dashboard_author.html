@@ -6,13 +6,10 @@
   // page specific javascript init shit
   $(function() {
     // fancy editor window for admins who have javascript
-    initialize_tinymce(
-      'id_content',
-      'textarea.editor',
-      'button-clear',
-      'button-revert',
-      ['{% static "css/common.css" %}', 'http://fonts.googleapis.com/css?family=Sigmar+One|Roboto']
-    );
+    initialize_tinymce({
+      auto_focus: 'id_content',
+      content_css: ['{% static "css/common.css" %}', 'http://fonts.googleapis.com/css?family=Sigmar+One|Roboto'],
+    });
   });
 </script>
 {% endblock %}
