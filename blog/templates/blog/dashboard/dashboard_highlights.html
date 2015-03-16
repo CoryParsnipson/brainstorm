@@ -23,11 +23,12 @@
 
 <h3>New Highlight</h3>
 <form id="link_form" action="{% url 'forms-highlight' %}" method="post"  enctype="multipart/form-data">
-    {{ highlight_form.id }}
     <input type="hidden" name="next" value="{% url 'dashboard-highlights' %}" />
+    <input type="hidden" name="old_icon" value="{{ highlight_form.icon.value| default_if_none:'' }}" />
     {% csrf_token %}
-    {{ thought_form.filename_url }}
-    {{ thought_form.upload_url }}
+    {% for field in highlight_form.hidden_fields %}
+    {{ field }}
+    {% endfor %}
 
     <table>
         <tbody>

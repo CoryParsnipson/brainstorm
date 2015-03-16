@@ -50,6 +50,7 @@
 <form action="{% url 'forms-idea' %}" method="post" enctype="multipart/form-data">
     {% csrf_token %}
     <input type="hidden" name="next" value="{% url 'dashboard-ideas' %}" />
+    <input type="hidden" name="old_icon" value="{{ idea_form.icon.value|default_if_none:'' }}" />
     <table class="add-idea">
         <tbody>
         <tr>

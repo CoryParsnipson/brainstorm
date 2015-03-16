@@ -26,11 +26,12 @@
 
 <form action="{% url 'forms-thought' %}" method="post" enctype="multipart/form-data">
     {% csrf_token %}
-    <input type="hidden" name="author" value="{{ request.user.id }}" />
     <input type="hidden" name="next" value="{% url 'dashboard-thoughts' %}?idea_slug={idea}" />
     <input type="hidden" name="old_slug" value="{{ thought_form.slug.value|default_if_none:'' }}" />
-    {{ thought_form.filename_url }}
-    {{ thought_form.upload_url }}
+    <input type="hidden" name="old_preview" value="{{ thought_form.preview.value|default_if_none:'' }}" />
+    {% for field in thought_form.hidden_fields %}
+    {{ field }}
+    {% endfor %}
 
     <table class="form-thought">
         <tr>
@@ -68,11 +69,11 @@
                 <input id="button-revert" type="button" value="Revert" />
 
                 {% if thought_form.is_draft.value == True %}
-                <input type="submit" name="is_draft" value="Save" />
+                <input type="submit" name="save_draft" value="Save" />
                 <input class="publish right" type="submit" value="Publish" />
                 {% else %}
                 {% if "thought_slug" not in request.GET %}
-                <input type="submit" name="is_draft" value="Save as Draft" />
+                <input type="submit" name="save_draft" value="Save as Draft" />
                 <input class="publish right" type="submit" value="Edit" />
                 {% else %}
                 <input class="publish right" type="submit" name="publish" value="Publish" />

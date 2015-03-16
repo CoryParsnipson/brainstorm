@@ -1,5 +1,6 @@
 from django import forms
 from django.core.urlresolvers import reverse_lazy
+from django.contrib.auth.admin import User
 
 from blog.models import Idea, Thought, Highlight, ReadingListItem
 
@@ -14,9 +15,6 @@ class LoginForm(forms.Form):
 class IdeaForm(forms.ModelForm):
     """ Django form class for managing user interaction with Idea objects
     """
-    def __init__(self, *args, **kwargs):
-        super(IdeaForm, self).__init__(*args, **kwargs)
-
     class Meta:
         model = Idea
         fields = ['name', 'slug', 'description', 'icon']
@@ -25,13 +23,19 @@ class IdeaForm(forms.ModelForm):
                 'rows': 1,
                 'cols': 40,
             }),
-            'icon': forms.FileInput(),
         }
 
 
 class ThoughtForm(forms.ModelForm):
     """ Django form class for managing thoughts
     """
+    # predefined fields
+    author = forms.ModelChoiceField(queryset=User.objects.all(), widget=forms.HiddenInput)
+    is_draft = forms.CharField(widget=forms.HiddenInput,
+                               initial=Thought._meta.get_field_by_name('is_draft')[0].get_default())
+    is_trash = forms.CharField(widget=forms.HiddenInput,
+                               initial=Thought._meta.get_field_by_name('is_trash')[0].get_default())
+
     # fields for tinymce parameters
     upload_url = forms.CharField(widget=forms.HiddenInput(attrs={
         'value': reverse_lazy('upload')
@@ -45,7 +49,7 @@ class ThoughtForm(forms.ModelForm):
 
     class Meta:
         model = Thought
-        fields = ['title', 'slug', 'content', 'idea', 'author', 'is_draft', 'is_trash', 'preview']
+        fields = ['title', 'slug', 'author', 'content', 'idea', 'preview', 'is_draft', 'is_trash']
         widgets = {
             # tinymce textarea (when js is enabled)
             'content': forms.Textarea(attrs={
@@ -65,7 +69,7 @@ class HighlightForm(forms.ModelForm):
         widgets = {
             # tinymce textarea (when js is enabled)
             'description': forms.Textarea(attrs={
-               'class': 'editor',
+                'class': 'editor',
             }),
         }
 

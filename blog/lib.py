@@ -264,6 +264,14 @@ def upload_file(f):
     return True, file_url
 
 
+def delete_file(filename):
+    """ given a url (relative to the media url), delete the file
+        from the server.
+    """
+    if filename and default_storage.exists(filename):
+        default_storage.delete(filename)
+
+
 def get_center_coord(box, rect):
     """ given a tuple (x, y) "box" representing a rectangle where x is the
         width of the rectangle in pixels and y is the height, and another

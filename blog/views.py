@@ -363,6 +363,7 @@ def dashboard_ideas(request):
         i.description = i.truncate(max_length=50)
 
     # form for editing/creating a new idea
+    idea_slug = None
     idea_form_instance = None
     if 'i' in request.GET:
         try:
@@ -433,13 +434,16 @@ def dashboard_author(request):
         ?thought_slug=[thought slug] provide a slug to edit a thought or draft
     """
     # create thought form (or load instance data if editing a thought)
+    author = None
     thought_form_instance = None
     if 'thought_slug' in request.GET:
         try:
             thought_slug = lib.slugify(request.GET['thought_slug'])
             thought_form_instance = Thought.objects.get(slug=thought_slug)
+
+            author = thought_form_instance.author.id
         except Thought.DoesNotExist as e:
-            pass
+            author = request.user.id
     thought_form = ThoughtForm(instance=thought_form_instance)
 
     context = {
@@ -825,6 +829,11 @@ class FormIdeaView(View):
             del instance_data['next']
             lib.replace_tokens(callback, instance_data)
 
+        old_icon = None
+        if 'old_icon' in instance_data:
+            old_icon = instance_data['old_icon']
+            del instance_data['old_icon']
+
         if 'slug' not in instance_data or not instance_data['slug']:
             instance_data['slug'] = lib.slugify(instance_data['name'])
         else:
@@ -839,7 +848,12 @@ class FormIdeaView(View):
         idea_form = IdeaForm(instance_data, request.FILES, instance=instance)
 
         if idea_form.is_valid():
-            idea_form.save()
+            idea = idea_form.save()
+
+            # delete old icon if necessary
+            if old_icon and old_icon != idea.icon.name:
+                lib.delete_file(old_icon)
+
             if callback:
                 messages.add_message(request, messages.SUCCESS, msgs['msg'])
                 return redirect(callback)
@@ -892,10 +906,13 @@ class FormThoughtView(View):
             del instance_data['next']
             callback = lib.replace_tokens(callback, {'idea': instance_data['idea']})
 
-        if 'is_draft' in instance_data:
-            instance_data['is_draft'] = True
-        else:
+        if 'save_draft' not in instance_data:
             instance_data['is_draft'] = False
+
+        old_preview = None
+        if 'old_preview' in instance_data and instance_data['old_preview']:
+            old_preview = instance_data['old_preview']
+            del instance_data['old_preview']
 
         if 'slug' not in instance_data or not instance_data['slug']:
             instance_data['slug'] = lib.slugify(instance_data['title'])
@@ -919,10 +936,13 @@ class FormThoughtView(View):
             # disallow editing of slugs
             instance_data['slug'] = old_slug
 
+        if 'author' not in instance_data or not instance_data['author']:
+            instance_data['author'] = request.user.id
+
         try:
             instance = Thought.objects.get(slug=instance_data['slug'])
             msgs['msg'] = "Successfully edited Thought '%s'" % instance.slug
-        except Thought.DoesNotExist as e:
+        except Thought.DoesNotExist:
             instance = None
             if instance_data['is_draft']:
                 msgs['msg'] = "Saved draft '%s' for later." % instance_data['slug']
@@ -931,8 +951,13 @@ class FormThoughtView(View):
         thought_form = ThoughtForm(instance_data, request.FILES, instance=instance)
 
         if thought_form.is_valid():
-            thought_form.save()
-            idea = Idea.objects.filter(slug=instance_data['idea'])[0]
+            thought = thought_form.save()
+
+            # delete old preview image if necessary
+            if old_preview and old_preview != thought.preview.name:
+                lib.delete_file(old_preview)
+
+            # TODO: delete inline images if necessary
 
             if instance_data['is_draft']:
                 messages.add_message(request, messages.WARNING, msgs['msg'])
@@ -994,6 +1019,11 @@ class FormHighlightView(View):
             del instance_data['next']
             lib.replace_tokens(callback, instance_data)
 
+        old_icon = None
+        if 'old_icon' in instance_data:
+            old_icon = instance_data['old_icon']
+            del instance_data['old_icon']
+
         if 'cancel' in instance_data:
             return redirect(callback)
 
@@ -1010,8 +1040,12 @@ class FormHighlightView(View):
         link_form = HighlightForm(instance_data, request.FILES, instance=instance)
 
         if link_form.is_valid():
-            link_form.save()
+            highlight = link_form.save()
             messages.add_message(request, messages.SUCCESS, msg)
+
+            # remove old icon if necessary
+            if old_icon and old_icon != highlight.icon.name:
+                lib.delete_file(old_icon)
 
             if callback:
                 return redirect(callback)

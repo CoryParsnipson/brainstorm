@@ -86,6 +86,10 @@ class Idea(models.Model):
         if self.icon:
             lib.resize_image(self.icon.name, new_size=lib.IDEA_PREVIEW_IMAGE_SIZE)
 
+    def delete(self, *args, **kwargs):
+        lib.delete_file(self.icon.name)
+        super(Idea, self).delete(*args, **kwargs)
+
     def __unicode__(self):
         return self.name
 
@@ -214,6 +218,10 @@ class Thought(models.Model):
 
         lib.resize_image(self.preview.name, lib.THOUGHT_PREVIEW_IMAGE_SIZE)
 
+    def delete(self, *args, **kwargs):
+        lib.delete_file(self.preview.name)
+        super(Thought, self).delete(*args, **kwargs)
+
 
 ###############################################################################
 # Highlight Model
@@ -256,6 +264,11 @@ class Highlight(models.Model):
         if self.icon:
             lib.resize_image(self.icon.name, lib.HIGHLIGHT_PREVIEW_IMAGE_SIZE)
 
+    def delete(self, *args, **kwargs):
+        # delete icon
+        lib.delete_file(self.icon.name)
+
+        super(Highlight, self).delete(*args, **kwargs)
 
 ###############################################################################
 # Reading List
