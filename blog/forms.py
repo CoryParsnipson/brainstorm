@@ -1,3 +1,5 @@
+import os
+
 from django import forms
 from django.core.urlresolvers import reverse_lazy
 from django.contrib.auth.admin import User
@@ -46,6 +48,20 @@ class ThoughtForm(forms.ModelForm):
             'filename': '',
         })
     }))
+
+    def __init__(self, *args, **kwargs):
+        super(ThoughtForm, self).__init__(*args, **kwargs)
+
+        if not self.instance:
+            return
+
+        # create list of inline images and inject into hidden input data
+        idx = 0
+        for image in self.instance.get_image_urls():
+            self.fields['inline_image_' + str(idx)] = forms.CharField(widget=forms.HiddenInput(attrs={
+                'value': os.path.basename(image),
+            }))
+            idx += 1
 
     class Meta:
         model = Thought

@@ -30,8 +30,7 @@
     <input type="hidden" name="old_slug" value="{{ thought_form.slug.value|default_if_none:'' }}" />
     <input type="hidden" name="old_preview" value="{{ thought_form.preview.value|default_if_none:'' }}" />
     {% for field in thought_form.hidden_fields %}
-    {{ field }}
-    {% endfor %}
+    {{ field }}{% endfor %}
 
     <table class="form-thought">
         <tr>

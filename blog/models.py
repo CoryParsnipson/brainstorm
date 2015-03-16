@@ -1,7 +1,9 @@
+import os
 import datetime
 
 from imagekit.models import ImageSpecField
 from imagekit.processors import Crop
+from BeautifulSoup import BeautifulSoup
 
 from django.db import models
 from django.db.models import Max
@@ -199,6 +201,13 @@ class Thought(models.Model):
             return False
         return True
 
+    def get_image_urls(self):
+        """ parse the html in the content field and return a list of
+            image urls (relative to media url) for processing
+        """
+        soup = BeautifulSoup(self.content)
+        return [image['src'] for image in soup.findAll('img')]
+
     def save(self, *args, **kwargs):
         # check to see if this save means a draft is being published and
         # change date_published to now
@@ -220,6 +229,13 @@ class Thought(models.Model):
 
     def delete(self, *args, **kwargs):
         lib.delete_file(self.preview.name)
+
+        # remove inline images
+        for image in self.get_image_urls():
+            image = os.path.basename(image)
+            image = os.path.join(paths.MEDIA_IMAGE_DIR, image)
+            lib.delete_file(image)
+
         super(Thought, self).delete(*args, **kwargs)
 
 
@@ -265,10 +281,9 @@ class Highlight(models.Model):
             lib.resize_image(self.icon.name, lib.HIGHLIGHT_PREVIEW_IMAGE_SIZE)
 
     def delete(self, *args, **kwargs):
-        # delete icon
         lib.delete_file(self.icon.name)
-
         super(Highlight, self).delete(*args, **kwargs)
+
 
 ###############################################################################
 # Reading List

@@ -14,6 +14,7 @@ from django.contrib.auth import authenticate, login as auth_login, logout as aut
 from django.contrib.auth.decorators import login_required
 
 import lib
+import paths
 from models import Idea, Thought, Highlight, ReadingListItem
 from forms import LoginForm, IdeaForm, ThoughtForm, HighlightForm, ReadingListItemForm
 
@@ -906,6 +907,12 @@ class FormThoughtView(View):
             del instance_data['next']
             callback = lib.replace_tokens(callback, {'idea': instance_data['idea']})
 
+        # gather inline images if any
+        old_inline_images = []
+        for k, v in instance_data.iteritems():
+            if k.startswith('inline_image'):
+                old_inline_images.append(v)
+
         if 'save_draft' not in instance_data:
             instance_data['is_draft'] = False
 
@@ -957,7 +964,12 @@ class FormThoughtView(View):
             if old_preview and old_preview != thought.preview.name:
                 lib.delete_file(old_preview)
 
-            # TODO: delete inline images if necessary
+            # delete inline images if necessary
+            new_inline_images = [os.path.basename(i) for i in thought.get_image_urls()]
+            for image in old_inline_images:
+                if image in new_inline_images:
+                    continue
+                lib.delete_file(os.path.join(paths.MEDIA_IMAGE_DIR, image))
 
             if instance_data['is_draft']:
                 messages.add_message(request, messages.WARNING, msgs['msg'])
