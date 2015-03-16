@@ -33,6 +33,7 @@ div.idea-banner h1 {
  *****************************************************************************/
 ul.small-stories {
   margin: 0;
+  margin-bottom: 2rem;
 }
 
 ul.small-stories div.img-placeholder {
