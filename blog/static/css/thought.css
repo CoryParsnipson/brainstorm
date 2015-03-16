@@ -17,45 +17,23 @@ img.preview {
 }
 
 /******************************************************************************
- * thought side navigation styles
+ * thought navigation styles
  *****************************************************************************/
-div#content-side h3 {
-  text-align: left;
-  margin-bottom: 1rem;
+ul.thought-nav li div.header {
+  padding: 5px 10px;
 }
 
-table.thought-nav {
-  width: 100%;
-  border-collapse: separate;
-  border-spacing: 0 1rem;
-}
-
-table.thought-nav td {
+ul.thought-nav li div.nav {
   position: relative;
 }
 
-table.thought-nav p {
-  width: 100%;
-  color: #F8C118;
-  background-color: rgba(0, 0, 0, 0.75);
-  position: absolute;
-  top: 0;
-  padding: 5px;
-}
-
-div.nav-placeholder {
+ul.thought-nav li div.nav-placeholder {
   height: 140px;
-  background-size: cover;
   background-color: #494949;
+  position: relative;
 }
 
-div.nav-placeholder a {
-  height: 100%;
-  width: 100%;
-  display: block;
-}
-
-div.nav-placeholder span {
+ul.thought-nav li div.nav-placeholder span {
   color: #B7B7B7;
   font-size: 72pt;
   font-family: 'Eurostile-Black';
@@ -65,6 +43,15 @@ div.nav-placeholder span {
   left: 0;
   right: 0;
   margin-top: -0.5rem;
+}
+
+ul.thought-nav p {
+  width: 100%;
+  color: #F8C118;
+  background-color: rgba(0, 0, 0, 0.75);
+  position: absolute;
+  top: 0;
+  padding: 5px;
 }
 
 /******************************************************************************

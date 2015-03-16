@@ -30,17 +30,13 @@
         <p class="subtitle">by {{ thought.author }} on {{ thought.date_published|date:"F j, Y" }}</p>
 
         <div class="img-placeholder" {% if thought.preview %}style="background-image: url({{ thought.preview.url }})" {% endif %}>
-            <a href="{% url 'thought-page' thought.idea.slug thought.slug %}">
-                {% if not thought.preview %}
-                <span class="placeholder">SP</span>
-                {% endif %}
-            </a>
+            <a class="overlay" href="{% url 'thought-page' thought.idea.slug thought.slug %}"></a>
+            {% if not thought.preview %}
+            <span class="placeholder">SP</span>
+            {% endif %}
         </div>
 
-        <p>
-            {{ thought.content|safe }}
-            <a href="{% url 'thought-page' thought.idea.slug thought.slug %}">(Read more)</a>
-        </p>
+        {{ thought.content|safe }}
     </li>
     {% empty %}
     <p>This idea has no thoughts yet!</p>

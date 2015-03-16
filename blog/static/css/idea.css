@@ -56,6 +56,10 @@ ul.small-stories li:nth-of-type(even) {
   background-color: #404040;
 }
 
+ul.small-stories li p:last-of-type {
+  margin-bottom: 0;
+}
+
 /******************************************************************************
  * side thought nav styles
  *****************************************************************************/

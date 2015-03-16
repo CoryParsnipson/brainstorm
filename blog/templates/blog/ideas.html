@@ -13,7 +13,7 @@
     <tr>
         <td>
             <div class="overlay">
-                <a href="{% url 'idea-page' idea.slug %}"></a>
+                <a class="overlay" href="{% url 'idea-page' idea.slug %}"></a>
             </div>
             <img src="{{ idea.icon.url }}" />
             <h3 title="{{ idea.slug }}">
@@ -53,7 +53,7 @@
             <p class="small-title">
                 <a class="reverse-color" href="{% url 'thought-page' thought.idea.slug thought.slug %}">{{ thought.title }}</a>
             </p>
-            <p class="subtitle">{{ thought.content|safe }}</p>
+            <div class="subtitle">{{ thought.content|safe }}</div>
         </td>
     </tr>
     {% endfor %}

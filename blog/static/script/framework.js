@@ -212,7 +212,6 @@ function tinymce_snapshot(editor) {
   editor.on('loadContent', function () {
     // save snapshot on load for "revert changes" button
     original_state = editor.getContent();
-    console.log(original_state);
   });
 }
 
@@ -282,10 +281,10 @@ function initialize_tinymce(params) {
   var default_mce_params = {
     auto_focus: params.auto_focus || '',
     selector: params.selector || 'textarea.editor',
-    plugins: params.plugins || 'advlist anchor autoresize autosave charmap code ' +
-                               'contextmenu emoticons hr image link media paste ' +
-                               'preview save searchreplace tabfocus table ' +
-                               'textcolor visualblocks wordcount ',
+    plugins: params.plugins || 'advlist anchor autoresize autosave charmap code contextmenu emoticons hr image link ' +
+                               'media paste preview save searchreplace tabfocus table textcolor visualblocks wordcount ',
+    plugin_preview_width: params.plugin_preview_width || 620,
+    plugin_preview_height: params.plugin_preview_height || 400,
     autoresize_min_height: params.autoresize_min_height || 300,
     autoresize_max_height: params.autoresize_max_height || 600,
     content_css: params.content_css || '',
@@ -299,7 +298,7 @@ function initialize_tinymce(params) {
     toolbar: params.toolbar || ['undo redo forecolor backcolor outdent indent bullist numlist ' +
                                 'link image media emoticons charmap visualblocks',
                                 'removeformat styleselect formatselect fontselect fontsizeselect preview code'],
-    setup: typeof params.setup !== 'undefined' ? params.setup : tinymce_snapshot,
+    setup: params.setup || tinymce_snapshot,
     file_browser_callback: params.file_browser_callback ||
       tinymceFileBrowser(default_params.upload_url, default_params.filename_url),
   };

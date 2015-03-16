@@ -27,12 +27,6 @@
   z-index: 10;
 }
 
-.catalog td div.overlay a {
-  width: 100%;
-  height: 100%;
-  display: block;
-}
-
 .catalog td:hover div.overlay {
   background-color: rgba(0, 0, 0, 0.75);
 }
@@ -91,25 +85,21 @@ table.recent-ideas-list tr:nth-of-type(odd) {
 }
 
 table.recent-ideas-list td {
-  padding: 0px;
+  padding: 5px;
 }
 
-p.title {
+table.recent-ideas-list td p {
+  margin-bottom: 0.1rem;
+}
+
+table.recent-ideas-list td p.title {
   font-size: 9pt;
   text-align: right;
   border-bottom: 1px solid #F8C118;
-  margin: 5px;
   margin-bottom: 0.5rem;
 }
 
-p.small-title {
+table.recent-ideas-list td p.small-title {
   display: inline-block;
-  margin: 5px;
   margin-bottom: 0.2rem;
-}
-
-p.subtitle {
-  margin: 5px;
-  margin-right: 1rem;
-  margin-bottom: 1rem;
 }

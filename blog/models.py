@@ -43,6 +43,12 @@ class Idea(models.Model):
         options={'quality': '70'},
     )
 
+    # non field members
+    allowed_tags = [
+        'abbr', 'ul', 'code', 'em', 'strong', 'li', 'ol', 'p',
+        'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'hr', 'br'
+    ]
+
     def get_next(self):
         """ get the next Idea by order column or return
             None if this Idea instance is the latest
@@ -61,15 +67,17 @@ class Idea(models.Model):
         except IndexError:
             return None
 
-    def truncate(self, max_length=270, allowed_tags=None, strip=True):
+    def truncate(self, max_length=270, allowed_tags=None, full_link=None):
         """ output a form of the content field, truncated to max_length. Tags
             will be whitelisted, stripped, and balanced to account for
             truncation.
         """
         return lib.truncate(
             content=self.description,
+            allowed_tags=allowed_tags or self.allowed_tags,
             max_length=max_length,
-            strip=strip)
+            full_link = full_link,
+        )
 
     def save(self, *args, **kwargs):
         """ if order field is None, add value (1 + maximum existing value)
@@ -123,11 +131,11 @@ class Thought(models.Model):
 
     # non field members
     allowed_tags = [
-        'abbr', 'ul', 'blockquote', 'code', 'em', 'strong', 'li', 'ol',
+        'abbr', 'ul', 'code', 'em', 'strong', 'li', 'ol', 'p',
         'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'hr', 'br'
     ]
 
-    def truncate(self, max_length=250, allowed_tags=None, strip=True):
+    def truncate(self, max_length=250, allowed_tags=None, full_link=None):
         """ output a form of the content field, truncated to max_length. Tags
             will be whitelisted, stripped, and balanced to account for
             truncation.
@@ -136,7 +144,8 @@ class Thought(models.Model):
             content=self.content,
             max_length=max_length,
             allowed_tags=allowed_tags or self.allowed_tags,
-            strip=strip)
+            full_link=full_link,
+        )
 
     def get_preview(self):
         """ safe way to get preview url for this thought. Will return None if
@@ -258,10 +267,10 @@ class Highlight(models.Model):
 
     # non field members
     allowed_tags = [
-        'br', 'em', 'strong', 'blockquote', 'quote', 'hr'
+        'br', 'em', 'strong', 'blockquote', 'quote', 'hr', 'p'
     ]
 
-    def truncate(self, max_length=250, allowed_tags=None, strip=True):
+    def truncate(self, max_length=250, allowed_tags=None, full_link=None):
         """ output a form of the description field, truncated to max_length. Tags
             will be whitelisted, stripped, and balanced to account for
             truncation.
@@ -270,7 +279,8 @@ class Highlight(models.Model):
             content=self.description,
             max_length=max_length,
             allowed_tags=allowed_tags or self.allowed_tags,
-            strip=strip)
+            full_link=full_link,
+        )
 
     def save(self, *args, **kwargs):
         # "real" save method

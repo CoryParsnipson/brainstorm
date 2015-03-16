@@ -175,7 +175,9 @@ def ideas(request):
         recent_thoughts += Thought.objects.filter(idea=idea_slug).order_by('-date_published')[:1]
 
     for t in recent_thoughts:
-        t.content = t.truncate(max_length=100)
+        allowed_tags = list(Thought.allowed_tags)
+        allowed_tags.append('img')
+        t.content = t.truncate(max_length=100, allowed_tags=allowed_tags)
 
     context = {
         'page_title': 'Ideas',
@@ -207,7 +209,13 @@ def idea_detail(request, idea_slug=None):
     )
 
     for t in thoughts_on_page:
-        t.content = t.truncate()
+        t.content = t.truncate(
+            max_length=175,
+            full_link=reverse('thought-page', kwargs={
+                'idea_slug': t.idea.slug,
+                'thought_slug': t.slug,
+            }),
+        )
 
     # pick from a list, prevent duplicates
     other_ideas = Idea.objects.exclude(slug=idea_slug)

@@ -1,5 +1,4 @@
 BeautifulSoup==3.2.1
-bleach==1.4.1
 boto==2.36.0
 dj-database-url==0.3.0
 Django==1.7.1

@@ -12,22 +12,21 @@
         <p>There are no thoughts in the database yet!!</p>
     {% else %}
         <div class="large-12 columns showcase">
-            <a href="{% url 'thought-page' latest_thought.idea.slug latest_thought.slug %}">
-                {% if latest_thought.preview %}
-                <img src="{{ latest_thought.preview.url }}">
-                {% else %}
-                <img src="{{ latest_thought.idea.icon.url }}">
-                {% endif %}
+            <a class="overlay" href="{% url 'thought-page' latest_thought.idea.slug latest_thought.slug %}"></a>
+            {% if latest_thought.preview %}
+            <img src="{{ latest_thought.preview.url }}">
+            {% else %}
+            <img src="{{ latest_thought.idea.icon.url }}">
+            {% endif %}
 
-                <div class="text-overlay">
-                    <div>
-                        <p class="idea">{{ latest_thought.idea }}</p>
-                        <p class="title" title="{{ latest_thought.slug }}">{{ latest_thought.title }}</p>
-                        <p class="subtitle">by {{ latest_thought.author }} on {{ latest_thought.date_published|date:"F j, Y" }}</p>
-                        <p>{{ latest_thought.content|safe }}</p>
-                    </div>
+            <div class="text-overlay">
+                <div>
+                    <p class="idea">{{ latest_thought.idea }}</p>
+                    <p class="title" title="{{ latest_thought.slug }}">{{ latest_thought.title }}</p>
+                    <p class="subtitle">by {{ latest_thought.author }} on {{ latest_thought.date_published|date:"F j, Y" }}</p>
+                    {{ latest_thought.content|safe }}
                 </div>
-            </a>
+            </div>
 
             {% if request.user.is_authenticated and request.user.is_superuser %}
             <a class="edit" href="{% url 'dashboard-author' %}?thought_slug={{ latest_thought.slug }}">edit</a>
@@ -38,15 +37,14 @@
     {% if highlight %}
     <div class="large-12 columns showcase-splitter">
         <div class="img-placeholder">
-            <a href="{{ highlight.url }}" target="_blank">
-                {% if highlight.icon %}
-                <img src="{{ highlight.icon.url }}">
-                {% else %}
-                <span class="img-placeholder">
-                    <span class="big">HIGHLIGHT</span><br>OF THE DAY
-                </span>
-                {% endif %}
-            </a>
+            <a class="overlay" href="{{ highlight.url }}" target="_blank"></a>
+            {% if highlight.icon %}
+            <img src="{{ highlight.icon.url }}">
+            {% else %}
+            <span class="img-placeholder">
+                <span class="big">HIGHLIGHT</span><br>OF THE DAY
+            </span>
+            {% endif %}
         </div>
         <div class="highlight">
             <p class="highlight-category"><a class="reverse-color" href="{% url 'highlights' %}">Highlights from the web</a></p>
@@ -75,11 +73,10 @@
     {% for thought in latest_thoughts %}
     <li>
         <div class="img-placeholder" {% if thought.preview %}style="background-image: url({{ thought.preview.url }})" {% endif %}>
-            <a href="{% url 'thought-page' thought.idea.slug thought.slug %}">
-                {% if not thought.preview %}
-                <span class="placeholder">SP</span>
-                {% endif %}
-            </a>
+            <a class="overlay" href="{% url 'thought-page' thought.idea.slug thought.slug %}"></a>
+            {% if not thought.preview %}
+            <span class="placeholder">SP</span>
+            {% endif %}
         </div>
 
         <p class="idea"><a class="reverse-color" href="{% url 'idea-page' thought.idea.slug %}">{{ thought.idea }}</a></p>
@@ -90,7 +87,7 @@
             {% endif %}
         </p>
         <p class="subtitle">by {{ thought.author }} on {{ thought.date_published|date:"F j, Y" }}</p>
-        <p>{{ thought.content|safe }}</p>
+        {{ thought.content|safe }}
     </li>
     {% endfor %}
 </ul>

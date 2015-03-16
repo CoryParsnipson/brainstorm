@@ -157,6 +157,17 @@ div.mce-toolbar * {
   float: left;
 }
 
+.mce-toolbar div.mce-btn button {
+  padding-top: 5px;
+  padding-bottom: 5px;
+  padding-left: 7px;
+  padding-right: 7px;
+}
+
+div.mce-btn button:hover {
+  background-color: #EFEFEF;
+}
+
 /******************************************************************************
  * input styles
  *****************************************************************************/

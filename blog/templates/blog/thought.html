@@ -38,55 +38,47 @@
 
 {% block side %}
 {% if next_thoughts %}
-<table class="thought-nav">
-    <tbody>
-    <tr><th>Next</th></tr>
+<ul class="small-block-grid-1 thought-nav">
+    <li><div class="header strong">Next</div></li>
     {% for next_thought in next_thoughts reversed %}
-    <tr>
-        <td>
-            {% if next_thought %}
-            <a href="{% url 'thought-page' next_thought.idea.slug next_thought.slug %}">
-                <img src="{{ next_thought.get_preview|default_if_none:thought.idea.icon.url }}">
-                <p>{{ next_thought.title }}</p>
-            </a>
-            {% else %}
-            <div class="nav-placeholder">
-                <p>&nbsp;</p>
-                <span>SP</span>
-            </div>
-            {% endif %}
-        </td>
-    </tr>
+    <li>
+        {% if next_thought %}
+        <div class="nav">
+            <a class="overlay" href="{% url 'thought-page' next_thought.idea.slug next_thought.slug %}"></a>
+            <p>{{ next_thought.title }}</p>
+            <img src="{{ next_thought.get_preview|default_if_none:thought.idea.icon.url }}" />
+        </div>
+        {% else %}
+        <div class="nav-placeholder"><p>&nbsp;</p><span>SP</span></div>
+        {% endif %}
+    </li>
+    {% empty %}
+    <li><div class="nav-placeholder"><p>&nbsp;</p><span>SP</span></div></li>
     {% endfor %}
-    </tbody>
-</table>
+</ul>
 {% endif %}
 
 <hr>
 
 {% if prev_thoughts %}
-<table class="thought-nav">
-    <tbody>
-    <tr><th>Previous</th></tr>
+<ul class="small-block-grid-1 thought-nav">
+    <li><div class="header strong">Previous</div></li>
     {% for prev_thought in prev_thoughts %}
-    <tr>
-        <td>
-            {% if prev_thought %}
-            <a href="{% url 'thought-page' prev_thought.idea.slug prev_thought.slug %}">
-                <img src="{{ prev_thought.get_preview|default_if_none:thought.idea.icon.url }}">
-                <p>{{ prev_thought.title }}</p>
-            </a>
-            {% else %}
-            <div class="nav-placeholder">
-                <p>&nbsp;</p>
-                <span>SP</span>
-            </div>
-            {% endif %}
-        </td>
-    </tr>
+    <li>
+        {% if prev_thought %}
+        <div class="nav">
+            <a class="overlay" href="{% url 'thought-page' prev_thought.idea.slug prev_thought.slug %}"></a>
+            <p>{{ prev_thought.title }}</p>
+            <img src="{{ prev_thought.get_preview|default_if_none:thought.idea.icon.url }}" />
+        </div>
+        {% else %}
+        <div class="nav-placeholder"><p>&nbsp;</p><span>SP</span></div>
+        {% endif %}
+    </li>
+    {% empty %}
+    <li><div class="nav-placeholder"><p>&nbsp;</p><span>SP</span></div></li>
     {% endfor %}
-    </tbody>
-</table>
+</ul>
 {% endif %}
 
 <hr>
@@ -97,52 +89,36 @@
 
 {% block footer %}
 <h3>More in <a href="{% url 'idea-page' thought.idea.slug %}">{{ thought.idea.name }}</a>:</h3>
-<ul class="small-block-grid-1 medium-block-grid-2">
+<ul class="small-block-grid-1 medium-block-grid-2 thought-nav">
     <li>
-        <table class="thought-nav">
-            <tbody>
-            <tr><th>Previous</th></tr>
-            <tr>
-                <td>
-                    {% if prev_thoughts and prev_thoughts.0 %}
-                    <div class="nav-placeholder" style="background-image: url('{{ prev_thoughts.0.get_preview|default_if_none:prev_thoughts.0.idea.icon.url }}')">
-                        <a href="{% url 'thought-page' prev_thoughts.0.idea.slug prev_thoughts.0.slug %}">
-                            <p>{{ prev_thoughts.0.title }}</p>
-                        </a>
-                    </div>
-                    {% else %}
-                    <div class="nav-placeholder">
-                        <p>&nbsp;</p>
-                        <span>SP</span>
-                    </div>
-                    {% endif %}
-                </td>
-            </tr>
-            </tbody>
-        </table>
+        <div class="header">Previous</div>
+        {% if prev_thoughts and prev_thoughts.0 %}
+        <div class="nav">
+            <a class="overlay" href="{% url 'thought-page' prev_thoughts.0.idea.slug prev_thoughts.0.slug %}"></a>
+            <p>{{ prev_thoughts.0.title }}</p>
+            <img src="{{ prev_thoughts.0.get_preview|default_if_none:prev_thoughts.0.idea.icon.url }}" />
+        </div>
+        {% else %}
+        <div class="nav-placeholder">
+            <p>&nbsp;</p>
+            <span>SP</span>
+        </div>
+        {% endif %}
     </li>
     <li>
-        <table class="thought-nav">
-            <tbody>
-            <tr><th>Next</th></tr>
-            <tr>
-                <td>
-                    {% if next_thoughts and next_thoughts.0 %}
-                    <div class="nav-placeholder" style="background-image: url('{{ next_thoughts.0.get_preview|default_if_none:next_thoughts.0.idea.icon.url }}')">
-                        <a href="{% url 'thought-page' next_thoughts.0.idea.slug next_thoughts.0.slug %}">
-                            <p>{{ next_thoughts.0.title }}</p>
-                        </a>
-                    </div>
-                    {% else %}
-                    <div class="nav-placeholder">
-                        <p>&nbsp;</p>
-                        <span>SP</span>
-                    </div>
-                    {% endif %}
-                </td>
-            </tr>
-            </tbody>
-        </table>
+        <div class="header right-justify">Next</div>
+        {% if next_thoughts and next_thoughts.0 %}
+        <div class="nav">
+            <a class="overlay" href="{% url 'thought-page' next_thoughts.0.idea.slug next_thoughts.0.slug %}"></a>
+            <p>{{ next_thoughts.0.title }}</p>
+            <img src="{{ next_thoughts.0.get_preview|default_if_none:next_thoughts.0.idea.icon.url }}" />
+        </div>
+        {% else %}
+        <div class="nav-placeholder">
+            <p>&nbsp;</p>
+            <span>SP</span>
+        </div>
+        {% endif %}
     </li>
 </ul>
 {% endblock %}

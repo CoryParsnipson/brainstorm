@@ -4,9 +4,11 @@ import io
 
 import PIL
 from PIL import Image
-import bleach
 import amazonproduct
+from lxml.html.clean import Cleaner
+
 from django.conf import settings
+from django.template import defaultfilters
 from django.core.files.storage import default_storage
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
@@ -179,25 +181,32 @@ def slugify(source_str, max_len=30):
     return slug
 
 
-def truncate(content, max_length=DEFAULT_TRUNCATE_LENGTH, allowed_tags=ALLOWED_TAGS, strip=True):
+def truncate(content, max_length=DEFAULT_TRUNCATE_LENGTH, allowed_tags=ALLOWED_TAGS, full_link=None):
     """ truncate a body of text to the expected 'max_length' and strip
         the body of text of all html tags that are not in 'allowed tags'. You
         can also specify a 'strip' value (True -> strip html tags, False ->
         escape html tags and leave them in text)
     """
-
-    truncated_str = bleach.clean(
-        content,
-        tags=allowed_tags,
-        strip=strip,
-        strip_comments=True,
+    cleaner = Cleaner(
+        page_structure=False,
+        links=True,
+        safe_attrs_only=True,
+        remove_unknown_tags=False,
+        allow_tags=allowed_tags
     )
 
-    truncated_str = truncated_str[:max_length]
-    if max_length < len(content):
-        truncated_str += "..."
+    content = defaultfilters.truncatechars_html(cleaner.clean_html(content), max_length)
+    if full_link:
+        try:
+            insert_point = content.rindex('</p>')
+        except ValueError:
+            insert_point = content.rindex('<')
 
-    return truncated_str
+        ending = content[insert_point:]
+        content = content[:insert_point]
+
+        content += '&nbsp;<a href="' + full_link + '">(Read More)</a>' + ending
+    return content
 
 
 def generate_upload_filename(filename, full_path=None):
