@@ -818,7 +818,7 @@ def dashboard_stats():
 class FormIdeaView(View):
     """ API endpoints for forms to manage user interaction for Ideas
     """
-    def get(self, request, *args, **kwargs):
+    def get(self, request):
         """ return form body output for a form to create a new idea
         """
         idea_form = IdeaForm()
@@ -833,62 +833,63 @@ class FormIdeaView(View):
         context = {'form': idea_form_output}
         return JsonResponse(context)
 
-    def post(self, request, *args, **kwargs):
+    def post(self, request):
         """ save the POST data for the form into a new Idea
 
             request.POST['next'] optional url for redirect on completion
         """
-        instance_data = request.POST.copy()
-        msgs = {}
+        # make POST data mutable
+        request.POST = request.POST.copy()
 
         callback = None
-        if 'next' in instance_data:
-            callback = instance_data['next']
-            del instance_data['next']
-            lib.replace_tokens(callback, instance_data)
+        if 'next' in request.POST:
+            callback = request.POST['next']
 
-        old_icon = None
-        if 'old_icon' in instance_data:
-            old_icon = instance_data['old_icon']
-            del instance_data['old_icon']
-
-        if 'slug' not in instance_data or not instance_data['slug']:
-            instance_data['slug'] = lib.slugify(instance_data['name'])
+        # prevent accidental edit when writing new post with same slug
+        if 'edit' in request.POST:
+            slug = lib.slugify(request.POST['edit'])
+        elif 'slug' in request.POST and request.POST['slug']:
+            slug = find_unique_slug(request.POST['slug'], Idea)
         else:
-            instance_data['slug'] = lib.slugify(instance_data['slug'])
+            slug = find_unique_slug(request.POST['name'], Idea)
+        request.POST['slug'] = slug
 
         try:
-            instance = Idea.objects.get(slug=instance_data['slug'])
-            msgs['msg'] = "Successfully edited Idea %s" % instance.name
-        except Idea.DoesNotExist as e:
-            instance = None
-            msgs['msg'] = "Successfully created Idea %s" % instance_data['name']
-        idea_form = IdeaForm(instance_data, request.FILES, instance=instance)
+            instance = Idea.objects.get(slug=request.POST['slug'])
+            msg = "Successfully edited Idea '%s'" % instance.name
 
+            # keep track of idea icon
+            if 'icon-clear' in request.POST and instance.icon:
+                lib.delete_file(instance.icon.name)
+            original_icon = instance.icon
+        except Idea.DoesNotExist:
+            instance = None
+            original_icon = None
+            msg = "Successfully created Idea '%s'" % request.POST['name']
+
+        idea_form = IdeaForm(request.POST, request.FILES, instance=instance)
         if idea_form.is_valid():
             idea = idea_form.save()
 
             # delete old icon if necessary
-            if old_icon and old_icon != idea.icon.name:
-                lib.delete_file(old_icon)
+            if original_icon and idea.icon and original_icon.name != idea.icon.name:
+                lib.delete_file(original_icon.name)
 
             if callback:
-                messages.add_message(request, messages.SUCCESS, msgs['msg'])
+                messages.add_message(request, messages.SUCCESS, msg)
                 return redirect(callback)
-            return JsonResponse(msgs)
+            return JsonResponse(serializers.serialize('json', [idea]), safe=False)
         else:
-            # loop through fields on form and add errors to dict
             errors = {}
-            i = 0
             for field in idea_form:
                 errors[field.name] = field.errors
-                i += 1
 
             if callback:
-                msg = errors
+                msg = "<br>".join([k + ": " + " ".join(v) for k, v in errors.items() if v])
                 messages.add_message(request, messages.ERROR, msg)
-                return redirect(callback)
-            return JsonResponse(errors)
+                return redirect(request.META['HTTP_REFERER'])
+            else:
+                return JsonResponse(errors)
 
 
 class FormThoughtView(View):
@@ -1039,13 +1040,13 @@ class FormHighlightView(View):
         highlight_form = HighlightForm(request.POST, request.FILES, instance=instance)
         if highlight_form.is_valid():
             highlight = highlight_form.save()
-            messages.add_message(request, messages.SUCCESS, msg)
 
             # remove old icon file if necessary
             if original_icon and highlight.icon and original_icon.name != highlight.icon.name:
                 lib.delete_file(original_icon.name)
 
             if callback:
+                messages.add_message(request, messages.SUCCESS, msg)
                 return redirect(callback)
             else:
                 return JsonResponse(serializers.serialize('json', [highlight]), safe=False)
@@ -1100,9 +1101,9 @@ class FormReadingListView(View):
         reading_list_form = ReadingListItemForm(request.POST, instance=instance)
         if reading_list_form.is_valid():
             reading_list_item = reading_list_form.save()
-            messages.add_message(request, messages.SUCCESS, msg)
 
             if callback:
+                messages.add_message(request, messages.SUCCESS, msg)
                 return redirect(callback)
             else:
                 return JsonResponse(serializers.serialize('json', [reading_list_item]), safe=False)

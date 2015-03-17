@@ -1,10 +1,7 @@
-import os
-
 from django import forms
 from django.core.urlresolvers import reverse_lazy
 from django.contrib.auth.admin import User
 
-import lib
 from blog.models import Idea, Thought, Highlight, ReadingListItem
 
 
@@ -18,6 +15,15 @@ class LoginForm(forms.Form):
 class IdeaForm(forms.ModelForm):
     """ Django form class for managing user interaction with Idea objects
     """
+    next = forms.CharField(widget=forms.HiddenInput, initial=reverse_lazy('dashboard-ideas'))
+
+    def __init__(self, *args, **kwargs):
+        super(IdeaForm, self).__init__(*args, **kwargs)
+
+        if Idea.objects.filter(slug=self.instance.slug).exists():
+            # add edit field if instance data is provided
+            self.fields['edit'] = forms.CharField(widget=forms.HiddenInput, initial=self.instance.slug)
+
     class Meta:
         model = Idea
         fields = ['name', 'slug', 'description', 'icon']
