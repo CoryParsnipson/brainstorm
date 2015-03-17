@@ -154,6 +154,10 @@ div.mce-toolbar * {
   float: left;
 }
 
+div.mce-edit-area {
+  border: 0 !important;
+}
+
 .mce-toolbar div.mce-btn button {
   padding-top: 5px;
   padding-bottom: 5px;
