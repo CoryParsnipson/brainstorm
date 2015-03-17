@@ -2,6 +2,7 @@ import os
 import urllib
 import random
 
+from django.core import serializers
 from django.core.urlresolvers import reverse
 from django.core.exceptions import ValidationError
 from django.core.context_processors import csrf
@@ -260,7 +261,7 @@ def thought_detail(request, idea_slug=None, thought_slug=None):
 # site admin sections
 ###############################################################################
 @login_required(login_url='index')
-def dashboard(request, *args, **kwargs):
+def dashboard(request):
     context = {
         'page_title': 'Main',
     }
@@ -393,20 +394,21 @@ def dashboard_ideas(request):
 
 
 @login_required(login_url='index')
-def dashboard_thoughts(request):
-    # thought data
-    current_idea = None
+def dashboard_thoughts(request, slug=None):
+    try:
+        idea = None
+        filter_params = {
+            'is_draft': False,
+            'is_trash': False,
+        }
 
-    if 'idea_slug' in request.GET:
-        try:
-            current_idea = Idea.objects.get(slug=request.GET['idea_slug'])
-            thoughts = Thought.objects.filter(idea=current_idea, is_draft=False, is_trash=False)
-        except Idea.DoesNotExist:
-            thoughts = []
-    else:
-        thoughts = Thought.objects.filter(is_draft=False, is_trash=False)
+        if slug:
+            idea = Idea.objects.get(slug=slug)
+            filter_params['idea'] = idea
 
-    thoughts = thoughts.order_by('-date_published')
+        thoughts = Thought.objects.filter(**filter_params).order_by("-date_published")
+    except Idea.DoesNotExist:
+        return redirect(reverse('dashboard-ideas'))
 
     page = request.GET.get('p')
     paginator, thoughts_on_page = lib.create_paginator(
@@ -421,13 +423,10 @@ def dashboard_thoughts(request):
         page_lead=lib.PAGINATION_DASHBOARD_THOUGHTS_PAGES_TO_LEAD,
     )
 
-    # collect dashboard stats
-    stats = dashboard_stats()
-
     context = {
         'page_title': 'Manage Thoughts',
         'thoughts': thoughts_on_page,
-        'idea': current_idea,
+        'idea': idea,
         'paginator': paginator,
         'pagination': pagination,
     }
@@ -441,16 +440,13 @@ def dashboard_author(request):
         ?thought_slug=[thought slug] provide a slug to edit a thought or draft
     """
     # create thought form (or load instance data if editing a thought)
-    author = None
     thought_form_instance = None
     if 'thought_slug' in request.GET:
         try:
             thought_slug = lib.slugify(request.GET['thought_slug'])
             thought_form_instance = Thought.objects.get(slug=thought_slug)
-
-            author = thought_form_instance.author.id
-        except Thought.DoesNotExist as e:
-            author = request.user.id
+        except Thought.DoesNotExist:
+            pass
     thought_form = ThoughtForm(instance=thought_form_instance)
 
     context = {
@@ -696,6 +692,21 @@ def search_aws(request, keywords):
 ###############################################################################
 # helper functions
 ###############################################################################
+def find_unique_slug(unsafe_slug, model):
+    """ take a string and generate a slug using the lib.slugify function
+        and make sure it does not collide with anything in the database
+
+        specify a model to search for collisions against
+    """
+    test_slug = lib.slugify(unsafe_slug)
+
+    collision_idx = 2
+    while model.objects.filter(slug=test_slug).exists():
+        test_slug = lib.slugify(unsafe_slug + "-" + str(collision_idx))
+        collision_idx += 1
+    return test_slug
+
+
 def safe_delete_idea(idea_slug):
     """ delete a given idea (identified by idea_slug) only if it has no
         associated thoughts. Else do not delete and raise ValidationError
@@ -883,7 +894,7 @@ class FormIdeaView(View):
 class FormThoughtView(View):
     """ API endpoints for forms to manage user interactions and Thoughts
     """
-    def get(self, request, *args, **kwargs):
+    def get(self, request):
         """ return form body output for a form to create a new thought
         """
         form = ThoughtForm()
@@ -898,112 +909,83 @@ class FormThoughtView(View):
         context = {'form': form_html}
         return JsonResponse(context)
 
-    def post(self, request, *args, **kwargs):
+    def post(self, request):
         """ save the POST data to create a new Thought
 
             request.POST['next'] optional url for redirect on completion
-            request.POST['old_slug'] may be None, used to edit value of slug
+            request.POST['edit'] slug of thought, signifies edit (leave key missing for new Thought)
         """
-        instance_data = request.POST.copy()
-        msgs = {}
+        # make POST data mutable
+        request.POST = request.POST.copy()
 
+        # calculate next url
         callback = None
-        if 'next' in instance_data:
-            callback = instance_data['next']
-            del instance_data['next']
-            callback = lib.replace_tokens(callback, {'idea': instance_data['idea']})
+        if 'next' in request.POST:
+            callback = lib.replace_tokens(request.POST['next'], {'idea': request.POST['idea']})
 
-        # gather inline images if any
-        old_inline_images = []
-        for k, v in instance_data.iteritems():
-            if k.startswith('inline_image'):
-                old_inline_images.append(v)
-
-        if 'save_draft' not in instance_data:
-            instance_data['is_draft'] = False
-
-        old_preview = None
-        if 'old_preview' in instance_data and instance_data['old_preview']:
-            old_preview = instance_data['old_preview']
-            del instance_data['old_preview']
-
-        if 'slug' not in instance_data or not instance_data['slug']:
-            instance_data['slug'] = lib.slugify(instance_data['title'])
+        # prevent accidental edit when writing new post with same slug
+        if 'edit' in request.POST:
+            slug = lib.slugify(request.POST['edit'])
+        elif 'slug' in request.POST and request.POST['slug']:
+            slug = find_unique_slug(request.POST['slug'], Thought)
         else:
-            instance_data['slug'] = lib.slugify(instance_data['slug'])
+            slug = find_unique_slug(request.POST['title'], Thought)
+        request.POST['slug'] = slug
 
-        old_slug = lib.slugify(instance_data['old_slug'])
-        del instance_data['old_slug']
-
-        # compare against old slug to check if we have edited the slug or if there is a collision
-        if not old_slug:
-            new_slug = instance_data['slug']
-            slug_collision_index = 2
-
-            while Thought.objects.filter(slug=new_slug).exists():
-                new_slug = instance_data['slug'] + "-" + str(slug_collision_index)
-                slug_collision_index += 1
-
-            instance_data['slug'] = new_slug
-        else:
-            # disallow editing of slugs
-            instance_data['slug'] = old_slug
-
-        if 'author' not in instance_data or not instance_data['author']:
-            instance_data['author'] = request.user.id
+        # do some work on is_draft (connected to submit button values)
+        if request.POST['is_draft'] == 'False':
+            request.POST['is_draft'] = ''
 
         try:
-            instance = Thought.objects.get(slug=instance_data['slug'])
-            msgs['msg'] = "Successfully edited Thought '%s'" % instance.slug
-        except Thought.DoesNotExist:
-            instance = None
-            if instance_data['is_draft']:
-                msgs['msg'] = "Saved draft '%s' for later." % instance_data['slug']
-            else:
-                msgs['msg'] = "Successfully created Thought '%s'" % instance_data['slug']
-        thought_form = ThoughtForm(instance_data, request.FILES, instance=instance)
+            instance = Thought.objects.get(slug=slug)
 
+            # delete preview if someone checks clear
+            if 'preview-clear' in request.POST and instance.preview:
+                lib.delete_file(instance.preview.name)
+
+            # keep track of images to see if we need to delete some later
+            original_preview = instance.preview
+            inline_images = [os.path.basename(i) for i in instance.get_image_urls()]
+        except Thought.DoesNotExist:
+            # received new thought request, create new Thought
+            instance = None
+            original_preview = None
+            inline_images = None
+
+        thought_form = ThoughtForm(request.POST, request.FILES, instance=instance)
         if thought_form.is_valid():
             thought = thought_form.save()
 
-            # delete old preview image if necessary
-            if old_preview and old_preview != thought.preview.name:
-                lib.delete_file(old_preview)
+            # check if new preview image is uploaded (or clear is checked) and delete old preview
+            if original_preview and thought.preview and original_preview.name != thought.preview.name:
+                lib.delete_file(original_preview.name)
 
-            # delete inline images if necessary
+            # check if we need to delete any inline images
             new_inline_images = [os.path.basename(i) for i in thought.get_image_urls()]
-            for image in old_inline_images:
-                if image in new_inline_images:
-                    continue
-                lib.delete_file(os.path.join(paths.MEDIA_IMAGE_DIR, image))
-
-            if instance_data['is_draft']:
-                messages.add_message(request, messages.WARNING, msgs['msg'])
-            else:
-                messages.add_message(request, messages.SUCCESS, msgs['msg'])
+            for image in inline_images:
+                if image not in new_inline_images:
+                    lib.delete_file(os.path.join(paths.MEDIA_IMAGE_DIR, image))
 
             if callback:
-                if callback == 'default':
-                    kwargs = {
-                        'thought_slug': instance_data['slug'],
-                        'idea_slug': instance_data['idea'],
-                    }
-                    callback = reverse('thought-page', kwargs=kwargs)
+                if request.POST['is_draft']:
+                    messages.add_message(request, messages.WARNING, "Saved draft '%s' for later." % slug)
+                elif 'edit' in request.POST:
+                    messages.add_message(request, messages.SUCCESS, "Successfully edited Thought '%s'." % slug)
+                else:
+                    messages.add_message(request, messages.SUCCESS, "Successfully created Thought '%s'." % slug)
+
                 return redirect(callback)
-            else:
-                return JsonResponse(msgs)
+            return JsonResponse(serializers.serialize('json', [thought]), safe=False)
         else:
-            # loop through fields on form and add errors to dict
             errors = {}
             for field in thought_form:
                 errors[field.name] = field.errors
 
             if callback:
-                err_msg = "<br>".join([k + ": " + " ".join(v) for k, v in errors.items() if v])
-                messages.add_message(request, messages.ERROR, err_msg)
-                return redirect(reverse('dashboard-author'))
-            else:
-                return JsonResponse(errors)
+                msg = "<br>".join([k + ": " + " ".join(v) for k, v in errors.items() if v])
+                messages.add_message(request, messages.ERROR, msg)
+                return redirect(request.META['HTTP_REFERER'])
+            return JsonResponse(errors)
 
 
 class FormHighlightView(View):
@@ -1051,7 +1033,7 @@ class FormHighlightView(View):
         try:
             instance = Highlight.objects.get(id=instance_data['id'])
             msg = "Successfully edited Highlight '%s'" % instance.title
-        except Highlight.DoesNotExist as e:
+        except Highlight.DoesNotExist:
             instance = None
             msg = "Successfully created Highlight '%s'" % instance_data['title']
 

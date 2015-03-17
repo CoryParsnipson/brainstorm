@@ -23,9 +23,6 @@
 
 <form action="{% url 'forms-thought' %}" method="post" enctype="multipart/form-data">
     {% csrf_token %}
-    <input type="hidden" name="next" value="{% url 'dashboard-thoughts' %}?idea_slug={idea}" />
-    <input type="hidden" name="old_slug" value="{{ thought_form.slug.value|default_if_none:'' }}" />
-    <input type="hidden" name="old_preview" value="{{ thought_form.preview.value|default_if_none:'' }}" />
     {% for field in thought_form.hidden_fields %}
     {{ field }}{% endfor %}
 
@@ -65,14 +62,14 @@
                 <input id="button-revert" type="button" value="Revert" />
 
                 {% if thought_form.is_draft.value == True %}
-                <input type="submit" name="save_draft" value="Save" />
-                <input class="publish right" type="submit" value="Publish" />
+                <button type="submit" name="is_draft" value="True">Save</button>
+                <button type="submit" name="is_draft" value="False" class="publish right">Publish</button>
                 {% else %}
                 {% if "thought_slug" not in request.GET %}
-                <input type="submit" name="save_draft" value="Save as Draft" />
-                <input class="publish right" type="submit" value="Edit" />
+                <button type="submit" name="is_draft" value="True">Save as Draft</button>
+                <button type="submit" name="is_draft" value="False" class="publish right">Publish</button>
                 {% else %}
-                <input class="publish right" type="submit" name="publish" value="Publish" />
+                <button type="submit" name="is_draft" value="False" class="publish right">Edit</button>
                 {% endif %}
                 {% endif %}
             </td>
@@ -94,7 +91,7 @@
     <a href="{% url 'dashboard' %}">Dashboard</a> //
     {% if "thought_slug" in request.GET %}
     <a href="{% url 'dashboard-ideas' %}">{{ thought_form.idea.value }}</a> //
-    <a href="{% url 'dashboard-thoughts' %}?idea_slug={{ thought_form.idea.value }}">{{ thought_form.title.value }}</a> //
+    <a href="{% url 'dashboard-thoughts' thought_form.idea.value|default_if_none:'' %}">{{ thought_form.title.value }}</a> //
     Edit Thought //
     {% else %}
     <a href="{% url 'dashboard-ideas' %}">Content</a> //

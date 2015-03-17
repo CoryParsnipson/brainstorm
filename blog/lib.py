@@ -11,6 +11,7 @@ from django.conf import settings
 from django.template import defaultfilters
 from django.core.files.storage import default_storage
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from django.utils.http import urlunquote_plus
 
 import paths
 import common
@@ -138,6 +139,7 @@ def replace_tokens(search_string, token_vals):
               from token format
     """
     missing_keys = True
+    search_string = urlunquote_plus(search_string)
     final_string = search_string
 
     while missing_keys:

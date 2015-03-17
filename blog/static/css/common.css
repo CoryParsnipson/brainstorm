@@ -640,7 +640,7 @@ label {
 /******************************************************************************
  * button styles
  *****************************************************************************/
-.button, input[type="button"], input[type="submit"] {
+.button, button, input[type="button"], input[type="submit"] {
   border: none;
   color: #F8C118;
   background-color: #494949;
@@ -652,7 +652,7 @@ label {
   margin: 0;
 }
 
-.button:hover, input[type="button"]:hover, input[type="submit"]:hover {
+.button:hover, button:hover, input[type="button"]:hover, input[type="submit"]:hover {
   color: #FFFFFF;
   background-color: #B7B7B7;
 }

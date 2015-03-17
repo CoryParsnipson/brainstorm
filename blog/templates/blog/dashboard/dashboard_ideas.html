@@ -25,7 +25,7 @@
 
                     <td class="shrink">{{ idea.order }}</td>
                     <td class="expand">
-                        <a href="{% url 'dashboard-thoughts' %}?idea_slug={{ idea.slug }}">{{ idea.name }}</a><br>
+                        <a href="{% url 'dashboard-thoughts' idea.slug %}">{{ idea.name }}</a><br>
                         {{ idea.description }}
                     </td>
                     <td class="shrink"><input type="submit" name="order_up" value="v"></td>

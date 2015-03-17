@@ -11,28 +11,27 @@ urlpatterns = patterns('',
 
     # site skeleton urls
     url(r'^$', views.index, name='index'),
-
     url(r'^login/', views.login_page, name='login-page'),
     url(r'^logout/', views.logout_page, name='logout-page'),
+    url(r'^about/', views.about, name='about'),
+    url(r'^books/', views.books, name='books'),
+    url(r'^highlights/', views.highlights, name='highlights'),
+    url(r'^ideas/$', views.ideas, name='catalog'),
+    url(r'^ideas/(?P<idea_slug>[a-z0-9\-]+)/$', views.idea_detail, name='idea-page'),
+    url(r'^ideas/(?P<idea_slug>[a-z0-9\-]+)/(?P<thought_slug>[a-z0-9\-]+)/', views.thought_detail, name='thought-page'),
 
+    # dashboard urls, admin only!
     url(r'^dashboard/$', views.dashboard, name='dashboard'),
     url(r'^dashboard/books/$', views.dashboard_books, name='dashboard-books'),
     url(r'^dashboard/highlights/$', views.dashboard_highlights, name='dashboard-highlights'),
     url(r'^dashboard/ideas/$', views.dashboard_ideas, name='dashboard-ideas'),
-    url(r'^dashboard/thoughts/$', views.dashboard_thoughts, name='dashboard-thoughts'),
+    url(r'^dashboard/thoughts/(?P<slug>.*)?', views.dashboard_thoughts, name='dashboard-thoughts'),
     url(r'^dashboard/author/$', views.dashboard_author, name='dashboard-author'),
     url(r'^dashboard/drafts/$', views.dashboard_drafts, name='dashboard-drafts'),
     url(r'^dashboard/trash/$', views.dashboard_trash, name='dashboard-trash'),
     url(r'^dashboard/backend/$', views.dashboard_backend, name='dashboard-backend'),
 
-    url(r'^about/', views.about, name='about'),
-    url(r'^books/', views.books, name='books'),
-    url(r'^highlights/', views.highlights, name='highlights'),
-    url(r'^ideas/$', views.ideas, name='idea-catalog-page'),
-    url(r'^ideas/(?P<idea_slug>[a-z0-9\-]+)/$', views.idea_detail, name='idea-page'),
-
-    url(r'^ideas/(?P<idea_slug>[a-z0-9\-]+)/(?P<thought_slug>[a-z0-9\-]+)/', views.thought_detail, name='thought-page'),
-
+    # site api
     url(r'^api/login/', views.login, name='login'),
     url(r'^api/logout/', views.logout, name='logout'),
     url(r'^api/upload/', views.upload, name='upload'),

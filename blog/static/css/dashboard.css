@@ -287,12 +287,26 @@ table.form-thought {
   border-collapse: collapse;
 }
 
+table.form-thought a {
+  max-width: 300px;
+  line-height: 1.2rem;
+  display: inline-block;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  vertical-align: -5px;
+}
+
 table.form-thought th {
   padding: 0 5px;
 }
 
 table.form-thought td {
   padding: 2px;
+}
+
+table.form-thought td > *:first-child {
+  margin-left: 0 !important;
 }
 
 table.form-thought textarea {
@@ -325,6 +339,7 @@ table.form-thought p#id_slug {
   margin: 0;
 }
 
+button,
 table.form-thought input[type="button"],
 table.form-thought input[type="submit"] {
   padding: 15px 25px;
@@ -332,12 +347,7 @@ table.form-thought input[type="submit"] {
   margin-bottom: 10px;
 }
 
-table.form-thought input[type="button"]:first-of-type,
-table.form-thought input[type="submit"]:first-of-type {
-  margin-left: 0;
-}
-
-table.form-thought input[type="submit"].publish {
+table.form-thought .publish {
   font-weight: bold;
   color: #F8C118;
   background-color: #C22817;
@@ -345,13 +355,13 @@ table.form-thought input[type="submit"].publish {
   padding-left: 4rem;
 }
 
-table.form-thought input[type="submit"].publish:hover {
+table.form-thought .publish:hover {
   color: #FFFFFF;
   background-color: #E85D5D;
 }
 
 @media (max-width: 40rem) {
-  table.form-thought input[type="submit"].publish {
+  table.form-thought .publish {
     float: none !important;
     margin-left: 0;
     margin-right: 10px;

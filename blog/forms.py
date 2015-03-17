@@ -4,6 +4,7 @@ from django import forms
 from django.core.urlresolvers import reverse_lazy
 from django.contrib.auth.admin import User
 
+import lib
 from blog.models import Idea, Thought, Highlight, ReadingListItem
 
 
@@ -33,39 +34,29 @@ class ThoughtForm(forms.ModelForm):
     """
     # predefined fields
     author = forms.ModelChoiceField(queryset=User.objects.all(), widget=forms.HiddenInput)
-    is_draft = forms.CharField(widget=forms.HiddenInput,
-                               initial=Thought._meta.get_field_by_name('is_draft')[0].get_default())
-    is_trash = forms.CharField(widget=forms.HiddenInput,
-                               initial=Thought._meta.get_field_by_name('is_trash')[0].get_default())
 
     # fields for tinymce parameters
     upload_url = forms.CharField(widget=forms.HiddenInput(attrs={
         'value': reverse_lazy('upload')
     }))
     filename_url = forms.CharField(widget=forms.HiddenInput(attrs={
-        'value': reverse_lazy('generate-upload-filename', kwargs={
-            'full_path': '/full',
-            'filename': '',
-        })
+        'value': reverse_lazy('generate-upload-filename', kwargs={'full_path': '/full', 'filename': ''})
     }))
 
     def __init__(self, *args, **kwargs):
         super(ThoughtForm, self).__init__(*args, **kwargs)
 
-        if not self.instance:
-            return
+        # calculate next url
+        next_url = reverse_lazy('dashboard-thoughts', kwargs={'slug': '{idea}'})
+        self.fields['next'] = forms.CharField(widget=forms.HiddenInput, required=False, initial=next_url)
 
-        # create list of inline images and inject into hidden input data
-        idx = 0
-        for image in self.instance.get_image_urls():
-            self.fields['inline_image_' + str(idx)] = forms.CharField(widget=forms.HiddenInput(attrs={
-                'value': os.path.basename(image),
-            }))
-            idx += 1
+        if Thought.objects.filter(slug=self.instance.slug).exists():
+            # add edit field if instance data is provided
+            self.fields['edit'] = forms.CharField(widget=forms.HiddenInput, initial=self.instance.slug)
 
     class Meta:
         model = Thought
-        fields = ['title', 'slug', 'author', 'content', 'idea', 'preview', 'is_draft', 'is_trash']
+        fields = ['title', 'slug', 'author', 'content', 'idea', 'preview', 'is_draft']
         widgets = {
             # tinymce textarea (when js is enabled)
             'content': forms.Textarea(attrs={
