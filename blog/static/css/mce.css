@@ -18,7 +18,7 @@ body {
 /******************************************************************************
  * tinyMCE editor window
  *****************************************************************************/
-body[data-id="id_content"] {
+body[data-id] {
   color: #383838;
   background-color: #CDCDCD;
   font-size: 9pt;
@@ -27,20 +27,20 @@ body[data-id="id_content"] {
   margin: 2px;
 }
 
-body[data-id="id_content"] h1,
-body[data-id="id_content"] h2,
-body[data-id="id_content"] h3,
-body[data-id="id_content"] h4,
-body[data-id="id_content"] h5,
-body[data-id="id_content"] h6,
-body[data-id="id_content"] a {
+body[data-id] h1,
+body[data-id] h2,
+body[data-id] h3,
+body[data-id] h4,
+body[data-id] h5,
+body[data-id] h6,
+body[data-id] a {
   color: #004A81;
 }
 
-body[data-id="id_content"] a {
+body[data-id] a {
   cursor: pointer;
 }
 
-body[data-id="id_content"] a:hover {
+body[data-id] a:hover {
   color: #0C77C7;
 }
