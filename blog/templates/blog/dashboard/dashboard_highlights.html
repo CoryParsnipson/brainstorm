@@ -22,8 +22,6 @@
 
 <h3>New Highlight</h3>
 <form id="link_form" action="{% url 'forms-highlight' %}" method="post"  enctype="multipart/form-data">
-    <input type="hidden" name="next" value="{% url 'dashboard-highlights' %}" />
-    <input type="hidden" name="old_icon" value="{{ highlight_form.icon.value| default_if_none:'' }}" />
     {% csrf_token %}
     {% for field in highlight_form.hidden_fields %}
     {{ field }}
@@ -54,7 +52,6 @@
                 <input id="id_submit" class="publish" type="submit" value="Create">
                 {% endif %}
 
-                <input type="submit" class="right" name="cancel" value="Cancel" />
                 <input type="button" id="button-revert" class="right" value="Revert" />
                 <input type="button" id="button-clear" class="right" value="Clear" />
             </td>

@@ -991,7 +991,7 @@ class FormThoughtView(View):
 class FormHighlightView(View):
     """ API endpoints for forms to manage user interactions and Links
     """
-    def get(self, request, *args, **kwargs):
+    def get(self, request):
         """ return form body output for a form to create a new link
         """
         form = HighlightForm()
@@ -1006,69 +1006,65 @@ class FormHighlightView(View):
         context = {'form': form_html}
         return JsonResponse(context)
 
-    def post(self, request, *args, **kwargs):
+    def post(self, request):
         """ Save POST data to create a new Link of the Day
 
             request.POST['next'] optional url for redirect on completion
         """
-        instance_data = request.POST.copy()
+        # make POST data mutable
+        request.POST = request.POST.copy()
 
+        # calculate next url
         callback = None
-        if 'next' in instance_data:
-            callback = instance_data['next']
-            del instance_data['next']
-            lib.replace_tokens(callback, instance_data)
+        if 'next' in request.POST:
+            callback = request.POST['next']
 
-        old_icon = None
-        if 'old_icon' in instance_data:
-            old_icon = instance_data['old_icon']
-            del instance_data['old_icon']
-
-        if 'cancel' in instance_data:
-            return redirect(callback)
-
-        if 'id' not in instance_data or not instance_data['id']:
-            instance_data['id'] = -1
+        # prevent accidental edit when writing new highlights with same slug
+        if 'id' not in request.POST or not request.POST['id']:
+            request.POST['id'] = -1
 
         try:
-            instance = Highlight.objects.get(id=instance_data['id'])
+            instance = Highlight.objects.get(id=request.POST['id'])
             msg = "Successfully edited Highlight '%s'" % instance.title
+
+            # keep track of highlight icon
+            if 'icon-clear' in request.POST and instance.icon:
+                lib.delete_file(instance.icon.name)
+            original_icon = instance.icon
         except Highlight.DoesNotExist:
             instance = None
-            msg = "Successfully created Highlight '%s'" % instance_data['title']
+            original_icon = None
+            msg = "Successfully created Highlight '%s'" % request.POST['title']
 
-        link_form = HighlightForm(instance_data, request.FILES, instance=instance)
-
-        if link_form.is_valid():
-            highlight = link_form.save()
+        highlight_form = HighlightForm(request.POST, request.FILES, instance=instance)
+        if highlight_form.is_valid():
+            highlight = highlight_form.save()
             messages.add_message(request, messages.SUCCESS, msg)
 
-            # remove old icon if necessary
-            if old_icon and old_icon != highlight.icon.name:
-                lib.delete_file(old_icon)
+            # remove old icon file if necessary
+            if original_icon and highlight.icon and original_icon.name != highlight.icon.name:
+                lib.delete_file(original_icon.name)
 
             if callback:
                 return redirect(callback)
             else:
-                return JsonResponse({'msg': msg})
+                return JsonResponse(serializers.serialize('json', [highlight]), safe=False)
         else:
-            # loop through fields on form and add errors to dict
             errors = {}
-            for field in link_form:
+            for field in highlight_form:
                 errors[field.name] = field.errors
 
             if callback:
                 msg = "<br>".join([k + ": " + " ".join(v) for k, v in errors.items() if v])
                 messages.add_message(request, messages.ERROR, msg)
-                return redirect(callback)
-            else:
-                return JsonResponse(errors)
+                return redirect(request.META['HTTP_REFERER'])
+            return JsonResponse(errors)
 
 
 class FormReadingListView(View):
     """ API endpoints to manage ReadingListItems
     """
-    def get(self, request, *args, **kwargs):
+    def get(self, request):
         form = ReadingListItemForm()
         form_html = form.as_table()
 
@@ -1081,40 +1077,36 @@ class FormReadingListView(View):
         context = {'form': form_html}
         return JsonResponse(context)
 
-    def post(self, request, *args, **kwargs):
-        instance_data = request.POST.copy()
+    def post(self, request):
+        # make POST data mutable
+        request.POST = request.POST.copy()
 
+        # calculate next url
         callback = None
-        if 'next' in instance_data:
-            callback = instance_data['next']
-            del instance_data['next']
-            lib.replace_tokens(callback, instance_data)
+        if 'next' in request.POST:
+            callback = request.POST['next']
 
-        if 'cancel' in instance_data:
-            return redirect(callback)
-
-        if 'id' not in instance_data or not instance_data['id']:
-            instance_data['id'] = -1
+        # prevent accidental edit when writing new reading list items
+        if 'id' not in request.POST or not request.POST['id']:
+            request.POST['id'] = -1
 
         try:
-            instance = ReadingListItem.objects.get(id=instance_data['id'])
+            instance = ReadingListItem.objects.get(id=request.POST['id'])
             msg = "Successfully edited Book List Item '%s'" % instance.title
-        except ReadingListItem.DoesNotExist as e:
+        except ReadingListItem.DoesNotExist:
             instance = None
-            msg = "Successfully created Book List Item '%s'" % instance_data['title']
+            msg = "Successfully created Book List Item '%s'" % request.POST['title']
 
-        reading_list_form = ReadingListItemForm(instance_data, instance=instance)
-
+        reading_list_form = ReadingListItemForm(request.POST, instance=instance)
         if reading_list_form.is_valid():
-            reading_list_form.save()
+            reading_list_item = reading_list_form.save()
             messages.add_message(request, messages.SUCCESS, msg)
 
             if callback:
                 return redirect(callback)
             else:
-                return JsonResponse({'msg': msg})
+                return JsonResponse(serializers.serialize('json', [reading_list_item]), safe=False)
         else:
-            # loop through fields on form and add errors to dict
             errors = {}
             for field in reading_list_form:
                 errors[field.name] = field.errors
@@ -1122,6 +1114,6 @@ class FormReadingListView(View):
             if callback:
                 msg = "<br>".join([k + ": " + " ".join(v) for k, v in errors.items() if v])
                 messages.add_message(request, messages.ERROR, msg)
-                return redirect(callback)
+                return redirect(request.META['HTTP_REFERER'])
             else:
                 return JsonResponse(errors)

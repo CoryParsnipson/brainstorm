@@ -69,6 +69,7 @@ class HighlightForm(forms.ModelForm):
     """ Django form class for managing Highlights
     """
     id = forms.IntegerField(widget=forms.HiddenInput)
+    next = forms.CharField(widget=forms.HiddenInput, initial=reverse_lazy('dashboard-highlights'))
 
     class Meta:
         model = Highlight
@@ -85,6 +86,7 @@ class ReadingListItemForm(forms.ModelForm):
     """ Django form class for managing ReadingListItems
     """
     id = forms.IntegerField(widget=forms.HiddenInput)
+    next = forms.CharField(widget=forms.HiddenInput, initial=reverse_lazy('dashboard-books'))
 
     class Meta:
         model = ReadingListItem

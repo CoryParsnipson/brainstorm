@@ -102,9 +102,10 @@
 </div>
 <hr>
 <form id="reading-list-form" action="{% url 'forms-readinglistitem' %}" method="post">
-    {{ reading_list_item_form.id }}
-    <input type="hidden" name="next" value="{% url 'dashboard-books' %}" />
     {% csrf_token %}
+    {% for field in reading_list_item_form.hidden_fields %}
+    {{ field }}
+    {% endfor %}
     <table class="form-readinglist">
         <tbody>
         <tr>
