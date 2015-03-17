@@ -20,48 +20,6 @@
 <h2>Highlights on the Web</h2>
 <hr class="header">
 
-<h3>New Highlight</h3>
-<form id="link_form" action="{% url 'forms-highlight' %}" method="post"  enctype="multipart/form-data">
-    {% csrf_token %}
-    {% for field in highlight_form.hidden_fields %}
-    {{ field }}
-    {% endfor %}
-
-    <table>
-        <tbody>
-        <tr>
-            <td class="shrink">{{ highlight_form.title.label_tag }}</td>
-            <td>{{ highlight_form.title }}</td>
-        </tr>
-        <tr>
-            <td class="shrink">{{ highlight_form.icon.label_tag }}</td>
-            <td>{{ highlight_form.icon }}</td>
-        </tr>
-        <tr>
-            <td class="shrink">{{ highlight_form.url.label_tag }}</td>
-            <td>{{ highlight_form.url }}</td>
-        </tr>
-        <tr>
-            <td colspan="2">{{ highlight_form.description }}</td>
-        </tr>
-        <tr>
-            <td colspan="2">
-                {% if 'highlight' in request.GET %}
-                <input id="id_submit" class="publish" type="submit" value="Edit">
-                {% else %}
-                <input id="id_submit" class="publish" type="submit" value="Create">
-                {% endif %}
-
-                <input type="button" id="button-revert" class="right" value="Revert" />
-                <input type="button" id="button-clear" class="right" value="Clear" />
-            </td>
-        </tr>
-        </tbody>
-    </table>
-</form>
-{% endblock %}
-
-{% block side %}
 <h3>Highlights</h3>
 <table class="editable">
     <tbody>
@@ -80,7 +38,7 @@
 
             <td class="shrink">{{ highlight.date_published|date:"N j, Y" }}</td>
             <td class="expand">
-                <a href="{% url 'dashboard-highlights' %}?highlight={{ highlight.id }}">{{ highlight.title }}</a><br>
+                <a href="{% url 'dashboard-highlights' %}?id={{ highlight.id }}">{{ highlight.title }}</a><br>
             </td>
             <td class="shrink">
                 <input type="submit" name="delete_highlight" value="x">
@@ -94,6 +52,42 @@
 </table>
 
 {% include "blog/templates/template_pagination.html" with paginator=paginator pages=pagination narrow=True %}
+{% endblock %}
+
+{% block side %}
+<h3>New Highlight</h3>
+<form id="highlight_form" action="{% url 'forms-highlight' %}" method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    {% for field in highlight_form.hidden_fields %}
+    {{ field }}
+    {% endfor %}
+    <table>
+        <tbody>
+        <tr>
+            <td class="shrink">{{ highlight_form.title.label_tag }}</td>
+            <td>{{ highlight_form.title }}</td>
+        </tr>
+        <tr>
+            <td class="shrink">{{ highlight_form.icon.label_tag }}</td>
+            <td class="no-text-overflow">{{ highlight_form.icon }}</td>
+        </tr>
+        <tr>
+            <td class="shrink">{{ highlight_form.url.label_tag }}</td>
+            <td>{{ highlight_form.url }}</td>
+        </tr>
+        <tr>
+            <td colspan="2">{{ highlight_form.description }}</td>
+        </tr>
+        <tr>
+            <td colspan="2">
+                <button class="publish" type="submit">{% if 'highlight' in request.GET %}Edit{% else %}Create{% endif %}</button>
+                <button id="button-revert" type="button" class="right">Revert</button>
+                <button id="button-clear" type="button" class="right">Clear</button>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</form>
 {% endblock %}
 
 {% block footer %}

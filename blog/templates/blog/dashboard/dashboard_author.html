@@ -15,38 +15,37 @@
 {% endblock %}
 
 {% block content %}
-{% if "thought_slug" in request.GET %}
+{% if "id" in request.GET %}
 <h2>Edit Thought</h2>
 {% else %}
 <h2>Write New Thought</h2>
 {% endif %}
 
-<form action="{% url 'forms-thought' %}" method="post" enctype="multipart/form-data">
+<form id="form-thought" action="{% url 'forms-thought' %}" method="post" enctype="multipart/form-data">
     {% csrf_token %}
     {% for field in thought_form.hidden_fields %}
     {{ field }}{% endfor %}
-
-    <table class="form-thought">
+    <table>
         <tr>
-            <th class="shrink">{{ thought_form.title.label_tag }}</th>
+            <td class="shrink">{{ thought_form.title.label_tag }}</td>
             <td class="expand">{{ thought_form.title }}</td>
         </tr>
         <tr>
-            <th>{{ thought_form.slug.label_tag }}</th>
+            <td>{{ thought_form.slug.label_tag }}</td>
             <td class="shrink">
                 {% if thought_form.slug.value %}
-                <p id="id_slug">{{ thought_form.slug.value }}</p>
+                <p id="id_slug" class="no-text-overflow">{{ thought_form.slug.value }}</p>
                 {% else %}
                 {{ thought_form.slug }}
                 {% endif %}
             </td>
         </tr>
         <tr>
-            <th>{{ thought_form.preview.label_tag }}</th>
-            <td class="expand">{{ thought_form.preview }}</td>
+            <td>{{ thought_form.preview.label_tag }}</td>
+            <td class="expand no-text-overflow">{{ thought_form.preview }}</td>
         </tr>
         <tr>
-            <th>{{ thought_form.idea.label_tag }}</th>
+            <td>{{ thought_form.idea.label_tag }}</td>
             <td class="shrink">
                 {% if not idea %}
                 {{ thought_form.idea }}
@@ -65,7 +64,7 @@
                 <button type="submit" name="is_draft" value="True">Save</button>
                 <button type="submit" name="is_draft" value="False" class="publish right">Publish</button>
                 {% else %}
-                {% if "thought_slug" not in request.GET %}
+                {% if "id" not in request.GET %}
                 <button type="submit" name="is_draft" value="True">Save as Draft</button>
                 <button type="submit" name="is_draft" value="False" class="publish right">Publish</button>
                 {% else %}
@@ -89,7 +88,7 @@
 {% block footer %}
 <p>
     <a href="{% url 'dashboard' %}">Dashboard</a> //
-    {% if "thought_slug" in request.GET %}
+    {% if "id" in request.GET %}
     <a href="{% url 'dashboard-ideas' %}">{{ thought_form.idea.value }}</a> //
     <a href="{% url 'dashboard-thoughts' thought_form.idea.value|default_if_none:'' %}">{{ thought_form.title.value }}</a> //
     Edit Thought //

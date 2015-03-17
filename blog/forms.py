@@ -68,6 +68,9 @@ class ThoughtForm(forms.ModelForm):
             'content': forms.Textarea(attrs={
                 'class': 'editor',
             }),
+            'slug': forms.TextInput(attrs={
+               'class': 'no-text-overflow'
+            }),
         }
 
 

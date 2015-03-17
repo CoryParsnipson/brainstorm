@@ -23,7 +23,7 @@
                 {{ draft.date_published|date:"N j, Y" }}
             </td>
             <td class="expand">
-                <a href="{% url 'dashboard-author' %}?thought_slug={{ draft.slug }}">{{ draft.title }}</a>
+                <a href="{% url 'dashboard-author' %}?id={{ draft.slug }}">{{ draft.title }}</a>
             </td>
             <td class="shrink">{{ draft.idea }}</td>
             <td class="shrink">

@@ -31,6 +31,52 @@
 }
 
 /******************************************************************************
+ * general dashboard styles
+ *****************************************************************************/
+.stat-box {
+  font-size: 10pt;
+  line-height: 1.2rem;
+  background-color: #404040;
+  padding: 10px;
+  margin-bottom: 2rem;
+}
+
+.stat-box p {
+  border-top: 4px solid #555555;
+  background-color: #363738;
+  padding: 5px;
+  margin-bottom: 0;
+}
+
+.stat-box p.blue {
+  border-top: 4px solid #565B99;
+}
+
+.stat-box p.green {
+  border-top: 4px solid #50804A;
+}
+
+.stat-box p.yellow {
+  border-top: 4px solid #D1A51D;
+}
+
+.stat-box p.orange {
+  border-top: 4px solid #9E763E;
+}
+
+.stat-box p.red {
+  border-top: 4px solid #BA4545;
+}
+
+.stat-box p.purple {
+  border-top: 4px solid #7A5F87;
+}
+
+.stat-box span {
+  margin-left: 10px;
+}
+
+/******************************************************************************
  * dashboard navigation
  *****************************************************************************/
 .dashboard-nav nav {
@@ -100,52 +146,6 @@
 }
 
 /******************************************************************************
- * dashboard main page styles
- *****************************************************************************/
-.stat-box {
-  font-size: 10pt;
-  line-height: 1.2rem;
-  background-color: #404040;
-  padding: 10px;
-  margin-bottom: 2rem;
-}
-
-.stat-box p {
-  border-top: 4px solid #555555;
-  background-color: #363738;
-  padding: 5px;
-  margin-bottom: 0;
-}
-
-.stat-box p.blue {
-  border-top: 4px solid #565B99;
-}
-
-.stat-box p.green {
-  border-top: 4px solid #50804A;
-}
-
-.stat-box p.yellow {
-  border-top: 4px solid #D1A51D;
-}
-
-.stat-box p.orange {
-  border-top: 4px solid #9E763E;
-}
-
-.stat-box p.red {
-  border-top: 4px solid #BA4545;
-}
-
-.stat-box p.purple {
-  border-top: 4px solid #7A5F87;
-}
-
-.stat-box span {
-  margin-left: 10px;
-}
-
-/******************************************************************************
  * tinymce styles
  *****************************************************************************/
 /* this is the precise div that lets all buttons in the mcetoolbar to collapse
@@ -170,10 +170,149 @@ div.mce-btn button:hover {
 }
 
 /******************************************************************************
+ * general form styles
+ *****************************************************************************/
+form table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 2rem;
+}
+
+form table label {
+  float: right;
+  padding-right: 0;
+}
+
+form table tr:last-of-type { background-color: transparent !important; }
+form table td { padding: 4px; }
+form table tr td:first-child { padding-left: 0; }
+form table tr td:last-child { padding-right: 0; }
+form table td:last-child > *:first-child { margin-left: 0; }
+
+/******************************************************************************
  * input styles
  *****************************************************************************/
 input[disabled] {
   background-color: #B7B7B7;
+}
+
+button, input[type="submit"], input[type="button"] {
+  margin-left: 10px;
+  margin-bottom: 10px;
+}
+
+button.publish,
+input[type="submit"].publish,
+input[type="button"].publish {
+  font-weight: bold;
+  color: #F8C118;
+  background-color: #C22817;
+}
+
+button.publish:hover,
+input[type="submit"].publish:hover,
+input[type="button"].publish:hover {
+  color: #FFFFFF;
+  background-color: #E85D5D;
+}
+
+/******************************************************************************
+ * add idea form styles
+ *****************************************************************************/
+#add-idea #id_name { font-weight: bold; }
+#add-idea #id_slug { font-weight: bold; color: #777777; }
+#add-idea #id_description { min-height: 100px; vertical-align: top; }
+#add-idea table tr:nth-of-type(even) { background-color: #404040; }
+
+/******************************************************************************
+ * thought form styles
+ *****************************************************************************/
+#form-thought #id_title { font-weight: bold; }
+#form-thought #id_slug { color: #777777; font-weight: bold; }
+#form-thought #id_idea { width: 200px; padding: 2px; }
+
+#form-thought p#id_slug {
+  font-weight: normal;
+  line-height: 1.2rem;
+  background-color: #494949;
+  vertical-align: middle;
+  padding: 2px 7px;
+  margin: 0;
+}
+
+@media (max-width: 40rem) {
+  #form-thought .publish {
+    float: none !important;
+    margin-left: 0;
+    margin-right: 10px;
+  }
+
+  #form-thought button,
+  #form-thought input[type="button"],
+  #form-thought input[type="submit"] {
+    width: 100%;
+    float: none;
+    margin: 0;
+    margin-bottom: 3px;
+  }
+}
+
+/******************************************************************************
+ * reading list styles
+ *****************************************************************************/
+#reading-list-form table tr:nth-of-type(odd) { background-color: #404040; }
+
+#aws-search { width: 100%; margin-left: 5px; }
+
+/* little search button image next to aws search bar */
+#aws-search img {
+  height: 24px;
+  background-color: #B7B7B7;
+  border-radius: 0 4px 4px 0;
+  cursor: pointer;
+  padding: 2px 7px;
+  margin: 1px 0;
+}
+#aws-search img:hover { background-color: #DDDDDD; }
+
+#aws-search-bar { width: 82%; height: 26px; border-right: 0; margin: 0; }
+
+#aws-results {
+  background-color: #444444;
+  margin: 1rem 0 0 0;
+}
+
+#aws-results .loader {
+  display: none;
+  margin: 0 auto;
+  padding: 10px 0;
+}
+
+#aws-results .aws-book-result {
+  min-height: initial;
+  max-height: 100px;
+}
+
+.aws-book-result p {
+  margin-right: 25px;
+}
+
+.aws-book-result a.edit-icon {
+  bottom: 25px;
+  background-image: url('../images/edit.png');
+}
+
+.aws-book-result a.edit-icon:hover {
+  background-image: url('../images/edit_on.png');
+}
+
+.aws-book-result input[type="submit"].delete {
+  bottom: 45px;
+  background-image: url('../images/delete.png');
+}
+
+.aws-book-result input[type="submit"].delete:hover {
+  background-image: url('../images/delete_on.png');
 }
 
 /******************************************************************************
@@ -218,272 +357,4 @@ table.editable input[type="button"],
 table.editable input[type="submit"] {
   font-size: 9pt;
   margin: 0 -3px;
-}
-
-/******************************************************************************
- * add idea form styles
- *****************************************************************************/
-table.add-idea {
-  margin-bottom: 0.5rem;
-  border-collapse: collapse;
-  border-spacing: 0;
-}
-
-table.add-idea tr:nth-of-type(odd) {
-  border-top: 1px solid #656565;
-  border-bottom: 1px solid #656565;
-}
-
-table.add-idea tr:first-child {
-  border-top: none;
-}
-
-table.add-idea tr:last-child {
-  border-bottom: none;
-}
-
-table.add-idea td {
-  font-weight: bold;
-  vertical-align: middle;
-  padding: 5px;
-  margin: 0;
-}
-
-table.add-idea td:first-child {
-  text-align: right;
-}
-
-table.add-idea td:last-child {
-  padding-right: 0;
-}
-
-table.add-idea label {
-  font-size: 10pt;
-  font-weight: bold;
-}
-
-table.add-idea #id_name, table.add-idea #id_slug {
-  max-width: 300px;
-  font-weight: bold;
-}
-
-table.add-idea #id_description {
-  max-width: 100%;
-  font-weight: normal;
-  resize: none;
-}
-
-table.add-idea #id_submit:hover {
-  color: #FFFFFF;
-}
-
-/******************************************************************************
- * thought form styles
- *****************************************************************************/
-table.form-thought {
-  width: 100%;
-  margin: 0 auto;
-  margin-bottom: 20px;
-  border-collapse: collapse;
-}
-
-table.form-thought a {
-  max-width: 300px;
-  line-height: 1.2rem;
-  display: inline-block;
-  overflow: hidden;
-  white-space: nowrap;
-  text-overflow: ellipsis;
-  vertical-align: -5px;
-}
-
-table.form-thought th {
-  padding: 0 5px;
-}
-
-table.form-thought td {
-  padding: 2px;
-}
-
-table.form-thought td > *:first-child {
-  margin-left: 0 !important;
-}
-
-table.form-thought textarea {
-  resize: none;
-}
-
-table.form-thought select {
-  width: 200px;
-  padding: 2px;
-}
-
-table.form-thought #id_title {
-  font-weight: bold;
-}
-
-table.form-thought #id_slug {
-  width: 180px;
-  color: #777777;
-  cursor: default;
-  font-weight: bold;
-}
-
-table.form-thought p#id_slug {
-  font-weight: normal;
-  overflow: hidden;
-  line-height: 1.2rem;
-  background-color: #494949;
-  vertical-align: middle;
-  padding: 2px 7px;
-  margin: 0;
-}
-
-button,
-table.form-thought input[type="button"],
-table.form-thought input[type="submit"] {
-  padding: 15px 25px;
-  margin-left: 5px;
-  margin-bottom: 10px;
-}
-
-table.form-thought .publish {
-  font-weight: bold;
-  color: #F8C118;
-  background-color: #C22817;
-  padding-right: 4rem;
-  padding-left: 4rem;
-}
-
-table.form-thought .publish:hover {
-  color: #FFFFFF;
-  background-color: #E85D5D;
-}
-
-@media (max-width: 40rem) {
-  table.form-thought .publish {
-    float: none !important;
-    margin-left: 0;
-    margin-right: 10px;
-  }
-
-  table.form-thought input[type="button"],
-  table.form-thought input[type="submit"] {
-    width: 100%;
-    float: none;
-    margin: 0;
-    margin-bottom: 3px;
-  }
-}
-
-/******************************************************************************
- * link form styles
- *****************************************************************************/
-#link_form table {
-  width: 100%;
-}
-
-#link_form td {
-  padding: 2px 0;
-}
-
-#link_form input[type="submit"], #link_form input[type="button"] {
-  margin-left: 10px;
-  margin-bottom: 10px;
-}
-
-#link_form input[type="submit"].publish {
-  margin-left: 0;
-}
-
-/******************************************************************************
- * reading list styles
- *****************************************************************************/
-#reading-list-form {
-  margin-bottom: 2rem;
-}
-
-.form-readinglist {
-  width: 100%;
-  border-collapse: collapse;
-}
-
-.form-readinglist tr:nth-of-type(even) {
-  background-color: #3B3B3B;
-}
-
-.form-readinglist td {
-  padding: 6px 3px;
-}
-
-.form-readinglist label {
-  float: right;
-  padding: 0 3px;
-}
-
-.form-readinglist input[type="button"] {
-  margin-left: 10px;
-}
-
-#aws-search {
-  width: 100%;
-  margin-left: 5px;
-}
-
-#aws-search-bar {
-  width: 82%;
-  height: 26px;
-  border-right: 0;
-  margin: 0;
-}
-
-#aws-search img {
-  height: 24px;
-  background-color: #B7B7B7;
-  border-radius: 0 4px 4px 0;
-  cursor: pointer;
-  padding: 2px 7px;
-  margin: 1px 0;
-}
-
-#aws-search img:hover {
-  background-color: #DDDDDD;
-}
-
-#aws-results {
-  background-color: #444444;
-  margin: 1rem 0 0 0;
-}
-
-#aws-results .loader {
-  display: none;
-  margin: 0 auto;
-  padding: 10px 0;
-}
-
-#aws-results .aws-book-result {
-  min-height: initial;
-  max-height: 100px;
-}
-
-.aws-book-result p {
-  margin-right: 25px;
-}
-
-.aws-book-result a.edit-icon {
-  bottom: 25px;
-  background-image: url('../images/edit.png');
-}
-
-.aws-book-result a.edit-icon:hover {
-  background-image: url('../images/edit_on.png');
-}
-
-.aws-book-result input[type="submit"].delete {
-  bottom: 45px;
-  background-image: url('../images/delete.png');
-}
-
-.aws-book-result input[type="submit"].delete:hover {
-  background-image: url('../images/delete_on.png');
 }

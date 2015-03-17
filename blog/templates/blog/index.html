@@ -29,7 +29,7 @@
             </div>
 
             {% if request.user.is_authenticated and request.user.is_superuser %}
-            <a class="edit" href="{% url 'dashboard-author' %}?thought_slug={{ latest_thought.slug }}">edit</a>
+            <a class="edit" href="{% url 'dashboard-author' %}?id={{ latest_thought.slug }}">edit</a>
             {% endif %}
         </div>
     {% endif %}
@@ -83,7 +83,7 @@
         <p class="title">
             <a href="{% url 'thought-page' thought.idea.slug thought.slug %}">{{ thought.title }}</a>
             {% if request.user.is_authenticated and request.user.is_superuser %}
-            <a class="edit" href="{% url 'dashboard-author' %}?thought_slug={{ thought.slug }}">edit</a>
+            <a class="edit" href="{% url 'dashboard-author' %}?id={{ thought.slug }}">edit</a>
             {% endif %}
         </p>
         <p class="subtitle">by {{ thought.author }} on {{ thought.date_published|date:"F j, Y" }}</p>

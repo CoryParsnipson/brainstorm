@@ -11,7 +11,7 @@
 <p class="title">{{ thought.title }}
     {% if thought.is_draft %}<span class="edit">draft</span>{% endif %}
     {% if request.user.is_authenticated and request.user.is_superuser %}
-    <a class="edit" href="{% url 'dashboard-author' %}?thought_slug={{ thought.slug }}">edit</a>
+    <a class="edit" href="{% url 'dashboard-author' %}?id={{ thought.slug }}">edit</a>
     {% endif %}
 </p>
 <p class="subtitle">by {{ thought.author }} on {{ thought.date_published|date:"F j, Y g:i A" }}

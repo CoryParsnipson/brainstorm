@@ -28,6 +28,12 @@ body {
   clear: both;
 }
 
+.no-text-overflow {
+  max-width: 150px;  /* the value here doesn't seem to matter, but setting max width allows for responsiveness */
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
 .twitter-timeline {
   width: 100%;
   display: block;
@@ -597,6 +603,7 @@ ul.pagination li:last-child a:after, ul.pagination li:last-child .inactive:after
 /******************************************************************************
  * input styles
  *****************************************************************************/
+button,
 input,
 input[type="text"],
 input[type="password"],
@@ -613,10 +620,16 @@ input[type="time"],
 input[type="url"],
 input[type="color"],
 input[type="file"],
+input[type="submit"],
+input[type="button"],
 textarea {
   font-family: inherit;
   line-height: 1.1rem;
   padding: 3px;
+}
+
+textarea {
+  resize: none;
 }
 
 input[type="text"],
@@ -634,7 +647,7 @@ input[type="file"] {
 }
 
 label {
-  padding: 3px;
+  padding: 0 5px;
 }
 
 /******************************************************************************

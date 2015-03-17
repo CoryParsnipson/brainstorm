@@ -271,11 +271,13 @@ def dashboard(request):
 @login_required(login_url='index')
 def dashboard_books(request):
     """ User dashboard page to manage reading list
+
+        ?id=[book id]   specify a book id to edit a book
     """
     instance = None
-    if 'b' in request.GET:
+    if 'id' in request.GET:
         try:
-            instance = ReadingListItem.objects.get(id=request.GET['b'])
+            instance = ReadingListItem.objects.get(id=request.GET['id'])
         except ReadingListItem.DoesNotExist:
             pass
     reading_list_item_form = ReadingListItemForm(instance=instance)
@@ -308,6 +310,8 @@ def dashboard_books(request):
 @login_required(login_url='index')
 def dashboard_highlights(request):
     """ User dashboard page to manage Highlights on the Web
+
+        ?id=[highlight id]   specify an id to edit an idea
     """
     highlight_list = Highlight.objects.all().order_by('-date_published')
 
@@ -328,9 +332,9 @@ def dashboard_highlights(request):
         h.description = h.truncate(max_length=75, allowed_tags=['a'])
 
     instance = None
-    if 'highlight' in request.GET:
+    if 'id' in request.GET:
         try:
-            instance = Highlight.objects.get(id=request.GET['highlight'])
+            instance = Highlight.objects.get(id=request.GET['id'])
         except Highlight.DoesNotExist:
             pass
     highlight_form = HighlightForm(instance=instance)
@@ -349,7 +353,7 @@ def dashboard_highlights(request):
 def dashboard_ideas(request):
     """ User dashboard page to edit/create/manage Idea objects.
 
-        ?i=[idea slug]  specify a slug in query string to edit an idea
+        ?id=[idea slug]  specify a slug in query string to edit an idea
     """
     # obtain all the Ideas
     idea_list = Idea.objects.all().order_by("order")
@@ -373,10 +377,10 @@ def dashboard_ideas(request):
     # form for editing/creating a new idea
     idea_slug = None
     idea_form_instance = None
-    if 'i' in request.GET:
+    if 'id' in request.GET:
         try:
             # sanitize query parameter
-            idea_slug = lib.slugify(request.GET['i'])
+            idea_slug = lib.slugify(request.GET['id'])
             idea_form_instance = Idea.objects.get(slug=idea_slug)
         except Idea.DoesNotExist:
             dne_msg = "Cannot edit Idea '%s'" % idea_slug
@@ -437,13 +441,13 @@ def dashboard_thoughts(request, slug=None):
 def dashboard_author(request):
     """ User dashboard page to write new thoughts, edit old ones, or work on drafts.
 
-        ?thought_slug=[thought slug] provide a slug to edit a thought or draft
+        ?id=[thought slug] provide a slug to edit a thought or draft
     """
     # create thought form (or load instance data if editing a thought)
     thought_form_instance = None
-    if 'thought_slug' in request.GET:
+    if 'id' in request.GET:
         try:
-            thought_slug = lib.slugify(request.GET['thought_slug'])
+            thought_slug = lib.slugify(request.GET['id'])
             thought_form_instance = Thought.objects.get(slug=thought_slug)
         except Thought.DoesNotExist:
             pass

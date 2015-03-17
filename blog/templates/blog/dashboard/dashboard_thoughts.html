@@ -27,7 +27,7 @@
                     <input type="hidden" name="thought_slug" value="{{ thought.slug }}" />
                     <td class="shrink">{{ thought.date_published|date:"N j, Y" }}</td>
                     <td>
-                        <a href="{% url 'dashboard-author' %}?thought_slug={{ thought.slug }}">{{ thought.title }}</a><br>
+                        <a href="{% url 'dashboard-author' %}?id={{ thought.slug }}">{{ thought.title }}</a><br>
                         {{ thought.slug }}
                     </td>
                     <td class="shrink">

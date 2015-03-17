@@ -22,13 +22,18 @@
         'id_wishlist': false,
         'id_favorite': false,
       });
+
+      /* remove id hidden field */
+      $('#id_id').remove();
     });
 
     /* add confirm dialog to delete buttons on book lists */
     $('.book-list').delegate('.delete', 'click', function () {
       var msg = 'Really delete ?';
-      if (!confirm(msg)) {
-        event.preventDefault();
+      var result = confirm(msg);
+
+      if (!result) {
+        return false;
       }
     });
   });
@@ -50,7 +55,7 @@
         <p class="date">Added on {{ book.date_published|date:"F j, Y g:i A" }}</p>
         {% if book.favorite %}<span class="favorite" title="Cory's Favorites">&#x2605;</span>{% endif %}
         <a class="link" href="{{ book.link }}" target="_blank" title="Open external link"></a>
-        <a class="link edit-icon" href="{% url 'dashboard-books' %}?b={{ book.id }}" title="Edit"></a>
+        <a class="link edit-icon" href="{% url 'dashboard-books' %}?id={{ book.id }}" title="Edit"></a>
         <form action="{% url 'dashboard-backend' %}" method="post">
             <input type="hidden" name="id" value="{{ book.id }}" />
             <input type="hidden" name="next" value="{% url 'dashboard-books' %}" />
@@ -74,7 +79,7 @@
         <p class="date">Added on {{ book.date_published|date:"F j, Y g:i A" }}</p>
         {% if book.favorite %}<span class="favorite" title="Cory's Favorites">&#x2605;</span>{% endif %}
         <a class="link" href="{{ book.link }}" target="_blank" title="Open external link"></a>
-        <a class="link edit-icon" href="{% url 'dashboard-books' %}?b={{ book.id }}" title="Edit"></a>
+        <a class="link edit-icon" href="{% url 'dashboard-books' %}?id={{ book.id }}" title="Edit"></a>
         <form action="{% url 'dashboard-backend' %}" method="post">
             <input type="hidden" name="id" value="{{ book.id }}" />
             <input type="hidden" name="next" value="{% url 'dashboard-books' %}" />
@@ -106,43 +111,40 @@
     {% for field in reading_list_item_form.hidden_fields %}
     {{ field }}
     {% endfor %}
-    <table class="form-readinglist">
+    <table>
         <tbody>
         <tr>
             <td class="shrink">{{ reading_list_item_form.title.label_tag }}</td>
-            <td colspan="3">{{ reading_list_item_form.title }}</td>
+            <td colspan="4">{{ reading_list_item_form.title }}</td>
         </tr>
         <tr>
             <td class="shrink">{{ reading_list_item_form.author.label_tag }}</td>
-            <td colspan="3">{{ reading_list_item_form.author }}</td>
+            <td colspan="4">{{ reading_list_item_form.author }}</td>
         </tr>
         <tr>
             <td class="shrink">{{ reading_list_item_form.link.label_tag }}</td>
-            <td colspan="3">{{ reading_list_item_form.link }}</td>
+            <td colspan="4">{{ reading_list_item_form.link }}</td>
         </tr>
         <tr>
             <td class="shrink">{{ reading_list_item_form.cover.label_tag }}</td>
-            <td colspan="3">{{ reading_list_item_form.cover }}</td>
+            <td colspan="4">{{ reading_list_item_form.cover }}</td>
         </tr>
         <tr>
             <td class="shrink">{{ reading_list_item_form.description.label_tag }}</td>
-            <td colspan="3">{{ reading_list_item_form.description }}</td>
+            <td colspan="4">{{ reading_list_item_form.description }}</td>
         </tr>
         <tr>
+            <td></td>
             <td class="shrink">{{ reading_list_item_form.wishlist.label_tag }}</td>
             <td>{{ reading_list_item_form.wishlist }}</td>
-
             <td class="shrink">{{ reading_list_item_form.favorite.label_tag }}</td>
             <td>{{ reading_list_item_form.favorite }}</td>
         </tr>
         <tr>
+            <td></td>
             <td colspan="4">
-                {% if "b" in request.GET %}
-                <input class="left" type="submit" value="Edit" />
-                {% else %}
-                <input class="left" type="submit" value="Add" />
-                {% endif %}
-                <input id="button-clear" class="left" type="button" value="Clear" />
+                <button class="publish left" type="submit">{% if 'id' in request.GET %}Edit{% else %}Add{% endif %}</button>
+                <button id="button-clear" class="left" type="button">Clear</button>
             </td>
         </tr>
         </tbody>
