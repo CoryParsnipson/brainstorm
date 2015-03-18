@@ -43,7 +43,7 @@
 .catalog td h3 {
   position: absolute;
   top: 0.5rem;
-  z-index: 20;
+  z-index: 11;
 }
 
 .catalog td p {
@@ -51,7 +51,7 @@
   position: absolute;
   bottom: 0;
   visibility: hidden;
-  z-index: 20;
+  z-index: 11;
   margin: 0.5rem;
 }
 
