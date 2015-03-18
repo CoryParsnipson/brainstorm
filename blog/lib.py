@@ -1,6 +1,7 @@
 import os
 import re
 import io
+import datetime
 
 import PIL
 from PIL import Image
@@ -400,3 +401,29 @@ def create_paginator(queryset, per_page, page=1):
     except EmptyPage:
         items_on_page = paginator.page(paginator.num_pages)
     return paginator, items_on_page
+
+
+def display_compact_date(dt=None):
+    """ get the date for display in a compact list type setting
+
+        For instance, it will display 'Mar 16' or '2:11 PM' depending on how
+        far in the past the date is.
+    """
+
+    if not dt:
+        dt = datetime.datetime.now()
+    now = datetime.datetime.now()
+    age = now - dt
+
+    if age < datetime.timedelta(seconds=60):
+        display_date = "Just now"
+    elif age < datetime.timedelta(minutes=60):
+        display_date = "%s minute%s ago" % (age.seconds / 60, 's' if age.seconds > 120 else '')
+    elif age < datetime.timedelta(hours=4):
+        display_date = "%s hour%s ago" % (age.seconds / 3600, 's' if age.seconds > 7200 else '')
+    elif age < datetime.timedelta(hours=now.hour):
+        display_date = dt.strftime("%I:%M %p").lstrip('0')
+    else:
+        display_date = dt.strftime("%b %d")
+
+    return display_date

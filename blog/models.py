@@ -218,6 +218,9 @@ class Thought(models.Model):
         soup = BeautifulSoup(self.content)
         return [image['src'] for image in soup.findAll('img')]
 
+    def display_compact_date(self):
+        return lib.display_compact_date(self.date_published)
+
     def save(self, *args, **kwargs):
         # check to see if this save means a draft is being published and
         # change date_published to now
@@ -283,6 +286,9 @@ class Highlight(models.Model):
             full_link=full_link,
         )
 
+    def display_compact_date(self):
+        return lib.display_compact_date(self.date_published)
+
     def save(self, *args, **kwargs):
         # "real" save method
         super(Highlight, self).save(*args, **kwargs)
@@ -310,6 +316,9 @@ class ReadingListItem(models.Model):
     wishlist = models.BooleanField(default=False)
     favorite = models.BooleanField(default=False)
     cover = models.URLField(max_length=400)
+
+    def display_compact_date(self):
+        return lib.display_compact_date(self.date_published)
 
     def save(self, *args, **kwargs):
         if self.date_published:
