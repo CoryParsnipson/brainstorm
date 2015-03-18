@@ -144,7 +144,7 @@ a.sidebar:nth-of-type(odd) {
 
 a.edit {
   font-size: 8pt;
-  background-color: #494949;
+  background-color: #656565;
   border-radius: 4px;
   padding: 2px 8px;
   text-transform: uppercase;
@@ -155,7 +155,7 @@ a.edit {
 }
 
 a.edit:hover {
-  background-color: #656565;
+  background-color: #B7B7B7;
 }
 
 /******************************************************************************
@@ -404,7 +404,6 @@ ul li {
  * list styles - navigation
  *****************************************************************************/
 nav {
-  font-weight: bold;
   line-height: 1.2rem;
   float: right;
 }
