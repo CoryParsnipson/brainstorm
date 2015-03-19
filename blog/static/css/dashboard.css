@@ -379,10 +379,15 @@ table.editable-list tr {
 
 table.editable-list tr:hover,
 table.editable-list tr:hover td {
-  background-color: #656565;
+  background-color: #4D4D4D;
+}
+
+table.editable-list tr:hover td.fixed-label {
+  background-color: #404040;
 }
 
 table.editable-list td {
+  position: relative;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
