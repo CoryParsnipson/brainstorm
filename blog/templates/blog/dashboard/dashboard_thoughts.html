@@ -10,37 +10,27 @@
                 [<a href="{% url 'dashboard-ideas' %}">{{ idea }}</a>]
                 {% endif %}
         </h3>
-        <table class="editable">
+
+        <table class="editable-list">
             <tbody>
-            <tr>
-                <td>Date</td>
-                <td>Thought</td>
-                <td></td>
-                <td></td>
-                <td></td>
-            </tr>
 
             {% for thought in thoughts %}
             <tr>
-                <form action="{% url 'dashboard-backend' %}" method="post">
-                    {% csrf_token %}
-                    <input type="hidden" name="thought_slug" value="{{ thought.slug }}" />
-                    <td class="shrink">{{ thought.date_published|date:"N j, Y" }}</td>
-                    <td>
-                        <a href="{% url 'dashboard-author' %}?id={{ thought.slug }}">{{ thought.title }}</a><br>
-                        {{ thought.slug }}
-                    </td>
-                    <td class="shrink">
-                        <a class="button" href="{% url 'thought-page' thought.idea.slug thought.slug %}">view</a>
-                    </td>
-                    <td class="shrink">
-                        <input type="submit" name="unpublish" value="unpublish" />
-                    </td>
-                    <td class="shrink"><input type="submit" name="trash" value="x" /></td>
-                </form>
+                <td class="fixed-select">
+                    <input type="checkbox" name="id" value="penis" />
+                </td>
+                <td class="fixed-label small-expand">
+                    {{ thought.title }}<span class="slug blue small-appear">{{ thought.slug }}</span>
+                </td>
+                <td class="fluid dark-grey small-collapse">
+                    <span class="slug blue">{{ thought.slug }}</span>{{ thought.truncate }}
+                </td>
+                <td class="fixed-date grey">
+                    {{ thought.display_compact_date }}
+                </td>
             </tr>
             {% empty %}
-            <tr><td colspan="5">There are no thoughts in this Idea.</td></tr>
+            <tr><td>There are no thoughts in this idea.</td></tr>
             {% endfor %}
             </tbody>
         </table>

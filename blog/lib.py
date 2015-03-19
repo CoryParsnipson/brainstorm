@@ -119,6 +119,23 @@ class Amazon:
         return books
 
 
+class UTC(datetime.tzinfo):
+    """ fix that problem where it says something about mixing timezone aware and
+        timezone naive datetimes.
+    """
+
+    def utcoffset(self, dt):
+        return datetime.timedelta(0)
+
+    def tzname(self, dt):
+        return "UTC"
+
+    def dst(self, dt):
+        return datetime.timedelta(0)
+
+utc = UTC()
+
+
 ###############################################################################
 # methods and code common to entire blog app
 ###############################################################################
@@ -411,16 +428,16 @@ def display_compact_date(dt=None):
     """
 
     if not dt:
-        dt = datetime.datetime.now()
-    now = datetime.datetime.now()
+        dt = datetime.datetime.now(utc)
+    now = datetime.datetime.now(utc)
     age = now - dt
 
     if age < datetime.timedelta(seconds=60):
-        display_date = "Just now"
+        display_date = "Now"
     elif age < datetime.timedelta(minutes=60):
-        display_date = "%s minute%s ago" % (age.seconds / 60, 's' if age.seconds > 120 else '')
+        display_date = "%s min ago" % (age.seconds / 60)
     elif age < datetime.timedelta(hours=4):
-        display_date = "%s hour%s ago" % (age.seconds / 3600, 's' if age.seconds > 7200 else '')
+        display_date = "%s hr%s ago" % (age.seconds / 3600, 's' if age.seconds > 7200 else '')
     elif age < datetime.timedelta(hours=now.hour):
         display_date = dt.strftime("%I:%M %p").lstrip('0')
     else:

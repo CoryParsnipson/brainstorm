@@ -955,7 +955,10 @@ class FormThoughtView(View):
             # received new thought request, create new Thought
             instance = None
             original_preview = None
-            inline_images = None
+            inline_images = []
+
+            author = request.user  # need to populate this form data
+            request.POST['author'] = author.id
 
         thought_form = ThoughtForm(request.POST, request.FILES, instance=instance)
         if thought_form.is_valid():

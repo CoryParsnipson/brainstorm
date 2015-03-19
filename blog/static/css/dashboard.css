@@ -358,3 +358,108 @@ table.editable input[type="submit"] {
   font-size: 9pt;
   margin: 0 -3px;
 }
+
+/******************************************************************************
+ * editable-list table styles
+ *****************************************************************************/
+table.editable-list {
+  width: 100%;
+  background-color: #444444;
+  font-size: 9pt;
+  text-align: left;
+  table-layout: fixed;
+  border-collapse: collapse;
+  margin-bottom: 2rem;
+}
+
+table.editable-list tr {
+  border-top: 1px solid #535353;
+  border-bottom: 1px solid #535353;
+}
+
+table.editable-list tr:hover,
+table.editable-list tr:hover td {
+  background-color: #656565;
+}
+
+table.editable-list td {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  padding: 2px 0px;
+}
+
+table.editable-list .small-appear {
+  visibility: hidden;
+}
+
+table.editable-list td.fluid {
+  width: 100%;
+}
+
+table.editable-list td.fluid > div {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+table.editable-list td.fixed-select {
+  width: 25px;
+  text-align: center;
+}
+
+table.editable-list td.fixed-label {
+  width: 50%;
+  font-weight: bold;
+  background-color: #3D3D3D;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+table.editable-list td.fixed-slug {
+  width: 25%;
+  font-size: 7pt;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+table.editable-list span.slug {
+  font-weight: normal;
+  line-height: 1rem;
+  border-radius: 5px;
+  display: inline-block;
+  background-color: #333333;
+  vertical-align: middle;
+  padding: 1px 5px;
+  margin-top: -2px;
+  margin-right: 0.3rem;
+  margin-left: 0.3rem;
+}
+
+table.editable-list td.fixed-slug div.slug div {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+table.editable-list td.fixed-date {
+  width: 70px;
+  text-align: right;
+  padding-right: 7px;
+}
+
+table.editable-list input[type="checkbox"] {
+  vertical-align: middle;
+}
+
+@media (max-width: 40rem) {
+  table.editable-list td.small-collapse {
+    width: 0;
+  }
+
+  table.editable-list td.small-expand {
+    width: 100%;
+  }
+
+  table.editable-list .small-appear {
+    visibility: visible;
+  }
+}
