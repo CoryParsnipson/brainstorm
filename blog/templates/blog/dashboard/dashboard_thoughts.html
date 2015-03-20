@@ -34,12 +34,9 @@
                 <td class="fixed-select">
                     <input type="checkbox" name="id" value="penis" />
                 </td>
-                <td class="fixed-label small-expand">
+                <td class="fluid dark-grey">
                     <a class="overlay" href="{% url 'dashboard-author' %}?id={{ thought.slug }}"></a>
-                    {{ thought.title }}<span class="slug blue small-appear">{{ thought.slug }}</span>
-                </td>
-                <td class="fluid dark-grey small-collapse">
-                    <a class="overlay" href="{% url 'dashboard-author' %}?id={{ thought.slug }}"></a>
+                    <span class="title">{{ thought.title }}</span>
                     <span class="slug blue">{{ thought.slug }}</span>{{ thought.strip_tags }}
                 </td>
                 <td class="fixed-date grey">

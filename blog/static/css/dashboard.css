@@ -445,33 +445,15 @@ table.editable-list td {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  padding: 2px 0px;
-}
-
-table.editable-list .small-appear {
-  visibility: hidden;
 }
 
 table.editable-list .fluid {
   width: 100%;
 }
 
-table.editable-list .fluid > div {
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
 table.editable-list .fixed-select {
   width: 25px;
   text-align: center;
-}
-
-table.editable-list .fixed-label {
-  width: 40%;
-  font-weight: bold;
-  background-color: #3D3D3D;
-  padding-left: 5px;
-  padding-right: 5px;
 }
 
 table.editable-list .fixed-slug {
@@ -481,39 +463,40 @@ table.editable-list .fixed-slug {
   padding-right: 5px;
 }
 
-table.editable-list span.slug {
-  font-weight: normal;
-  line-height: 1rem;
-  border-radius: 5px;
-  display: inline-block;
-  background-color: #333333;
-  vertical-align: middle;
-  padding: 1px 5px;
-  margin-top: -2px;
-  margin-right: 0.3rem;
-  margin-left: 0.3rem;
-}
-
 table.editable-list .fixed-date {
   width: 70px;
   text-align: right;
   padding-right: 7px;
 }
 
-table.editable-list input[type="checkbox"] {
+table.editable-list span {
+  display: inline-block;
+  overflow: hidden;
+  text-overflow: ellipsis;
   vertical-align: middle;
 }
 
-@media (max-width: 40rem) {
-  table.editable-list .small-collapse {
-    width: 0;
-  }
+table.editable-list span.title {
+  color: #DEDEDE;
+  background-color: #3D3D3D;
+  max-width: 150px;
+  height: 100%;
+  font-weight: bold;
+  line-height: 1.7rem;
+  padding: 0 5px;
+}
 
-  table.editable-list .small-expand {
-    width: 100%;
-  }
+table.editable-list span.slug {
+  font-weight: normal;
+  line-height: 1rem;
+  border-radius: 5px;
+  background-color: #333333;
+  padding: 1px 5px;
+  margin-top: -2px;
+  margin-right: 0.3rem;
+  margin-left: 0.1rem;
+}
 
-  table.editable-list .small-appear {
-    visibility: visible;
-  }
+table.editable-list input[type="checkbox"] {
+  vertical-align: middle;
 }
