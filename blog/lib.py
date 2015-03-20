@@ -3,9 +3,11 @@ import re
 import io
 import datetime
 
+import pytz
 import PIL
 from PIL import Image
 import amazonproduct
+from lxml import etree
 from lxml.html.clean import Cleaner
 
 from django.conf import settings
@@ -427,10 +429,8 @@ def display_compact_date(dt=None):
         far in the past the date is.
     """
 
-    if not dt:
-        dt = datetime.datetime.now(utc)
-    now = datetime.datetime.now(utc)
-    age = now - dt
+    now = pytz.timezone(settings.TIME_ZONE).localize(datetime.datetime.now())
+    age = now - (dt or now)
 
     if age < datetime.timedelta(seconds=60):
         display_date = "Now"
@@ -444,3 +444,17 @@ def display_compact_date(dt=None):
         display_date = dt.strftime("%b %d")
 
     return display_date
+
+
+def strip_tags(unsafe_html):
+    """ strip all tags from this string which may contain html
+    """
+    cleaner = Cleaner(
+        page_structure=True,
+        links=True,
+        safe_attrs_only=True,
+        remove_unknown_tags=False,
+        allow_tags=['']
+    )
+
+    return etree.fromstring(cleaner.clean_html(unsafe_html)).text

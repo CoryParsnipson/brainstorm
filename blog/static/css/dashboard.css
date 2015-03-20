@@ -360,6 +360,52 @@ table.editable input[type="submit"] {
 }
 
 /******************************************************************************
+ * editable-control div styles
+ *****************************************************************************/
+div.editable-control {
+  width: 100%;
+  background-color: #555555;
+  border-bottom: 1px solid #383838;
+  padding: 8px 0px;
+  padding-right: 8px;
+}
+
+div.editable-control input[type="checkbox"] {
+  width: 25px;
+  vertical-align: -40%;
+  margin: 0 1px;
+}
+
+div.editable-control button,
+div.editable-control .button,
+div.editable-control input[type="button"],
+div.editable-control input[type="submit"] {
+  font-size: 9pt;
+  margin: 0;
+  margin-left: 8px;
+}
+
+div.editable-control ul.nav {
+  display: inline-block;
+  vertical-align: middle;
+}
+
+div.editable-control ul.dropdown > li button,
+div.editable-control ul.dropdown > li .button,
+div.editable-control ul.dropdown > li input[type="button"],
+div.editable-control ul.dropdown > li input[type="submit"] {
+  background-color: #565B99;
+  margin: 0;
+}
+
+div.editable-control ul.dropdown > li button:hover,
+div.editable-control ul.dropdown > li .button:hover,
+div.editable-control ul.dropdown > li input[type="button"]:hover,
+div.editable-control ul.dropdown > li input[type="submit"]:hover {
+  background-color: #878DD4;
+}
+
+/******************************************************************************
  * editable-list table styles
  *****************************************************************************/
 table.editable-list {
@@ -382,8 +428,16 @@ table.editable-list tr:hover td {
   background-color: #4D4D4D;
 }
 
-table.editable-list tr:hover td.fixed-label {
+table.editable-list tr:hover .fixed-label {
   background-color: #404040;
+}
+
+table.editable-list tr:first-of-type {
+  border-top: 0;
+}
+
+table.editable-list tr:last-of-type {
+  border-bottom: 0;
 }
 
 table.editable-list td {
@@ -398,29 +452,29 @@ table.editable-list .small-appear {
   visibility: hidden;
 }
 
-table.editable-list td.fluid {
+table.editable-list .fluid {
   width: 100%;
 }
 
-table.editable-list td.fluid > div {
+table.editable-list .fluid > div {
   overflow: hidden;
   text-overflow: ellipsis;
 }
 
-table.editable-list td.fixed-select {
+table.editable-list .fixed-select {
   width: 25px;
   text-align: center;
 }
 
-table.editable-list td.fixed-label {
-  width: 50%;
+table.editable-list .fixed-label {
+  width: 40%;
   font-weight: bold;
   background-color: #3D3D3D;
   padding-left: 5px;
   padding-right: 5px;
 }
 
-table.editable-list td.fixed-slug {
+table.editable-list .fixed-slug {
   width: 25%;
   font-size: 7pt;
   padding-left: 5px;
@@ -440,12 +494,7 @@ table.editable-list span.slug {
   margin-left: 0.3rem;
 }
 
-table.editable-list td.fixed-slug div.slug div {
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-table.editable-list td.fixed-date {
+table.editable-list .fixed-date {
   width: 70px;
   text-align: right;
   padding-right: 7px;
@@ -456,11 +505,11 @@ table.editable-list input[type="checkbox"] {
 }
 
 @media (max-width: 40rem) {
-  table.editable-list td.small-collapse {
+  table.editable-list .small-collapse {
     width: 0;
   }
 
-  table.editable-list td.small-expand {
+  table.editable-list .small-expand {
     width: 100%;
   }
 

@@ -13,6 +13,7 @@ pilkit==1.1.12
 Pillow==2.7.0
 psycopg2==2.6
 python-amazon-product-api==0.2.8
+pytz==2014.10
 selenium==2.44.0
 six==1.9.0
 SQLAlchemy==0.9.8

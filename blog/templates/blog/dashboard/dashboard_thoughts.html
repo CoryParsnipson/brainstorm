@@ -6,10 +6,26 @@
     <div class="large-12 columns">
         <h3>
             Manage Thoughts
-                {% if idea %}
-                [<a href="{% url 'dashboard-ideas' %}">{{ idea }}</a>]
-                {% endif %}
+            {% if idea %}
+            [<a href="{% url 'dashboard-ideas' %}">{{ idea }}</a>]
+            {% endif %}
         </h3>
+
+        <div class="editable-control group">
+            <input type="checkbox" name="id" value="penis" />
+
+            <ul class="nav right">
+                <li><button type="submit" name="trash">Unpublish</button></li>
+                <li><button type="submit" name="trash">Trash</button></li>
+                <li>
+                    <a class="button dropdown">Move</a>
+                    <ul class="dropdown dropdown-right">
+                        <li><button type="submit" name="move" value="miscellaneous">Miscellaneous</button></li>
+                        <li><a class="button">Cooking</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
 
         <table class="editable-list">
             <tbody>
@@ -24,7 +40,7 @@
                 </td>
                 <td class="fluid dark-grey small-collapse">
                     <a class="overlay" href="{% url 'dashboard-author' %}?id={{ thought.slug }}"></a>
-                    <span class="slug blue">{{ thought.slug }}</span>{{ thought.truncate }}
+                    <span class="slug blue">{{ thought.slug }}</span>{{ thought.strip_tags }}
                 </td>
                 <td class="fixed-date grey">
                     <a class="overlay" href="{% url 'dashboard-author' %}?id={{ thought.slug }}"></a>

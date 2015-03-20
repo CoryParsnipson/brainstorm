@@ -132,10 +132,17 @@ a.overlay {
   z-index: 20;
 }
 
+[id*="header"] a,
 #footer a {
   color: #A80505;
 }
 
+[id*="header"] ul.nav > li a {
+  display: block;
+  padding: 10px 15px;
+}
+
+[id*="header"] a:hover,
 #footer a:hover {
   color: #FFFFFF;;
 }
@@ -164,6 +171,30 @@ a.edit {
 
 a.edit:hover {
   background-color: #B7B7B7;
+}
+
+a.dropdown {
+  position: relative;
+  padding-right: 30px;
+  cursor: default;
+}
+
+a.dropdown:after {
+  width: 0;
+  height: 0;
+  content: '';
+  display: block;
+  position: absolute;
+  top: 57%;
+  right: 20%;
+  padding: 0;
+  margin: -5px;
+  border: 5px solid transparent;
+  border-top-color: #F8C118;
+}
+
+a.dropdown:hover:after {
+  border-top-color: #FFFFFF;
 }
 
 /******************************************************************************
@@ -409,6 +440,36 @@ ul li {
 }
 
 /******************************************************************************
+ * list styles - dropdown
+ *****************************************************************************/
+ul.dropdown {
+  display: none;
+  list-style-type: none;
+  margin: 0;
+}
+
+*:hover > ul.dropdown {
+  display: block;
+  position: absolute;
+  z-index: 100;
+}
+
+ul.dropdown > li {
+  text-align: center;
+  margin: 0;
+  padding: 0;
+}
+
+ul.dropdown > li > * {
+  width: 100%;
+}
+
+ul.dropdown-right {
+  position: absolute;
+  right: 0;
+}
+
+/******************************************************************************
  * list styles - navigation
  *****************************************************************************/
 nav {
@@ -424,30 +485,22 @@ nav {
   }
 }
 
-nav > ul {
+ul.nav {
   list-style-type: none;
   margin: 0;
 }
 
-nav > ul li {
+ul.nav > li {
+  position: relative;
   display: block;
   float: left;
   padding: 0;
 }
 
-nav > ul li:hover {
+/* top bar colors */
+*[id*="header"] nav ul.nav > li:hover {
   color: #FFFFFF;
   background-color: #EBB100;
-}
-
-nav > ul li a {
-  color: #A80505;
-  display: block;
-  padding: 10px 15px;
-}
-
-nav > ul li a:hover {
-  color: #FFFFFF;
 }
 
 /*****************************************************************************

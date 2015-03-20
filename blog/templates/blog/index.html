@@ -57,9 +57,6 @@
             <p class="subtitle"><a href="{{ highlight.url }}" target="_blank">{{ highlight.url }}</a></p>
             <div class="description">
                 {{ highlight.description|safe }}
-                {% if highlight_cut %}
-                <a href="{% url 'highlights' %}">(more)</a>
-                {% endif %}
             </div>
         </div>
     </div>

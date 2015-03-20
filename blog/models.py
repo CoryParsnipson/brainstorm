@@ -135,6 +135,11 @@ class Thought(models.Model):
         'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'hr', 'br'
     ]
 
+    def strip_tags(self):
+        """ strip all html tags from content field and return the content field
+        """
+        return lib.strip_tags(self.content)
+
     def truncate(self, max_length=250, allowed_tags=None, full_link=None):
         """ output a form of the content field, truncated to max_length. Tags
             will be whitelisted, stripped, and balanced to account for
