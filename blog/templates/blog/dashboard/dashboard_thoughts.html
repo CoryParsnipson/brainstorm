@@ -1,5 +1,6 @@
 {% extends 'blog/templates/template_dashboard.html' %}
 {% load staticfiles %}
+{% load blog_extras %}
 
 {% block content %}
 <div class="row">
@@ -10,46 +11,7 @@
             [<a href="{% url 'dashboard-ideas' %}">{{ idea }}</a>]
             {% endif %}
         </h3>
-
-        <div class="editable-control group">
-            <input type="checkbox" name="id" value="penis" />
-
-            <ul class="nav right">
-                <li><button type="submit" name="trash">Unpublish</button></li>
-                <li><button type="submit" name="trash">Trash</button></li>
-                <li>
-                    <a class="button dropdown">Move</a>
-                    <ul class="dropdown dropdown-right">
-                        <li><button type="submit" name="move" value="miscellaneous">Miscellaneous</button></li>
-                        <li><a class="button">Cooking</a></li>
-                    </ul>
-                </li>
-            </ul>
-        </div>
-
-        <table class="editable-list">
-            <tbody>
-            {% for thought in thoughts %}
-            <tr>
-                <td class="fixed-select">
-                    <input type="checkbox" name="id" value="penis" />
-                </td>
-                <td class="fluid dark-grey">
-                    <a class="overlay" href="{% url 'dashboard-author' %}?id={{ thought.slug }}"></a>
-                    <span class="title">{{ thought.title }}</span>
-                    <span class="slug blue">{{ thought.slug }}</span>{{ thought.strip_tags }}
-                </td>
-                <td class="fixed-date grey">
-                    <a class="overlay" href="{% url 'dashboard-author' %}?id={{ thought.slug }}"></a>
-                    {{ thought.display_compact_date }}
-                </td>
-            </tr>
-            {% empty %}
-            <tr><td>There are no thoughts in this idea.</td></tr>
-            {% endfor %}
-            </tbody>
-        </table>
-
+        {% include "blog/templates/template_editablelist.html" with queryset=thoughts item_link="dashboard-author"|rev show_unpublish=True show_trash=True show_move=True %}
         {% include "blog/templates/template_pagination.html" with paginator=paginator pages=pagination %}
     </div>
 </div>

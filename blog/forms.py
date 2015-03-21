@@ -53,7 +53,7 @@ class ThoughtForm(forms.ModelForm):
         super(ThoughtForm, self).__init__(*args, **kwargs)
 
         # calculate next url
-        next_url = reverse_lazy('dashboard-thoughts', kwargs={'slug': '{idea}'})
+        next_url = reverse_lazy('dashboard-thoughts') + "?id={idea}"
         self.fields['next'] = forms.CharField(widget=forms.HiddenInput, required=False, initial=next_url)
 
         if Thought.objects.filter(slug=self.instance.slug).exists():

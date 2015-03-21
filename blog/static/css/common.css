@@ -173,6 +173,39 @@ a.edit:hover {
   background-color: #B7B7B7;
 }
 
+a.link-icon, input[type="submit"].link-icon {
+  width: 17px;
+  height: 17px;
+  font-size: 8pt;
+  display: block;
+  line-height: 1.2rem;
+  background-color: transparent;
+  background-image: url('../images/external_link.png');
+  margin: 0;
+  padding: 0;
+}
+
+a.link-icon:hover, input[type="submit"].link-icon:hover {
+  background-color: transparent;
+  background-image: url('../images/external_link_on.png');
+}
+
+a.edit-icon {
+  background-image: url('../images/edit.png');
+}
+
+a.edit-icon:hover {
+  background-image: url('../images/edit_on.png');
+}
+
+a.delete-icon, input[type="submit"].delete-icon {
+  background-image: url('../images/delete.png');
+}
+
+a.delete-icon, input[type="submit"].delete-icon:hover {
+  background-image: url('../images/delete_on.png');
+}
+
 a.dropdown {
   position: relative;
   padding-right: 30px;
@@ -512,23 +545,26 @@ ul.messages {
 }
 
 ul.messages li {
+  width: 100%;
   color: #383838;
   background-color: #F8C118;
   border-radius: 3px;
   margin-bottom: 10px;
   padding: 10px;
+
+  /* manually copy group class here */
+  content: "";
+  display: table;
+  clear: both;
 }
 
 ul.messages li:last-child {
   margin-bottom: 2rem;
 }
 
-ul.messages p {
-  margin-bottom: 0;
-}
-
-ul.messages form * {
+ul.messages li > * {
   float: left;
+  margin-bottom: 0;
 }
 
 ul.messages .success {
@@ -546,19 +582,22 @@ ul.messages .error {
   background-color: #A80505;
 }
 
-ul.messages .success input[type="submit"], ul.messages .success input[type="button"] {
+ul.messages .success button,
+ul.messages .success .button,
+ul.messages .success input[type="submit"],
+ul.messages .success input[type="button"] {
   color: #157A2D;
   background-color: transparent;
-  float: left;
-  font-size: 11pt;
   font-weight: bold;
   font-family: Roboto, "San Serif";
-  border: none;
-  margin-top: 0.3rem;
+  margin: 0;
   padding: 0px 7px;
 }
 
-ul.messages .success input[type="submit"]:hover, ul.messages .success input[type="button"]:hover {
+ul.messages .success button:hover,
+ul.messages .success .button:hover,
+ul.messages .success input[type="submit"]:hover,
+ul.messages .success input[type="button"]:hover {
   color: #FFFFFF;
 }
 
@@ -905,22 +944,10 @@ div.book-list p.empty a {
   bottom: 3px;
 }
 
-.aws-book-result a.link, .aws-book-result input[type="submit"] {
-  width: 17px;
-  height: 17px;
-  font-size: 8pt;
-  line-height: 1.2rem;
-  background-color: transparent;
-  background-image: url('../images/external_link.png');
+.aws-book-result a.link-icon, .aws-book-result input[type="submit"] {
   position: absolute;
   bottom: 5px;
   right: 5px;
-  margin: 0;
-  padding: 0;
-}
-
-.aws-book-result a.link:hover {
-  background-image: url('../images/external_link_on.png');
 }
 
 span.favorite {

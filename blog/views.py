@@ -400,7 +400,7 @@ def dashboard_ideas(request):
 
 
 @login_required(login_url='index')
-def dashboard_thoughts(request, slug=None):
+def dashboard_thoughts(request):
     try:
         idea = None
         filter_params = {
@@ -408,8 +408,8 @@ def dashboard_thoughts(request, slug=None):
             'is_trash': False,
         }
 
-        if slug:
-            idea = Idea.objects.get(slug=slug)
+        if 'id' in request.GET:
+            idea = Idea.objects.get(slug=lib.slugify(request.GET['id']))
             filter_params['idea'] = idea
 
         thoughts = Thought.objects.filter(**filter_params).order_by("-date_published")
@@ -498,7 +498,7 @@ def dashboard_drafts(request):
 def dashboard_trash(request):
     """ user dashboard page to manage thoughts in trash
     """
-    trash = Thought.objects.filter(is_trash=True).order_by("date_published")
+    trash = Thought.objects.filter(is_trash=True).order_by("-date_published")
 
     page = request.GET.get('p')
     paginator, trash_on_page = lib.create_paginator(
@@ -528,104 +528,65 @@ def dashboard_trash(request):
 
 @login_required(login_url='index')
 def dashboard_backend(request):
-    query_string = ""
     if 'next' in request.POST:
         next_url = request.POST['next']
     else:
-        next_url = reverse('dashboard-thoughts')
+        next_url = request.META['HTTP_REFERER']
 
-    if 'trash' in request.POST or 'untrash' in request.POST:
-        trash = True if 'trash' in request.POST else False
-        result = thought_set_trash(request.POST['thought_slug'], trash=trash)
+    # gather checked ids
+    if not 'id' in request.POST:
+        messages.add_message(request, messages.WARNING, "No items selected for action!")
+        return redirect(next_url)
 
-        if result:
+    results = []  # entries should be 3-tuples (boolean - success?, string - message, string - undo button)
+    for i in request.POST.getlist('id'):
+        if 'idea_delete' in request.POST:
+            results.append(idea_safe_delete(i) + ('',))
+        elif 'idea_order_up' in request.POST or 'idea_order_down' in request.POST:
             try:
-                thought_slug = lib.slugify(request.POST['thought_slug'])
-                thought = Thought.objects.get(slug=thought_slug)
+                idea_slug = lib.slugify(i)
+                idea = Idea.objects.get(slug=idea_slug)
 
-                if trash:
-                    be_msg = "<form action='%s' method='post' class='group'>" % reverse('dashboard-backend')
-                    be_msg += "<input type='hidden' name='csrfmiddlewaretoken' value='%s' />" % unicode(csrf(request)['csrf_token'])
-                    be_msg += "<input type='hidden' name='thought_slug' value='%s' />" % thought.slug
+                if 'idea_order_up' in request.POST:
+                    adjacent_idea = idea.get_next()
+                else:
+                    adjacent_idea = idea.get_prev()
 
-                    if 'next' in request.POST:
-                        be_msg += '<input type="hidden" name="next" value="%s" />' % next_url
-
-                    be_msg += "<p>Thought %s was trashed.</p>" % thought.slug
-                    be_msg += "<input class='button-undo' type='submit' name='untrash' value='Undo' />"
-                    be_msg += "</form>"
-                    messages.add_message(request, messages.SUCCESS, be_msg)
-
-                query_string = urlencode({
-                    'idea_slug': thought.idea.slug,
-                })
-            except Thought.DoesNotExist as e:
-                pass
-    elif 'unpublish' in request.POST:
-        thought_unpublish(request.POST['thought_slug'])
-        thought = Thought.objects.get(slug=request.POST['thought_slug'])
-        query_string = urlencode({
-            'idea_slug': thought.idea.slug,
-        })
-
-        msg = "Moved Thought '%s' to Drafts." % thought.slug
-        messages.add_message(request, messages.SUCCESS, msg)
-    elif 'delete_thought' in request.POST:
-        if thought_delete(request.POST['thought_slug']):
-            msg = "Successfully deleted Thought '%s'" % request.POST['thought_slug']
-            messages.add_message(request, messages.SUCCESS, msg)
-        else:
-            msg = "Error: Thought '%s' does not exist." % request.POST['thought_slug']
-            messages.add_message(request, messages.ERROR, msg)
-    elif 'delete_idea' in request.POST:
-        try:
-            safe_delete_idea(request.POST['idea'])
-            msg = "Successfully deleted Idea '%s'" % request.POST['idea']
-            messages.add_message(request, messages.SUCCESS, msg)
-        except ValidationError as e:
-            messages.add_message(request, messages.ERROR, e.message)
-    elif 'order_up' in request.POST or 'order_down' in request.POST:
-        err_msg = None
-        try:
-            idea_slug = lib.slugify(request.POST['idea'])
-            idea = Idea.objects.get(slug=idea_slug)
-
-            if 'order_up' in request.POST:
-                adjacent_idea = idea.get_next()
+                if adjacent_idea:
+                    results.append(idea_swap_order(idea.slug, adjacent_idea.slug) + ('',))
+            except Exception as e:
+                results.append((False, e.message, ''))
+        elif 'thought_trash' in request.POST or 'thought_untrash' in request.POST:
+            if 'thought_trash' in request.POST:
+                undo = (undo_button_html(request, action='thought_untrash'),)
             else:
-                adjacent_idea = idea.get_prev()
+                undo = (undo_button_html(request, action='thought_trash'),)
 
-            if adjacent_idea:
-                swap_ideas(idea_slug, adjacent_idea.slug)
-        except KeyError as e:
-            err_msg = e.message
-        except Idea.DoesNotExist as e:
-            err_msg = e.message
-        finally:
-            if err_msg:
-                messages.add_message(request, messages.ERROR, err_msg)
-    elif 'delete_highlight' in request.POST:
-        try:
-            highlight = Highlight.objects.get(id=request.POST['highlight'])
-            highlight_title = highlight.title
-            highlight.delete()
+            results.append(thought_trash(i, True if 'thought_trash' in request.POST else False) + undo)
+        elif 'thought_unpublish' in request.POST or 'thought_publish' in request.POST:
+            auto_update = request.POST['auto_update'] if 'auto_update' in request.POST else False
 
-            msg = "Successfully deleted Highlight '%s'" % highlight_title
-            messages.add_message(request, messages.SUCCESS, msg)
-        except Highlight.DoesNotExist:
-            pass
-    elif 'delete_book' in request.POST:
-        try:
-            book = ReadingListItem.objects.get(id=request.POST['id'])
-            book_identifier = book.title + " (#" + str(book.id) + ")"
-            book.delete()
+            if 'thought_unpublish' in request.POST:
+                undo = (undo_button_html(request, action='thought_publish'),)
+            else:
+                undo = (undo_button_html(request, action='thought_unpublish'),)
 
-            msg = "Successfully deleted Book '%s'" % book_identifier
-            messages.add_message(request, messages.SUCCESS, msg)
-        except ReadingListItem.DoesNotExist:
-            pass
+            results.append(thought_publish(i, True if 'thought_publish' in request.POST else False, auto_update) + undo)
+        elif 'thought_delete' in request.POST:
+            results.append(thought_delete(i) + ('',))
+        elif 'highlight_delete' in request.POST:
+            results.append(highlight_delete(i) + ('',))
+        elif 'book_delete' in request.POST:
+            results.append(book_delete(i) + ('',))
+        else:
+            results.append((False, "Unknown operation specified.") + ('',))
 
-    return redirect(next_url + "?" + query_string)
+    # add results to flash messages
+    for res in results:
+        msg = "<p>" + res[1] + "</p>" + res[2]
+        messages.add_message(request, messages.SUCCESS if res[0] else messages.ERROR, msg)
+
+    return redirect(next_url)
 
 
 ###############################################################################
@@ -698,43 +659,62 @@ def search_aws(request, keywords):
 ###############################################################################
 # helper functions
 ###############################################################################
-def find_unique_slug(unsafe_slug, model):
-    """ take a string and generate a slug using the lib.slugify function
-        and make sure it does not collide with anything in the database
+def undo_button_html(request, action):
+    """ return html string for undo button for use in a flash message. This
+        html includes form data for reversing a server operation
 
-        specify a model to search for collisions against
+        action should be a string that matches the compliment of the
+        backend dashboard function
     """
-    test_slug = lib.slugify(unsafe_slug)
+    undo_html = "<form action='%s' method='post'>" % reverse('dashboard-backend')
+    undo_html += "<input type='hidden' name='csrfmiddlewaretoken' value='%s' />" % unicode(csrf(request)['csrf_token'])
 
-    collision_idx = 2
-    while model.objects.filter(slug=test_slug).exists():
-        test_slug = lib.slugify(unsafe_slug + "-" + str(collision_idx))
-        collision_idx += 1
-    return test_slug
+    # gather id data from request
+    if 'id' in request.POST:
+        for item in request.POST.getlist('id'):
+            undo_html += "<input type='hidden' name='id' value='%s' />" % lib.slugify(item)
+
+    # obtain next url
+    if 'next' in request.POST:
+        next_url = request.POST['next']
+    else:
+        next_url = request.META['HTTP_REFERER']
+
+    undo_html += "<input type='hidden' name='next' value='%s' />" % next_url
+    undo_html += "<input type='submit' name='%s' value='Undo' />" % action
+    undo_html += "</form>"
+
+    return undo_html
 
 
-def safe_delete_idea(idea_slug):
+def idea_safe_delete(idea_slug):
     """ delete a given idea (identified by idea_slug) only if it has no
         associated thoughts. Else do not delete and raise ValidationError
     """
+    try:
+        idea_slug = lib.slugify(idea_slug)
+        idea = Idea.objects.get(slug=idea_slug)
+        num_thoughts = Thought.objects.filter(idea=idea).count()
 
-    idea = Idea.objects.get(slug=idea_slug)
-    thoughts = Thought.objects.filter(idea=idea)
+        if num_thoughts > 0:
+            raise ValidationError("Cannot delete Idea: has associated thoughts")
 
-    if len(thoughts) > 0:
-        raise ValidationError("Cannot delete Idea %s; has associated thoughts" % idea.name)
-    idea.delete()
+        idea.delete()
+    except (Exception, Idea.DoesNotExist) as e:
+        return False, idea_slug + ': ' + e.message
+    return True, "Successfully deleted Idea '%s'." % idea_slug
 
 
-def swap_ideas(idea_slug, adjacent_idea_slug):
+def idea_swap_order(idea_slug, adjacent_idea_slug):
     """ swap an idea with another given idea (based on the order column)
 
-        returns True on success, False on error
+        returns a 2-tuple with the first element being a boolean (True on success, False on failure)
+        and the second element being a string containing an information log message
     """
-    idea_slug = lib.slugify(idea_slug)
-    adjacent_idea_slug = lib.slugify(adjacent_idea_slug)
-
     try:
+        idea_slug = lib.slugify(idea_slug)
+        adjacent_idea_slug = lib.slugify(adjacent_idea_slug)
+
         idea = Idea.objects.get(slug=idea_slug)
         adjacent_idea = Idea.objects.get(slug=adjacent_idea_slug)
 
@@ -750,15 +730,16 @@ def swap_ideas(idea_slug, adjacent_idea_slug):
 
         idea.save()
         adjacent_idea.save()
-    except Idea.DoesNotExist:
-        return False
-    return True
+    except (Exception, Idea.DoesNotExist) as e:
+        return False, e.message
+    return True, ""
 
 
-def thought_set_trash(thought_slug, trash=True):
+def thought_trash(thought_slug, trash=True):
     """ set the is_trash field on a given Thought.
 
-        return True on success, False on failure
+        returns a 2-tuple with the first element being a boolean (True on success, False on failure)
+        and the second element being a string containing an information log message
     """
     try:
         thought_slug = lib.slugify(thought_slug)
@@ -766,44 +747,95 @@ def thought_set_trash(thought_slug, trash=True):
 
         thought.is_trash = trash
         thought.save()
-    except Thought.DoesNotExist as e:
-        return False
-    return True
+    except (Exception, Thought.DoesNotExist) as e:
+        return False, thought_slug + ': ' + e.message
+    return True, "Thought '%s' was %strashed." % (thought_slug, '' if trash else 'un')
 
 
-def thought_unpublish(thought_slug):
+def thought_publish(thought_slug, publish=False, auto_update=False):
     """ Select a thought by the slug and change the is_draft field
-        back to True
-    """
-    thought_slug = lib.slugify(thought_slug)
+        back to True. This takes the thought visibility out of the front page
+        and idea detail page. Also, viewing the thought on its own page will
+        require authentication of a logged in user.
 
+        returns a 2-tuple with the first element being a boolean (True on success, False on failure)
+        and the second element being a string containing an information log message
+    """
     try:
+        thought_slug = lib.slugify(thought_slug)
         thought = Thought.objects.get(slug=thought_slug)
-        thought.is_draft = True
-        thought.save()
-    except Thought.DoesNotExist:
-        return False
-    return True
+        thought.is_draft = not publish
+        thought.save(auto_update=auto_update)
+    except (Exception, Thought.DoesNotExist) as e:
+        return False, thought_slug + ': ' + e.message
+    return True, "Moved Thought '%s' to %s." % (thought_slug, "Drafts" if not publish else thought.idea.name)
 
 
 def thought_delete(thought_slug):
     """ Delete a thought specified by thought_slug
-    """
-    thought_slug = lib.slugify(thought_slug)
 
+        returns a 2-tuple with the first element being a boolean (True on success, False on failure)
+        and the second element being a string containing an information log message
+    """
     try:
+        thought_slug = lib.slugify(thought_slug)
         thought = Thought.objects.get(slug=thought_slug)
         thought.delete()
-    except Thought.DoesNotExist:
-        return False
-    return True
+    except (Exception, Thought.DoesNotExist) as e:
+        return False, thought_slug + ': ' + e.message
+    return True, "Successfully deleted Thought '%s'" % thought_slug
+
+
+def highlight_delete(highlight_id):
+    """ Delete a highlight specified by highlight_id
+
+        returns a 2-tuple with the first element being a boolean (True on success, False on failure)
+        and the second element being a string containing an information log message
+    """
+    highlight_title = ""
+    try:
+        highlight_id = int(highlight_id)
+        highlight = Highlight.objects.get(id=highlight_id)
+        highlight_title = highlight.title
+        highlight.delete()
+    except (Exception, Highlight.DoesNotExist) as e:
+        return False, highlight_title + ' (#%d): ' % highlight_id + e.message
+    return True, "Successfully deleted Highlight '%s' (#%d)." % (highlight_title, highlight_id)
+
+
+def book_delete(book_id):
+    """ Delete a book specified by a book_id
+
+        returns a 2-tuple with the first element being a boolean (True on success, False on failure)
+        and the second element being a string containing an information log message
+    """
+    book_title = ""
+    try:
+        book = ReadingListItem.objects.get(id=book_id)
+        book_title = "'" + book.title + "'" + ' (#%d)' % book.id
+        book.delete()
+    except (Exception, ReadingListItem.DoesNotExist) as e:
+        return False, book_title + ': ' + e.message
+    return True, "Successfully deleted Book %s" % book_title
+
+
+def find_unique_slug(unsafe_slug, model):
+    """ take a string and generate a slug using the lib.slugify function
+        and make sure it does not collide with anything in the database
+
+        specify a model to search for collisions against
+    """
+    test_slug = lib.slugify(unsafe_slug)
+
+    collision_idx = 2
+    while model.objects.filter(slug=test_slug).exists():
+        test_slug = lib.slugify(unsafe_slug + "-" + str(collision_idx))
+        collision_idx += 1
+    return test_slug
 
 
 def dashboard_stats():
     """ compile statistics from database and return a dictionary object.
-
-        Stat keys:
-
     """
     stats = {
         'thought_count': Thought.objects.filter(is_draft=False, is_trash=False).count(),
@@ -964,7 +996,8 @@ class FormThoughtView(View):
 
         thought_form = ThoughtForm(request.POST, request.FILES, instance=instance)
         if thought_form.is_valid():
-            thought = thought_form.save()
+            auto_update = False if 'no_auto_update' in request.POST else True
+            thought = thought_form.save(auto_update=auto_update)
 
             # check if new preview image is uploaded (or clear is checked) and delete old preview
             if original_preview and thought.preview and original_preview.name != thought.preview.name:

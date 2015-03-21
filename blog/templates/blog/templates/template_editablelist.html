@@ -1,0 +1,84 @@
+{% load blog_extras %}
+
+<form action="{% url 'dashboard-backend' %}" method="post">
+    {% if auto_update %}<input type="hidden" name="auto_update" value="True" />{% endif %}
+    {% csrf_token %}
+    <div class="editable-control group">
+        <input type="checkbox" id="check-all" />
+
+        <ul class="nav right">
+            {% if show_idea_order %}
+            <li><button type="submit" name="idea_order_down">^</button></li>
+            <li><button type="submit" name="idea_order_up">v</button></li>
+            {% endif %}
+            {% if show_publish %}<li><button type="submit" name="thought_publish">Publish</button></li>{% endif %}
+            {% if show_unpublish %}<li><button type="submit" name="thought_unpublish">Unpublish</button></li>{% endif %}
+            {% if show_trash %}<li><button type="submit" name="thought_trash">Trash</button></li>{% endif %}
+            {% if show_untrash %}<li><button type="submit" name="thought_untrash">Untrash</button></li>{% endif %}
+            {% if show_idea_delete %}<li><button type="submit" name="idea_delete">Delete</button></li>{% endif %}
+            {% if show_thought_delete %}<li><button type="submit" name="thought_delete">Discard</button></li>{% endif %}
+            {% if show_highlight_delete %}<li><button type="submit" name="highlight_delete">Delete</button></li>{% endif %}
+            {% if show_move %}
+            <li>
+                <a class="button dropdown">Move</a>
+                {% idea_dropdown dropdown_classes="dropdown-right" action="move" %}
+            </li>
+            {% endif %}
+        </ul>
+    </div>
+
+    <table class="editable-list">
+        <tbody>
+        {% for item in queryset %}
+        <tr>
+            <td class="fixed-select">
+                {% if item.slug %}
+                <input type="checkbox" name="id" value="{{ item.slug }}" />
+                {% elif item.id %}
+                <input type="checkbox" name="id" value="{{ item.id }}" />
+                {% endif %}
+            </td>
+            {% if edit_link %}
+            <td class="fixed-select">
+                {% if item.slug %}
+                <a class="link-icon edit-icon" href="{{ edit_link }}?id={{ item.slug }}"></a>
+                {% elif item.id %}
+                <a class="link-icon edit-icon" href="{{ edit_link }}?id={{ item.id }}"></a>
+                {% endif %}
+            </td>
+            {% endif %}
+            <td class="fluid dark-grey">
+                {% if not no_item_link %}
+                {% if item.slug %}
+                <a class="overlay" href="{{ item_link }}?id={{ item.slug }}"></a>
+                {% elif item.id %}
+                <a class="overlay" href="{{ item_link }}?id={{ item.id }}"></a>
+                {% endif %}
+                {% endif %}
+
+                {% if item.name %}<span class="title">{{ item.name }}</span>{% endif %}
+                {% if item.title %}<span class="title">{{ item.title }}</span>{% endif %}
+                {% if item.slug %}<span class="slug blue">{{ item.slug }}</span>{% endif %}
+                {% if item.idea and show_idea %}<span class="slug purple">{{ item.idea.slug }}</span>{% endif %}
+                {{ item.strip_tags }}
+            </td>
+            {% if item.display_compact_date %}
+            <td class="fixed-date grey">
+                {% if not no_item_link %}
+                {% if item.slug %}
+                <a class="overlay" href="{{ item_link }}?id={{ item.slug }}"></a>
+                {% elif item.id %}
+                <a class="overlay" href="{{ item_link }}?id={{ item.id }}"></a>
+                {% endif %}
+                {% endif %}
+
+                {{ item.display_compact_date }}
+            </td>
+            {% endif %}
+        </tr>
+        {% empty %}
+        <tr><td>There is nothing in the database.</td></tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</form>

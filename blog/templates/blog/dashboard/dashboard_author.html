@@ -90,7 +90,7 @@
     <a href="{% url 'dashboard' %}">Dashboard</a> //
     {% if "id" in request.GET %}
     <a href="{% url 'dashboard-ideas' %}">{{ thought_form.idea.value }}</a> //
-    <a href="{% url 'dashboard-thoughts' thought_form.idea.value|default_if_none:'' %}">{{ thought_form.title.value }}</a> //
+    <a href="{% url 'dashboard-thoughts' %}?id={{ thought_form.idea.value|default_if_none:'' }}">{{ thought_form.title.value }}</a> //
     Edit Thought //
     {% else %}
     <a href="{% url 'dashboard-ideas' %}">Content</a> //

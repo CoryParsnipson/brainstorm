@@ -18,39 +18,7 @@
 
 {% block content %}
 <h2>Highlights on the Web</h2>
-<hr class="header">
-
-<h3>Highlights</h3>
-<table class="editable">
-    <tbody>
-    <tr>
-        <td>Date</td>
-        <td></td>
-        <td></td>
-    </tr>
-
-    {% for highlight in highlights %}
-    <tr>
-        <form action="{% url 'dashboard-backend' %}" method="post">
-            <input type="hidden" name="highlight" value="{{ highlight.id }}" />
-            <input type="hidden" name="next" value="{% url 'dashboard-highlights' %}" />
-            {% csrf_token %}
-
-            <td class="shrink">{{ highlight.date_published|date:"N j, Y" }}</td>
-            <td class="expand">
-                <a href="{% url 'dashboard-highlights' %}?id={{ highlight.id }}">{{ highlight.title }}</a><br>
-            </td>
-            <td class="shrink">
-                <input type="submit" name="delete_highlight" value="x">
-            </td>
-        </form>
-    </tr>
-    {% empty %}
-    <tr><td>There are no links in the database.</td></tr>
-    {% endfor %}
-    </tbody>
-</table>
-
+{% include "blog/templates/template_editablelist.html" with queryset=highlights show_highlight_delete=True %}
 {% include "blog/templates/template_pagination.html" with paginator=paginator pages=pagination narrow=True %}
 {% endblock %}
 

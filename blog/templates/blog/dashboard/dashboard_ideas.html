@@ -1,44 +1,12 @@
 {% extends 'blog/templates/template_dashboard.html' %}
 {% load staticfiles %}
+{% load blog_extras %}
 
 {% block content %}
 <div class="row">
     <div class="large-12 columns">
         <h2>Manage Ideas</h2>
-        <hr class="header">
-
-        <table class="editable">
-            <tr>
-                <td>#</td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-            </tr>
-            {% for idea in ideas %}
-            <tr>
-                <form action="{% url 'dashboard-backend' %}" method="post">
-                    <input type="hidden" name="idea" value="{{ idea.slug }}" />
-                    <input type="hidden" name="next" value="{% url 'dashboard-ideas' %}" />
-                    {% csrf_token %}
-
-                    <td class="shrink">{{ idea.order }}</td>
-                    <td class="expand">
-                        <a href="{% url 'dashboard-thoughts' idea.slug %}">{{ idea.name }}</a><br>
-                        {{ idea.description }}
-                    </td>
-                    <td class="shrink"><input type="submit" name="order_up" value="v"></td>
-                    <td class="shrink"><input type="submit" name="order_down" value="^"></td>
-                    <td class="shrink">
-                        <a class="button" href="{% url 'dashboard-ideas' %}?id={{ idea.slug }}&p={{ request.get.p }}">e</a>
-                    </td>
-                    <td class="shrink"><input type="submit" name="delete_idea" value="x"></td>
-                </form>
-            </tr>
-            {% endfor %}
-        </table>
-
+        {% include "blog/templates/template_editablelist.html" with queryset=ideas edit_link="dashboard-ideas"|rev show_idea_order=True show_idea_delete=True item_link="dashboard-thoughts"|rev %}
         {% include "blog/templates/template_pagination.html" with paginator=paginator pages=pagination %}
     </div>
 </div>
@@ -46,7 +14,7 @@
 
 {% block side %}
 <!-- new idea form section -->
-<h3>Create New Idea</h3><hr class="header">
+<h3>Create New Idea</h3>
 <form id="add-idea" action="{% url 'forms-idea' %}" method="post" enctype="multipart/form-data">
     {% csrf_token %}
     {% for field in idea_form.hidden_fields %}

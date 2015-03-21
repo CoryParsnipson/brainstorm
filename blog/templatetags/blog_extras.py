@@ -3,10 +3,32 @@ from django.core.urlresolvers import reverse
 from django.utils.dateformat import DateFormat
 
 from blog import lib
-from blog.models import ReadingListItem
+from blog.models import Idea, ReadingListItem
 from blog.views import dashboard_stats
 
 register = template.Library()
+
+
+@register.simple_tag
+def idea_dropdown(**kwargs):
+    """ spit out a dropdown list of ideas; this is basically a form widget
+
+        Parameters:
+        kwargs['dropdown_classes'] -> classes to append to dropdown ul
+        kwargs['action'] -> name of the li buttons in dropdown ul
+    """
+    dropdown_classes = kwargs['dropdown_classes'] if 'dropdown_classes' in kwargs else ''
+    action = kwargs['action'] if 'action' in kwargs else ''
+    ideas = Idea.objects.all().order_by('order')
+
+    dropdown_html = "<ul class='dropdown%s'>" % (' ' + dropdown_classes)
+
+    for idea in ideas:
+        li_name = " name='%s'" % (action or 'idea_dropdown')
+        dropdown_html += "<li><button type='submit'%s value='%s'>%s</button></li>" % (li_name, idea.slug, idea.name)
+
+    dropdown_html += "</ul>"
+    return dropdown_html
 
 
 @register.simple_tag
@@ -52,6 +74,18 @@ def thought_nav(thought, **kwargs):
 
     list_html += "</ul>"
     return list_html
+
+
+@register.filter()
+def rev(value, args=''):
+    kwargs = {}
+    if args:
+        arg_list = [arg.strip() for arg in args.split(',')]
+        for pair in arg_list:
+            k, v = pair.split('=')
+            kwargs[k] = v
+
+    return reverse(value, kwargs=kwargs)
 
 
 @register.simple_tag(takes_context=True)

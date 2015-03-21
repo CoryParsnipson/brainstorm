@@ -1,44 +1,10 @@
 {% extends 'blog/templates/template_dashboard.html' %}
 {% load staticfiles %}
+{% load blog_extras %}
 
 {% block content %}
 <h1>Drafts</h1>
-<table class="editable">
-    <tbody>
-    <tr>
-        <td>Date</td>
-        <td>Title</td>
-        <td>Idea</td>
-        <td></td>
-        <td></td>
-    </tr>
-
-    {% for draft in drafts %}
-    <form action="{% url 'dashboard-backend' %}" method="post">
-        <input type="hidden" name="thought_slug" value="{{ draft.slug }}" />
-        <input type="hidden" name="next" value="{% url 'dashboard-drafts' %}" />
-        {% csrf_token %}
-        <tr>
-            <td class="shrink">
-                {{ draft.date_published|date:"N j, Y" }}
-            </td>
-            <td class="expand">
-                <a href="{% url 'dashboard-author' %}?id={{ draft.slug }}">{{ draft.title }}</a>
-            </td>
-            <td class="shrink">{{ draft.idea }}</td>
-            <td class="shrink">
-                <a class="button" href="{% url 'thought-page' draft.idea.slug draft.slug %}">view</a>
-            </td>
-            <td class="shrink">
-                <input type="submit" name="trash" value="discard" />
-            </td>
-        </tr>
-    </form>
-    {% empty %}
-    <tr><td colspan="6">There are no drafts in database.</td></tr>
-    {% endfor %}
-    </tbody>
-</table>
+{% include "blog/templates/template_editablelist.html" with queryset=drafts item_link="dashboard-author"|rev auto_update=True show_idea=True show_publish=True show_trash=True show_move=True %}
 {% include "blog/templates/template_pagination.html" with paginator=paginator pages=pagination %}
 {% endblock %}
 

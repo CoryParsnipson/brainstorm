@@ -172,22 +172,22 @@ div.mce-btn button:hover {
 /******************************************************************************
  * general form styles
  *****************************************************************************/
-form table {
+form table:not([class]) {
   width: 100%;
   border-collapse: collapse;
   margin-bottom: 2rem;
 }
 
-form table label {
+form table:not([class]) label {
   float: right;
   padding-right: 0;
 }
 
-form table tr:last-of-type { background-color: transparent !important; }
-form table td { padding: 4px; }
-form table tr td:first-child { padding-left: 0; }
-form table tr td:last-child { padding-right: 0; }
-form table td:last-child > *:first-child { margin-left: 0; }
+form table:not([class]) tr:last-of-type { background-color: transparent !important; }
+form table:not([class]) td { padding: 4px; }
+form table:not([class]) tr td:first-child { padding-left: 0; }
+form table:not([class]) tr td:last-child { padding-right: 0; }
+form table:not([class]) td:last-child > *:first-child { margin-left: 0; }
 
 /******************************************************************************
  * input styles
@@ -299,64 +299,10 @@ input[type="button"].publish:hover {
 
 .aws-book-result a.edit-icon {
   bottom: 25px;
-  background-image: url('../images/edit.png');
 }
 
-.aws-book-result a.edit-icon:hover {
-  background-image: url('../images/edit_on.png');
-}
-
-.aws-book-result input[type="submit"].delete {
+.aws-book-result input[type="submit"].delete-icon {
   bottom: 45px;
-  background-image: url('../images/delete.png');
-}
-
-.aws-book-result input[type="submit"].delete:hover {
-  background-image: url('../images/delete_on.png');
-}
-
-/******************************************************************************
- * editable table styles
- *****************************************************************************/
-table.editable {
-  width: 100%;
-  border-collapse: collapse;
-  margin-bottom: 2rem;
-}
-
-table.editable tr:first-child td {
-  font-weight: bold;
-  background-color: #404040;
-  text-align: center;
-}
-
-table.editable tr:nth-of-type(even) {
-  border-top: 1px solid #656565;
-  border-bottom: 1px solid #656565;
-}
-
-table.editable tr:nth-of-type(2) {
-  border-top: none;
-}
-
-table.editable tr:last-child {
-  border-bottom: none;
-}
-
-table.editable td {
-  font-size: 9pt;
-  padding: 5px;
-}
-
-table.editable td:last-child {
-  padding-right: 3px;
-}
-
-table.editable .button,
-table.editable input[type="button"],
-table.editable input[type="submit"] {
-  font-size: 9pt;
-  margin: 0 -3px;
 }
 
 /******************************************************************************
@@ -364,16 +310,20 @@ table.editable input[type="submit"] {
  *****************************************************************************/
 div.editable-control {
   width: 100%;
+  min-height: 30px;
   background-color: #555555;
   border-bottom: 1px solid #383838;
+  position: relative;
   padding: 8px 0px;
   padding-right: 8px;
 }
 
 div.editable-control input[type="checkbox"] {
   width: 25px;
-  vertical-align: -40%;
+  position: absolute;
+  top: 50%;
   margin: 0 1px;
+  margin-top: -0.5rem;
 }
 
 div.editable-control button,
@@ -477,9 +427,9 @@ table.editable-list span {
 }
 
 table.editable-list span.title {
+  max-width: 150px;
   color: #DEDEDE;
   background-color: #3D3D3D;
-  max-width: 150px;
   height: 100%;
   font-weight: bold;
   line-height: 1.7rem;
@@ -487,6 +437,7 @@ table.editable-list span.title {
 }
 
 table.editable-list span.slug {
+  max-width: 120px;
   font-weight: normal;
   line-height: 1rem;
   border-radius: 5px;

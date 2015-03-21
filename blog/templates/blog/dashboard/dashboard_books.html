@@ -28,7 +28,7 @@
     });
 
     /* add confirm dialog to delete buttons on book lists */
-    $('.book-list').delegate('.delete', 'click', function () {
+    $('.book-list').delegate('.delete-icon', 'click', function () {
       var msg = 'Really delete ?';
       var result = confirm(msg);
 
@@ -42,7 +42,6 @@
 
 {% block content %}
 <h2>Recently Read Books</h2>
-<hr class="header">
 
 <h3>Currently Reading</h3>
 <div class="book-list">
@@ -54,13 +53,13 @@
         <p class="description">{{ book.description }}</p>
         <p class="date">Added on {{ book.date_published|date:"F j, Y g:i A" }}</p>
         {% if book.favorite %}<span class="favorite" title="Cory's Favorites">&#x2605;</span>{% endif %}
-        <a class="link" href="{{ book.link }}" target="_blank" title="Open external link"></a>
-        <a class="link edit-icon" href="{% url 'dashboard-books' %}?id={{ book.id }}" title="Edit"></a>
+        <a class="link-icon" href="{{ book.link }}" target="_blank" title="Open external link"></a>
+        <a class="link-icon edit-icon" href="{% url 'dashboard-books' %}?id={{ book.id }}" title="Edit"></a>
         <form action="{% url 'dashboard-backend' %}" method="post">
             <input type="hidden" name="id" value="{{ book.id }}" />
             <input type="hidden" name="next" value="{% url 'dashboard-books' %}" />
             {% csrf_token %}
-            <input class="link delete" type="submit" value="" name="delete_book" title="Delete" />
+            <input class="link-icon delete-icon" type="submit" value="" name="book_delete" title="Delete" />
         </form>
     </div>
     {% empty %}
@@ -78,13 +77,13 @@
         <p class="description">{{ book.description }}</p>
         <p class="date">Added on {{ book.date_published|date:"F j, Y g:i A" }}</p>
         {% if book.favorite %}<span class="favorite" title="Cory's Favorites">&#x2605;</span>{% endif %}
-        <a class="link" href="{{ book.link }}" target="_blank" title="Open external link"></a>
-        <a class="link edit-icon" href="{% url 'dashboard-books' %}?id={{ book.id }}" title="Edit"></a>
+        <a class="link-icon" href="{{ book.link }}" target="_blank" title="Open external link"></a>
+        <a class="link-icon edit-icon" href="{% url 'dashboard-books' %}?id={{ book.id }}" title="Edit"></a>
         <form action="{% url 'dashboard-backend' %}" method="post">
             <input type="hidden" name="id" value="{{ book.id }}" />
             <input type="hidden" name="next" value="{% url 'dashboard-books' %}" />
             {% csrf_token %}
-            <input class="link delete" type="submit" value="" name="delete_book" title="Delete" />
+            <input class="link-icon delete-icon" type="submit" value="" name="book_delete" title="Delete" />
         </form>
     </div>
     {% empty %}

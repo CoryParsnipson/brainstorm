@@ -1,12 +1,14 @@
 import os
 import datetime
 
+import pytz
 from imagekit.models import ImageSpecField
 from imagekit.processors import Crop
 from BeautifulSoup import BeautifulSoup
 
 from django.db import models
 from django.db.models import Max
+from django.conf import settings
 from django.contrib.auth.models import User
 
 import paths
@@ -67,6 +69,11 @@ class Idea(models.Model):
         except IndexError:
             return None
 
+    def strip_tags(self):
+        """ strip all html tags from content field and return the content field
+        """
+        return lib.strip_tags(self.description)
+
     def truncate(self, max_length=270, allowed_tags=None, full_link=None):
         """ output a form of the content field, truncated to max_length. Tags
             will be whitelisted, stripped, and balanced to account for
@@ -76,7 +83,7 @@ class Idea(models.Model):
             content=self.description,
             allowed_tags=allowed_tags or self.allowed_tags,
             max_length=max_length,
-            full_link = full_link,
+            full_link=full_link,
         )
 
     def save(self, *args, **kwargs):
@@ -229,15 +236,17 @@ class Thought(models.Model):
     def save(self, *args, **kwargs):
         # check to see if this save means a draft is being published and
         # change date_published to now
+        auto_update = kwargs['auto_update'] if 'auto_update' in kwargs else True
         try:
-            orig = Thought.objects.get(slug=self.slug)
-            if orig.is_draft and not self.is_draft:
-                self.date_published = datetime.datetime.now()
-        except Thought.DoesNotExist as e:
+            if auto_update:
+                orig = Thought.objects.get(slug=self.slug)
+                if orig.is_draft and not self.is_draft:
+                    self.date_published = pytz.timezone(settings.TIME_ZONE).localize(datetime.datetime.now())
+        except Thought.DoesNotExist:
             pass
 
         # "real" save method
-        super(Thought, self).save(*args, **kwargs)
+        super(Thought, self).save()
 
         # crop picture if necessary
         if not self.preview:
@@ -278,6 +287,11 @@ class Highlight(models.Model):
     allowed_tags = [
         'br', 'em', 'strong', 'blockquote', 'quote', 'hr', 'p'
     ]
+
+    def strip_tags(self):
+        """ strip all html tags from content field and return the content field
+        """
+        return lib.strip_tags(self.description)
 
     def truncate(self, max_length=250, allowed_tags=None, full_link=None):
         """ output a form of the description field, truncated to max_length. Tags
@@ -321,6 +335,11 @@ class ReadingListItem(models.Model):
     wishlist = models.BooleanField(default=False)
     favorite = models.BooleanField(default=False)
     cover = models.URLField(max_length=400)
+
+    def strip_tags(self):
+        """ strip all html tags from content field and return the content field
+        """
+        return lib.strip_tags(self.description)
 
     def display_compact_date(self):
         return lib.display_compact_date(self.date_published)
