@@ -497,6 +497,13 @@ ul.dropdown > li > * {
   width: 100%;
 }
 
+ul.dropdown > li:last-child button,
+ul.dropdown > li:last-child .button,
+ul.dropdown > li:last-child input[type="button"],
+ul.dropdown > li:last-child input[type="submit"] {
+  border-radius: 0 0 5px 5px;
+}
+
 ul.dropdown-right {
   position: absolute;
   right: 0;

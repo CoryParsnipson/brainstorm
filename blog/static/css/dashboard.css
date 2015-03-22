@@ -347,6 +347,10 @@ div.editable-control ul.nav {
   vertical-align: middle;
 }
 
+div.editable-control ul.dropdown {
+  opacity: 0.9;
+}
+
 div.editable-control ul.dropdown > li button,
 div.editable-control ul.dropdown > li .button,
 div.editable-control ul.dropdown > li input[type="button"],
