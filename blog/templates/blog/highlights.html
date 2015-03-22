@@ -15,16 +15,15 @@
 
 {% for highlight in highlights %}
 <div class="showcase-splitter">
-    <div class="img-placeholder">
-        <a href="{{ highlight.url }}" target="_blank">
-            {% if highlight.icon %}
-            <img src="{{ highlight.icon.url }}">
-            {% else %}
-            <span class="img-placeholder">
-                <span class="big">HIGHLIGHT</span><br>OF THE DAY
-            </span>
-            {% endif %}
-        </a>
+    <div class="{% if highlight.icon %}img{% else %}img-placeholder{% endif %}">
+        <a class="overlay" href="{{ highlight.url }}" target="_blank"></a>
+        {% if highlight.icon %}
+        <img src="{{ highlight.icon.url }}">
+        {% else %}
+        <span class="img-placeholder">
+            <span class="big">HIGHLIGHT</span><br>OF THE DAY
+        </span>
+        {% endif %}
     </div>
     <div class="highlight">
         <p class="title">

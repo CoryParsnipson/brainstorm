@@ -36,7 +36,7 @@
 
     {% if highlight %}
     <div class="large-12 columns showcase-splitter">
-        <div class="img-placeholder">
+        <div class="{% if highlight.icon %}img{% else %}img-placeholder{% endif %}">
             <a class="overlay" href="{{ highlight.url }}" target="_blank"></a>
             {% if highlight.icon %}
             <img src="{{ highlight.icon.url }}">

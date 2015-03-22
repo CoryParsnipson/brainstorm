@@ -63,10 +63,17 @@ div.text-overlay p:not([class]) {
   margin: 2rem 0;
 }
 
+.showcase-splitter div.img {
+  background-color: #333333;
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+}
+
 .showcase-splitter div.img-placeholder {
   min-width: 200px;
   min-height: 150px;
-  float: right;
   background-color: #F8C118;
   background-repeat: no-repeat;
   position: absolute;
