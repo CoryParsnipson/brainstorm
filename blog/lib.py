@@ -324,6 +324,9 @@ def truncate(content, max_length=DEFAULT_TRUNCATE_LENGTH, allowed_tags=ALLOWED_T
         can also specify a 'strip' value (True -> strip html tags, False ->
         escape html tags and leave them in text)
     """
+    if not content:
+        return ''
+
     cleaner = Cleaner(
         page_structure=False,
         links=True,
@@ -564,6 +567,9 @@ def display_compact_date(dt=None):
 def strip_tags(unsafe_html):
     """ strip all tags from this string which may contain html
     """
+    if not unsafe_html:
+        return ''
+
     cleaner = Cleaner(
         page_structure=True,
         links=True,

@@ -123,7 +123,7 @@ class Thought(models.Model):
     """
     title = models.CharField(max_length=200)
     slug = models.SlugField(primary_key=True)
-    content = models.TextField()
+    content = models.TextField(blank=True, null=True)
     idea = models.ForeignKey(Idea)
     author = models.ForeignKey(User)
     is_draft = models.BooleanField(default=True)

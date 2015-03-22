@@ -6,6 +6,16 @@
 // ----------------------------------------------------------------------------
 $(function () {
   init_flash_messages();
+
+  // add confirm on delete for delete button
+  $('.editable-control').delegate('button[value$="delete"]', 'click', function () {
+    var msg = 'Really delete?';
+    var result = confirm(msg);
+
+    if (!result) {
+      return false;
+    }
+  });
 });
 
 // ----------------------------------------------------------------------------

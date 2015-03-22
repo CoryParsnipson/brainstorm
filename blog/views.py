@@ -481,10 +481,6 @@ def dashboard_drafts(request):
         page_lead=lib.PAGINATION_DASHBOARD_DRAFTS_PAGES_TO_LEAD,
     )
 
-    tags = ['a', 'strong', 'em']
-    for t in drafts_on_page:
-        t.content = t.truncate(max_length=50, allowed_tags=tags)
-
     context = {
         'page_title': 'Drafts',
         'drafts': drafts_on_page,
@@ -512,10 +508,6 @@ def dashboard_trash(request):
         per_page=lib.PAGINATION_DASHBOARD_DRAFTS_PER_PAGE,
         page_lead=lib.PAGINATION_DASHBOARD_DRAFTS_PAGES_TO_LEAD,
     )
-
-    tags = ['a', 'strong', 'em']
-    for t in trash_on_page:
-        t.content = t.truncate(max_length=100, allowed_tags=tags)
 
     context = {
         'page_title': 'Trash',
@@ -1031,8 +1023,7 @@ class FormThoughtView(View):
 
         thought_form = ThoughtForm(request.POST, request.FILES, instance=instance)
         if thought_form.is_valid():
-            auto_update = False if 'no_auto_update' in request.POST else True
-            thought = thought_form.save(auto_update=auto_update)
+            thought = thought_form.save()
 
             # check if new preview image is uploaded (or clear is checked) and delete old preview
             if original_preview and thought.preview and original_preview.name != thought.preview.name:
