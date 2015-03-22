@@ -326,6 +326,13 @@ div.editable-control input[type="checkbox"] {
   margin-top: -0.5rem;
 }
 
+div.editable-control div#check-all-container {
+  width: 25px;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+}
+
 div.editable-control button,
 div.editable-control .button,
 div.editable-control input[type="button"],

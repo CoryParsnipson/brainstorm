@@ -6,16 +6,7 @@
 // ----------------------------------------------------------------------------
 $(function () {
   init_flash_messages();
-
-  // add confirm on delete for delete button
-  $('.editable-control').delegate('button[value$="delete"]', 'click', function () {
-    var msg = 'Really delete?';
-    var result = confirm(msg);
-
-    if (!result) {
-      return false;
-    }
-  });
+  init_editable();
 });
 
 // ----------------------------------------------------------------------------
@@ -107,6 +98,73 @@ if (!String.prototype.format) {
       ;
     });
   };
+}
+
+// ----------------------------------------------------------------------------
+// dashboard editable list / editable control functions
+// ----------------------------------------------------------------------------
+function init_editable() {
+  editable_delete_confirmation();
+  editable_check_all('check-all');
+
+  // get all checkboxes inside .editable-list with name="id"
+  $('.editable-list :input[type="checkbox"][name="id"]').each(editable_check_id);
+}
+
+function editable_delete_confirmation() {
+  // add confirm on delete for delete button
+  $('.editable-control').delegate('button[value$="delete"]', 'click', function () {
+    var msg = 'Really delete?';
+    var result = confirm(msg);
+
+    if (!result) {
+      return false;
+    }
+  });
+}
+
+// when the value of the check-all checkbox (at top editable control div) changes
+// value, make all the id checkboxes change too. Make container div clickable for
+// more area as well
+function editable_check_all(id_check_all) {
+  var check_all_func = function () {
+    var checkbox_all = $('#' + id_check_all);
+    var check_all_value = checkbox_all.prop('checked');
+
+    checkbox_all.prop('checked', !check_all_value);
+    $('.editable-list input[type="checkbox"][name="id"]').each(function () {
+      $(this).prop('checked', check_all_value);
+    });
+  };
+
+  var check_all_container_func = function () {
+    var checkbox_all = $('#' + id_check_all);
+    var check_all_value = !checkbox_all.prop('checked');
+
+    checkbox_all.prop('checked', check_all_value);
+    $('.editable-list input[type="checkbox"][name="id"]').each(function () {
+      $(this).prop('checked', check_all_value);
+    });
+  };
+
+  $('#' + id_check_all).click(check_all_func);
+  $('#' + id_check_all).parent().click(check_all_container_func);
+}
+
+// make the checkbox area around the id checkboxes in the editable list table area
+// clickable for easier usage. NOTE: id_checkbox is jquery element, NOT string
+function editable_check_id() {
+  var checkbox_id = $(this);
+  var check_id_func = function () {
+    var check_id_value = checkbox_id.prop('checked');
+    checkbox_id.prop('checked', !check_id_value);
+  };
+
+  $(this).click(function () {
+    var checked_val = $(this).prop('checked');
+    $(this).prop('checked', !checked_val);
+  });
+  $(this).parent().click(check_id_func);
 }
 
 // ----------------------------------------------------------------------------

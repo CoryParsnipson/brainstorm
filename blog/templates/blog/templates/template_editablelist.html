@@ -4,7 +4,7 @@
     {% if auto_update %}<input type="hidden" name="auto_update" value="True" />{% endif %}
     {% csrf_token %}
     <div class="editable-control group">
-        <input type="checkbox" id="check-all" />
+        <div id="check-all-container"><input type="checkbox" id="check-all" /></div>
 
         <ul class="nav right">
             {% if show_idea_order %}
