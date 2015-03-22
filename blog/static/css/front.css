@@ -115,6 +115,7 @@ div.text-overlay p:not([class]) {
 .showcase-splitter div.highlight {
   min-height: 150px;
   padding: 5px 7px;
+  padding-bottom: 0.8rem;
   margin-right: 203px;
 }
 
@@ -124,8 +125,8 @@ div.text-overlay p:not([class]) {
   }
 }
 
-.showcase-splitter div.highlight p:last-of-type {
-  margin-bottom: 0;
+.showcase-splitter div.highlight p {
+  line-height: 1.3rem;
 }
 
 .showcase-splitter p.subtitle a {
@@ -134,9 +135,8 @@ div.text-overlay p:not([class]) {
 }
 
 .showcase-splitter p.date {
-  position: absolute;
-  color: #B7B7B7;
   font-size: 10pt;
-  margin-top: 0.5rem;
+  position: absolute;
   bottom: 0.3rem;
+  margin: 0;
 }
