@@ -538,22 +538,22 @@ def dashboard_backend(request):
         messages.add_message(request, messages.WARNING, "No items selected for action!")
         return redirect(next_url)
 
+    action = request.POST['action'] if 'action' in request.POST else ''
+    action_args = action.split('|')
+    action = action_args[0]
+    action_args = action_args[1:]
+
     fmm = lib.FlashMessageManager()
     for i in request.POST.getlist('id'):
-        if 'idea_delete' in request.POST:
+        if action == 'idea_delete':
             status, tokens = idea_safe_delete(i)
-            fmm.add_message({
-                'action': 'idea_delete',
-                'status': status,
-                'tokens': tokens,
-                'extra_html': ''
-            })
-        elif 'idea_order_up' in request.POST or 'idea_order_down' in request.POST:
+            fmm.add_message({'action': action, 'status': status, 'tokens': tokens, 'extra_html': ''})
+        elif action == 'idea_order_up' or action == 'idea_order_down':
             try:
                 idea_slug = lib.slugify(i)
                 idea = Idea.objects.get(slug=idea_slug)
 
-                if 'idea_order_up' in request.POST:
+                if action == 'idea_order_up':
                     adjacent_idea = idea.get_next()
                 else:
                     adjacent_idea = idea.get_prev()
@@ -561,73 +561,37 @@ def dashboard_backend(request):
                 if adjacent_idea:
                     idea_swap_order(idea.slug, adjacent_idea.slug)
             except Exception as e:
-                fmm.add_message({
-                    'action': 'idea_order_up' if 'idea_order_up' in request.POST else 'idea_order_down',
-                    'status': False,
-                    'tokens': {'error': e.message},
-                    'extra_html': '',
-                })
-        elif 'thought_trash' in request.POST or 'thought_untrash' in request.POST:
-            status, tokens = thought_trash(i, True if 'thought_trash' in request.POST else False)
-
-            if 'thought_trash' in request.POST:
-                undo = undo_button_html(request, input_data={'thought_untrash': ''})
+                fmm.add_message({'action': action, 'status': False, 'tokens': {'error': e.message}, 'extra_html': ''})
+        elif action == 'thought_trash' or action == 'thought_untrash':
+            status, tokens = thought_trash(i, action == 'thought_trash')
+            if action == 'thought_trash':
+                undo = undo_button_html(request, input_data={'action': 'thought_untrash'})
             else:
-                undo = undo_button_html(request, input_data={'thought_trash': ''})
+                undo = undo_button_html(request, input_data={'action': 'thought_trash'})
 
-            fmm.add_message({
-                'action': 'thought_trash' if 'thought_trash' in request.POST else 'thought_untrash',
-                'status': status,
-                'tokens': tokens,
-                'extra_html': undo,
-            })
-        elif 'thought_unpublish' in request.POST or 'thought_publish' in request.POST:
+            fmm.add_message({'action': action, 'status': status, 'tokens': tokens, 'extra_html': undo})
+        elif action == 'thought_unpublish' or action == 'thought_publish':
             auto_update = request.POST['auto_update'] if 'auto_update' in request.POST else False
-            status, tokens = thought_publish(i, True if 'thought_publish' in request.POST else False, auto_update)
+            status, tokens = thought_publish(i, action == 'thought_publish', auto_update)
 
-            if 'thought_unpublish' in request.POST:
-                undo = undo_button_html(request, input_data={'thought_publish': ''})
+            if action == 'thought_unpublish':
+                undo = undo_button_html(request, input_data={'action': 'thought_publish'})
             else:
-                undo = undo_button_html(request, input_data={'thought_unpublish': ''})
+                undo = undo_button_html(request, input_data={'action': 'thought_unpublish'})
 
-            fmm.add_message({
-                'action': 'thought_publish' if 'thought_publish' in request.POST else 'thought_unpublish',
-                'status': status,
-                'tokens': tokens,
-                'extra_html': undo,
-            })
-        elif 'thought_idea_move' in request.POST:
-            status, tokens = thought_move(i, request.POST['thought_idea_move'])
-            fmm.add_message({
-                'action': 'thought_idea_move',
-                'status': status,
-                'tokens': tokens,
-                'extra_html': ''
-            })
-        elif 'thought_delete' in request.POST:
+            fmm.add_message({'action': action, 'status': status, 'tokens': tokens, 'extra_html': undo})
+        elif action == 'thought_idea_move':
+            status, tokens = thought_move(i, action_args[0] if action_args else '')
+            fmm.add_message({'action': action, 'status': status, 'tokens': tokens, 'extra_html': ''})
+        elif action == 'thought_delete':
             status, tokens = thought_delete(i)
-            fmm.add_message({
-                'action': 'thought_delete',
-                'status': status,
-                'tokens': tokens,
-                'extra_html': '',
-            })
-        elif 'highlight_delete' in request.POST:
+            fmm.add_message({'action': action, 'status': status, 'tokens': tokens, 'extra_html': ''})
+        elif action == 'highlight_delete':
             status, tokens = highlight_delete(i)
-            fmm.add_message({
-                'action': 'highlight_delete',
-                'status': status,
-                'tokens': tokens,
-                'extra_html': '',
-            })
-        elif 'book_delete' in request.POST:
+            fmm.add_message({'action': action, 'status': status, 'tokens': tokens, 'extra_html': ''})
+        elif action == 'book_delete':
             status, tokens = book_delete(i)
-            fmm.add_message({
-                'action': 'book_delete',
-                'status': status,
-                'tokens': tokens,
-                'extra_html': '',
-            })
+            fmm.add_message({'action': action, 'status': status, 'tokens': tokens, 'extra_html': ''})
         else:
             messages.add_message(request, messages.ERROR, "Unknown operation specified.")
             return redirect(next_url)

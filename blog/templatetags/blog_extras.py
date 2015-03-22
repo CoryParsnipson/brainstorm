@@ -25,7 +25,7 @@ def idea_dropdown(**kwargs):
 
     for idea in ideas:
         li_name = " name='%s'" % (action or 'idea_dropdown')
-        dropdown_html += "<li><button type='submit'%s value='%s'>%s</button></li>" % (li_name, idea.slug, idea.name)
+        dropdown_html += "<li><button type='submit'%s value='%s'>%s</button></li>" % (li_name, "thought_idea_move|" + idea.slug, idea.name)
 
     dropdown_html += "</ul>"
     return dropdown_html

@@ -209,7 +209,7 @@ class FlashMessageManager:
                 else:
                     msg = "Moved Thought '%s' to Idea '%s'." % (msg_data['tokens'][0]['thought'], msg_data['tokens'][0]['idea'])
             else:
-                msg = "thought_idea_move: %s." % msg_data['tokens'][0]['error']
+                msg = msg_data['action'] + ": %s." % msg_data['tokens'][0]['error']
         elif msg_data['action'] == 'thought_delete':
             if msg_data['status']:
                 if len(msg_data['tokens']) > 1:
@@ -217,7 +217,7 @@ class FlashMessageManager:
                 else:
                     msg = "Successfully deleted Thought '%s'." % msg_data['tokens'][0]['thought']
             else:
-                msg = "thought_delete: %s." % msg_data['tokens'][0]['error']
+                msg = msg_data['action'] + ": %s." % msg_data['tokens'][0]['error']
         elif msg_data['action'] == 'highlight_delete':
             if msg_data['status']:
                 if len(msg_data['tokens']) > 1:
@@ -226,8 +226,8 @@ class FlashMessageManager:
                     msg = "Successfully deleted Highlight '%s' (#%d)." % \
                           (msg_data['tokens'][0]['highlight_title'], msg_data['tokens'][0]['highlight_id'])
             else:
-                msg = "highlight_delete (#%d): %s." % \
-                      (msg_data['tokens'][0]['highlight'], msg_data['tokens'][0]['error'])
+                msg = msg_data['action'] + " (#%d): %s." % \
+                    (msg_data['tokens'][0]['highlight'], msg_data['tokens'][0]['error'])
         elif msg_data['action'] == 'book_delete':
             if msg_data['status']:
                 if len(msg_data['tokens']) > 1:
@@ -235,7 +235,7 @@ class FlashMessageManager:
                 else:
                     msg = "Successfully deleted Book '%s'." % msg_data['tokens'][0]['book_title']
             else:
-                msg = "book_delete: %s." % msg_data['tokens'][0]['error']
+                msg = msg_data['action'] + ": %s." % msg_data['tokens'][0]['error']
         else:
             return "Unknown Message: '%s', tokens: '%s'." % (msg_data['action'], msg_data['tokens'].__str__())
 

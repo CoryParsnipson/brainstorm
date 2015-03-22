@@ -8,20 +8,20 @@
 
         <ul class="nav right">
             {% if show_idea_order %}
-            <li><button type="submit" name="idea_order_down">^</button></li>
-            <li><button type="submit" name="idea_order_up">v</button></li>
+            <li><button type="submit" name="action" value="idea_order_down">^</button></li>
+            <li><button type="submit" name="action" value="idea_order_up">v</button></li>
             {% endif %}
-            {% if show_publish %}<li><button type="submit" name="thought_publish">Publish</button></li>{% endif %}
-            {% if show_unpublish %}<li><button type="submit" name="thought_unpublish">Unpublish</button></li>{% endif %}
-            {% if show_trash %}<li><button type="submit" name="thought_trash">Trash</button></li>{% endif %}
-            {% if show_untrash %}<li><button type="submit" name="thought_untrash">Untrash</button></li>{% endif %}
-            {% if show_idea_delete %}<li><button type="submit" name="idea_delete">Delete</button></li>{% endif %}
-            {% if show_thought_delete %}<li><button type="submit" name="thought_delete">Discard</button></li>{% endif %}
-            {% if show_highlight_delete %}<li><button type="submit" name="highlight_delete">Delete</button></li>{% endif %}
+            {% if show_publish %}<li><button type="submit" name="action" value="thought_publish">Publish</button></li>{% endif %}
+            {% if show_unpublish %}<li><button type="submit" name="action" value="thought_unpublish">Unpublish</button></li>{% endif %}
+            {% if show_trash %}<li><button type="submit" name="action" value="thought_trash">Trash</button></li>{% endif %}
+            {% if show_untrash %}<li><button type="submit" name="action" value="thought_untrash">Untrash</button></li>{% endif %}
+            {% if show_idea_delete %}<li><button type="submit" name="action" value="idea_delete">Delete</button></li>{% endif %}
+            {% if show_thought_delete %}<li><button type="submit" name="action" value="thought_delete">Discard</button></li>{% endif %}
+            {% if show_highlight_delete %}<li><button type="submit" name="action" value="highlight_delete">Delete</button></li>{% endif %}
             {% if show_move %}
             <li>
                 <a class="button dropdown">Move</a>
-                {% idea_dropdown dropdown_classes="dropdown-right" action="thought_idea_move" %}
+                {% idea_dropdown dropdown_classes="dropdown-right" action="action" %}
             </li>
             {% endif %}
         </ul>
