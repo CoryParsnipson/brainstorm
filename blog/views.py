@@ -8,7 +8,7 @@ from django.core.exceptions import ValidationError
 from django.core.context_processors import csrf
 from django.http import JsonResponse
 from django.views.generic import View
-from django.utils.http import urlencode, urlquote_plus
+from django.utils.http import urlquote_plus
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from django.contrib.auth import authenticate, login as auth_login, logout as auth_logout
@@ -538,10 +538,16 @@ def dashboard_backend(request):
         messages.add_message(request, messages.WARNING, "No items selected for action!")
         return redirect(next_url)
 
-    results = []  # entries should be 3-tuples (boolean - success?, string - message, string - undo button)
+    fmm = lib.FlashMessageManager()
     for i in request.POST.getlist('id'):
         if 'idea_delete' in request.POST:
-            results.append(idea_safe_delete(i) + ('',))
+            status, tokens = idea_safe_delete(i)
+            fmm.add_message({
+                'action': 'idea_delete',
+                'status': status,
+                'tokens': tokens,
+                'extra_html': ''
+            })
         elif 'idea_order_up' in request.POST or 'idea_order_down' in request.POST:
             try:
                 idea_slug = lib.slugify(i)
@@ -553,39 +559,80 @@ def dashboard_backend(request):
                     adjacent_idea = idea.get_prev()
 
                 if adjacent_idea:
-                    results.append(idea_swap_order(idea.slug, adjacent_idea.slug) + ('',))
+                    idea_swap_order(idea.slug, adjacent_idea.slug)
             except Exception as e:
-                results.append((False, e.message, ''))
+                fmm.add_message({
+                    'action': 'idea_order_up' if 'idea_order_up' in request.POST else 'idea_order_down',
+                    'status': False,
+                    'tokens': {'error': e.message},
+                    'extra_html': '',
+                })
         elif 'thought_trash' in request.POST or 'thought_untrash' in request.POST:
-            if 'thought_trash' in request.POST:
-                undo = (undo_button_html(request, action='thought_untrash'),)
-            else:
-                undo = (undo_button_html(request, action='thought_trash'),)
+            status, tokens = thought_trash(i, True if 'thought_trash' in request.POST else False)
 
-            results.append(thought_trash(i, True if 'thought_trash' in request.POST else False) + undo)
+            if 'thought_trash' in request.POST:
+                undo = undo_button_html(request, input_data={'thought_untrash': ''})
+            else:
+                undo = undo_button_html(request, input_data={'thought_trash': ''})
+
+            fmm.add_message({
+                'action': 'thought_trash' if 'thought_trash' in request.POST else 'thought_untrash',
+                'status': status,
+                'tokens': tokens,
+                'extra_html': undo,
+            })
         elif 'thought_unpublish' in request.POST or 'thought_publish' in request.POST:
             auto_update = request.POST['auto_update'] if 'auto_update' in request.POST else False
+            status, tokens = thought_publish(i, True if 'thought_publish' in request.POST else False, auto_update)
 
             if 'thought_unpublish' in request.POST:
-                undo = (undo_button_html(request, action='thought_publish'),)
+                undo = undo_button_html(request, input_data={'thought_publish': ''})
             else:
-                undo = (undo_button_html(request, action='thought_unpublish'),)
+                undo = undo_button_html(request, input_data={'thought_unpublish': ''})
 
-            results.append(thought_publish(i, True if 'thought_publish' in request.POST else False, auto_update) + undo)
+            fmm.add_message({
+                'action': 'thought_publish' if 'thought_publish' in request.POST else 'thought_unpublish',
+                'status': status,
+                'tokens': tokens,
+                'extra_html': undo,
+            })
+        elif 'thought_idea_move' in request.POST:
+            status, tokens = thought_move(i, request.POST['thought_idea_move'])
+            fmm.add_message({
+                'action': 'thought_idea_move',
+                'status': status,
+                'tokens': tokens,
+                'extra_html': ''
+            })
         elif 'thought_delete' in request.POST:
-            results.append(thought_delete(i) + ('',))
+            status, tokens = thought_delete(i)
+            fmm.add_message({
+                'action': 'thought_delete',
+                'status': status,
+                'tokens': tokens,
+                'extra_html': '',
+            })
         elif 'highlight_delete' in request.POST:
-            results.append(highlight_delete(i) + ('',))
+            status, tokens = highlight_delete(i)
+            fmm.add_message({
+                'action': 'highlight_delete',
+                'status': status,
+                'tokens': tokens,
+                'extra_html': '',
+            })
         elif 'book_delete' in request.POST:
-            results.append(book_delete(i) + ('',))
+            status, tokens = book_delete(i)
+            fmm.add_message({
+                'action': 'book_delete',
+                'status': status,
+                'tokens': tokens,
+                'extra_html': '',
+            })
         else:
-            results.append((False, "Unknown operation specified.") + ('',))
+            messages.add_message(request, messages.ERROR, "Unknown operation specified.")
+            return redirect(next_url)
 
-    # add results to flash messages
-    for res in results:
-        msg = "<p>" + res[1] + "</p>" + res[2]
-        messages.add_message(request, messages.SUCCESS if res[0] else messages.ERROR, msg)
-
+    fmm.flush_messages_to_user(request)
     return redirect(next_url)
 
 
@@ -659,12 +706,12 @@ def search_aws(request, keywords):
 ###############################################################################
 # helper functions
 ###############################################################################
-def undo_button_html(request, action):
+def undo_button_html(request, input_data):
     """ return html string for undo button for use in a flash message. This
         html includes form data for reversing a server operation
 
-        action should be a string that matches the compliment of the
-        backend dashboard function
+        input data should be a dictionary that will be translated to a bunch of
+        hidden input html elements (the key is the name and value is value)
     """
     undo_html = "<form action='%s' method='post'>" % reverse('dashboard-backend')
     undo_html += "<input type='hidden' name='csrfmiddlewaretoken' value='%s' />" % unicode(csrf(request)['csrf_token'])
@@ -681,7 +728,12 @@ def undo_button_html(request, action):
         next_url = request.META['HTTP_REFERER']
 
     undo_html += "<input type='hidden' name='next' value='%s' />" % next_url
-    undo_html += "<input type='submit' name='%s' value='Undo' />" % action
+
+    # add extra input data
+    for k, v in input_data.items():
+        undo_html += "<input type='hidden' name='%s' value='%s' />" % (str(k), str(v))
+
+    undo_html += "<button type='submit'>Undo</button>"
     undo_html += "</form>"
 
     return undo_html
@@ -701,8 +753,8 @@ def idea_safe_delete(idea_slug):
 
         idea.delete()
     except (Exception, Idea.DoesNotExist) as e:
-        return False, idea_slug + ': ' + e.message
-    return True, "Successfully deleted Idea '%s'." % idea_slug
+        return False, {'error': e.message}
+    return True, {'idea': idea_slug}
 
 
 def idea_swap_order(idea_slug, adjacent_idea_slug):
@@ -731,8 +783,29 @@ def idea_swap_order(idea_slug, adjacent_idea_slug):
         idea.save()
         adjacent_idea.save()
     except (Exception, Idea.DoesNotExist) as e:
-        return False, e.message
-    return True, ""
+        return False, {'error': e.message}
+    return True, {'idea': idea_slug}
+
+
+def thought_move(thought_slug, idea_slug):
+    """ move a thought from one idea to another
+
+        returns a 2-tuple with the first element being a boolean (True on success, False on failure)
+        and the second element being a dictionary containing string tokens
+    """
+    try:
+        thought_slug = lib.slugify(thought_slug)
+        idea_slug = lib.slugify(idea_slug)
+
+        thought = Thought.objects.get(slug=thought_slug)
+        idea = Idea.objects.get(slug=idea_slug)
+
+        thought.idea = idea
+        thought.save()
+    except (Exception, Thought.DoesNotExist, Idea.DoesNotExist) as e:
+        return False, {'error': e.message}
+
+    return True, {'thought': thought_slug, 'idea': idea.name}
 
 
 def thought_trash(thought_slug, trash=True):
@@ -748,8 +821,8 @@ def thought_trash(thought_slug, trash=True):
         thought.is_trash = trash
         thought.save()
     except (Exception, Thought.DoesNotExist) as e:
-        return False, thought_slug + ': ' + e.message
-    return True, "Thought '%s' was %strashed." % (thought_slug, '' if trash else 'un')
+        return False, {'error': e.message}
+    return True, {'thought': thought_slug}
 
 
 def thought_publish(thought_slug, publish=False, auto_update=False):
@@ -767,23 +840,23 @@ def thought_publish(thought_slug, publish=False, auto_update=False):
         thought.is_draft = not publish
         thought.save(auto_update=auto_update)
     except (Exception, Thought.DoesNotExist) as e:
-        return False, thought_slug + ': ' + e.message
-    return True, "Moved Thought '%s' to %s." % (thought_slug, "Drafts" if not publish else thought.idea.name)
+        return False, {'error': e.message}
+    return True, {'thought': thought_slug, 'page': 'Drafts' if not publish else thought.idea.name}
 
 
 def thought_delete(thought_slug):
     """ Delete a thought specified by thought_slug
 
         returns a 2-tuple with the first element being a boolean (True on success, False on failure)
-        and the second element being a string containing an information log message
+        and the second element being a dictionary containing string tokens
     """
     try:
         thought_slug = lib.slugify(thought_slug)
         thought = Thought.objects.get(slug=thought_slug)
         thought.delete()
     except (Exception, Thought.DoesNotExist) as e:
-        return False, thought_slug + ': ' + e.message
-    return True, "Successfully deleted Thought '%s'" % thought_slug
+        return False, {'error': e.message}
+    return True, {'thought': thought_slug}
 
 
 def highlight_delete(highlight_id):
@@ -792,15 +865,14 @@ def highlight_delete(highlight_id):
         returns a 2-tuple with the first element being a boolean (True on success, False on failure)
         and the second element being a string containing an information log message
     """
-    highlight_title = ""
     try:
         highlight_id = int(highlight_id)
         highlight = Highlight.objects.get(id=highlight_id)
         highlight_title = highlight.title
         highlight.delete()
     except (Exception, Highlight.DoesNotExist) as e:
-        return False, highlight_title + ' (#%d): ' % highlight_id + e.message
-    return True, "Successfully deleted Highlight '%s' (#%d)." % (highlight_title, highlight_id)
+        return False, {'highlight': highlight_id, 'error': e.message}
+    return True, {'highlight_title': highlight_title, 'highlight_id': highlight_id}
 
 
 def book_delete(book_id):
@@ -809,14 +881,13 @@ def book_delete(book_id):
         returns a 2-tuple with the first element being a boolean (True on success, False on failure)
         and the second element being a string containing an information log message
     """
-    book_title = ""
     try:
         book = ReadingListItem.objects.get(id=book_id)
         book_title = "'" + book.title + "'" + ' (#%d)' % book.id
         book.delete()
     except (Exception, ReadingListItem.DoesNotExist) as e:
-        return False, book_title + ': ' + e.message
-    return True, "Successfully deleted Book %s" % book_title
+        return False, {'error': e.message}
+    return True, {'book_title': book_title}
 
 
 def find_unique_slug(unsafe_slug, model):

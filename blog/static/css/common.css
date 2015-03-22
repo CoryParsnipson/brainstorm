@@ -582,11 +582,10 @@ ul.messages .error {
   background-color: #A80505;
 }
 
-ul.messages .success button,
-ul.messages .success .button,
-ul.messages .success input[type="submit"],
-ul.messages .success input[type="button"] {
-  color: #157A2D;
+ul.messages button,
+ul.messages .button,
+ul.messages input[type="submit"],
+ul.messages input[type="button"] {
   background-color: transparent;
   font-weight: bold;
   font-family: Roboto, "San Serif";
@@ -594,10 +593,24 @@ ul.messages .success input[type="button"] {
   padding: 0px 7px;
 }
 
-ul.messages .success button:hover,
-ul.messages .success .button:hover,
-ul.messages .success input[type="submit"]:hover,
-ul.messages .success input[type="button"]:hover {
+ul.messages .success button,
+ul.messages .success .button,
+ul.messages .success input[type="submit"],
+ul.messages .success input[type="button"] {
+  color: #157A2D;
+}
+
+ul.messages .error button,
+ul.messages .error .button,
+ul.messages .error input[type="submit"],
+ul.messages .error input[type="button"] {
+  color: #F8C118;
+}
+
+ul.messages button:hover,
+ul.messages .button:hover,
+ul.messages input[type="submit"]:hover,
+ul.messages input[type="button"]:hover {
   color: #FFFFFF;
 }
 

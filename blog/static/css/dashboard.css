@@ -397,6 +397,10 @@ table.editable-list td {
   text-overflow: ellipsis;
 }
 
+table.editable-list td.empty {
+  padding: 0 10px;
+}
+
 table.editable-list .fluid {
   width: 100%;
 }

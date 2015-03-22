@@ -11,6 +11,7 @@ from lxml import etree
 from lxml.html.clean import Cleaner
 
 from django.conf import settings
+from django.contrib import messages
 from django.template import defaultfilters
 from django.core.files.storage import default_storage
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
@@ -121,21 +122,135 @@ class Amazon:
         return books
 
 
-class UTC(datetime.tzinfo):
-    """ fix that problem where it says something about mixing timezone aware and
-        timezone naive datetimes.
-    """
+class FlashMessageManager:
+    def __init__(self):
+        self.cached_messages = []
 
-    def utcoffset(self, dt):
-        return datetime.timedelta(0)
+    def hash_message(self, msg_data):
+        """ take the first two entries in the msg_data tuple and calculate python hash() of it.
+        """
+        return hash((msg_data['action'], msg_data['status']))
 
-    def tzname(self, dt):
-        return "UTC"
+    def add_message(self, raw_msg_data):
+        """ add a message to the cached message list. It will hash the first two entries (msg action
+            string and msg status bool) to fold duplicates together and combine the tokens
+        """
+        was_folded = False
+        for c_msg in self.cached_messages:
+            if not self.hash_message(raw_msg_data) == self.hash_message(c_msg):
+                continue
 
-    def dst(self, dt):
-        return datetime.timedelta(0)
+            # update cached message entry
+            c_msg['tokens'].append(raw_msg_data['tokens'])
 
-utc = UTC()
+            was_folded = True
+            break
+
+        if not was_folded:
+            # add message to the queue
+            self.cached_messages.append({
+                'action': raw_msg_data['action'],
+                'status': raw_msg_data['status'],
+                'tokens': [raw_msg_data['tokens']],  # convert raw_msg_data tokens dict into list of dicts
+                'extra_html': raw_msg_data['extra_html'],
+            })
+
+    def format_message(self, msg_data):
+        """ take the tuple items and format a message string from the contents
+        """
+        if msg_data['action'] == 'idea_delete':
+            if msg_data['status']:
+                if len(msg_data['tokens']) > 1:
+                    msg = "Successfully deleted %d Ideas." % len(msg_data['tokens'])
+                else:
+                    msg = "Successfully deleted Idea '%s'." % msg_data['tokens'][0]['idea']
+            else:
+                msg = msg_data['action'] + ': %s.' % msg_data['tokens'][0]['error']
+        elif msg_data['action'] == 'idea_order_up' or msg_data['action'] == 'idea_order_down':
+            if msg_data['status']:
+                if len(msg_data['tokens']) > 1:
+                    msg = "%d Ideas were moved %s." % (
+                        len(msg_data['tokens']),
+                        'up' if msg_data['action'] == 'idea_order_up' else 'down',
+                    )
+                else:
+                    msg = "Idea %s was moved %s." % (
+                        msg_data['tokens'][0]['idea'],
+                        'up' if msg_data['action'] == 'idea_order_up' else 'down',
+                    )
+            else:
+                msg = msg_data['action'] + ': %s.' % msg_data['tokens'][0]['error']
+        elif msg_data['action'] == 'thought_trash' or msg_data['action'] == 'thought_untrash':
+            if msg_data['status']:
+                if len(msg_data['tokens']) > 1:
+                    msg = "%d Thoughts were %strashed." % (
+                        len(msg_data['tokens']),
+                        '' if msg_data['action'] == 'thought_trash' else 'un',
+                    )
+                else:
+                    msg = "Thought '%s' was %strashed." % (
+                        msg_data['tokens'][0]['thought'],
+                        '' if msg_data['action'] == 'thought_trash' else 'un',
+                    )
+            else:
+                msg = msg_data['action'] + ': %s.' % msg_data['tokens'][0]['error']
+        elif msg_data['action'] == 'thought_publish' or msg_data['action'] == 'thought_unpublish':
+            if msg_data['status']:
+                if len(msg_data['tokens']) > 1:
+                    msg = "Moved %d Thoughts to '%s'." % (len(msg_data['tokens']), msg_data['tokens'][0]['page'])
+                else:
+                    msg = "Moved Thought '%s' to %s." % (msg_data['tokens'][0]['thought'], msg_data['tokens'][0]['page'])
+            else:
+                msg = msg_data['action'] + ': %s.' % msg_data['tokens'][0]['error']
+        elif msg_data['action'] == 'thought_idea_move':
+            if msg_data['status']:
+                if len(msg_data['tokens']) > 1:
+                    msg = "Moved %d Thoughts to Idea '%s'." % (len(msg_data['tokens']), msg_data['tokens'][0]['idea'])
+                else:
+                    msg = "Moved Thought '%s' to Idea '%s'." % (msg_data['tokens'][0]['thought'], msg_data['tokens'][0]['idea'])
+            else:
+                msg = "thought_idea_move: %s." % msg_data['tokens'][0]['error']
+        elif msg_data['action'] == 'thought_delete':
+            if msg_data['status']:
+                if len(msg_data['tokens']) > 1:
+                    msg = "Successfully deleted %d Thoughts." % len(msg_data['tokens'])
+                else:
+                    msg = "Successfully deleted Thought '%s'." % msg_data['tokens'][0]['thought']
+            else:
+                msg = "thought_delete: %s." % msg_data['tokens'][0]['error']
+        elif msg_data['action'] == 'highlight_delete':
+            if msg_data['status']:
+                if len(msg_data['tokens']) > 1:
+                    msg = "Successfully deleted %d Highlights." % len(msg_data['tokens'])
+                else:
+                    msg = "Successfully deleted Highlight '%s' (#%d)." % \
+                          (msg_data['tokens'][0]['highlight_title'], msg_data['tokens'][0]['highlight_id'])
+            else:
+                msg = "highlight_delete (#%d): %s." % \
+                      (msg_data['tokens'][0]['highlight'], msg_data['tokens'][0]['error'])
+        elif msg_data['action'] == 'book_delete':
+            if msg_data['status']:
+                if len(msg_data['tokens']) > 1:
+                    msg = "Successfully delete %d Books." % len(msg_data['tokens'])
+                else:
+                    msg = "Successfully deleted Book '%s'." % msg_data['tokens'][0]['book_title']
+            else:
+                msg = "book_delete: %s." % msg_data['tokens'][0]['error']
+        else:
+            return "Unknown Message: '%s', tokens: '%s'." % (msg_data['action'], msg_data['tokens'].__str__())
+
+        return "<p>" + msg + "</p>" + msg_data['extra_html']
+
+    def flush_messages_to_user(self, request):
+        """ take all messages in cached message and display them to the user
+            (using the django message framework)
+        """
+        for msg in self.cached_messages:
+            messages.add_message(
+                request,
+                messages.SUCCESS if msg['status'] else messages.ERROR,
+                self.format_message(msg)
+            )
 
 
 ###############################################################################

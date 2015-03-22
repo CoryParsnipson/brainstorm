@@ -21,7 +21,7 @@
             {% if show_move %}
             <li>
                 <a class="button dropdown">Move</a>
-                {% idea_dropdown dropdown_classes="dropdown-right" action="move" %}
+                {% idea_dropdown dropdown_classes="dropdown-right" action="thought_idea_move" %}
             </li>
             {% endif %}
         </ul>
@@ -77,7 +77,7 @@
             {% endif %}
         </tr>
         {% empty %}
-        <tr><td>There is nothing in the database.</td></tr>
+        <tr><td class="empty">There is nothing in the database.</td></tr>
         {% endfor %}
         </tbody>
     </table>
