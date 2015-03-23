@@ -58,6 +58,10 @@
   margin: 0.5rem;
 }
 
+.catalog td:hover h3 {
+  background-color: transparent;
+}
+
 .catalog td:hover p {
   visibility: visible;
 }
