@@ -169,18 +169,12 @@ def ideas(request):
         idea.description = idea.truncate()
 
     # create more recent ideas list
-    thoughts = Thought.objects.filter(is_draft=False, is_trash=False)
-    recent_ideas = [t['idea'] for t in thoughts.order_by('-date_published').values('idea')]
-    recent_ideas = lib.remove_duplicates(recent_ideas)[:lib.NUM_RECENT_IDEAS]
+    recent_thoughts = Thought.objects.filter(is_draft=False, is_trash=False).order_by('-date_published')
 
-    recent_thoughts = []
-    for idea_slug in recent_ideas:
-        recent_thoughts += Thought.objects.filter(idea=idea_slug).order_by('-date_published')[:1]
+    recent_ideas = [t['idea'] for t in recent_thoughts.values('idea')]
+    unique_ideas = lib.remove_duplicates([t['idea'] for t in recent_thoughts.values('idea')])[:lib.NUM_RECENT_IDEAS]
 
-    for t in recent_thoughts:
-        allowed_tags = list(Thought.allowed_tags)
-        allowed_tags.append('img')
-        t.content = t.truncate(max_length=100, allowed_tags=allowed_tags)
+    recent_thoughts = [recent_thoughts[recent_ideas.index(i)] for i in unique_ideas]
 
     context = {
         'page_title': 'Ideas',
