@@ -14,12 +14,7 @@
         <td>
             <div class="overlay">
                 <a class="overlay" href="{% url 'idea-page' idea.slug %}"></a>
-                <h3 title="{{ idea.slug }}">
-                    {{ idea.name }}
-                    {% if request.user.is_authenticated and request.user.is_superuser %}
-                    <a class="edit" href="{% url 'dashboard-ideas' %}?i={{ idea.slug }}">edit</a>
-                    {% endif %}
-                </h3>
+                <h3 title="{{ idea.slug }}">{{ idea.name }}</h3>
                 <p>{{ idea.description }}</p>
             </div>
             <img src="{{ idea.icon.url }}" />
