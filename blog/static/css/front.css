@@ -83,12 +83,12 @@ div.text-overlay p:not([class]) {
 }
 
 @media (max-width: 40rem) {
-  .showcase-splitter div.img-placeholder img {
+  .showcase-splitter div.img img {
     width: 100%;
   }
 
+  .showcase-splitter div.img,
   .showcase-splitter div.img-placeholder {
-    float: initial;
     position: relative;
     margin-left: 0;
   }
