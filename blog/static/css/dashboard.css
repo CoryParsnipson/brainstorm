@@ -347,6 +347,13 @@ div.editable-control ul.nav {
   vertical-align: middle;
 }
 
+div.editable-control li:hover > a.dropdown,
+div.editable-control li:hover > a.dropdown:after {
+  color: #F8C118;
+  border-top-color: #F8C118;
+  background-color: #565B99;
+}
+
 div.editable-control ul.dropdown {
   opacity: 0.9;
 }
@@ -356,6 +363,7 @@ div.editable-control ul.dropdown > li .button,
 div.editable-control ul.dropdown > li input[type="button"],
 div.editable-control ul.dropdown > li input[type="submit"] {
   background-color: #565B99;
+  white-space: nowrap;
   margin: 0;
 }
 
