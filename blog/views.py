@@ -176,6 +176,10 @@ def ideas(request):
 
     recent_thoughts = [recent_thoughts[recent_ideas.index(i)] for i in unique_ideas]
 
+    allowed_tags = list(Thought.allowed_tags).append('img')
+    for t in recent_thoughts:
+        t.content = t.truncate(allowed_tags=allowed_tags)
+
     context = {
         'page_title': 'Ideas',
         'ideas': ideas_on_page,
