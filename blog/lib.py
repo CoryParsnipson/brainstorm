@@ -409,10 +409,11 @@ def upload_file(f):
         uploaded_file.write(f.read())
         uploaded_file.close()
 
-        # if we are on Amazon S3, set the content type
+        # if we are on Amazon S3, preserve the content type
         if os.environ['DJANGO_SETTINGS_MODULE'].endswith('production'):
             key = boto.connect_s3().get_bucket(os.environ['S3_BUCKET_NAME']).lookup(file_url)
-            key.content_type = f.content_type
+            key.copy(key.bucket, key.name, preserve_acl=True,
+                     metadata={'Content-Type': f.content_type})
     except Exception as e:
         return False, e.message
 
@@ -482,7 +483,8 @@ def resize_image(filename, new_size=THOUGHT_PREVIEW_IMAGE_SIZE):
     # if we are on Amazon S3, set the content type
     if os.environ['DJANGO_SETTINGS_MODULE'].endswith('production'):
         key = boto.connect_s3().get_bucket(os.environ['S3_BUCKET_NAME']).lookup(filename)
-        key.content_type = 'image/png'
+        key.copy(key.bucket, key.name, preserve_acl=True,
+                 metadata={'Content-Type': f.content_type})
 
 
 def create_pagination(queryset, current_page, per_page=PAGINATION_THOUGHTS_PER_PAGE, page_lead=PAGINATION_THOUGHTS_PAGES_TO_LEAD):
