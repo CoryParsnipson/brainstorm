@@ -3,6 +3,7 @@ import re
 import io
 import datetime
 
+import boto
 import pytz
 import PIL
 from PIL import Image
@@ -407,6 +408,11 @@ def upload_file(f):
         uploaded_file = default_storage.open(file_url, 'wb')
         uploaded_file.write(f.read())
         uploaded_file.close()
+
+        # if we are on Amazon S3, set the content type
+        if os.environ['DJANGO_SETTINGS_MODULE'].endswith('production'):
+            key = boto.connect_s3().get_bucket(os.environ['S3_BUCKET_NAME']).lookup(file_url)
+            key.content_type = f.content_type
     except Exception as e:
         return False, e.message
 
@@ -458,7 +464,7 @@ def resize_image(filename, new_size=THOUGHT_PREVIEW_IMAGE_SIZE):
                       int(image_size[1] * resize_ratio))
         image = image.resize(size=image_size, resample=PIL.Image.LANCZOS)
     else:
-        # image is already the perfect size, don't do anything
+        # image is already the perfect size, don't resize
         return
 
     (offset_x, offset_y) = get_center_coord(new_size, image_size)
@@ -472,6 +478,11 @@ def resize_image(filename, new_size=THOUGHT_PREVIEW_IMAGE_SIZE):
     image_file = default_storage.open(filename, 'wb')
     image_file.write(out_img.getvalue())
     image_file.close()
+
+    # if we are on Amazon S3, set the content type
+    if os.environ['DJANGO_SETTINGS_MODULE'].endswith('production'):
+        key = boto.connect_s3().get_bucket(os.environ['S3_BUCKET_NAME']).lookup(filename)
+        key.content_type = 'image/png'
 
 
 def create_pagination(queryset, current_page, per_page=PAGINATION_THOUGHTS_PER_PAGE, page_lead=PAGINATION_THOUGHTS_PAGES_TO_LEAD):
