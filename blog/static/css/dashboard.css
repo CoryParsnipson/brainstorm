@@ -397,8 +397,8 @@ table.editable-list tr:hover td {
   background-color: #4D4D4D;
 }
 
-table.editable-list tr:hover .fixed-label {
-  background-color: #404040;
+table.editable-list tr:hover .title {
+  background-color: #424242;
 }
 
 table.editable-list tr:first-of-type {
