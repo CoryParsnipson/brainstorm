@@ -16,6 +16,17 @@ import lib
 
 
 ###############################################################################
+# model defines
+###############################################################################
+PRIORITY = (
+    (0, 'Low'),
+    (1, 'Medium'),
+    (2, 'High'),
+    (3, 'Next'),
+)
+
+
+###############################################################################
 # Idea model
 ###############################################################################
 class Idea(models.Model):
@@ -355,21 +366,32 @@ class ReadingListItem(models.Model):
 ###############################################################################
 # Task (To Do list items)
 ###############################################################################
-"""class Task(models.Model):
-    ""/" To do list that you see in the dashboard. This shouldn't be public
-    ""/"
-    content = models.TextField(max_length=1500)
+class Task(models.Model):
+    """ To do list that you see in the dashboard. This shouldn't be public.
+        Tasks can be marked completed. Tasks can also have subtasks (they can
+        be decomposed into smaller chunks). When a Task has subtasks, they can
+        only be marked completed when all subtasks are completed.
+    """
+    parent_task = models.ForeignKey('Task', blank=True, null=True)
+    idea = models.ForeignKey(Idea, blank=True, null=True)
+    content = models.TextField(max_length=300)
+    date_added = models.DateTimeField(auto_now_add=True)
+    date_due = models.DateField(blank=True, null=True)
+    is_completed = models.BooleanField(default=False)
+    priority = models.IntegerField(choices=PRIORITY, default=PRIORITY[1][0])
 
 
 ###############################################################################
-# Task (To Do list items)
+# Note (unfinished thoughts that aren't associated with a specific Thought yet)
 ###############################################################################
 class Note(models.Model):
-    ""/" written notes for things to research or write about. These also
+    """ written notes for things to research or write about. These also
         shouldn't be public. The idea is to write down information that
         isn't coherent enough for a thought, but are good seeds for
         later. Notes should be able to be linked to ideas, but it is
         not necessary, as they shouldn't represent fully formed thoughts.
-    ""/"
-    idea = models.ForeignKey(Idea, blank=True, null=True)
-    content = models.TextField()"""
+    """
+    idea = models.ManyToManyField(Idea, blank=True, null=True)
+    thoughts = models.ManyToManyField(Thought, blank=True, null=True)
+    content = models.TextField(max_length=1500)
+    date_published = models.DateTimeField(auto_now_add=True, auto_now=True)

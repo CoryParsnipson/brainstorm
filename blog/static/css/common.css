@@ -387,6 +387,10 @@ a.logo {
   padding: 0 10px;
 }
 
+a.logo:hover {
+  color: #A80505;
+}
+
 span.footer-copyleft {
   color: #A80505;
   font-size: 8pt;
