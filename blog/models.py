@@ -374,7 +374,7 @@ class Task(models.Model):
     """
     parent_task = models.ForeignKey('Task', blank=True, null=True)
     idea = models.ForeignKey(Idea, blank=True, null=True)
-    content = models.TextField(max_length=300)
+    content = models.CharField(max_length=300)
     date_added = models.DateTimeField(auto_now_add=True)
     date_due = models.DateField(blank=True, null=True)
     is_completed = models.BooleanField(default=False)

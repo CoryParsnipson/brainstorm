@@ -16,8 +16,8 @@ from django.contrib.auth.decorators import login_required
 
 import lib
 import paths
-from models import Idea, Thought, Highlight, ReadingListItem
-from forms import LoginForm, IdeaForm, ThoughtForm, HighlightForm, ReadingListItemForm
+from models import Idea, Thought, Highlight, ReadingListItem, Task
+from forms import LoginForm, IdeaForm, ThoughtForm, HighlightForm, ReadingListItemForm, TaskForm
 
 
 ###############################################################################
@@ -264,6 +264,7 @@ def thought_detail(request, idea_slug=None, thought_slug=None):
 def dashboard(request):
     context = {
         'page_title': 'Main',
+        'task_form': TaskForm(),
     }
     return render(request, 'blog/dashboard/dashboard.html', context)
 

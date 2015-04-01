@@ -306,6 +306,61 @@ input[type="button"].publish:hover {
 }
 
 /******************************************************************************
+ * task form styles
+ *****************************************************************************/
+#task_form {
+
+}
+
+#task_form label {
+  float: none;
+  font-size: 10pt;
+  margin-right: 10px;
+}
+
+#task_form div.subfield {
+  width: 33%;
+  float: left;
+}
+
+@media (max-width: 40rem) {
+  #task_form div.subfield {
+    width: 100%;
+  }
+}
+
+#task_form td {
+  padding: 0;
+}
+
+#task_form #id_content { border-right: 0; }
+#task_form #id_date_due { width: 50%; }
+#task_form #id_parent_task { width: 100px; }
+#task_form #id_idea { width: 100px; }
+#task_form #id_priority { width: 75px; }
+
+#task_form .cell-content {
+  position: relative;
+}
+
+#task_form .calendar-icon {
+  display: block;
+  background-color: #FFFFFF;
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  padding: 5px;
+}
+
+#task_form button[type="submit"] {
+  font-size: 14pt;
+  border-radius: 0 3px 3px 0;
+  margin: 0;
+  margin-top: 3px;
+  padding: 3px 12px;
+}
+
+/******************************************************************************
  * editable-control div styles
  *****************************************************************************/
 div.editable-control {

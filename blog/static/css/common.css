@@ -206,6 +206,15 @@ a.delete-icon, input[type="submit"].delete-icon:hover {
   background-image: url('../images/delete_on.png');
 }
 
+a.calendar-icon {
+  background-size: cover;
+  background-image: url('../images/calendar.png');
+}
+
+a.calendar-icon:hover {
+  background-image: url('../images/calendar_on.png');
+}
+
 a.dropdown {
   position: relative;
   padding-right: 30px;

@@ -2,7 +2,7 @@ from django import forms
 from django.core.urlresolvers import reverse_lazy
 from django.contrib.auth.admin import User
 
-from blog.models import Idea, Thought, Highlight, ReadingListItem
+from blog.models import Idea, Thought, Highlight, ReadingListItem, Task
 
 
 class LoginForm(forms.Form):
@@ -100,3 +100,11 @@ class ReadingListItemForm(forms.ModelForm):
     class Meta:
         model = ReadingListItem
         fields = '__all__'
+
+
+class TaskForm(forms.ModelForm):
+    """ task form class
+    """
+    class Meta:
+        model = Task
+        fields = ['id', 'parent_task', 'idea', 'content', 'date_due', 'priority']
