@@ -347,7 +347,7 @@ input[type="button"].publish:hover {
   display: block;
   background-color: #FFFFFF;
   position: absolute;
-  top: 5px;
+  top: 6px;
   right: 5px;
   padding: 5px;
 }
