@@ -376,10 +376,19 @@ class Task(models.Model):
     idea = models.ForeignKey(Idea, blank=True, null=True)
     content = models.CharField(max_length=300)
     date_added = models.DateTimeField(auto_now_add=True)
+    date_completed = models.DateTimeField(blank=True, null=True)
     date_due = models.DateField(blank=True, null=True)
     is_completed = models.BooleanField(default=False)
     priority = models.IntegerField(choices=PRIORITY, default=PRIORITY[1][0], blank=True)
 
+    def display_compact_date_added(self):
+        return lib.display_compact_date(self.date_added)
+
+    def display_compact_date_completed(self):
+        return lib.display_compact_date(self.date_completed)
+
+    def display_compact_date_due(self):
+        return lib.display_compact_date(self.date_due)
 
 ###############################################################################
 # Note (unfinished thoughts that aren't associated with a specific Thought yet)

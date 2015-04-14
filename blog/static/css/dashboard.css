@@ -361,6 +361,28 @@ input[type="button"].publish:hover {
 }
 
 /******************************************************************************
+ * task list styles
+ *****************************************************************************/
+table.task-list {
+  width: 100%;
+  font-size: 10pt;
+}
+
+table.task-list td {
+  border: 1px solid black;
+  padding: 0 5px;
+}
+
+table.task-list input[type="checkbox"] {
+  vertical-align: middle;
+}
+
+.completed {
+  font-style: italic;
+  text-decoration: line-through;
+}
+
+/******************************************************************************
  * editable-control div styles
  *****************************************************************************/
 div.editable-control {

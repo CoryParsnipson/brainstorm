@@ -2,9 +2,13 @@
 
 {% block content %}
 {% for task in tasks %}
-<ul>
-    <li>{{ task.content }}</li>
-</ul>
+<table class="task-list">
+    <tr>
+        <td class="shrink"><input type="checkbox"></td>
+        <td>{{ task.content }}</td>
+        <td class="shrink">{{ task.display_compact_date_added }}</td>
+    </tr>
+</table>
 {% empty %}
 <p>There are no tasks in the database.</p>
 {% endfor %}
