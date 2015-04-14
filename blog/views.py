@@ -6,7 +6,7 @@ from django.core import serializers
 from django.core.urlresolvers import reverse
 from django.core.exceptions import ValidationError
 from django.core.context_processors import csrf
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponseForbidden
 from django.views.generic import View
 from django.utils.http import urlquote_plus
 from django.shortcuts import render, redirect, get_object_or_404
@@ -348,6 +348,26 @@ def dashboard_highlights(request):
         'pagination': pagination,
     }
     return render(request, 'blog/dashboard/dashboard_highlights.html', context)
+
+
+@login_required(login_url='index')
+def dashboard_todo(request):
+    """ user dashboard page to manage Task object instances
+    """
+    tasks = Task.objects.all().order_by("priority")
+    page = request.GET.get('p')
+    paginator, tasks_on_page = lib.create_paginator(
+        queryset=tasks,
+        per_page=lib.PAGINATION_DASHBOARD_TASKS_PER_PAGE,
+        page=page,
+    )
+
+    context = {
+        'page_title': 'Tasks',
+        'tasks': tasks_on_page,
+        'paginator': paginator,
+    }
+    return render(request, 'blog/dashboard/dashboard_todo.html', context)
 
 
 @login_required(login_url='index')
@@ -1185,3 +1205,68 @@ class FormReadingListView(View):
                 return redirect(request.META['HTTP_REFERER'])
             else:
                 return JsonResponse(errors)
+
+
+class FormTaskView(View):
+    """ API endpoints for server backend logic of Task models
+    """
+    def get(self, request):
+        """ get html form for adding a new model instance
+        """
+        form = TaskForm()
+        form_html = form.as_table()
+
+        if "output" in request.GET:
+            if request.GET["output"] == "p":
+                form_html = form.as_p()
+            elif request.GET["output"] == "ul":
+                form_html = form.as_ul()
+
+        context = {'form': form_html}
+        return JsonResponse(context)
+
+    def post(self, request):
+        """ create a new Task Item
+        """
+        request.POST = request.POST.copy()  # make POST data mutable
+
+        # calculate next url
+        callback = None
+        if 'next' in request.POST:
+            callback = request.POST['next']
+
+        if 'id' not in request.POST or not request.POST['id']:
+            request.POST['id'] = -1
+
+        try:
+            instance = Task.objects.get(id=request.POST['id'])
+            msg = "Successfully edited Task #%d" % instance.id
+        except Task.DoesNotExist:
+            instance = None
+            msg = "Successfully created new Task"
+
+        task_form = TaskForm(request.POST, instance=instance)
+        if task_form.is_valid():
+            task = task_form.save()
+
+            if callback:
+                messages.add_message(request, messages.SUCCESS, msg)
+                return redirect(callback)
+            else:
+                return JsonResponse(serializers.serialize('json', [task]), safe=False)
+        else:
+            errors = {}
+            for field in task_form:
+                errors[field.name] = field.errors
+
+            if callback:
+                msg = "<br>".join([k + ": " + " ".join(v) for k, v in errors.items() if v])
+                messages.add_message(request, messages.ERROR, msg)
+                return redirect(request.META['HTTP_REFERER'])
+            else:
+                return JsonResponse(errors)
+
+    def delete(self, request):
+        """
+        """
+        return ""

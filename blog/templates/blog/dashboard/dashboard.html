@@ -20,7 +20,9 @@ $(function () {
 <hr class="header">
 
 <h3>Tasks</h3>
-<form id="task_form" action="" method="post">
+<form id="task_form" action="{% url 'forms-task' %}" method="post">
+    {% csrf_token %}
+    {% for field in task_form.hidden_fields %}{{ field }}{% endfor %}
     <table>
         <tr>
             <td class="cell-content">

@@ -378,7 +378,7 @@ class Task(models.Model):
     date_added = models.DateTimeField(auto_now_add=True)
     date_due = models.DateField(blank=True, null=True)
     is_completed = models.BooleanField(default=False)
-    priority = models.IntegerField(choices=PRIORITY, default=PRIORITY[1][0])
+    priority = models.IntegerField(choices=PRIORITY, default=PRIORITY[1][0], blank=True)
 
 
 ###############################################################################

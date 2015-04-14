@@ -24,6 +24,7 @@ urlpatterns = patterns('',
     url(r'^dashboard/$', views.dashboard, name='dashboard'),
     url(r'^dashboard/books/$', views.dashboard_books, name='dashboard-books'),
     url(r'^dashboard/highlights/$', views.dashboard_highlights, name='dashboard-highlights'),
+    url(r'^dashboard/tasks/$', views.dashboard_todo, name='dashboard-todo'),
     url(r'^dashboard/ideas/$', views.dashboard_ideas, name='dashboard-ideas'),
     url(r'^dashboard/thoughts/$', views.dashboard_thoughts, name='dashboard-thoughts'),
     url(r'^dashboard/author/$', views.dashboard_author, name='dashboard-author'),
@@ -42,6 +43,7 @@ urlpatterns = patterns('',
     url(r'^api/forms/thought/', views.FormThoughtView.as_view(), name='forms-thought'),
     url(r'^api/forms/highlight/', views.FormHighlightView.as_view(), name='forms-highlight'),
     url(r'^api/forms/readinglistitem/', views.FormReadingListView.as_view(), name='forms-readinglistitem'),
+    url(r'^api/forms/task/', views.FormTaskView.as_view(), name='forms-task'),
 )
 
 # setup serving of media asserts on development environment

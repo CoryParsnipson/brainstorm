@@ -1,0 +1,11 @@
+{% extends 'blog/templates/template_dashboard.html' %}
+
+{% block content %}
+{% for task in tasks %}
+<ul>
+    <li>{{ task.content }}</li>
+</ul>
+{% empty %}
+<p>There are no tasks in the database.</p>
+{% endfor %}
+{% endblock %}
