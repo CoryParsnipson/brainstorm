@@ -25,7 +25,7 @@
             {% endif %}
         </td>
         <td class="shrink">{{ task.id }}</td>
-        <td {% if task.is_completed %}class="completed"{% endif %}>{{ task.content }}</td>
+        <td {% if task.is_completed %}class="completed"{% endif %}><span>{{ task.content }}</span></td>
         <td class="shrink center-align">
             {% if not task.date_completed %}
             --

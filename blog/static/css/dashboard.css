@@ -366,6 +366,7 @@ input[type="button"].publish:hover {
 table.task-list {
   width: 100%;
   font-size: 10pt;
+  text-align: left;
   border-collapse: collapse;
 }
 
@@ -427,8 +428,13 @@ table.task-list span.due {
 }
 
 .completed {
+  color: #B51F18;
   font-style: italic;
   text-decoration: line-through;
+}
+
+.completed * {
+  color: #B7B7B7;
 }
 
 /******************************************************************************
