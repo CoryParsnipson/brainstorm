@@ -372,6 +372,10 @@ blockquote.pull-quote:after {
 /******************************************************************************
  * img styles
  *****************************************************************************/
+img {
+  max-width: initial;  /* override foundation rules */
+}
+
 img.left {
   margin-right: 10px;
 }

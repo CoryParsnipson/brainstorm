@@ -2,14 +2,16 @@
 {% load staticfiles %}
 
 {% block content %}
-
+<h2>Tasks</h2><hr class="header">
 <table class="task-list">
     <thead>
     <tr>
-        <td></td>
+        <td><img class="icon icon-checkbox" src="{% static 'images/icon_checkbox.png' %}"></td>
         <td>#</td>
         <td>Task</td>
+        <td class="center-align">Completed</td>
         <td class="center-align">Added</td>
+        <td><a class="icon icon-delete"></a></td>
     </tr>
     </thead>
     <tbody>
@@ -17,14 +19,24 @@
     <tr>
         <td class="shrink">
             {% if task.is_completed %}
-            <img class="icon-checkbox" src="{% static 'images/icon_checkbox.png' %}">
+            <img class="icon icon-checkbox" src="{% static 'images/icon_checkbox.png' %}">
             {% else %}
-            <a class="icon-checkbox" title="Mark as Complete" href="{% url '' %}"></a>
+            <a class="incomplete icon icon-checkbox" title="Mark as Complete" href="{% url 'forms-task-mark' task.id %}"></a>
             {% endif %}
         </td>
         <td class="shrink">{{ task.id }}</td>
         <td {% if task.is_completed %}class="completed"{% endif %}>{{ task.content }}</td>
+        <td class="shrink center-align">
+            {% if not task.date_completed %}
+            --
+            {% else %}
+            {{ task.display_compact_date_completed }}
+            {% endif %}
+        </td>
         <td class="shrink center-align">{{ task.display_compact_date_added }}</td>
+        <td class="shrink">
+            <a class="icon icon-delete" title="Delete this task" href="{% url 'forms-task-delete' task.id %}"></a>
+        </td>
     </tr>
     {% empty %}
     <tr>

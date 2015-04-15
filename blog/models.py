@@ -390,6 +390,17 @@ class Task(models.Model):
     def display_compact_date_due(self):
         return lib.display_compact_date(self.date_due)
 
+    def save(self):
+        try:
+            orig = Task.objects.get(id=self.id)
+            if not orig.is_completed and self.is_completed:
+                self.date_completed = pytz.timezone(settings.TIME_ZONE).localize(datetime.datetime.now())
+        except Task.DoesNotExist:
+            pass
+
+        # "real" save method
+        super(Task, self).save()
+
 ###############################################################################
 # Note (unfinished thoughts that aren't associated with a specific Thought yet)
 ###############################################################################

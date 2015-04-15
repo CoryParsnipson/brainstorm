@@ -6,7 +6,7 @@ from django.core import serializers
 from django.core.urlresolvers import reverse
 from django.core.exceptions import ValidationError
 from django.core.context_processors import csrf
-from django.http import JsonResponse, HttpResponseForbidden
+from django.http import JsonResponse, HttpResponseForbidden, Http404
 from django.views.generic import View
 from django.utils.http import urlquote_plus
 from django.shortcuts import render, redirect, get_object_or_404
@@ -1275,7 +1275,49 @@ class FormTaskView(View):
             else:
                 return JsonResponse(errors)
 
-    def delete(self, request):
+    @staticmethod
+    def mark_complete(request, id):
+        """ mark a model instance as complete
         """
+        try:
+            id = int(id)
+        except ValueError:
+            msg = "Task'%s' does not exist." % id
+            messages.add_message(request, messages.ERROR, msg)
+            return redirect(request.META['HTTP_REFERER'])
+
+        try:
+            task = Task.objects.filter(id=id)[0]
+            task.is_completed = True
+            task.save()
+        except Task.DoesNotExist:
+            msg = "Task '%s' does not exist." % id
+            messages.add_messages(request, messages.ERROR, msg)
+            return redirect(request.META['HTTP_REFERER'])
+
+        return redirect(request.META['HTTP_REFERER'])
+
+    @staticmethod
+    def delete(request, id):
+        """ delete a model instance
         """
-        return ""
+        try:
+            id = int(id)
+        except ValueError:
+            msg = "Task '%s' does not exist." % id
+            messages.add_messages(request, messages.ERROR, msg)
+            return redirect(request.META['HTTP_REFERER'])
+
+        try:
+            task = Task.objects.filter(id=id)[0]
+
+            msg = "Successfully deleted Task #%d" % task.id
+            task.delete()
+
+            messages.add_message(request, messages.SUCCESS, msg)
+        except Task.DoesNotExist:
+            msg = "Task '%s' does not exist." % id
+            messages.add_messages(request, messages.ERROR, msg)
+            return redirect(request.META['HTTP_REFERER'])
+
+        return redirect(request.META['HTTP_REFERER'])
