@@ -354,7 +354,8 @@ def dashboard_highlights(request):
 def dashboard_todo(request):
     """ user dashboard page to manage Task object instances
     """
-    tasks = Task.objects.all().order_by("priority")
+    tasks = Task.objects.all().order_by("-priority", "-date_added")
+
     page = request.GET.get('p')
     paginator, tasks_on_page = lib.create_paginator(
         queryset=tasks,
@@ -362,10 +363,18 @@ def dashboard_todo(request):
         page=page,
     )
 
+    pagination = lib.create_pagination(
+        queryset=tasks,
+        current_page=page,
+        per_page=lib.PAGINATION_DASHBOARD_TASKS_PER_PAGE,
+        page_lead=lib.PAGINATION_DASHBOARD_TASKS_PAGES_TO_LEAD,
+    )
+
     context = {
         'page_title': 'Tasks',
         'tasks': tasks_on_page,
         'paginator': paginator,
+        'pagination': pagination,
     }
     return render(request, 'blog/dashboard/dashboard_todo.html', context)
 

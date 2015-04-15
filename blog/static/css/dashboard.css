@@ -366,10 +366,12 @@ input[type="button"].publish:hover {
 table.task-list {
   width: 100%;
   font-size: 10pt;
+  border-collapse: collapse;
 }
 
 table.task-list thead {
   font-weight: bold;
+  background-color: #404040;
 }
 
 table.task-list thead td {
@@ -377,17 +379,29 @@ table.task-list thead td {
 }
 
 table.task-list td {
-  border: 1px solid black;
   padding: 0 5px;
   padding-bottom: 30px;
 }
 
-table.task-list img {
+table.task-list .icon-checkbox {
+  width: 15px;
+  height: 15px;
+  display: inline-block;
+  border: 1px solid black;
   vertical-align: text-top;
+}
+
+table.task-list .icon-checkbox:hover {
+  background-image: url('../images/icon_checkbox.png');
+  background-size: cover;
 }
 
 table.task-list input[type="checkbox"] {
   vertical-align: middle;
+}
+
+table.task-list span.due {
+  background-color: #222222;
 }
 
 .completed {
