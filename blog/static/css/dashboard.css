@@ -368,9 +368,22 @@ table.task-list {
   font-size: 10pt;
 }
 
+table.task-list thead {
+  font-weight: bold;
+}
+
+table.task-list thead td {
+  padding-bottom: 0;
+}
+
 table.task-list td {
   border: 1px solid black;
   padding: 0 5px;
+  padding-bottom: 30px;
+}
+
+table.task-list img {
+  vertical-align: text-top;
 }
 
 table.task-list input[type="checkbox"] {

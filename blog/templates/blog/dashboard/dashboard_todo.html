@@ -1,15 +1,34 @@
 {% extends 'blog/templates/template_dashboard.html' %}
+{% load staticfiles %}
 
 {% block content %}
-{% for task in tasks %}
+
 <table class="task-list">
+    <thead>
     <tr>
-        <td class="shrink"><input type="checkbox"></td>
-        <td>{{ task.content }}</td>
-        <td class="shrink">{{ task.display_compact_date_added }}</td>
+        <td></td>
+        <td>Task</td>
+        <td class="center-align">Added</td>
     </tr>
+    </thead>
+    <tbody>
+    {% for task in tasks %}
+    <tr>
+        <td class="shrink">
+            {% if task.is_completed %}
+            <img src="{% static 'images/icon_checkbox.png' %}">
+            {% else %}
+            <input type="checkbox">
+            {% endif %}
+        </td>
+        <td {% if task.is_completed %}class="completed"{% endif %}>{{ task.content }}</td>
+        <td class="shrink center-align">{{ task.display_compact_date_added }}</td>
+    </tr>
+    {% empty %}
+    <tr>
+        <td>There are no tasks in the database.</td>
+    </tr>
+    {% endfor %}
+    </tbody>
 </table>
-{% empty %}
-<p>There are no tasks in the database.</p>
-{% endfor %}
 {% endblock %}

@@ -16,6 +16,7 @@ from django.contrib import messages
 from django.template import defaultfilters
 from django.core.files.storage import default_storage
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from django.utils import timezone
 from django.utils.http import urlunquote_plus
 
 import paths
@@ -574,7 +575,7 @@ def display_compact_date(dt=None):
     elif age < datetime.timedelta(hours=4):
         display_date = "%s hr%s ago" % (age.seconds / 3600, 's' if age.seconds > 7200 else '')
     elif age < datetime.timedelta(hours=now.hour):
-        display_date = dt.strftime("%I:%M %p").lstrip('0')
+        display_date = timezone.localtime(dt).strftime("%I:%M %p").lstrip('0')
     else:
         display_date = dt.strftime("%b %d")
 
