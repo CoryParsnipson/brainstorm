@@ -376,11 +376,12 @@ table.task-list thead {
 }
 
 table.task-list thead td {
-  padding-bottom: 0;
+  padding: 0 5px;
 }
 
 table.task-list td {
   padding: 0 5px;
+  padding-top: 10px;
   padding-bottom: 30px;
 }
 
@@ -435,6 +436,28 @@ table.task-list span.due {
 
 .completed * {
   color: #B7B7B7;
+}
+
+span[class*=priority] {
+  line-height: 1.3rem;
+}
+
+.priority_0 { } /* low priority */
+
+/* medium priority */
+.priority_1 {
+  color: #68BA59;
+}
+
+/* high priority */
+.priority_2 {
+  color: #FA9D23;
+}
+
+/* next priority */
+.priority_3 {
+  width: 100%;
+  color: #CC331F;
 }
 
 /******************************************************************************

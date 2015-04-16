@@ -107,7 +107,6 @@ class TaskForm(forms.ModelForm):
     """
     id = forms.IntegerField(widget=forms.HiddenInput)
     next = forms.CharField(widget=forms.HiddenInput, initial=reverse_lazy('dashboard-todo'))
-    priority = forms.CharField(widget=forms.HiddenInput, initial=PRIORITY[1][0])
 
     class Meta:
         model = Task

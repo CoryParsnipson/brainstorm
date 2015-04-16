@@ -394,12 +394,24 @@ class Task(models.Model):
         try:
             orig = Task.objects.get(id=self.id)
             if not orig.is_completed and self.is_completed:
+                # set completed date if is_completed is marked True
                 self.date_completed = pytz.timezone(settings.TIME_ZONE).localize(datetime.datetime.now())
+
+                # set priority to low
+                self.priority = PRIORITY[0][0]
         except Task.DoesNotExist:
             pass
 
         # "real" save method
         super(Task, self).save()
+
+    def __unicode__(self):
+        return self.__str__()
+
+    def __str__(self):
+        content = lib.strip_tags(lib.truncate(content=self.content, max_length=50, allowed_tags=[]))
+        return "Task #%d: %s" % (self.id, content)
+
 
 ###############################################################################
 # Note (unfinished thoughts that aren't associated with a specific Thought yet)

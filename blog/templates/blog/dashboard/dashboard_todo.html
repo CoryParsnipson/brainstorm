@@ -3,6 +3,31 @@
 
 {% block content %}
 <h2>Tasks</h2><hr class="header">
+
+<h3>Add new Task</h3>
+<form id="task_form" action="{% url 'forms-task' %}" method="post">
+    {% csrf_token %}
+    {% for field in task_form.hidden_fields %}{{ field }}{% endfor %}
+    <table>
+        <tr>
+            <td class="cell-content">
+                {{ task_form.content }}
+                <a class="link-icon calendar-icon" title="Pick a due date" href="#"></a>
+            </td>
+            <td class="shrink">
+                <button type="submit">+</button>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2">{{ task_form.priority.label_tag }}{{ task_form.priority }}</td>
+        </tr>
+    </table>
+</form>
+
+{% if 'c' not in request.GET %}
+<p class="right"><a href="{% url 'dashboard-todo' %}?c">Show completed Tasks</a></p>
+{% endif %}
+
 <table class="task-list">
     <thead>
     <tr>
@@ -24,8 +49,16 @@
             <a class="incomplete icon icon-checkbox" title="Mark as Complete" href="{% url 'forms-task-mark' task.id %}"></a>
             {% endif %}
         </td>
-        <td class="shrink">{{ task.id }}</td>
-        <td {% if task.is_completed %}class="completed"{% endif %}><span>{{ task.content }}</span></td>
+        <td class="shrink center-align">{{ task.id }}</td>
+        {% if task.is_completed %}
+        <td class="completed">
+        {% else %}
+        <td>
+        {% endif %}
+            <span class="priority_{{ task.priority }}">
+                {{ task.content }}
+            </span>
+        </td>
         <td class="shrink center-align">
             {% if not task.date_completed %}
             --

@@ -33,7 +33,10 @@ $(function () {
                 <button type="submit">+</button>
             </td>
         </tr>
-        <!-- TODO: add this shit later
+        <tr>
+            <td colspan="2">{{ task_form.priority.label_tag }}{{ task_form.priority }}</td>
+        </tr>
+        <!-- not yet
         <tr>
             <td colspan="2">
                 <div class="subfield">{{ task_form.parent_task.label_tag }}{{ task_form.parent_task }}</div>
@@ -46,11 +49,10 @@ $(function () {
                 {{ task_form.date_due.label_tag }}
                 {{ task_form.date_due }}
             </td>
-        </tr>
-        -->
+        </tr> -->
     </table>
 </form>
 
 <p>Add Note</p>
-<p>Latest Thoughts</p>
+<p>Activity Feed</p>
 {% endblock %}
