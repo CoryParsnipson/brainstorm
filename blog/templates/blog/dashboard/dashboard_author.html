@@ -1,5 +1,6 @@
 {% extends 'blog/templates/template_dashboard.html' %}
 {% load staticfiles %}
+{% load blog_extras %}
 
 {% block http_headers %}
 <script type="text/javascript">
@@ -78,11 +79,40 @@
 {% endblock %}
 
 {% block side %}
+<div class="todo-box">
+    <h3>Related Tasks</h3>
+    {% get_latest_tasks name='todo_list_tasks' length=10 idea=thought_form.idea.value %}
+
+    <table class="task-list">
+        <tbody>
+        {% for task in todo_list_tasks %}
+        <tr>
+            <td class="shrink">
+                <a class="incomplete icon icon-checkbox" title="Mark as Complete" href="{% url 'forms-task-mark' task.id %}"></a>
+            </td>
+            <td>
+                <span class="priority_{{ task.priority }}">
+                    {{ task.content }}
+                </span>
+            </td>
+            <td class="shrink center-align">
+                <a class="icon icon-delete" title="Delete this task" href="{% url 'forms-task-delete' task.id %}"></a>
+            </td>
+        </tr>
+        {% if forloop.last %}
+        <tr>
+            <td colspan="3" class="center-align"><a href="{% url 'dashboard-todo' %}">More Tasks...</a></td>
+        </tr>
+        {% endif %}
+        {% empty %}
+        <tr><td>No relevant Tasks.</td></tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+
 <h2>Notes</h2>
 <p>Include notes for this idea in this column!</p>
-
-<h2>To Do</h2>
-<p>Relevant to do list items.</p>
 {% endblock %}
 
 {% block footer %}

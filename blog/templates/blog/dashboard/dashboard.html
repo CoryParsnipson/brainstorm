@@ -3,16 +3,6 @@
 {% load blog_extras %}
 
 {% block http_headers %}
-<link rel="stylesheet" type="text/css" href="{% static 'css/jquery.datetimepicker.css' %}">
-<script type="text/javascript" src="{% static 'script/jquery.datetimepicker.js' %}"></script>
-
-<script type="text/javascript">
-$(function () {
-  $('#id_date_due').datetimepicker({
-    timepicker: false,
-  });
-});
-</script>
 {% endblock %}
 
 {% block content %}

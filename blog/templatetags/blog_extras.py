@@ -10,12 +10,19 @@ register = template.Library()
 
 
 class TemplateTaskList(template.Node):
-    def __init__(self, name='tasks', task_list_length=lib.NUM_TASK_LIST):
+    def __init__(self, name='tasks', task_list_length=lib.NUM_TASK_LIST, idea=''):
         self.name = name
         self.length = task_list_length
+        self.idea = idea
 
     def render(self, context):
-        context[self.name] = Task.objects.filter(is_completed=False).order_by("-priority", "-date_added")[:self.length]
+        tasks = Task.objects.filter(is_completed=False)
+
+        if self.idea:
+            idea = template.Variable(self.idea)
+            tasks = tasks.filter(idea=idea.resolve(context))
+
+        context[self.name] = tasks.order_by("-priority", "-date_added")[:self.length]
         return ''
 
 
@@ -39,7 +46,10 @@ def get_latest_tasks(parser, token):
     except KeyError:
         pass
 
-    return TemplateTaskList(tokens['name'], task_list_length=tokens['length'])
+    if 'idea' not in tokens:
+        tokens['idea'] = ''
+
+    return TemplateTaskList(tokens['name'], task_list_length=tokens['length'], idea=tokens['idea'])
 
 
 @register.simple_tag
