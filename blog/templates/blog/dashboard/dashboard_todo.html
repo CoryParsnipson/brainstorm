@@ -2,9 +2,7 @@
 {% load staticfiles %}
 
 {% block content %}
-<h2>Tasks</h2><hr class="header">
-
-<h3>Add new Task</h3>
+<h2>Tasks</h2>
 <form id="task_form" action="{% url 'forms-task' %}" method="post">
     {% csrf_token %}
     {% for field in task_form.hidden_fields %}{{ field }}{% endfor %}
@@ -21,18 +19,33 @@
         <tr>
             <td colspan="2">{{ task_form.priority.label_tag }}{{ task_form.priority }}</td>
         </tr>
+        <!-- not yet
+        <tr>
+            <td colspan="2">
+                <div class="subfield">{{ task_form.parent_task.label_tag }}{{ task_form.parent_task }}</div>
+                <div class="subfield">{{ task_form.idea.label_tag }}{{ task_form.idea }}</div>
+                <div class="subfield">{{ task_form.priority.label_tag }}{{ task_form.priority }}</div>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2">
+                {{ task_form.date_due.label_tag }}
+                {{ task_form.date_due }}
+            </td>
+        </tr> -->
     </table>
 </form>
 
 {% if 'c' not in request.GET %}
 <p class="right"><a href="{% url 'dashboard-todo' %}?c">Show completed Tasks</a></p>
+{% else %}
+<p class="right"><a href="{% url 'dashboard-todo' %}">Hide completed Tasks</a></p>
 {% endif %}
 
 <table class="task-list">
     <thead>
     <tr>
         <td><img class="icon icon-checkbox" src="{% static 'images/icon_checkbox.png' %}"></td>
-        <td>#</td>
         <td>Task</td>
         <td class="center-align">Completed</td>
         <td class="center-align">Added</td>
@@ -49,7 +62,6 @@
             <a class="incomplete icon icon-checkbox" title="Mark as Complete" href="{% url 'forms-task-mark' task.id %}"></a>
             {% endif %}
         </td>
-        <td class="shrink center-align">{{ task.id }}</td>
         {% if task.is_completed %}
         <td class="completed">
         {% else %}

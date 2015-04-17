@@ -70,6 +70,7 @@ NUM_IDEAS_FOOTER = 3
 
 NUM_AMAZON_RESULTS = 5
 NUM_READ_LIST = 3
+NUM_TASK_LIST = 3
 
 
 ###############################################################################
@@ -574,7 +575,7 @@ def display_compact_date(dt=None):
         display_date = "%s min ago" % (age.seconds / 60)
     elif age < datetime.timedelta(hours=4):
         display_date = "%s hr%s ago" % (age.seconds / 3600, 's' if age.seconds > 7200 else '')
-    elif age < datetime.timedelta(hours=24):
+    elif age < datetime.timedelta(days=1):
         display_date = timezone.localtime(dt).strftime("%I:%M %p").lstrip('0')
     elif age < datetime.timedelta(days=5):
         display_date = "%s day%s ago" % (age.seconds / 86400, 's' if age.seconds > 86400 else '')

@@ -3,10 +3,43 @@ from django.core.urlresolvers import reverse
 from django.utils.dateformat import DateFormat
 
 from blog import lib
-from blog.models import Idea, ReadingListItem
+from blog.models import Idea, ReadingListItem, Task
 from blog.views import dashboard_stats
 
 register = template.Library()
+
+
+class TemplateTaskList(template.Node):
+    def __init__(self, name='tasks', task_list_length=lib.NUM_TASK_LIST):
+        self.name = name
+        self.length = task_list_length
+
+    def render(self, context):
+        context[self.name] = Task.objects.filter(is_completed=False).order_by("-priority", "-date_added")[:self.length]
+        return ''
+
+
+@register.tag
+def get_latest_tasks(parser, token):
+    """ return a list of tasks and work them into the template context
+
+        parameters:
+          kwargs['length'] -> number of tasks to return (ordered by
+            priority and date added)
+          kwargs['name'] -> value to store tasks in context variable
+    """
+
+    token_data = token.split_contents()
+    token_data = token_data[1:]  # index 0 is tag name
+    tokens = dict([tuple(l.split("=")) for l in token_data])
+
+    try:
+        tokens['name'] = tokens['name'].replace("'", "")
+        tokens['length'] = int(tokens['length'])
+    except KeyError:
+        pass
+
+    return TemplateTaskList(tokens['name'], task_list_length=tokens['length'])
 
 
 @register.simple_tag

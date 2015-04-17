@@ -76,6 +76,12 @@
   margin-left: 10px;
 }
 
+.todo-box {
+  background-color: #404040;
+  padding: 10px;
+  margin-bottom: 1.5rem;
+}
+
 /******************************************************************************
  * dashboard navigation
  *****************************************************************************/
@@ -367,6 +373,7 @@ table.task-list {
   width: 100%;
   font-size: 10pt;
   text-align: left;
+  line-height: 1.5rem;
   border-collapse: collapse;
 }
 
@@ -375,14 +382,16 @@ table.task-list thead {
   background-color: #404040;
 }
 
-table.task-list thead td {
-  padding: 0 5px;
+table.task-list tbody tr:nth-of-type(odd) {
+  background-color: #383838;
+}
+
+table.task-list tbody tr:nth-of-type(even) {
+  background-color: #404040;
 }
 
 table.task-list td {
-  padding: 0 5px;
-  padding-top: 10px;
-  padding-bottom: 30px;
+  padding: 5px;
 }
 
 table.task-list .icon {
@@ -436,10 +445,6 @@ table.task-list span.due {
 
 .completed * {
   color: #B7B7B7;
-}
-
-span[class*=priority] {
-  line-height: 1.3rem;
 }
 
 .priority_0 { } /* low priority */

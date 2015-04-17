@@ -122,8 +122,37 @@
 
             {% stat_box %}
 
-            <h3>To Do</h3>
-            <p>Latest To Do list items</p>
+            <div class="todo-box">
+                <h3>To Do</h3>
+                {% get_latest_tasks name='todo_list_tasks' length=3 %}
+
+                <table class="task-list">
+                    <tbody>
+                    {% for task in todo_list_tasks %}
+                    <tr>
+                        <td class="shrink">
+                            <a class="incomplete icon icon-checkbox" title="Mark as Complete" href="{% url 'forms-task-mark' task.id %}"></a>
+                        </td>
+                        <td>
+                            <span class="priority_{{ task.priority }}">
+                                {{ task.content }}
+                            </span>
+                        </td>
+                        <td class="shrink center-align">
+                            <a class="icon icon-delete" title="Delete this task" href="{% url 'forms-task-delete' task.id %}"></a>
+                        </td>
+                    </tr>
+                    {% if forloop.last %}
+                    <tr>
+                        <td colspan="3" class="center-align"><a href="{% url 'dashboard-todo' %}">More Tasks...</a></td>
+                    </tr>
+                    {% endif %}
+                    {% empty %}
+                    <tr><td>There are no To Do List items.</td></tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
 
             <h3>Random Notes</h3>
             <p>Random notes. A sharp. B flat.</p>
