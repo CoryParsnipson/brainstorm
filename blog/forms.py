@@ -2,7 +2,7 @@ from django import forms
 from django.core.urlresolvers import reverse_lazy
 from django.contrib.auth.admin import User
 
-from blog.models import PRIORITY, Idea, Thought, Highlight, ReadingListItem, Task
+from blog.models import Idea, Thought, Highlight, ReadingListItem, Task
 
 
 class LoginForm(forms.Form):

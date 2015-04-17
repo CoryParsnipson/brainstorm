@@ -16,17 +16,6 @@ import lib
 
 
 ###############################################################################
-# model defines
-###############################################################################
-PRIORITY = (
-    (0, 'Low'),
-    (1, 'Medium'),
-    (2, 'High'),
-    (3, 'Next'),
-)
-
-
-###############################################################################
 # Idea model
 ###############################################################################
 class Idea(models.Model):
@@ -372,6 +361,13 @@ class Task(models.Model):
         be decomposed into smaller chunks). When a Task has subtasks, they can
         only be marked completed when all subtasks are completed.
     """
+    PRIORITY = (
+        (0, 'Low'),
+        (1, 'Medium'),
+        (2, 'High'),
+        (3, 'Next'),
+    )
+
     parent_task = models.ForeignKey('Task', blank=True, null=True)
     idea = models.ForeignKey(Idea, blank=True, null=True)
     content = models.CharField(max_length=300)
@@ -427,3 +423,40 @@ class Note(models.Model):
     thoughts = models.ManyToManyField(Thought, blank=True, null=True)
     content = models.TextField(max_length=1500)
     date_published = models.DateTimeField(auto_now_add=True, auto_now=True)
+
+
+###############################################################################
+# Activity (activity feed item)
+###############################################################################
+class Activity(models.Model):
+    """ this item records a singular action done by an admin user on the site.
+        Examples of this include when a user posts a new new thought, adds
+        a book to the reading list, or marks a task complete.
+    """
+    TYPE = (
+        (0, 'Create Idea'),
+        (1, 'Create Thought'),
+        (2, 'Started Draft'),
+        (3, 'Published Draft'),
+        (4, 'Trashed Thought'),
+        (5, 'Deleted Thought'),
+        (6, 'Deleted Draft'),
+        (7, 'Deleted Idea'),
+        (8, 'Trashed Thought'),
+        (9, 'Added Book to Recently Read List'),
+        (10, 'Added Book to Wish List'),
+        (11, 'Deleted Book'),
+        (12, 'Added New Task Item'),
+        (13, 'Deleted Task Item'),
+        (14, 'Marked Task Item as Completed'),
+        (15, 'Started New Note'),
+        (16, 'Deleted Note'),
+        (17, 'Tweet'),
+    )
+
+    author = models.ForeignKey(User)
+    # related_instance = models.ForeignKey() ???
+    # related_url = ???
+    # type = ???
+    # date
+    # message
