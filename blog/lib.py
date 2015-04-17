@@ -578,7 +578,7 @@ def display_compact_date(dt=None):
     elif age < datetime.timedelta(days=1):
         display_date = timezone.localtime(dt).strftime("%I:%M %p").lstrip('0')
     elif age < datetime.timedelta(days=5):
-        display_date = "%s day%s ago" % (age.seconds / 86400, 's' if age.seconds > 86400 else '')
+        display_date = "%s day%s ago" % (age.days, 's' if age.days > 1 else '')
     else:
         display_date = dt.strftime("%b %d")
 
