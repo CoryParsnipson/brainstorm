@@ -362,7 +362,7 @@ def dashboard_todo(request):
 
     final_tasks = list(tasks)
     for t in tasks:
-        subtasks = Task.objects.filter(is_completed=False, parent_task=t)
+        subtasks = Task.objects.filter(is_completed=False, parent_task=t).order_by("-priority", "-date_added")
         if not subtasks:
             continue
 
