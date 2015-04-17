@@ -355,20 +355,29 @@ def dashboard_todo(request):
     """ user dashboard page to manage Task object instances
     """
     if 'c' in request.GET:
-        tasks = Task.objects.all()
+        tasks = Task.objects.filter(parent_task__isnull=True)
     else:
-        tasks = Task.objects.filter(is_completed=False)
+        tasks = Task.objects.filter(is_completed=False, parent_task__isnull=True)
     tasks = tasks.order_by("-priority", "-date_added")
+
+    final_tasks = list(tasks)
+    for t in tasks:
+        subtasks = Task.objects.filter(is_completed=False, parent_task=t)
+        if not subtasks:
+            continue
+
+        insert_idx = final_tasks.index(t)
+        final_tasks = final_tasks[:insert_idx + 1] + list(subtasks) + final_tasks[insert_idx + 1:]
 
     page = request.GET.get('p')
     paginator, tasks_on_page = lib.create_paginator(
-        queryset=tasks,
+        queryset=final_tasks,
         per_page=lib.PAGINATION_DASHBOARD_TASKS_PER_PAGE,
         page=page,
     )
 
     pagination = lib.create_pagination(
-        queryset=tasks,
+        queryset=final_tasks,
         current_page=page,
         per_page=lib.PAGINATION_DASHBOARD_TASKS_PER_PAGE,
         page_lead=lib.PAGINATION_DASHBOARD_TASKS_PAGES_TO_LEAD,

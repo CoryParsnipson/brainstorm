@@ -65,10 +65,12 @@ $(function () {
     {% for task in tasks %}
     <tr>
         <td class="shrink">
-            {% if task.is_completed %}
-            <img class="icon icon-checkbox" src="{% static 'images/icon_checkbox.png' %}">
-            {% else %}
-            <a class="incomplete icon icon-checkbox" title="Mark as Complete" href="{% url 'forms-task-mark' task.id %}"></a>
+            {% if not task.parent_task %}
+                {% if task.is_completed %}
+                <img class="icon icon-checkbox" src="{% static 'images/icon_checkbox.png' %}">
+                {% else %}
+                <a class="incomplete icon icon-checkbox" title="Mark as Complete" href="{% url 'forms-task-mark' task.id %}"></a>
+                {% endif %}
             {% endif %}
         </td>
         {% if task.is_completed %}
@@ -76,6 +78,15 @@ $(function () {
         {% else %}
         <td>
         {% endif %}
+            {% if task.parent_task %}
+                {% if task.is_completed %}
+                <img class="icon icon-checkbox" src="{% static 'images/icon_checkbox.png' %}">
+                {% else %}
+                <a class="incomplete icon icon-checkbox" title="Mark as Complete" href="{% url 'forms-task-mark' task.id %}"></a>
+                {% endif %}
+                &nbsp;
+            {% endif %}
+
             <span class="priority_{{ task.priority }}">
                 {{ task.content }}
             </span>
