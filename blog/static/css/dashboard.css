@@ -454,6 +454,7 @@ table.task-list span.slug {
   text-transform: uppercase;
   vertical-align: text-top;
   padding: 2px 8px;
+  padding-top: 3px;
   margin: 0 0.3rem;
   margin-top: -2px;
 }
