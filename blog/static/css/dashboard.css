@@ -61,7 +61,7 @@
 }
 
 .stat-box p.orange {
-  border-top: 4px solid #9E763E;
+  border-top: 4px solid #FA9D23;
 }
 
 .stat-box p.red {
@@ -515,7 +515,7 @@ table.task-list ul.dropdown li a {
 /* next priority */
 .priority_3 {
   width: 100%;
-  color: #CC331F;
+  color: #BA4545;
 }
 
 /******************************************************************************

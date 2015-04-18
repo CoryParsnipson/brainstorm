@@ -1304,10 +1304,10 @@ class FormTaskView(View):
             task.save()
 
             msg = "Task '%s' marked complete." % id
-            messages.add_messages(request, messages.SUCCESS, msg)
+            messages.add_message(request, messages.SUCCESS, msg)
         except Task.DoesNotExist:
             msg = "Task '%s' does not exist." % id
-            messages.add_messages(request, messages.ERROR, msg)
+            messages.add_message(request, messages.ERROR, msg)
             return redirect(request.META['HTTP_REFERER'])
 
         return redirect(request.META['HTTP_REFERER'])
@@ -1357,7 +1357,7 @@ class FormTaskView(View):
             id = int(id)
         except ValueError:
             msg = "Task '%s' does not exist." % id
-            messages.add_messages(request, messages.ERROR, msg)
+            messages.add_message(request, messages.ERROR, msg)
             return redirect(request.META['HTTP_REFERER'])
 
         try:
@@ -1369,7 +1369,7 @@ class FormTaskView(View):
             messages.add_message(request, messages.SUCCESS, msg)
         except Task.DoesNotExist:
             msg = "Task '%s' does not exist." % id
-            messages.add_messages(request, messages.ERROR, msg)
+            messages.add_message(request, messages.ERROR, msg)
             return redirect(request.META['HTTP_REFERER'])
 
         return redirect(request.META['HTTP_REFERER'])
