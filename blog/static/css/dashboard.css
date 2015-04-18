@@ -406,11 +406,10 @@ table.task-list .icon {
   display: inline-block;
   background-color: transparent;
   background-size: cover;
-  vertical-align: middle;
+  vertical-align: text-top;
 }
 
 table.task-list .icon-checkbox {
-  vertical-align: text-top;
   padding: 0;
   margin: 0;
 }
@@ -432,7 +431,6 @@ table.task-list .icon-priority:hover {
 
 table.task-list .icon-delete {
   background-image: url('../images/delete.png');
-  vertical-align: text-top;
   padding: 0;
   margin: 0;
 }
