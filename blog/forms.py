@@ -108,6 +108,9 @@ class TaskForm(forms.ModelForm):
     id = forms.IntegerField(widget=forms.HiddenInput)
     next = forms.CharField(widget=forms.HiddenInput, initial=reverse_lazy('dashboard-todo'))
 
+    # disable multi-level nesting of Tasks
+    parent_task = forms.ModelChoiceField(queryset=Task.objects.filter(parent_task__isnull=True), widget=forms.Select())
+
     class Meta:
         model = Task
         fields = ['id', 'parent_task', 'idea', 'content', 'date_due', 'priority']

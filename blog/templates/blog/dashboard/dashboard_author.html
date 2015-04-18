@@ -88,13 +88,13 @@
         {% for task in todo_list_tasks %}
         <tr>
             <td class="shrink">
-            {% if not task.parent_task %}
-                {% if task.is_completed %}
-                <img class="icon icon-checkbox" src="{% static 'images/icon_checkbox.png' %}">
-                {% else %}
-                <a class="incomplete icon icon-checkbox" title="Mark as Complete" href="{% url 'forms-task-mark' task.id %}"></a>
+                {% if not task.parent_task and not task.has_subtasks %}
+                    {% if task.is_completed %}
+                    <img class="icon icon-checkbox" src="{% static 'images/icon_checkbox.png' %}">
+                    {% else %}
+                    <a class="incomplete icon icon-checkbox" title="Mark as Complete" href="{% url 'forms-task-mark' task.id %}"></a>
+                    {% endif %}
                 {% endif %}
-            {% endif %}
             </td>
             <td>
                 {% if task.parent_task %}

@@ -65,7 +65,7 @@ $(function () {
     {% for task in tasks %}
     <tr>
         <td class="shrink">
-            {% if not task.parent_task %}
+            {% if not task.parent_task and not task.has_subtasks %}
                 {% if task.is_completed %}
                 <img class="icon icon-checkbox" src="{% static 'images/icon_checkbox.png' %}">
                 {% else %}

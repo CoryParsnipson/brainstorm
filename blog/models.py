@@ -405,6 +405,12 @@ class Task(models.Model):
 
         return reordered_tasks
 
+    def has_subtasks(self):
+        """ check to see if this task has subtasks. NOTE: this function will
+            return fals if this task has subtasks, but they are all complete
+        """
+        return Task.objects.filter(is_completed=False, parent_task=self).count() > 0
+
     def display_compact_date_added(self):
         return lib.display_compact_date(self.date_added)
 
