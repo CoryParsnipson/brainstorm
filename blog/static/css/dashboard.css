@@ -397,6 +397,7 @@ table.task-list td {
 table.task-list .icon {
   width: 15px;
   height: 15px;
+  max-width: initial;
   display: inline-block;
   background-color: transparent;
   background-size: cover;
@@ -411,6 +412,16 @@ table.task-list .icon-checkbox {
 
 table.task-list .icon-checkbox:hover {
   background-image: url('../images/icon_checkbox.png');
+  background-size: cover;
+}
+
+table.task-list .icon-priority {
+  padding: 0;
+  margin: 0;
+}
+
+table.task-list .icon-priority:hover {
+  background-image: url('../images/icon_priority_on.png');
   background-size: cover;
 }
 
@@ -446,6 +457,37 @@ table.task-list span.slug {
   padding: 2px 8px;
   margin: 0 0.3rem;
   margin-top: -2px;
+}
+
+table.task-list a.dropdown {
+  border-radius: 4px 4px 0 0;
+  padding: 3px 10px;
+  margin: 0;
+}
+
+table.task-list a.dropdown:after {
+  right: 50%;
+}
+
+table.task-list td:hover a.dropdown {
+  opacity: 0.9;
+  background-color: #565B99;
+  border-bottom: 1px solid #565B99;
+}
+
+table.task-list ul.dropdown li {
+  opacity: 0.9;
+  background-color: #565B99;
+}
+
+table.task-list ul.dropdown li:last-child {
+  border-radius: 0 0 4px 4px;
+}
+
+table.task-list ul.dropdown li a {
+  width: 100%;
+  padding: 3px 5px;
+  margin: 0;
 }
 
 .completed {

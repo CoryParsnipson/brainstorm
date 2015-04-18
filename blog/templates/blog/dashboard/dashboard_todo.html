@@ -54,9 +54,9 @@ $(function () {
 <table class="task-list">
     <thead>
     <tr>
-        <td><img class="icon icon-checkbox" src="{% static 'images/icon_checkbox.png' %}"></td>
+        <td><img class="icon" src="{% static 'images/icon_checkbox.png' %}"></td>
         <td>Task</td>
-        <td class="center-align">Completed</td>
+        <td class="center-align"><img class="icon" src="{% static 'images/icon_priority.png' %}"></td>
         <td class="center-align">Added</td>
         <td><a class="icon icon-delete"></a></td>
     </tr>
@@ -95,10 +95,14 @@ $(function () {
             </span>
         </td>
         <td class="shrink center-align">
-            {% if not task.date_completed %}
-            --
-            {% else %}
-            {{ task.display_compact_date_completed }}
+            {% if not task.is_completed %}
+            <a class="dropdown priority-dropdown"></a>
+            <ul class="dropdown">
+                <li><a title="Change to Next Priority" href="{% url 'forms-task-priority' task.id 3 %}">next</a></li>
+                <li><a title="Change to High Priority" href="{% url 'forms-task-priority' task.id 2 %}">high</a></li>
+                <li><a title="Change to Medium Priority" href="{% url 'forms-task-priority' task.id 1 %}">med</a></li>
+                <li><a title="Change to Low Priority" href="{% url 'forms-task-priority' task.id 0 %}">low</a></li>
+            </ul>
             {% endif %}
         </td>
         <td class="shrink center-align">{{ task.display_compact_date_added }}</td>

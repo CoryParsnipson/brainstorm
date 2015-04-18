@@ -114,12 +114,23 @@
                 </span>
             </td>
             <td class="shrink center-align">
+                {% if not task.is_completed %}
+                <a class="dropdown priority-dropdown"></a>
+                <ul class="dropdown">
+                    <li><a title="Change to Next Priority" href="{% url 'forms-task-priority' task.id 3 %}">next</a></li>
+                    <li><a title="Change to High Priority" href="{% url 'forms-task-priority' task.id 2 %}">high</a></li>
+                    <li><a title="Change to Medium Priority" href="{% url 'forms-task-priority' task.id 1 %}">med</a></li>
+                    <li><a title="Change to Low Priority" href="{% url 'forms-task-priority' task.id 0 %}">low</a></li>
+                </ul>
+                {% endif %}
+            </td>
+            <td class="shrink center-align">
                 <a class="icon icon-delete" title="Delete this task" href="{% url 'forms-task-delete' task.id %}"></a>
             </td>
         </tr>
         {% if forloop.last %}
         <tr>
-            <td colspan="3" class="center-align"><a href="{% url 'dashboard-todo' %}">More Tasks...</a></td>
+            <td colspan="4" class="center-align"><a href="{% url 'dashboard-todo' %}">More Tasks...</a></td>
         </tr>
         {% endif %}
         {% empty %}

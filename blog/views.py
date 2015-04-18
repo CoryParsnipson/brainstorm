@@ -6,7 +6,7 @@ from django.core import serializers
 from django.core.urlresolvers import reverse
 from django.core.exceptions import ValidationError
 from django.core.context_processors import csrf
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponseForbidden
 from django.views.generic import View
 from django.utils.http import urlquote_plus
 from django.shortcuts import render, redirect, get_object_or_404
@@ -1243,6 +1243,9 @@ class FormTaskView(View):
     def post(self, request):
         """ create a new Task Item
         """
+        if not request.user.is_authenticated():
+            return HttpResponseForbidden
+
         request.POST = request.POST.copy()  # make POST data mutable
 
         # calculate next url
@@ -1285,6 +1288,9 @@ class FormTaskView(View):
     def mark_complete(request, id):
         """ mark a model instance as complete
         """
+        if not request.user.is_authenticated():
+            return HttpResponseForbidden
+
         try:
             id = int(id)
         except ValueError:
@@ -1296,6 +1302,9 @@ class FormTaskView(View):
             task = Task.objects.filter(id=id)[0]
             task.is_completed = True
             task.save()
+
+            msg = "Task '%s' marked complete." % id
+            messages.add_messages(request, messages.SUCCESS, msg)
         except Task.DoesNotExist:
             msg = "Task '%s' does not exist." % id
             messages.add_messages(request, messages.ERROR, msg)
@@ -1304,9 +1313,46 @@ class FormTaskView(View):
         return redirect(request.META['HTTP_REFERER'])
 
     @staticmethod
+    def change_priority(request, id, priority):
+        """ change the priority of a Task
+        """
+        if not request.user.is_authenticated():
+            return HttpResponseForbidden
+
+        try:
+            id = int(id)
+            priority = int(priority)
+            if priority not in [i for (i, d) in Task.PRIORITY]:
+                raise ValueError("Invalid priority value '%d" % priority)
+        except ValueError:
+            msg = "Task '%s' does not exist." % id
+            messages.add_message(request, messages.ERROR, msg)
+            return redirect(request.META['HTTP_REFERER'])
+
+        try:
+            task = Task.objects.filter(id=id)[0]
+
+            old_priority = task.priority
+            task.priority = priority
+            task.save()
+
+            msg = "Changed Task #%d priority from %s to %s" %\
+                  (task.id, Task.PRIORITY[old_priority][1], Task.PRIORITY[priority][1])
+            messages.add_message(request, messages.SUCCESS, msg)
+        except Task.DoesNotExist:
+            msg = "Task '%s' does not exist." % id
+            messages.add_message(request, messages.ERROR, msg)
+            return redirect(request.META['HTTP_REFERER'])
+
+        return redirect(request.META['HTTP_REFERER'])
+
+    @staticmethod
     def delete(request, id):
         """ delete a model instance
         """
+        if not request.user.is_authenticated():
+            return HttpResponseForbidden
+
         try:
             id = int(id)
         except ValueError:

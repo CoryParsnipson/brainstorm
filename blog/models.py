@@ -398,7 +398,7 @@ class Task(models.Model):
                 subtasks = Task.objects.filter(is_completed=False, parent_task=t)
             if not subtasks:
                 continue
-            subtasks.order_by("-priority", "-date_added")
+            subtasks = subtasks.order_by("-priority", "-date_added")
 
             insert_idx = reordered_tasks.index(t)
             reordered_tasks = reordered_tasks[:insert_idx + 1] + list(subtasks) + reordered_tasks[insert_idx + 1:]
@@ -483,9 +483,10 @@ class Activity(models.Model):
         (12, 'Added New Task Item'),
         (13, 'Deleted Task Item'),
         (14, 'Marked Task Item as Completed'),
-        (15, 'Started New Note'),
-        (16, 'Deleted Note'),
-        (17, 'Tweet'),
+        (15, 'Change Task Priority'),
+        (16, 'Started New Note'),
+        (17, 'Deleted Note'),
+        (18, 'Tweet'),
     )
 
     author = models.ForeignKey(User)
