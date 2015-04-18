@@ -1,19 +1,6 @@
 {% extends 'blog/templates/template_dashboard.html' %}
 {% load staticfiles %}
 
-{% block http_headers %}
-<link rel="stylesheet" type="text/css" href="{% static 'css/jquery.datetimepicker.css' %}">
-<script type="text/javascript" src="{% static 'script/jquery.datetimepicker.js' %}"></script>
-
-<script type="text/javascript">
-$(function () {
-  $('#id_date_due').datetimepicker({
-    timepicker: false,
-  });
-});
-</script>
-{% endblock %}
-
 {% block content %}
 <h2>Tasks</h2>
 <form id="task_form" action="{% url 'forms-task' %}" method="post">
@@ -47,16 +34,6 @@ $(function () {
                     <tr>
                         <td class="shrink">{{ task_form.priority.label_tag }}</td>
                         <td class="expand">{{ task_form.priority }}</td>
-                    </tr>
-                </table>
-            </td>
-        </tr>
-        <tr>
-            <td colspan="2">
-                <table class="subfield_1">
-                    <tr>
-                        <td class="shrink">{{ task_form.date_due.label_tag }}</td>
-                        <td class="expand">{{ task_form.date_due }}</td>
                     </tr>
                 </table>
             </td>
