@@ -10,7 +10,7 @@ register = template.Library()
 
 
 class TemplateTaskList(template.Node):
-    def __init__(self, name='tasks', task_list_length=lib.NUM_TASK_LIST, idea=''):
+    def __init__(self, name='tasks', task_list_length=lib.NUM_TASK_LIST, idea=None):
         self.name = name
         self.length = task_list_length
         self.idea = idea
@@ -19,10 +19,11 @@ class TemplateTaskList(template.Node):
         tasks = Task.objects.filter(is_completed=False)
 
         if self.idea:
-            idea = template.Variable(self.idea)
-            tasks = tasks.filter(idea=idea.resolve(context))
+            idea = template.Variable(self.idea).resolve(context)
+            if idea:
+                tasks = tasks.filter(idea=idea)
 
-        context[self.name] = tasks.order_by("-priority", "-date_added")[:self.length]
+        context[self.name] = Task.reorder_child_tasks(tasks)[:self.length]
         return ''
 
 
@@ -47,7 +48,7 @@ def get_latest_tasks(parser, token):
         pass
 
     if 'idea' not in tokens:
-        tokens['idea'] = ''
+        tokens['idea'] = None
 
     return TemplateTaskList(tokens['name'], task_list_length=tokens['length'], idea=tokens['idea'])
 

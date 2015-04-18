@@ -8,6 +8,7 @@ from BeautifulSoup import BeautifulSoup
 
 from django.db import models
 from django.db.models import Max
+from django.db.models.query import QuerySet
 from django.conf import settings
 from django.contrib.auth.models import User
 
@@ -377,6 +378,33 @@ class Task(models.Model):
     is_completed = models.BooleanField(default=False)
     priority = models.IntegerField(choices=PRIORITY, default=PRIORITY[1][0], blank=True)
 
+    @staticmethod
+    def reorder_child_tasks(task_list, show_complete=False):
+        """ give a Queryset (or list) of Task instances, reorder
+            child tasks to come after their parent tasks. The subtasks will
+            also be ordered in order of priority then date added.
+
+            NOTE: this is not tested for task lists that have nesting of more
+                  than one level
+        """
+        if not task_list or not isinstance(task_list, QuerySet):
+            return task_list
+
+        reordered_tasks = list(task_list.filter(parent_task__isnull=True).order_by("-priority", "-date_added"))
+        for t in task_list:
+            if show_complete:
+                subtasks = Task.objects.filter(parent_task=t)
+            else:
+                subtasks = Task.objects.filter(is_completed=False, parent_task=t)
+            if not subtasks:
+                continue
+            subtasks.order_by("-priority", "-date_added")
+
+            insert_idx = reordered_tasks.index(t)
+            reordered_tasks = reordered_tasks[:insert_idx + 1] + list(subtasks) + reordered_tasks[insert_idx + 1:]
+
+        return reordered_tasks
+
     def display_compact_date_added(self):
         return lib.display_compact_date(self.date_added)
 
@@ -394,7 +422,7 @@ class Task(models.Model):
                 self.date_completed = pytz.timezone(settings.TIME_ZONE).localize(datetime.datetime.now())
 
                 # set priority to low
-                self.priority = PRIORITY[0][0]
+                self.priority = self.PRIORITY[0][0]
         except Task.DoesNotExist:
             pass
 

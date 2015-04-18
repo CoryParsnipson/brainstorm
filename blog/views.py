@@ -358,26 +358,18 @@ def dashboard_todo(request):
         tasks = Task.objects.filter(parent_task__isnull=True)
     else:
         tasks = Task.objects.filter(is_completed=False, parent_task__isnull=True)
-    tasks = tasks.order_by("-priority", "-date_added")
 
-    final_tasks = list(tasks)
-    for t in tasks:
-        subtasks = Task.objects.filter(is_completed=False, parent_task=t).order_by("-priority", "-date_added")
-        if not subtasks:
-            continue
-
-        insert_idx = final_tasks.index(t)
-        final_tasks = final_tasks[:insert_idx + 1] + list(subtasks) + final_tasks[insert_idx + 1:]
+    tasks = Task.reorder_child_tasks(tasks, 'c' in request.GET)
 
     page = request.GET.get('p')
     paginator, tasks_on_page = lib.create_paginator(
-        queryset=final_tasks,
+        queryset=tasks,
         per_page=lib.PAGINATION_DASHBOARD_TASKS_PER_PAGE,
         page=page,
     )
 
     pagination = lib.create_pagination(
-        queryset=final_tasks,
+        queryset=tasks,
         current_page=page,
         per_page=lib.PAGINATION_DASHBOARD_TASKS_PER_PAGE,
         page_lead=lib.PAGINATION_DASHBOARD_TASKS_PAGES_TO_LEAD,
