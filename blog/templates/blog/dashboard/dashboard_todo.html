@@ -89,6 +89,9 @@ $(function () {
 
             <span class="priority_{{ task.priority }}">
                 {{ task.content }}
+                {% if task.idea %}
+                <span class="slug blue">{{ task.idea }}</span>
+                {% endif %}
             </span>
         </td>
         <td class="shrink center-align">
