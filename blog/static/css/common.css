@@ -693,6 +693,12 @@ ul.pagination li:nth-child(2) a:before, ul.pagination li:nth-child(2) .inactive:
   padding-right: 5px;
 }
 
+/* css quirk that shows up when narrow pagination is activated on large screens */
+ul.pagination li:first-child a:after, ul.pagination li:first-child .inactive:after,
+ul.pagination li:nth-child(2) a:after, ul.pagination li:nth-child(2) .inactive:after {
+  content: '\00a0';
+}
+
 /* Append ">" to second to last child of pagination list (should say "Next") */
 ul.pagination li:nth-last-child(2) a:after, ul.pagination li:nth-last-child(2) .inactive:after {
   content: "\203A";
@@ -710,16 +716,15 @@ ul.pagination li:last-child a:after, ul.pagination li:last-child .inactive:after
     display: none;
   }
 
-  ul.pagination li.pages *,
-  ul.pagination li:first-child a:after,
+  ul.pagination li:first-child a:before,
   ul.pagination li:first-child .inactive:before,
-  ul.pagination li:nth-child(2) a:after,
+  ul.pagination li:nth-child(2) a:before,
   ul.pagination li:nth-child(2) .inactive:before,
   ul.pagination li:nth-last-child(2) a:after,
-  ul.pagination li:nth-last-child(2) .inactive:before,
+  ul.pagination li:nth-last-child(2) .inactive:after,
   ul.pagination li:last-child a:after,
-  ul.pagination li:last-child .inactive:before {
-    font-size: 10pt;
+  ul.pagination li:last-child .inactive:after {
+    padding: 0;
   }
 }
 
