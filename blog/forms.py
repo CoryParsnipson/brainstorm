@@ -117,4 +117,4 @@ class TaskForm(forms.ModelForm):
 
     class Meta:
         model = Task
-        fields = ['id', 'parent_task', 'idea', 'content', 'date_due', 'priority']
+        fields = ['id', 'parent_task', 'idea', 'content', 'priority']
