@@ -314,24 +314,30 @@ input[type="button"].publish:hover {
 /******************************************************************************
  * task form styles
  *****************************************************************************/
-#task_form {
-
-}
-
 #task_form label {
   float: none;
   font-size: 10pt;
   margin-right: 10px;
 }
 
-#task_form div.subfield {
-  width: 33%;
+#task_form table.subfield_1 {
+  width: 100%;
   float: left;
 }
 
+#task_form table.subfield_3 {
+  width: 33.34%;
+  float: left;
+}
+
+#task_form table.subfield td.expand * {
+  width: 100%;
+}
+
 @media (max-width: 40rem) {
-  #task_form div.subfield {
+  #task_form table[class^="subfield"] {
     width: 100%;
+    float: none;
   }
 }
 
@@ -340,11 +346,6 @@ input[type="button"].publish:hover {
 }
 
 #task_form #id_content { border-right: 0; }
-#task_form #id_date_due { width: 50%; }
-#task_form #id_parent_task { width: 100px; }
-#task_form #id_idea { width: 100px; }
-#task_form #id_priority { width: 75px; }
-
 #task_form .cell-content {
   position: relative;
 }
@@ -364,6 +365,10 @@ input[type="button"].publish:hover {
   margin: 0;
   margin-top: 3px;
   padding: 3px 12px;
+}
+
+#task_form select {
+  padding: 3px;
 }
 
 /******************************************************************************

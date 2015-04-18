@@ -31,15 +31,34 @@ $(function () {
         </tr>
         <tr>
             <td colspan="2">
-                <div class="subfield">{{ task_form.parent_task.label_tag }}{{ task_form.parent_task }}</div>
-                <div class="subfield">{{ task_form.idea.label_tag }}{{ task_form.idea }}</div>
-                <div class="subfield">{{ task_form.priority.label_tag }}{{ task_form.priority }}</div>
+                <table class="subfield_3">
+                    <tr>
+                        <td class="shrink">{{ task_form.parent_task.label_tag }}</td>
+                        <td class="expand">{{ task_form.parent_task }}</td>
+                    </tr>
+                </table>
+                <table class="subfield_3">
+                    <tr>
+                        <td class="shrink">{{ task_form.idea.label_tag }}</td>
+                        <td class="expand">{{ task_form.idea }}</td>
+                    </tr>
+                </table>
+                <table class="subfield_3">
+                    <tr>
+                        <td class="shrink">{{ task_form.priority.label_tag }}</td>
+                        <td class="expand">{{ task_form.priority }}</td>
+                    </tr>
+                </table>
             </td>
         </tr>
         <tr>
             <td colspan="2">
-                {{ task_form.date_due.label_tag }}
-                {{ task_form.date_due }}
+                <table class="subfield_1">
+                    <tr>
+                        <td class="shrink">{{ task_form.date_due.label_tag }}</td>
+                        <td class="expand">{{ task_form.date_due }}</td>
+                    </tr>
+                </table>
             </td>
         </tr>
     </table>
