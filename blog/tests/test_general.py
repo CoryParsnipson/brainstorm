@@ -4,7 +4,6 @@ from django.core.exceptions import ValidationError
 from django.core.urlresolvers import reverse
 from django.contrib.auth.models import User
 
-import blog.lib as lib
 from blog.models import Idea, Thought
 
 

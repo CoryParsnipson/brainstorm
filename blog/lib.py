@@ -565,7 +565,6 @@ def display_compact_date(dt=None):
         For instance, it will display 'Mar 16' or '2:11 PM' depending on how
         far in the past the date is.
     """
-
     now = pytz.timezone(settings.TIME_ZONE).localize(datetime.datetime.now())
     age = now - (dt or now)
 
@@ -581,6 +580,34 @@ def display_compact_date(dt=None):
         display_date = "%s day%s ago" % (age.days, 's' if age.days > 1 else '')
     else:
         display_date = dt.strftime("%b %d")
+
+    return display_date
+
+
+def display_fancy_date(dt=None):
+    """ get the date for display in a nicely-human readible way
+
+        For instance, it will display 'March 16' or '15 minutes ago' depending on the
+        given datetime. For any time longer than 4 hours in the past, the function
+        will return 'Today' and instead of '1 day ago', it will display 'Yesterday'.
+    """
+    now = pytz.timezone(settings.TIME_ZONE).localize(datetime.datetime.now())
+    age = now - (dt or now)
+
+    if age < datetime.timedelta(seconds=60):
+        display_date = "Now"
+    elif age < datetime.timedelta(minutes=60):
+        display_date = "%s minute%s ago" % (age.minutes, 's' if age.minutes > 2 else '')
+    elif age < datetime.timedelta(hours=4):
+        display_date = "%s hour%s ago" % (age.seconds / 3600, 's' if age.seconds > 7200 else '')
+    elif age < datetime.timedelta(days=1):
+        display_date = 'Today'
+    elif age < datetime.timedelta(days=2):
+        display_date = 'Yesterday'
+    elif age < datetime.timedelta(days=5):
+        display_date = "%s day%s ago" % (age.days, 's' if age.days > 1 else '')
+    else:
+        display_date = dt.strftime("%B %d")
 
     return display_date
 

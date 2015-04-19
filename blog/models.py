@@ -410,10 +410,10 @@ class Task(models.Model):
         """
         return Task.objects.filter(is_completed=False, parent_task=self).count() > 0
 
-    def display_compact_date_added(self):
+    def display_date_added(self):
         return lib.display_compact_date(self.date_added)
 
-    def display_compact_date_completed(self):
+    def display_date_completed(self):
         return lib.display_compact_date(self.date_completed)
 
     def save(self):
@@ -486,8 +486,13 @@ class Activity(models.Model):
     )
 
     author = models.ForeignKey(User)
+    type = models.IntegerField(choices=TYPE, blank=False, null=False)
+    date = models.DateTimeField(auto_now_add=True)
+
     # related_instance = models.ForeignKey() ???
     # related_url = ???
-    # type = ???
     # date
     # message
+
+    def display_date(self):
+        return lib.display_fancy_date(self.date)
