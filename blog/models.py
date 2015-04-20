@@ -471,31 +471,33 @@ class Activity(models.Model):
         (3, 'Started Draft'),
         (4, 'Published Draft'),
         (5, 'Edited Draft'),
-        (6, 'Trashed Draft'),
-        (7, 'Untrashed Draft'),
-        (8, 'Deleted Draft'),
-        (9, 'Published Thought'),
-        (10, 'Unpublished Thought'),
-        (11, 'Edited Thought'),
-        (12, 'Trashed Thought'),
-        (13, 'Untrashed Thought'),
-        (14, 'Deleted Thought'),
-        (15, 'Added New Highlight'),
-        (16, 'Edited Highlight'),
-        (17, 'Deleted Highlight'),
-        (18, 'Added Book to Recently Read List'),
-        (19, 'Added Book to Wish List'),
-        (20, 'Edited Book'),
-        (21, 'Moved Book to Recently Read List'),
-        (22, 'Deleted Book'),
-        (23, 'Added New Task Item'),
-        (24, 'Edited Task Item'),
-        (25, 'Deleted Task Item'),
-        (26, 'Marked Task Item as Completed'),
-        (27, 'Changed Task Priority'),
-        (28, 'Started New Note'),
-        (29, 'Deleted Note'),
-        (30, 'Tweet'),
+        (6, 'Moved Draft'),
+        (7, 'Trashed Draft'),
+        (8, 'Untrashed Draft'),
+        (9, 'Deleted Draft'),
+        (10, 'Published Thought'),
+        (11, 'Unpublished Thought'),
+        (12, 'Edited Thought'),
+        (13, 'Moved Thought'),
+        (14, 'Trashed Thought'),
+        (15, 'Untrashed Thought'),
+        (16, 'Deleted Thought'),
+        (17, 'Added New Highlight'),
+        (18, 'Edited Highlight'),
+        (19, 'Deleted Highlight'),
+        (20, 'Added Book to Recently Read List'),
+        (21, 'Added Book to Wish List'),
+        (22, 'Edited Book'),
+        (23, 'Moved Book to Recently Read List'),
+        (24, 'Deleted Book'),
+        (25, 'Added New Task Item'),
+        (26, 'Edited Task Item'),
+        (27, 'Deleted Task Item'),
+        (28, 'Marked Task Item as Completed'),
+        (29, 'Changed Task Priority'),
+        (30, 'Started New Note'),
+        (31, 'Deleted Note'),
+        (32, 'Tweet'),
     )
 
     author = models.ForeignKey(User)
@@ -545,6 +547,10 @@ class Activity(models.Model):
                 msg = "published <span class='excerpt'>Draft</span> <span class='draft'>%s</span>" % self.get_tokens()['title']
         elif Activity.TYPE[int(self.type)][1] == 'Edited Draft':
             msg = "edited <span class='excerpt'>Draft</span> <span class='draft'>%s</span>" % self.get_tokens()['title']
+        elif Activity.TYPE[int(self.type)][1] == 'Moved Draft':
+            t = self.get_tokens()
+            msg = "moved <span class='excerpt'>Draft</span> <span class='draft'>%s</span> from <span class='excerpt'>Idea</span> <span class='idea'>%s</span> to <span class='idea'>%s</span>"\
+                  % (t['title'], t['old_idea'], t['new_idea'])
         elif Activity.TYPE[int(self.type)][1] == 'Trashed Draft':
             t = self.get_tokens()
             if int(t['length']) > 1:
@@ -574,6 +580,10 @@ class Activity(models.Model):
                 msg = "unpublished <span class='excerpt'>Thought</span> <span class='thought'>%s</span>" % self.get_tokens()['title']
         elif Activity.TYPE[int(self.type)][1] == 'Edited Thought':
             msg = "edited <span class='excerpt'>Thought</span> <span class='thought'>%s</span>" % self.get_tokens()['title']
+        elif Activity.TYPE[int(self.type)][1] == 'Moved Thought':
+            t = self.get_tokens()
+            msg = "moved <span class='excerpt'>Thought</span> <span class='thought'>%s</span> from <span class='excerpt'>Idea</span> <span class='idea'>%s</span> to <span class='idea'>%s</span>"\
+                  % (t['title'], t['old_idea'], t['new_idea'])
         elif Activity.TYPE[int(self.type)][1] == 'Trashed Thought':
             t = self.get_tokens()
             if int(t['length']) > 1:

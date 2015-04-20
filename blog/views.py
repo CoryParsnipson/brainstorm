@@ -673,7 +673,18 @@ def dashboard_backend(request):
 
             fmm.add_message({'action': action, 'status': status, 'tokens': tokens, 'extra_html': undo})
         elif action == 'thought_idea_move':
+            t = Thought.objects.filter(slug=i)[0]
+            t_old_idea = t.idea.name
             status, tokens = thought_move(i, action_args[0] if action_args else '')
+            if status:
+                # log activity in database
+                a = Activity()
+                a.type = Activity.get_type_id('Moved Draft' if t.is_draft else 'Moved Thought')
+                a.author = request.user
+                a.store_tokens({'title': t.title, 'slug': t.slug, 'old_idea': t_old_idea, 'new_idea': action_args[0]})
+                a.url = reverse('dashboard-author') + "?id=" + t.slug
+                a.save()
+
             fmm.add_message({'action': action, 'status': status, 'tokens': tokens, 'extra_html': ''})
         elif action == 'thought_delete':
             t = Thought.objects.filter(slug=i)[0]
