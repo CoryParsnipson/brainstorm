@@ -56,8 +56,9 @@
         <a class="link-icon" href="{{ book.link }}" target="_blank" title="Open external link"></a>
         <a class="link-icon edit-icon" href="{% url 'dashboard-books' %}?id={{ book.id }}" title="Edit"></a>
         <form action="{% url 'dashboard-backend' %}" method="post">
-            <input type="hidden" name="id" value="{{ book.id }}" />
-            <input type="hidden" name="next" value="{% url 'dashboard-books' %}" />
+            <input type="hidden" name="id" value="{{ book.id }}">
+            <input type="hidden" name="next" value="{% url 'dashboard-books' %}">
+            <input type="hidden" name="action" value="book_delete">
             {% csrf_token %}
             <input class="link-icon delete-icon" type="submit" value="" name="book_delete" title="Delete" />
         </form>
@@ -80,8 +81,9 @@
         <a class="link-icon" href="{{ book.link }}" target="_blank" title="Open external link"></a>
         <a class="link-icon edit-icon" href="{% url 'dashboard-books' %}?id={{ book.id }}" title="Edit"></a>
         <form action="{% url 'dashboard-backend' %}" method="post">
-            <input type="hidden" name="id" value="{{ book.id }}" />
-            <input type="hidden" name="next" value="{% url 'dashboard-books' %}" />
+            <input type="hidden" name="id" value="{{ book.id }}">
+            <input type="hidden" name="next" value="{% url 'dashboard-books' %}">
+            <input type="hidden" name="action" value="book_delete">
             {% csrf_token %}
             <input class="link-icon delete-icon" type="submit" value="" name="book_delete" title="Delete" />
         </form>

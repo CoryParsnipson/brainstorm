@@ -533,16 +533,27 @@ table.task-list ul.dropdown li a {
   background-color: #404040;
 }
 
+.activity-feed tr:hover {
+  background-color: #444444;
+}
+
 .activity-feed td {
-  text-justify: left;
+  position: relative;
   padding: 10px 5px;
+}
+
+.activity-feed p {
+  font-size: 10pt;
+  text-align: left;
+  margin-bottom: 0;
 }
 
 .activity-feed td.date {
   color: #B7B7B7;
   font-size: 10pt;
   vertical-align: top;
-  padding: 0 5px;
+  padding: 0 10px;
+  padding-left: 20px;
 }
 
 *[class^="activity-type-"] {
@@ -581,6 +592,16 @@ table.task-list ul.dropdown li a {
 .activity-type-25 { background-image: url('../images/activity_icon_delete.png'); }           /* deleted task item */
 .activity-type-26 { background-image: url('../images/activity_icon_mark_complete.png'); }    /* marked task item as completed  */
 .activity-type-27 { background-image: url('../images/activity_icon_priority.png'); }         /* changed task priority */
+
+span.excerpt { color: #AAAAAA; }
+
+span.idea { font-weight: bold; color: #565B99; }
+span.thought { font-weight: bold; color: #BA4545; }
+span.draft { font-weight: bold; color: #FA9D23; }
+span.highlight { font-weight: bold; color: #F8C118; }
+span.book { font-weight: bold; color: #565B99; }
+span.task { font-weight: bold; color: #7A5F87; }
+span.note { font-weight: bold; color: #50804A; }
 
 /******************************************************************************
  * editable-control div styles

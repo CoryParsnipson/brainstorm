@@ -529,100 +529,100 @@ class Activity(models.Model):
             tokens field.
         """
         if Activity.TYPE[int(self.type)][1] == 'Create Idea':
-            msg = "created a new Idea '%s'" % self.get_tokens()['slug']
+            msg = "created a new <span class='excerpt'>Idea</span> <span class='idea'>%s</span>" % self.get_tokens()['name']
         elif Activity.TYPE[int(self.type)][1] == 'Edited Idea':
-            msg = "edited Idea '%s'" % self.get_tokens()['slug']
+            msg = "edited <span class='excerpt'>Idea</span> <span class='idea'>%s</span>" % self.get_tokens()['name']
         elif Activity.TYPE[int(self.type)][1] == 'Deleted Idea':
-            msg = "deleted Idea '%s'" % self.get_tokens()['slug']
+            msg = "deleted <span class='excerpt'>Idea</span> <span class='idea'>%s</span>" % self.get_tokens()['name']
         elif Activity.TYPE[int(self.type)][1] == 'Started Draft':
-            msg = "started a new Draft called '%s'" % self.get_tokens()['title']
+            msg = "started a new <span class='excerpt'>Draft</span> titled <span class='draft'>%s</span>" % self.get_tokens()['title']
         elif Activity.TYPE[int(self.type)][1] == 'Published Draft':
             # took draft(s) that were already saved and published it/them
             t = self.get_tokens()
             if int(t['length']) > 1:
-                msg = "published %d Drafts" % int(t['length'])
+                msg = "published %d <span class='draft'>Drafts</span>" % int(t['length'])
             else:
-                msg = "published Draft '%s'" % self.get_tokens()['title']
+                msg = "published <span class='excerpt'>Draft</span> <span class='draft'>%s</span>" % self.get_tokens()['title']
         elif Activity.TYPE[int(self.type)][1] == 'Edited Draft':
-            msg = "edited Draft '%s'" % self.get_tokens()['title']
+            msg = "edited <span class='excerpt'>Draft</span> <span class='draft'>%s</span>" % self.get_tokens()['title']
         elif Activity.TYPE[int(self.type)][1] == 'Trashed Draft':
             t = self.get_tokens()
             if int(t['length']) > 1:
-                msg = "moved %d Drafts to the trash" % int(t['length'])
+                msg = "moved %d <span class='draft'>Drafts</span> to the trash" % int(t['length'])
             else:
-                msg = "moved Draft '%s' to the trash" % self.get_tokens()['title']
+                msg = "moved <span class='excerpt'>Draft</span> <span class='draft'>%s</span> to the trash" % self.get_tokens()['title']
         elif Activity.TYPE[int(self.type)][1] == 'Untrashed Draft':
             t = self.get_tokens()
             if int(t['length']) > 1:
-                msg = "untrashed %d Drafts" % int(t['length'])
+                msg = "untrashed %d <span class='draft'>Drafts</span>" % int(t['length'])
             else:
-                msg = "untrashed Draft '%s'" % self.get_tokens()['title']
+                msg = "untrashed <span class='excerpt'>Draft</span> <span class='draft'>%s</span>" % self.get_tokens()['title']
         elif Activity.TYPE[int(self.type)][1] == 'Deleted Draft':
             t = self.get_tokens()
             if int(t['length']) > 1:
-                msg = "deleted %d Drafts" % int(t['length'])
+                msg = "deleted %d <span class='draft'>Drafts</span>" % int(t['length'])
             else:
-                msg = "deleted Draft '%s'" % self.get_tokens()['title']
+                msg = "deleted <span class='excerpt'>Draft</span> <span class='draft'>%s</span>" % self.get_tokens()['title']
         elif Activity.TYPE[int(self.type)][1] == 'Published Thought':
             # created a thought and published it without saving as a draft
-            msg = "published a new Thought '%s'" % self.get_tokens()['title']
+            msg = "published a new <span class='excerpt'>Thought</span> <span class='thought'>%s</span>" % self.get_tokens()['title']
         elif Activity.TYPE[int(self.type)][1] == 'Unpublished Thought':
             t = self.get_tokens()
             if int(t['length']) > 1:
-                msg = "unpublished %d Thoughts" % int(t['length'])
+                msg = "unpublished %d <span class='thought'>Thoughts</span>" % int(t['length'])
             else:
-                msg = "unpublished Thought '%s'" % self.get_tokens()['title']
+                msg = "unpublished <span class='excerpt'>Thought</span> <span class='thought'>%s</span>" % self.get_tokens()['title']
         elif Activity.TYPE[int(self.type)][1] == 'Edited Thought':
-            msg = "edited Thought '%s'" % self.get_tokens()['title']
+            msg = "edited <span class='excerpt'>Thought</span> <span class='thought'>%s</span>" % self.get_tokens()['title']
         elif Activity.TYPE[int(self.type)][1] == 'Trashed Thought':
             t = self.get_tokens()
             if int(t['length']) > 1:
-                msg = "moved %d Thoughts to the trash" % int(t['length'])
+                msg = "moved %d <span class='thought'>Thoughts</span> to the trash" % int(t['length'])
             else:
-                msg = "moved Thought '%s' to the trash" % self.get_tokens()['title']
+                msg = "moved <span class='excerpt'>Thought</span> <span class='thought'>%s</span> to the trash" % self.get_tokens()['title']
         elif Activity.TYPE[int(self.type)][1] == 'Untrashed Thought':
             t = self.get_tokens()
             if int(t['length']) > 1:
-                msg = "untrashed %d Thoughts" % int(t['length'])
+                msg = "untrashed %d <span class='thought'>Thoughts</span>" % int(t['length'])
             else:
-                msg = "untrashed Thought '%s'" % self.get_tokens()['title']
+                msg = "untrashed <span class='excerpt'>Thought</span> <span class='thought'>%s</span>" % self.get_tokens()['title']
         elif Activity.TYPE[int(self.type)][1] == 'Deleted Thought':
             t = self.get_tokens()
             if int(t['length']) > 1:
-                msg = "deleted %d Thoughts from trash" % int(t['length'])
+                msg = "deleted %d <span class='thought'>Thoughts</span> from trash" % int(t['length'])
             else:
-                msg = "deleted Thought '%s' from trash" % self.get_tokens()['title']
+                msg = "deleted <span class='excerpt'>Thought</span> <span class='thought'>%s</span> from trash" % self.get_tokens()['title']
         elif Activity.TYPE[int(self.type)][1] == 'Added New Highlight':
-            msg = "Added new Highlight '%s'" % self.get_tokens()['title']
+            msg = "added new <span class='excerpt'>Highlight</span> <span class='highlight'>%s</span>" % self.get_tokens()['title']
         elif Activity.TYPE[int(self.type)][1] == 'Edited Highlight':
-            msg = "Edited Highlight '%s'" % self.get_tokens()['title']
+            msg = "edited <span class='excerpt'>Highlight</span> <span class='highlight'>%s</span>" % self.get_tokens()['title']
         elif Activity.TYPE[int(self.type)][1] == 'Deleted Highlight':
-            msg = "Deleted Highlight '%s'" % self.get_tokens()['title']
+            msg = "deleted <span class='excerpt'>Highlight</span> <span class='highlight'>%s</span>" % self.get_tokens()['title']
         elif Activity.TYPE[int(self.type)][1] == 'Added Book to Recently Read List':
-            msg = "added '%s' to the recently read list" % self.get_tokens()['title']
+            msg = "added <span class='book'>%s</span> to the recently read list" % self.get_tokens()['title']
         elif Activity.TYPE[int(self.type)][1] == 'Added Book to Wish List':
-            msg = "added '%s' to the wish list" % self.get_tokens()['title']
+            msg = "added <span class='book'>%s</span> to the wish list" % self.get_tokens()['title']
         elif Activity.TYPE[int(self.type)][1] == 'Edited Book':
-            msg = "edited Reading List Book '%s'" % self.get_tokens()['title']
+            msg = "edited <span class='excerpt'>Reading List Book</span> <span class='book'>%s</span>" % self.get_tokens()['title']
         elif Activity.TYPE[int(self.type)][1] == 'Moved Book to Recently Read List':
-            msg = "Moved Book '%s' from wish list to recently read list" % self.get_tokens()['title']
+            msg = "Moved <span class='book'>%s</span> from wish list to recently read list" % self.get_tokens()['title']
         elif Activity.TYPE[int(self.type)][1] == 'Deleted Book':
-            msg = "deleted '%s' from the reading list" % self.get_tokens()['title']
+            msg = "deleted <span class='book'>%s</span> from the reading list" % self.get_tokens()['title']
         elif Activity.TYPE[int(self.type)][1] == 'Added New Task Item':
             t = self.get_tokens()
-            msg = "added new Task #%d '%s'" % (t['id'], t['content'])
+            msg = "added new <span class='excerpt'>Task #%d:</span> <span class='task'>%s</span>" % (t['id'], t['content'])
         elif Activity.TYPE[int(self.type)][1] == 'Edited Task Item':
             t = self.get_tokens()
-            msg = "edited Task #%d '%s'" % (t['id'], t['content'])
+            msg = "edited <span class='excerpt'>Task #%d:</span> <span class='task'>%s</span>" % (t['id'], t['content'])
         elif Activity.TYPE[int(self.type)][1] == 'Deleted Task Item':
             t = self.get_tokens()
-            msg = "deleted Task #%d '%s'" % (t['id'], t['content'])
+            msg = "deleted <span class='excerpt'>Task #%d:</span> <span class='task'>%s</span>" % (t['id'], t['content'])
         elif Activity.TYPE[int(self.type)][1] == 'Marked Task Item as Completed':
             t = self.get_tokens()
-            msg = "marked Task #%d '%s' as completed" % (t['id'], t['content'])
+            msg = "marked <span class='excerpt'>Task #%d:</span> <span class='task'>%s</span> as completed" % (t['id'], t['content'])
         elif Activity.TYPE[int(self.type)][1] == 'Changed Task Priority':
             t = self.get_tokens()
-            msg = "changed priority of Task #%d '%s' from %s to %s" %\
+            msg = "changed priority of <span class='excerpt'>Task #%d:</span> <span class='task'>%s</span> from <span class='excerpt'>%s</span> to <span class='excerpt'>%s</span>" %\
                   (t['id'], t['content'], Task.PRIORITY[t['old_priority']][1], Task.PRIORITY[t['new_priority']][1])
         #elif Activity.TYPE[int(self.type)][1] == 'Started New Note':
         #elif Activity.TYPE[int(self.type)][1] == 'Deleted Note':

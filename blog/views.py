@@ -262,9 +262,25 @@ def thought_detail(request, idea_slug=None, thought_slug=None):
 ###############################################################################
 @login_required(login_url='index')
 def dashboard(request):
+    activities = Activity.objects.all().order_by("-date")
+    paginator, activities_on_page = lib.create_paginator(
+        queryset=activities,
+        per_page=lib.PAGINATION_DASHBOARD_ACTIVITY_PER_PAGE,
+        page=request.GET.get('p'),
+    )
+
+    pagination = lib.create_pagination(
+        queryset=activities,
+        current_page=request.GET.get('p'),
+        per_page=lib.PAGINATION_DASHBOARD_ACTIVITY_PER_PAGE,
+        page_lead=lib.PAGINATION_DASHBOARD_ACTIVITY_PAGES_TO_LEAD,
+    )
+
     context = {
         'page_title': 'Main',
-        'activities': Activity.objects.all().order_by("-date"),
+        'activities': activities_on_page,
+        'paginator': paginator,
+        'pagination': pagination,
     }
     return render(request, 'blog/dashboard/dashboard.html', context)
 
@@ -572,13 +588,15 @@ def dashboard_backend(request):
     fmm = lib.FlashMessageManager()
     for i in request.POST.getlist('id'):
         if action == 'idea_delete':
+            idea_name = Idea.objects.filter(slug=i)[0].name
             status, tokens = idea_safe_delete(i)
             if status:
                 # log activity in database
                 a = Activity()
                 a.author = request.user
                 a.type = Activity.get_type_id('Deleted Idea')
-                a.store_tokens({'slug': i})
+                a.store_tokens({'name': idea_name, 'slug': i})
+                a.url = reverse('dashboard-ideas')
                 a.save()
 
             fmm.add_message({'action': action, 'status': status, 'tokens': tokens, 'extra_html': ''})
@@ -606,7 +624,8 @@ def dashboard_backend(request):
                     a = Activity()
                     a.author = request.user
                     a.type = Activity.get_type_id('Trashed Draft' if t.is_draft else 'Trashed Thought')
-                    a.store_tokens({'length': 1, 'title': t.title})
+                    a.store_tokens({'length': 1, 'title': t.title, 'slug': t.slug})
+                    a.url = reverse('dashboard-trash')
                     a.save()
 
                 undo = undo_button_html(request, input_data={'action': 'thought_untrash'})
@@ -616,7 +635,8 @@ def dashboard_backend(request):
                     a = Activity()
                     a.author = request.user
                     a.type = Activity.get_type_id('Untrashed Draft' if t.is_draft else 'Untrashed Thought')
-                    a.store_tokens({'length': 1, 'title': t.title})
+                    a.store_tokens({'length': 1, 'title': t.title, 'slug': t.slug})
+                    a.url = reverse('dashboard-author') + "?id=" + t.slug
                     a.save()
 
                 undo = undo_button_html(request, input_data={'action': 'thought_trash'})
@@ -634,7 +654,8 @@ def dashboard_backend(request):
                     a = Activity()
                     a.author = request.user
                     a.type = Activity.get_type_id('Unpublished Thought')
-                    a.store_tokens({'length': 1, 'title': t.title})
+                    a.store_tokens({'length': 1, 'title': t.title, 'slug': t.slug})
+                    a.url = reverse('dashboard-author') + "?id=" + t.slug
                     a.save()
 
                 undo = undo_button_html(request, input_data={'action': 'thought_publish'})
@@ -644,7 +665,8 @@ def dashboard_backend(request):
                     a = Activity()
                     a.author = request.user
                     a.type = Activity.get_type_id('Published Draft')
-                    a.store_tokens({'length': 1, 'title': t.title})
+                    a.store_tokens({'length': 1, 'title': t.title, 'slug': t.slug})
+                    a.url = reverse('dashboard-author') + "?id=" + t.slug
                     a.save()
 
                 undo = undo_button_html(request, input_data={'action': 'thought_unpublish'})
@@ -655,6 +677,7 @@ def dashboard_backend(request):
             fmm.add_message({'action': action, 'status': status, 'tokens': tokens, 'extra_html': ''})
         elif action == 'thought_delete':
             t = Thought.objects.filter(slug=i)[0]
+            t_idea = t.idea.slug
             status, tokens = thought_delete(i)
 
             if status:
@@ -662,7 +685,8 @@ def dashboard_backend(request):
                 a = Activity()
                 a.type = Activity.get_type_id('Deleted Draft' if t.is_draft else 'Deleted Thought')
                 a.author = request.user
-                a.store_tokens({'length': 1, 'title': t.title})
+                a.store_tokens({'length': 1, 'title': t.title, 'idea': t_idea})
+                a.url = reverse('dashboard-thoughts') + "?id=" + t_idea
                 a.save()
 
             fmm.add_message({'action': action, 'status': status, 'tokens': tokens, 'extra_html': ''})
@@ -675,7 +699,8 @@ def dashboard_backend(request):
                 a = Activity()
                 a.type = Activity.get_type_id('Deleted Highlight')
                 a.author = request.user
-                a.store_tokens({'title': h_title})
+                a.store_tokens({'title': h_title, 'id': i})
+                a.url = reverse('dashboard-highlights')
                 a.save()
 
             fmm.add_message({'action': action, 'status': status, 'tokens': tokens, 'extra_html': ''})
@@ -688,7 +713,8 @@ def dashboard_backend(request):
                 a = Activity()
                 a.type = Activity.get_type_id('Deleted Book')
                 a.author = request.user
-                a.store_tokens({'title': b_title})
+                a.store_tokens({'title': b_title, 'id': i})
+                a.url = reverse('dashboard-books')
                 a.save()
 
             fmm.add_message({'action': action, 'status': status, 'tokens': tokens, 'extra_html': ''})
@@ -1050,7 +1076,8 @@ class FormIdeaView(View):
         if idea_form.is_valid():
             idea = idea_form.save()
 
-            activity.store_tokens({'slug': request.POST['slug']})
+            activity.url = reverse('dashboard-thoughts') + "?id=" + request.POST['slug']
+            activity.store_tokens({'name': request.POST['name'], 'slug': request.POST['slug']})
             activity.save()
 
             # delete old icon if necessary
@@ -1157,6 +1184,8 @@ class FormThoughtView(View):
         thought_form = ThoughtForm(request.POST, request.FILES, instance=instance)
         if thought_form.is_valid():
             thought = thought_form.save()
+
+            activity.url = reverse('dashboard-author') + "?id=" + request.POST['slug']
             activity.store_tokens({'length': 1, 'title': request.POST['title']})
             activity.save()
 
@@ -1254,7 +1283,8 @@ class FormHighlightView(View):
         highlight_form = HighlightForm(request.POST, request.FILES, instance=instance)
         if highlight_form.is_valid():
             highlight = highlight_form.save()
-            activity.store_tokens({'title': request.POST['title']})
+            activity.store_tokens({'title': request.POST['title'], 'id': highlight.id})
+            activity.url = reverse('dashboard-highlights') + "?id=" + str(highlight.id)
             activity.save()
 
             # remove old icon file if necessary
@@ -1306,7 +1336,6 @@ class FormReadingListView(View):
         # log activity in database
         activity = Activity()
         activity.author = request.user
-        activity.store_tokens({'title': request.POST['title']})
 
         # prevent accidental edit when writing new reading list items
         if 'id' not in request.POST or not request.POST['id']:
@@ -1328,6 +1357,9 @@ class FormReadingListView(View):
         reading_list_form = ReadingListItemForm(request.POST, instance=instance)
         if reading_list_form.is_valid():
             reading_list_item = reading_list_form.save()
+
+            activity.store_tokens({'title': request.POST['title'], 'id': reading_list_item.id})
+            activity.url = reverse('dashboard-books') + "?id=" + str(reading_list_item.id)
             activity.save()
 
             if callback:
@@ -1401,6 +1433,7 @@ class FormTaskView(View):
             task = task_form.save()
 
             activity.store_tokens({'id': task.id, 'content': task.content})
+            activity.url = request.META['HTTP_REFERER']
             activity.save()
 
             if callback:
@@ -1444,6 +1477,7 @@ class FormTaskView(View):
             activity.author = request.user
             activity.type = Activity.get_type_id('Marked Task Item as Completed')
             activity.store_tokens({'id': task.id, 'content': task.content})
+            activity.url = request.META['HTTP_REFERER']
             activity.save()
 
             msg = "Task '%s' marked complete." % id
@@ -1484,6 +1518,7 @@ class FormTaskView(View):
             activity.author = request.user
             activity.type = Activity.get_type_id('Changed Task Priority')
             activity.store_tokens({'id': task.id, 'content': task.content, 'old_priority': old_priority, 'new_priority': priority})
+            activity.url = request.META['HTTP_REFERER']
             activity.save()
 
             msg = "Changed Task #%d priority from %s to %s" %\
@@ -1518,6 +1553,7 @@ class FormTaskView(View):
             activity.author = request.user
             activity.type = Activity.get_type_id('Deleted Task Item')
             activity.store_tokens({'id': task.id, 'content': task.content})
+            activity.url = reverse('dashboard-todo')
             activity.save()
 
             msg = "Successfully deleted Task #%d" % task.id

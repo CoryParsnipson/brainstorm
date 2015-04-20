@@ -7,7 +7,6 @@
 
 {% block content %}
 <h2>{{ request.user.username }}'s Recent Activity</h2>
-<hr class="header">
 <table class="activity-feed">
     <tbody>
     {% for activity in activities %}
@@ -15,7 +14,12 @@
         <td class="shrink">
             <div class="activity-type-{{ activity.type }}"></div>
         </td>
-        <td>{% if activity.author == request.user %}You{% else %}{{ activity.author }}{% endif %} {{ activity.generate_message }}</td>
+        <td>
+            {% if activity.url %}
+            <a class="overlay" href="{{ activity.url }}"></a>
+            {% endif %}
+            <p>{% if activity.author == request.user %}You{% else %}{{ activity.author }}{% endif %} {{ activity.generate_message|safe }}</p>
+        </td>
         <td class="shrink right-justify date">{{ activity.display_date }}</td>
     </tr>
     {% empty %}
@@ -26,4 +30,6 @@
     {% endfor %}
     </tbody>
 </table>
+
+{% include "blog/templates/template_pagination.html" with paginator=paginator pages=pagination %}
 {% endblock %}
