@@ -264,7 +264,7 @@ def thought_detail(request, idea_slug=None, thought_slug=None):
 def dashboard(request):
     context = {
         'page_title': 'Main',
-        'activities': Activity.objects.all(),
+        'activities': Activity.objects.all().order_by("-date"),
     }
     return render(request, 'blog/dashboard/dashboard.html', context)
 
@@ -573,6 +573,14 @@ def dashboard_backend(request):
     for i in request.POST.getlist('id'):
         if action == 'idea_delete':
             status, tokens = idea_safe_delete(i)
+            if status:
+                # log activity in database
+                a = Activity()
+                a.author = request.user
+                a.type = Activity.get_type_id('Deleted Idea')
+                a.store_tokens({'slug': i})
+                a.save()
+
             fmm.add_message({'action': action, 'status': status, 'tokens': tokens, 'extra_html': ''})
         elif action == 'idea_order_up' or action == 'idea_order_down':
             try:
@@ -590,19 +598,55 @@ def dashboard_backend(request):
                 fmm.add_message({'action': action, 'status': False, 'tokens': {'error': e.message}, 'extra_html': ''})
         elif action == 'thought_trash' or action == 'thought_untrash':
             status, tokens = thought_trash(i, action == 'thought_trash')
+            t = Thought.objects.filter(slug=i)[0]
+
             if action == 'thought_trash':
+                if status:
+                    # log activity in database
+                    a = Activity()
+                    a.author = request.user
+                    a.type = Activity.get_type_id('Trashed Draft' if t.is_draft else 'Trashed Thought')
+                    a.store_tokens({'length': 1, 'title': t.title})
+                    a.save()
+
                 undo = undo_button_html(request, input_data={'action': 'thought_untrash'})
             else:
+                if status:
+                    # log activity in database
+                    a = Activity()
+                    a.author = request.user
+                    a.type = Activity.get_type_id('Untrashed Draft' if t.is_draft else 'Untrashed Thought')
+                    a.store_tokens({'length': 1, 'title': t.title})
+                    a.save()
+
                 undo = undo_button_html(request, input_data={'action': 'thought_trash'})
 
             fmm.add_message({'action': action, 'status': status, 'tokens': tokens, 'extra_html': undo})
         elif action == 'thought_unpublish' or action == 'thought_publish':
+            t = Thought.objects.filter(slug=i)[0]
+            t_is_draft = t.is_draft
             auto_update = request.POST['auto_update'] if 'auto_update' in request.POST else False
             status, tokens = thought_publish(i, action == 'thought_publish', auto_update)
 
             if action == 'thought_unpublish':
+                if status:
+                    # log activity in database
+                    a = Activity()
+                    a.author = request.user
+                    a.type = Activity.get_type_id('Unpublished Thought')
+                    a.store_tokens({'length': 1, 'title': t.title})
+                    a.save()
+
                 undo = undo_button_html(request, input_data={'action': 'thought_publish'})
             else:
+                if status and t_is_draft:
+                    # log activity in database
+                    a = Activity()
+                    a.author = request.user
+                    a.type = Activity.get_type_id('Published Draft')
+                    a.store_tokens({'length': 1, 'title': t.title})
+                    a.save()
+
                 undo = undo_button_html(request, input_data={'action': 'thought_unpublish'})
 
             fmm.add_message({'action': action, 'status': status, 'tokens': tokens, 'extra_html': undo})
@@ -610,13 +654,43 @@ def dashboard_backend(request):
             status, tokens = thought_move(i, action_args[0] if action_args else '')
             fmm.add_message({'action': action, 'status': status, 'tokens': tokens, 'extra_html': ''})
         elif action == 'thought_delete':
+            t = Thought.objects.filter(slug=i)[0]
             status, tokens = thought_delete(i)
+
+            if status:
+                # log activity in database
+                a = Activity()
+                a.type = Activity.get_type_id('Deleted Draft' if t.is_draft else 'Deleted Thought')
+                a.author = request.user
+                a.store_tokens({'length': 1, 'title': t.title})
+                a.save()
+
             fmm.add_message({'action': action, 'status': status, 'tokens': tokens, 'extra_html': ''})
         elif action == 'highlight_delete':
+            h = Highlight.objects.filter(id=i)[0]
+            h_title = h.title
             status, tokens = highlight_delete(i)
+            if status:
+                # log activity in database
+                a = Activity()
+                a.type = Activity.get_type_id('Deleted Highlight')
+                a.author = request.user
+                a.store_tokens({'title': h_title})
+                a.save()
+
             fmm.add_message({'action': action, 'status': status, 'tokens': tokens, 'extra_html': ''})
         elif action == 'book_delete':
+            b = ReadingListItem.objects.filter(id=i)[0]
+            b_title = b.title
             status, tokens = book_delete(i)
+            if status:
+                # log activity in database
+                a = Activity()
+                a.type = Activity.get_type_id('Deleted Book')
+                a.author = request.user
+                a.store_tokens({'title': b_title})
+                a.save()
+
             fmm.add_message({'action': action, 'status': status, 'tokens': tokens, 'extra_html': ''})
         else:
             messages.add_message(request, messages.ERROR, "Unknown operation specified.")
@@ -941,7 +1015,8 @@ class FormIdeaView(View):
         request.POST = request.POST.copy()
 
         # prepare activity to log in database
-        idea_activity = Activity()
+        activity = Activity()
+        activity.author = request.user
 
         callback = None
         if 'next' in request.POST:
@@ -959,6 +1034,7 @@ class FormIdeaView(View):
         try:
             instance = Idea.objects.get(slug=request.POST['slug'])
             msg = "Successfully edited Idea '%s'" % instance.name
+            activity.type = Activity.get_type_id('Edited Idea')
 
             # keep track of idea icon
             if 'icon-clear' in request.POST and instance.icon:
@@ -967,17 +1043,15 @@ class FormIdeaView(View):
         except Idea.DoesNotExist:
             instance = None
             original_icon = None
-
-            idea_activity.author = request.user
-            idea_activity.type = Activity.get_type_id('Create Idea')
-            idea_activity.store_tokens({'slug': request.POST['slug']})
-
+            activity.type = Activity.get_type_id('Create Idea')
             msg = "Successfully created Idea '%s'" % request.POST['name']
 
         idea_form = IdeaForm(request.POST, request.FILES, instance=instance)
         if idea_form.is_valid():
             idea = idea_form.save()
-            idea_activity.save()
+
+            activity.store_tokens({'slug': request.POST['slug']})
+            activity.save()
 
             # delete old icon if necessary
             if original_icon and idea.icon and original_icon.name != idea.icon.name:
@@ -1028,7 +1102,8 @@ class FormThoughtView(View):
         request.POST = request.POST.copy()
 
         # start activity instance
-        thought_activity = Activity()
+        activity = Activity()
+        activity.author = request.user
 
         # calculate next url
         callback = None
@@ -1051,6 +1126,12 @@ class FormThoughtView(View):
         try:
             instance = Thought.objects.get(slug=slug)
 
+            # log activity in database
+            if request.POST['is_draft'] and instance.is_draft:
+                activity.type = Activity.get_type_id('Edited Draft')
+            else:
+                activity.type = Activity.get_type_id('Edited Thought')
+
             # delete preview if someone checks clear
             if 'preview-clear' in request.POST and instance.preview:
                 lib.delete_file(instance.preview.name)
@@ -1066,12 +1147,9 @@ class FormThoughtView(View):
 
             # determine whether we are saving a draft or publishing a thought (for Activity Feed)
             if request.POST['is_draft']:
-                thought_activity.author = request.user
-                thought_activity.type = Activity.get_type_id('Started Draft')
-                thought_activity.store_tokens({'length': 1, 'title': request.POST['title']})
+                activity.type = Activity.get_type_id('Started Draft')
             else:
-                # publish thought activity
-                pass
+                activity.type = Activity.get_type_id('Published Thought')
 
             author = request.user  # need to populate this form data
             request.POST['author'] = author.id
@@ -1079,7 +1157,8 @@ class FormThoughtView(View):
         thought_form = ThoughtForm(request.POST, request.FILES, instance=instance)
         if thought_form.is_valid():
             thought = thought_form.save()
-            thought_activity.save()
+            activity.store_tokens({'length': 1, 'title': request.POST['title']})
+            activity.save()
 
             # check if new preview image is uploaded (or clear is checked) and delete old preview
             if original_preview and thought.preview and original_preview.name != thought.preview.name:
@@ -1139,6 +1218,10 @@ class FormHighlightView(View):
         # make POST data mutable
         request.POST = request.POST.copy()
 
+        # create activity item
+        activity = Activity()
+        activity.author = request.user
+
         # calculate next url
         callback = None
         if 'next' in request.POST:
@@ -1152,6 +1235,9 @@ class FormHighlightView(View):
             instance = Highlight.objects.get(id=request.POST['id'])
             msg = "Successfully edited Highlight '%s'" % instance.title
 
+            # log activity in database
+            activity.type = Activity.get_type_id('Edited Highlight')
+
             # keep track of highlight icon
             if 'icon-clear' in request.POST and instance.icon:
                 lib.delete_file(instance.icon.name)
@@ -1159,11 +1245,17 @@ class FormHighlightView(View):
         except Highlight.DoesNotExist:
             instance = None
             original_icon = None
+
+            # log activity in database
+            activity.type = Activity.get_type_id('Added New Highlight')
+
             msg = "Successfully created Highlight '%s'" % request.POST['title']
 
         highlight_form = HighlightForm(request.POST, request.FILES, instance=instance)
         if highlight_form.is_valid():
             highlight = highlight_form.save()
+            activity.store_tokens({'title': request.POST['title']})
+            activity.save()
 
             # remove old icon file if necessary
             if original_icon and highlight.icon and original_icon.name != highlight.icon.name:
@@ -1211,6 +1303,11 @@ class FormReadingListView(View):
         if 'next' in request.POST:
             callback = request.POST['next']
 
+        # log activity in database
+        activity = Activity()
+        activity.author = request.user
+        activity.store_tokens({'title': request.POST['title']})
+
         # prevent accidental edit when writing new reading list items
         if 'id' not in request.POST or not request.POST['id']:
             request.POST['id'] = -1
@@ -1218,13 +1315,20 @@ class FormReadingListView(View):
         try:
             instance = ReadingListItem.objects.get(id=request.POST['id'])
             msg = "Successfully edited Book List Item '%s'" % instance.title
+
+            if instance.wishlist and 'wishlist' not in request.POST:
+                activity.type = Activity.get_type_id('Moved Book to Recently Read List')
+            else:
+                activity.type = Activity.get_type_id('Edited Book')
         except ReadingListItem.DoesNotExist:
             instance = None
             msg = "Successfully created Book List Item '%s'" % request.POST['title']
+            activity.type = Activity.get_type_id('Added Book to Wish List' if 'wishlist' in request.POST else 'Added Book to Recently Read List')
 
         reading_list_form = ReadingListItemForm(request.POST, instance=instance)
         if reading_list_form.is_valid():
             reading_list_item = reading_list_form.save()
+            activity.save()
 
             if callback:
                 messages.add_message(request, messages.SUCCESS, msg)
@@ -1268,7 +1372,12 @@ class FormTaskView(View):
         if not request.user.is_authenticated():
             return HttpResponseForbidden
 
-        request.POST = request.POST.copy()  # make POST data mutable
+        # make POST data mutable
+        request.POST = request.POST.copy()
+
+        # log activity in database
+        activity = Activity()
+        activity.author = request.user
 
         # calculate next url
         callback = None
@@ -1281,13 +1390,18 @@ class FormTaskView(View):
         try:
             instance = Task.objects.get(id=request.POST['id'])
             msg = "Successfully edited Task #%d" % instance.id
+            activity.type = Activity.get_type_id('Edited Task Item')
         except Task.DoesNotExist:
             instance = None
             msg = "Successfully created new Task"
+            activity.type = Activity.get_type_id('Added New Task Item')
 
         task_form = TaskForm(request.POST, instance=instance)
         if task_form.is_valid():
             task = task_form.save()
+
+            activity.store_tokens({'id': task.id, 'content': task.content})
+            activity.save()
 
             if callback:
                 messages.add_message(request, messages.SUCCESS, msg)
@@ -1325,6 +1439,13 @@ class FormTaskView(View):
             task.is_completed = True
             task.save()
 
+            # log activity in database
+            activity = Activity()
+            activity.author = request.user
+            activity.type = Activity.get_type_id('Marked Task Item as Completed')
+            activity.store_tokens({'id': task.id, 'content': task.content})
+            activity.save()
+
             msg = "Task '%s' marked complete." % id
             messages.add_message(request, messages.SUCCESS, msg)
         except Task.DoesNotExist:
@@ -1358,6 +1479,13 @@ class FormTaskView(View):
             task.priority = priority
             task.save()
 
+            # log activity in database
+            activity = Activity()
+            activity.author = request.user
+            activity.type = Activity.get_type_id('Changed Task Priority')
+            activity.store_tokens({'id': task.id, 'content': task.content, 'old_priority': old_priority, 'new_priority': priority})
+            activity.save()
+
             msg = "Changed Task #%d priority from %s to %s" %\
                   (task.id, Task.PRIORITY[old_priority][1], Task.PRIORITY[priority][1])
             messages.add_message(request, messages.SUCCESS, msg)
@@ -1384,6 +1512,13 @@ class FormTaskView(View):
 
         try:
             task = Task.objects.filter(id=id)[0]
+
+            # log activity in database
+            activity = Activity()
+            activity.author = request.user
+            activity.type = Activity.get_type_id('Deleted Task Item')
+            activity.store_tokens({'id': task.id, 'content': task.content})
+            activity.save()
 
             msg = "Successfully deleted Task #%d" % task.id
             task.delete()

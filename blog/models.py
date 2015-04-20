@@ -466,24 +466,36 @@ class Activity(models.Model):
     """
     TYPE = (
         (0, 'Create Idea'),
-        (1, 'Deleted Idea'),
-        (2, 'Started Draft'),
-        (3, 'Published Draft'),
-        (4, 'Trashed Draft'),
-        (5, 'Create Thought'),
-        (6, 'Unpublished Thought'),
-        (7, 'Trashed Thought'),
-        (8, 'Deleted Thought'),
-        (9, 'Added Book to Recently Read List'),
-        (10, 'Added Book to Wish List'),
-        (11, 'Deleted Book'),
-        (12, 'Added New Task Item'),
-        (13, 'Deleted Task Item'),
-        (14, 'Marked Task Item as Completed'),
-        (15, 'Changed Task Priority'),
-        (16, 'Started New Note'),
-        (17, 'Deleted Note'),
-        (18, 'Tweet'),
+        (1, 'Edited Idea'),
+        (2, 'Deleted Idea'),
+        (3, 'Started Draft'),
+        (4, 'Published Draft'),
+        (5, 'Edited Draft'),
+        (6, 'Trashed Draft'),
+        (7, 'Untrashed Draft'),
+        (8, 'Deleted Draft'),
+        (9, 'Published Thought'),
+        (10, 'Unpublished Thought'),
+        (11, 'Edited Thought'),
+        (12, 'Trashed Thought'),
+        (13, 'Untrashed Thought'),
+        (14, 'Deleted Thought'),
+        (15, 'Added New Highlight'),
+        (16, 'Edited Highlight'),
+        (17, 'Deleted Highlight'),
+        (18, 'Added Book to Recently Read List'),
+        (19, 'Added Book to Wish List'),
+        (20, 'Edited Book'),
+        (21, 'Moved Book to Recently Read List'),
+        (22, 'Deleted Book'),
+        (23, 'Added New Task Item'),
+        (24, 'Edited Task Item'),
+        (25, 'Deleted Task Item'),
+        (26, 'Marked Task Item as Completed'),
+        (27, 'Changed Task Priority'),
+        (28, 'Started New Note'),
+        (29, 'Deleted Note'),
+        (30, 'Tweet'),
     )
 
     author = models.ForeignKey(User)
@@ -518,6 +530,8 @@ class Activity(models.Model):
         """
         if Activity.TYPE[int(self.type)][1] == 'Create Idea':
             msg = "created a new Idea '%s'" % self.get_tokens()['slug']
+        elif Activity.TYPE[int(self.type)][1] == 'Edited Idea':
+            msg = "edited Idea '%s'" % self.get_tokens()['slug']
         elif Activity.TYPE[int(self.type)][1] == 'Deleted Idea':
             msg = "deleted Idea '%s'" % self.get_tokens()['slug']
         elif Activity.TYPE[int(self.type)][1] == 'Started Draft':
@@ -529,42 +543,77 @@ class Activity(models.Model):
                 msg = "published %d Drafts" % int(t['length'])
             else:
                 msg = "published Draft '%s'" % self.get_tokens()['title']
+        elif Activity.TYPE[int(self.type)][1] == 'Edited Draft':
+            msg = "edited Draft '%s'" % self.get_tokens()['title']
         elif Activity.TYPE[int(self.type)][1] == 'Trashed Draft':
             t = self.get_tokens()
             if int(t['length']) > 1:
                 msg = "moved %d Drafts to the trash" % int(t['length'])
             else:
                 msg = "moved Draft '%s' to the trash" % self.get_tokens()['title']
-        elif Activity.TYPE[int(self.type)][1] == 'Create Thought':
+        elif Activity.TYPE[int(self.type)][1] == 'Untrashed Draft':
+            t = self.get_tokens()
+            if int(t['length']) > 1:
+                msg = "untrashed %d Drafts" % int(t['length'])
+            else:
+                msg = "untrashed Draft '%s'" % self.get_tokens()['title']
+        elif Activity.TYPE[int(self.type)][1] == 'Deleted Draft':
+            t = self.get_tokens()
+            if int(t['length']) > 1:
+                msg = "deleted %d Drafts" % int(t['length'])
+            else:
+                msg = "deleted Draft '%s'" % self.get_tokens()['title']
+        elif Activity.TYPE[int(self.type)][1] == 'Published Thought':
             # created a thought and published it without saving as a draft
-            msg = "published a new Thought called '%s'" % self.get_tokens()['title']
+            msg = "published a new Thought '%s'" % self.get_tokens()['title']
         elif Activity.TYPE[int(self.type)][1] == 'Unpublished Thought':
             t = self.get_tokens()
             if int(t['length']) > 1:
                 msg = "unpublished %d Thoughts" % int(t['length'])
             else:
                 msg = "unpublished Thought '%s'" % self.get_tokens()['title']
+        elif Activity.TYPE[int(self.type)][1] == 'Edited Thought':
+            msg = "edited Thought '%s'" % self.get_tokens()['title']
         elif Activity.TYPE[int(self.type)][1] == 'Trashed Thought':
             t = self.get_tokens()
             if int(t['length']) > 1:
                 msg = "moved %d Thoughts to the trash" % int(t['length'])
             else:
                 msg = "moved Thought '%s' to the trash" % self.get_tokens()['title']
+        elif Activity.TYPE[int(self.type)][1] == 'Untrashed Thought':
+            t = self.get_tokens()
+            if int(t['length']) > 1:
+                msg = "untrashed %d Thoughts" % int(t['length'])
+            else:
+                msg = "untrashed Thought '%s'" % self.get_tokens()['title']
         elif Activity.TYPE[int(self.type)][1] == 'Deleted Thought':
             t = self.get_tokens()
             if int(t['length']) > 1:
                 msg = "deleted %d Thoughts from trash" % int(t['length'])
             else:
                 msg = "deleted Thought '%s' from trash" % self.get_tokens()['title']
+        elif Activity.TYPE[int(self.type)][1] == 'Added New Highlight':
+            msg = "Added new Highlight '%s'" % self.get_tokens()['title']
+        elif Activity.TYPE[int(self.type)][1] == 'Edited Highlight':
+            msg = "Edited Highlight '%s'" % self.get_tokens()['title']
+        elif Activity.TYPE[int(self.type)][1] == 'Deleted Highlight':
+            msg = "Deleted Highlight '%s'" % self.get_tokens()['title']
         elif Activity.TYPE[int(self.type)][1] == 'Added Book to Recently Read List':
             msg = "added '%s' to the recently read list" % self.get_tokens()['title']
         elif Activity.TYPE[int(self.type)][1] == 'Added Book to Wish List':
             msg = "added '%s' to the wish list" % self.get_tokens()['title']
+        elif Activity.TYPE[int(self.type)][1] == 'Edited Book':
+            msg = "edited Reading List Book '%s'" % self.get_tokens()['title']
+        elif Activity.TYPE[int(self.type)][1] == 'Moved Book to Recently Read List':
+            msg = "Moved Book '%s' from wish list to recently read list" % self.get_tokens()['title']
         elif Activity.TYPE[int(self.type)][1] == 'Deleted Book':
             msg = "deleted '%s' from the reading list" % self.get_tokens()['title']
         elif Activity.TYPE[int(self.type)][1] == 'Added New Task Item':
             t = self.get_tokens()
             msg = "added new Task #%d '%s'" % (t['id'], t['content'])
+        elif Activity.TYPE[int(self.type)][1] == 'Edited Task Item':
+            t = self.get_tokens()
+            msg = "edited Task #%d '%s'" % (t['id'], t['content'])
         elif Activity.TYPE[int(self.type)][1] == 'Deleted Task Item':
             t = self.get_tokens()
             msg = "deleted Task #%d '%s'" % (t['id'], t['content'])
@@ -574,7 +623,7 @@ class Activity(models.Model):
         elif Activity.TYPE[int(self.type)][1] == 'Changed Task Priority':
             t = self.get_tokens()
             msg = "changed priority of Task #%d '%s' from %s to %s" %\
-                  (t['id'], t['content'], t['old_priority'], t['new_priority'])
+                  (t['id'], t['content'], Task.PRIORITY[t['old_priority']][1], Task.PRIORITY[t['new_priority']][1])
         #elif Activity.TYPE[int(self.type)][1] == 'Started New Note':
         #elif Activity.TYPE[int(self.type)][1] == 'Deleted Note':
         #elif Activity.TYPE[int(self.type)][1] == 'Tweet':

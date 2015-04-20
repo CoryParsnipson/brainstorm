@@ -549,12 +549,38 @@ table.task-list ul.dropdown li a {
   width: 25px;
   height: 25px;
   max-width: initial;
+  background-image: url('../images/activity_icon_default.png');
   background-size: cover;
   margin: 0 10px;
 }
-.activity-type-0 { background-image: url('../images/activity_icon_create_idea.png'); } /* create idea */
-.activity-type-0 { background-image: url('../images/activity_icon_create_idea.png'); } /* create idea */
-.activity-type-2 { background-image: url('../images/activity_icon_started_draft.png'); } /* started draft */
+.activity-type-0 { background-image: url('../images/activity_icon_create_idea.png'); }       /* created idea */
+.activity-type-1 { background-image: url('../images/activity_icon_edit.png'); }              /* edited idea */
+.activity-type-2 { background-image: url('../images/activity_icon_delete.png'); }            /* deleted idea */
+.activity-type-3 { background-image: url('../images/activity_icon_started_draft.png'); }     /* started draft */
+.activity-type-4 { background-image: url('../images/activity_icon_publish.png'); }           /* published draft */
+.activity-type-5 { background-image: url('../images/activity_icon_edit.png'); }              /* edited draft */
+.activity-type-6 { background-image: url('../images/activity_icon_trash.png'); }             /* trashed draft */
+.activity-type-7 { background-image: url('../images/activity_icon_untrash.png'); }           /* untrashed draft */
+.activity-type-8 { background-image: url('../images/activity_icon_delete.png'); }            /* deleted draft */
+.activity-type-9 { background-image: url('../images/activity_icon_publish.png'); }           /* published thought */
+.activity-type-10 { background-image: url('../images/activity_icon_unpublish.png'); }        /* unpublished thought */
+.activity-type-11 { background-image: url('../images/activity_icon_edit.png'); }             /* edited thought */
+.activity-type-12 { background-image: url('../images/activity_icon_trash.png'); }            /* trashed thought */
+.activity-type-13 { background-image: url('../images/activity_icon_untrash.png'); }          /* untrashed thought */
+.activity-type-14 { background-image: url('../images/activity_icon_delete.png'); }           /* deleted thought */
+.activity-type-15 { background-image: url('../images/activity_icon_create_highlight.png'); } /* created highlight */
+.activity-type-16 { background-image: url('../images/activity_icon_edit_highlight.png'); }   /* edited highlight */
+.activity-type-17 { background-image: url('../images/activity_icon_delete.png'); }           /* deleted highlight */
+.activity-type-18 { background-image: url('../images/activity_icon_book.png'); }             /* added book to recently read list */
+.activity-type-19 { background-image: url('../images/activity_icon_book.png'); }             /* added book to wish list */
+.activity-type-20 { background-image: url('../images/activity_icon_edit_book.png'); }        /* edited book */
+.activity-type-21 { background-image: url('../images/activity_icon_edit_book.png'); }        /* moved book to recently read list */
+.activity-type-22 { background-image: url('../images/activity_icon_delete.png'); }           /* deleted book */
+.activity-type-23 { background-image: url('../images/activity_icon_task.png'); }             /* added new task item */
+.activity-type-24 { background-image: url('../images/activity_icon_task.png'); }             /* edited task item */
+.activity-type-25 { background-image: url('../images/activity_icon_delete.png'); }           /* deleted task item */
+.activity-type-26 { background-image: url('../images/activity_icon_mark_complete.png'); }    /* marked task item as completed  */
+.activity-type-27 { background-image: url('../images/activity_icon_priority.png'); }         /* changed task priority */
 
 /******************************************************************************
  * editable-control div styles

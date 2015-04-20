@@ -6,10 +6,8 @@
 {% endblock %}
 
 {% block content %}
-<h2>{{ request.user.username }}'s Dashboard</h2>
+<h2>{{ request.user.username }}'s Recent Activity</h2>
 <hr class="header">
-
-<h3>Activity Feed</h3>
 <table class="activity-feed">
     <tbody>
     {% for activity in activities %}
@@ -19,6 +17,11 @@
         </td>
         <td>{% if activity.author == request.user %}You{% else %}{{ activity.author }}{% endif %} {{ activity.generate_message }}</td>
         <td class="shrink right-justify date">{{ activity.display_date }}</td>
+    </tr>
+    {% empty %}
+    <tr>
+        <td class="shrink"><div class="activity-type-"></div></td>
+        <td>No recent activity...</td>
     </tr>
     {% endfor %}
     </tbody>
