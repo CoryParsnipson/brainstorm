@@ -1,4 +1,5 @@
 import os
+import json
 import datetime
 
 import pytz
@@ -465,21 +466,21 @@ class Activity(models.Model):
     """
     TYPE = (
         (0, 'Create Idea'),
-        (1, 'Create Thought'),
+        (1, 'Deleted Idea'),
         (2, 'Started Draft'),
         (3, 'Published Draft'),
-        (4, 'Trashed Thought'),
-        (5, 'Deleted Thought'),
-        (6, 'Deleted Draft'),
-        (7, 'Deleted Idea'),
-        (8, 'Trashed Thought'),
+        (4, 'Trashed Draft'),
+        (5, 'Create Thought'),
+        (6, 'Unpublished Thought'),
+        (7, 'Trashed Thought'),
+        (8, 'Deleted Thought'),
         (9, 'Added Book to Recently Read List'),
         (10, 'Added Book to Wish List'),
         (11, 'Deleted Book'),
         (12, 'Added New Task Item'),
         (13, 'Deleted Task Item'),
         (14, 'Marked Task Item as Completed'),
-        (15, 'Change Task Priority'),
+        (15, 'Changed Task Priority'),
         (16, 'Started New Note'),
         (17, 'Deleted Note'),
         (18, 'Tweet'),
@@ -488,11 +489,99 @@ class Activity(models.Model):
     author = models.ForeignKey(User)
     type = models.IntegerField(choices=TYPE, blank=False, null=False)
     date = models.DateTimeField(auto_now_add=True)
+    tokens = models.CharField(max_length=2000, blank=True, null=True)
+    url = models.URLField(max_length=500, blank=True, null=True)
 
-    # related_instance = models.ForeignKey() ???
-    # related_url = ???
-    # date
-    # message
+    @staticmethod
+    def get_type_id(type_string):
+        return list(Activity.TYPE)[[v for (k, v) in Activity.TYPE].index(type_string)][0]
+
+    def store_tokens(self, token_dict={}):
+        """ serialize token dict to a JSON string and then store it in the tokens CharField
+        """
+        if not token_dict:
+            return
+        self.tokens = json.dumps(token_dict)
+
+    def get_tokens(self):
+        """ unserialize token dict stored in model instance data. Will return
+            an empty dictionary if there is no token data
+        """
+        if not self.tokens:
+            return {}
+        return json.loads(self.tokens)
+
+    def generate_message(self):
+        """ generate output string for this Activity item. Uses information
+            from type field as well as any optional data stored in the
+            tokens field.
+        """
+        if Activity.TYPE[int(self.type)][1] == 'Create Idea':
+            msg = "created a new Idea '%s'" % self.get_tokens()['slug']
+        elif Activity.TYPE[int(self.type)][1] == 'Deleted Idea':
+            msg = "deleted Idea '%s'" % self.get_tokens()['slug']
+        elif Activity.TYPE[int(self.type)][1] == 'Started Draft':
+            msg = "started a new Draft called '%s'" % self.get_tokens()['title']
+        elif Activity.TYPE[int(self.type)][1] == 'Published Draft':
+            # took draft(s) that were already saved and published it/them
+            t = self.get_tokens()
+            if int(t['length']) > 1:
+                msg = "published %d Drafts" % int(t['length'])
+            else:
+                msg = "published Draft '%s'" % self.get_tokens()['title']
+        elif Activity.TYPE[int(self.type)][1] == 'Trashed Draft':
+            t = self.get_tokens()
+            if int(t['length']) > 1:
+                msg = "moved %d Drafts to the trash" % int(t['length'])
+            else:
+                msg = "moved Draft '%s' to the trash" % self.get_tokens()['title']
+        elif Activity.TYPE[int(self.type)][1] == 'Create Thought':
+            # created a thought and published it without saving as a draft
+            msg = "published a new Thought called '%s'" % self.get_tokens()['title']
+        elif Activity.TYPE[int(self.type)][1] == 'Unpublished Thought':
+            t = self.get_tokens()
+            if int(t['length']) > 1:
+                msg = "unpublished %d Thoughts" % int(t['length'])
+            else:
+                msg = "unpublished Thought '%s'" % self.get_tokens()['title']
+        elif Activity.TYPE[int(self.type)][1] == 'Trashed Thought':
+            t = self.get_tokens()
+            if int(t['length']) > 1:
+                msg = "moved %d Thoughts to the trash" % int(t['length'])
+            else:
+                msg = "moved Thought '%s' to the trash" % self.get_tokens()['title']
+        elif Activity.TYPE[int(self.type)][1] == 'Deleted Thought':
+            t = self.get_tokens()
+            if int(t['length']) > 1:
+                msg = "deleted %d Thoughts from trash" % int(t['length'])
+            else:
+                msg = "deleted Thought '%s' from trash" % self.get_tokens()['title']
+        elif Activity.TYPE[int(self.type)][1] == 'Added Book to Recently Read List':
+            msg = "added '%s' to the recently read list" % self.get_tokens()['title']
+        elif Activity.TYPE[int(self.type)][1] == 'Added Book to Wish List':
+            msg = "added '%s' to the wish list" % self.get_tokens()['title']
+        elif Activity.TYPE[int(self.type)][1] == 'Deleted Book':
+            msg = "deleted '%s' from the reading list" % self.get_tokens()['title']
+        elif Activity.TYPE[int(self.type)][1] == 'Added New Task Item':
+            t = self.get_tokens()
+            msg = "added new Task #%d '%s'" % (t['id'], t['content'])
+        elif Activity.TYPE[int(self.type)][1] == 'Deleted Task Item':
+            t = self.get_tokens()
+            msg = "deleted Task #%d '%s'" % (t['id'], t['content'])
+        elif Activity.TYPE[int(self.type)][1] == 'Marked Task Item as Completed':
+            t = self.get_tokens()
+            msg = "marked Task #%d '%s' as completed" % (t['id'], t['content'])
+        elif Activity.TYPE[int(self.type)][1] == 'Changed Task Priority':
+            t = self.get_tokens()
+            msg = "changed priority of Task #%d '%s' from %s to %s" %\
+                  (t['id'], t['content'], t['old_priority'], t['new_priority'])
+        #elif Activity.TYPE[int(self.type)][1] == 'Started New Note':
+        #elif Activity.TYPE[int(self.type)][1] == 'Deleted Note':
+        #elif Activity.TYPE[int(self.type)][1] == 'Tweet':
+        else:
+            raise IndexError("Invalid Activity Type")
+
+        return msg
 
     def display_date(self):
         return lib.display_fancy_date(self.date)

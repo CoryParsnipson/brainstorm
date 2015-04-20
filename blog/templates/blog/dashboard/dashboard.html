@@ -9,5 +9,18 @@
 <h2>{{ request.user.username }}'s Dashboard</h2>
 <hr class="header">
 
-<p>Activity Feed</p>
+<h3>Activity Feed</h3>
+<table class="activity-feed">
+    <tbody>
+    {% for activity in activities %}
+    <tr>
+        <td class="shrink">
+            <div class="activity-type-{{ activity.type }}"></div>
+        </td>
+        <td>{% if activity.author == request.user %}You{% else %}{{ activity.author }}{% endif %} {{ activity.generate_message }}</td>
+        <td class="shrink right-justify date">{{ activity.display_date }}</td>
+    </tr>
+    {% endfor %}
+    </tbody>
+</table>
 {% endblock %}

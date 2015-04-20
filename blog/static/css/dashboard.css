@@ -522,6 +522,41 @@ table.task-list ul.dropdown li a {
 }
 
 /******************************************************************************
+ * activity feed styles
+ *****************************************************************************/
+.activity-feed {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.activity-feed tr:nth-of-type(odd) {
+  background-color: #404040;
+}
+
+.activity-feed td {
+  text-justify: left;
+  padding: 10px 5px;
+}
+
+.activity-feed td.date {
+  color: #B7B7B7;
+  font-size: 10pt;
+  vertical-align: top;
+  padding: 0 5px;
+}
+
+*[class^="activity-type-"] {
+  width: 25px;
+  height: 25px;
+  max-width: initial;
+  background-size: cover;
+  margin: 0 10px;
+}
+.activity-type-0 { background-image: url('../images/activity_icon_create_idea.png'); } /* create idea */
+.activity-type-0 { background-image: url('../images/activity_icon_create_idea.png'); } /* create idea */
+.activity-type-2 { background-image: url('../images/activity_icon_started_draft.png'); } /* started draft */
+
+/******************************************************************************
  * editable-control div styles
  *****************************************************************************/
 div.editable-control {

@@ -16,7 +16,7 @@ from django.contrib.auth.decorators import login_required
 
 import lib
 import paths
-from models import Idea, Thought, Highlight, ReadingListItem, Task
+from models import Idea, Thought, Highlight, ReadingListItem, Task, Activity
 from forms import LoginForm, IdeaForm, ThoughtForm, HighlightForm, ReadingListItemForm, TaskForm
 
 
@@ -264,7 +264,7 @@ def thought_detail(request, idea_slug=None, thought_slug=None):
 def dashboard(request):
     context = {
         'page_title': 'Main',
-        'task_form': TaskForm(),
+        'activities': Activity.objects.all(),
     }
     return render(request, 'blog/dashboard/dashboard.html', context)
 
@@ -940,6 +940,9 @@ class FormIdeaView(View):
         # make POST data mutable
         request.POST = request.POST.copy()
 
+        # prepare activity to log in database
+        idea_activity = Activity()
+
         callback = None
         if 'next' in request.POST:
             callback = request.POST['next']
@@ -964,11 +967,17 @@ class FormIdeaView(View):
         except Idea.DoesNotExist:
             instance = None
             original_icon = None
+
+            idea_activity.author = request.user
+            idea_activity.type = Activity.get_type_id('Create Idea')
+            idea_activity.store_tokens({'slug': request.POST['slug']})
+
             msg = "Successfully created Idea '%s'" % request.POST['name']
 
         idea_form = IdeaForm(request.POST, request.FILES, instance=instance)
         if idea_form.is_valid():
             idea = idea_form.save()
+            idea_activity.save()
 
             # delete old icon if necessary
             if original_icon and idea.icon and original_icon.name != idea.icon.name:
@@ -1018,6 +1027,9 @@ class FormThoughtView(View):
         # make POST data mutable
         request.POST = request.POST.copy()
 
+        # start activity instance
+        thought_activity = Activity()
+
         # calculate next url
         callback = None
         if 'next' in request.POST:
@@ -1052,12 +1064,22 @@ class FormThoughtView(View):
             original_preview = None
             inline_images = []
 
+            # determine whether we are saving a draft or publishing a thought (for Activity Feed)
+            if request.POST['is_draft']:
+                thought_activity.author = request.user
+                thought_activity.type = Activity.get_type_id('Started Draft')
+                thought_activity.store_tokens({'length': 1, 'title': request.POST['title']})
+            else:
+                # publish thought activity
+                pass
+
             author = request.user  # need to populate this form data
             request.POST['author'] = author.id
 
         thought_form = ThoughtForm(request.POST, request.FILES, instance=instance)
         if thought_form.is_valid():
             thought = thought_form.save()
+            thought_activity.save()
 
             # check if new preview image is uploaded (or clear is checked) and delete old preview
             if original_preview and thought.preview and original_preview.name != thought.preview.name:
