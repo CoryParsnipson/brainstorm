@@ -110,7 +110,7 @@ class TaskForm(forms.ModelForm):
 
     # disable multi-level nesting of Tasks
     parent_task = forms.ModelChoiceField(
-        queryset=Task.objects.filter(parent_task__isnull=True),
+        queryset=Task.objects.filter(parent_task__isnull=True).order_by("-priority", "-date_added"),
         widget=forms.Select(),
         required=False,
     )
