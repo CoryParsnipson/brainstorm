@@ -81,7 +81,7 @@
 {% block side %}
 <div class="todo-box">
     <h3>Related Tasks</h3>
-    {% get_latest_tasks name='todo_list_tasks' length=10 idea=thought_form.idea.value %}
+    {% get_latest_tasks name='todo_list_tasks' length=5 idea=thought_form.idea.value %}
 
     <table class="task-list">
         <tbody>

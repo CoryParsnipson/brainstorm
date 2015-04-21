@@ -29,7 +29,7 @@ body {
 }
 
 .no-text-overflow {
-  max-width: 150px;  /* the value here doesn't seem to matter, but setting max width allows for responsiveness */
+  max-width: 200px;  /* the value here doesn't seem to matter, but setting max width allows for responsiveness */
   overflow: hidden;
   text-overflow: ellipsis;
 }
