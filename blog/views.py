@@ -1167,6 +1167,8 @@ class FormThoughtView(View):
             # log activity in database
             if request.POST['is_draft'] and instance.is_draft:
                 activity.type = Activity.get_type_id('Edited Draft')
+            elif not request.POST['is_draft'] and instance.is_draft:
+                activity.type = Activity.get_type_id('Published Draft')
             else:
                 activity.type = Activity.get_type_id('Edited Thought')
 
