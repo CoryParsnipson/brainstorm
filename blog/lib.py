@@ -602,7 +602,7 @@ def display_fancy_date(dt=None):
         display_date = "%s minute%s ago" % (age.seconds / 60, 's' if age.seconds > 120 else '')
     elif age < datetime.timedelta(hours=4):
         display_date = "%s hour%s ago" % (age.seconds / 3600, 's' if age.seconds > 7200 else '')
-    elif dt > pytz.timezone(settings.TIME_ZONE).localize(now.today()):
+    elif age < datetime.timedelta(hours=now.hour, minutes=now.minute, seconds=now.second):
         display_date = 'Today'
     elif age < datetime.timedelta(days=2):
         display_date = 'Yesterday'
