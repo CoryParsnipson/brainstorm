@@ -16,8 +16,8 @@ from django.contrib.auth.decorators import login_required
 
 import lib
 import paths
-from models import Idea, Thought, Highlight, ReadingListItem, Task, Activity
-from forms import LoginForm, IdeaForm, ThoughtForm, HighlightForm, ReadingListItemForm, TaskForm
+from models import Idea, Thought, Highlight, ReadingListItem, Task, Activity, Note
+from forms import LoginForm, IdeaForm, ThoughtForm, HighlightForm, ReadingListItemForm, TaskForm, NoteForm
 
 
 ###############################################################################
@@ -400,6 +400,30 @@ def dashboard_todo(request):
     }
     return render(request, 'blog/dashboard/dashboard_todo.html', context)
 
+
+@login_required(login_url='index')
+def dashboard_notes(request):
+    """ User dashboard page to manage Note object instances
+
+        ?id=[id]  specify an id to edit a Note instance
+    """
+    notes = Note.objects.all().order_by("-date_published")
+
+    instance = None
+    if 'id' in request.GET:
+        try:
+            instance = Note.objects.get(id=request.GET['id'])
+        except Note.DoesNotExist:
+            dne_msg = "Cannot edit Note #%d" % request.GET['id']
+            messages.add_message(request, messages.ERROR, dne_msg)
+    note_form = NoteForm(instance=instance)
+
+    context = {
+        'page_title': 'Notes',
+        'notes': notes,
+        'note_form': note_form,
+    }
+    return render(request, 'blog/dashboard/dashboard_notes.html', context)
 
 @login_required(login_url='index')
 def dashboard_ideas(request):
@@ -1579,3 +1603,84 @@ class FormTaskView(View):
             return redirect(request.META['HTTP_REFERER'])
 
         return redirect(request.META['HTTP_REFERER'])
+
+
+class FormNoteView(View):
+    """ Views for Note models
+    """
+    def get(self, request, *args, **kwargs):
+        form = NoteForm()
+        form_html = form.as_table()
+
+        if "output" in request.GET:
+            if request.GET["output"] == "p":
+                form_html = form.as_p()
+            elif request.GET["output"] == "ul":
+                form_html = form.as_ul()
+
+        context = {'form': form_html}
+        return JsonResponse(context)
+
+    def post(self, request):
+        """ create/edit a new Note instance
+        """
+        if not request.user.is_authenticated():
+            return HttpResponseForbidden
+
+        # make POST data mutable
+        request.POST = request.POST.copy()
+
+        # log activity in database
+        activity = Activity()
+        activity.author = request.user
+
+        # calculate next url
+        callback = None
+        if 'next' in request.POST:
+            callback = request.POST['next']
+
+        if 'title' not in request.POST or not request.POST['title']:
+            auto_title_length = 30
+            auto_title = lib.strip_tags(lib.truncate(lib.strip_tags(request.POST['content']), max_length=auto_title_length))
+
+            if len(request.POST['content']) > auto_title_length:
+                auto_title += "..."
+
+            request.POST['title'] = auto_title
+
+        if 'id' not in request.POST or not request.POST['id']:
+            request.POST['id'] = -1
+
+        try:
+            instance = Note.objects.get(id=request.POST['id'])
+            msg = "Successfully edited Note #%d" % instance.id
+            activity.type = Activity.get_type_id('Edited Note')
+        except Note.DoesNotExist:
+            instance = None
+            msg = "Successfully created new Note"
+            activity.type = Activity.get_type_id('Started New Note')
+
+        note_form = NoteForm(request.POST, instance=instance)
+        if note_form.is_valid():
+            note = note_form.save()
+
+            activity.store_tokens({'id': note.id, 'title': note.title})
+            activity.url = request.META['HTTP_REFERER']
+            activity.save()
+
+            if callback:
+                messages.add_message(request, messages.SUCCESS, msg)
+                return redirect(callback)
+            else:
+                return JsonResponse(serializers.serialize('json', [note]), safe=False)
+        else:
+            errors = {}
+            for field in note_form:
+                errors[field.name] = field.errors
+
+            if callback:
+                msg = "<br>".join([k + ": " + " ".join(v) for k, v in errors.items() if v])
+                messages.add_message(request, messages.ERROR, msg)
+                return redirect(request.META['HTTP_REFERER'])
+            else:
+                return JsonResponse(errors)

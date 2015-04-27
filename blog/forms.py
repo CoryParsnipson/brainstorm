@@ -2,7 +2,7 @@ from django import forms
 from django.core.urlresolvers import reverse_lazy
 from django.contrib.auth.admin import User
 
-from blog.models import Idea, Thought, Highlight, ReadingListItem, Task
+from blog.models import Idea, Thought, Highlight, ReadingListItem, Task, Note
 
 
 class LoginForm(forms.Form):
@@ -118,3 +118,21 @@ class TaskForm(forms.ModelForm):
     class Meta:
         model = Task
         fields = ['id', 'parent_task', 'idea', 'content', 'priority']
+
+
+class NoteForm(forms.ModelForm):
+    """ form class for managing Note model
+    """
+    id = forms.IntegerField(widget=forms.HiddenInput)
+    next = forms.CharField(widget=forms.HiddenInput, initial=reverse_lazy('dashboard-notes'))
+    title = forms.CharField(required=False)
+
+    class Meta:
+        model = Note
+        fields = ['id', 'ideas', 'thoughts', 'title', 'content']
+        widgets = {
+            # tinymce textarea (when js is enabled)
+            'content': forms.Textarea(attrs={
+                'class': 'editor',
+            }),
+        }

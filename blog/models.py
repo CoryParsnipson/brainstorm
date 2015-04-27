@@ -267,6 +267,12 @@ class Thought(models.Model):
 
         super(Thought, self).delete(*args, **kwargs)
 
+    def __str__(self):
+        return self.__unicode__()
+
+    def __unicode__(self):
+        return '"' + self.title + '"' + " (" + self.slug + ")"
+
 
 ###############################################################################
 # Highlight Model
@@ -450,10 +456,17 @@ class Note(models.Model):
         later. Notes should be able to be linked to ideas, but it is
         not necessary, as they shouldn't represent fully formed thoughts.
     """
-    idea = models.ManyToManyField(Idea, blank=True, null=True)
+    ideas = models.ManyToManyField(Idea, blank=True, null=True)
     thoughts = models.ManyToManyField(Thought, blank=True, null=True)
+    title = models.CharField(max_length=500)
     content = models.TextField(max_length=1500)
     date_published = models.DateTimeField(auto_now_add=True, auto_now=True)
+
+    def display_fancy_date(self):
+        return lib.display_fancy_date(self.date_published)
+
+    def display_compact_date(self):
+        return lib.display_compact_date(self.date_published)
 
 
 ###############################################################################
@@ -496,8 +509,9 @@ class Activity(models.Model):
         (28, 'Marked Task Item as Completed'),
         (29, 'Changed Task Priority'),
         (30, 'Started New Note'),
-        (31, 'Deleted Note'),
-        (32, 'Tweet'),
+        (31, 'Edited Note'),
+        (32, 'Deleted Note'),
+        (33, 'Tweet'),
     )
 
     author = models.ForeignKey(User)
@@ -634,7 +648,12 @@ class Activity(models.Model):
             t = self.get_tokens()
             msg = "changed priority of <span class='excerpt'>Task #%d:</span> <span class='task'>%s</span> from <span class='excerpt'>%s</span> to <span class='excerpt'>%s</span>" %\
                   (t['id'], t['content'], Task.PRIORITY[t['old_priority']][1], Task.PRIORITY[t['new_priority']][1])
-        #elif Activity.TYPE[int(self.type)][1] == 'Started New Note':
+        elif Activity.TYPE[int(self.type)][1] == 'Started New Note':
+            t = self.get_tokens()
+            msg = "started new <span class='excerpt'>Note #%d:</span> <span class='note'>%s</span>" % (t['id'], t['title'])
+        elif Activity.TYPE[int(self.type)][1] == 'Edited Note':
+            t = self.get_tokens()
+            msg = "edited <span class='excerpt'>Note #%d:</span> <span class='note'>%s</span>" % (t['id'], t['title'])
         #elif Activity.TYPE[int(self.type)][1] == 'Deleted Note':
         #elif Activity.TYPE[int(self.type)][1] == 'Tweet':
         else:
