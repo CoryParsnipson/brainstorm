@@ -60,6 +60,19 @@
                 {% if item.name %}<span class="title">{{ item.name }}</span>{% endif %}
                 {% if item.title %}<span class="title">{{ item.title }}</span>{% endif %}
                 {% if item.slug %}<span class="slug blue">{{ item.slug }}</span>{% endif %}
+
+                {% if item.ideas %}
+                {% for idea in item.ideas.all %}
+                <span class="slug blue">{{ idea }}</span>
+                {% endfor %}
+                {% endif %}
+
+                {% if item.thoughts %}
+                {% for thought in item.thoughts.all %}
+                <span class="slug purple">{{ thought.slug }}</span>
+                {% endfor %}
+                {% endif %}
+
                 {% if item.idea and show_idea %}<span class="slug purple">{{ item.idea.slug }}</span>{% endif %}
                 {{ item.strip_tags }}
             </td>

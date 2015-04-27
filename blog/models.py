@@ -462,6 +462,11 @@ class Note(models.Model):
     content = models.TextField(max_length=1500)
     date_published = models.DateTimeField(auto_now_add=True, auto_now=True)
 
+    def strip_tags(self):
+        """ return content field with no html tags included
+        """
+        return lib.strip_tags(self.content)
+
     def display_fancy_date(self):
         return lib.display_fancy_date(self.date_published)
 
