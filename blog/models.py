@@ -458,7 +458,7 @@ class Note(models.Model):
     """
     ideas = models.ManyToManyField(Idea, blank=True, null=True)
     thoughts = models.ManyToManyField(Thought, blank=True, null=True)
-    title = models.CharField(max_length=500)
+    title = models.CharField(max_length=75)
     content = models.TextField(max_length=5000)
     date_published = models.DateTimeField(auto_now_add=True, auto_now=True)
 
