@@ -42,10 +42,14 @@ class TemplateNoteList(template.Node):
         if self.idea:
             filter_args['ideas'] = self.idea.resolve(context)
 
+        thought_related_notes = []
         if self.thought:
-            filter_args['thoughts'] = self.thought.resolve(context)
+            thought = self.thought.resolve(context)
+            thought_related_notes = Note.objects.filter(thoughts=thought).order_by("-date_published")[:self.length]
 
-        context[self.name] = Note.objects.filter(**filter_args).order_by("-date_published")[:self.length]
+        remaining_spots = max(0, self.length - len(thought_related_notes))
+        idea_related_notes = Note.objects.filter(**filter_args).order_by("-date_published")[:remaining_spots]
+        context[self.name] = list(thought_related_notes) + list(idea_related_notes)
         return ''
 
 
@@ -93,13 +97,9 @@ def get_latest_notes(parser, token):
 
         if 'idea' not in tokens:
             tokens['idea'] = None
-        else:
-            tokens['idea']
 
         if 'thought' not in tokens:
             tokens['thought'] = None
-        else:
-            tokens['thought']
     except KeyError:
         pass
 

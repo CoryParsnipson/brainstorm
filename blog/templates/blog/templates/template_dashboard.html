@@ -195,7 +195,7 @@
                             <a class="overlay" href="{% url 'dashboard-notes' %}?id={{ note.id }}"></a>
 
                             <span class="title green">{{ note.title }}</span>
-                            <span class="date blue">{{ note.date_published }}</span>
+                            <span class="date blue">{{ note.date_published|date:"F j, Y, g:i A" }}</span>
                             {{ note.truncate|safe }}
                         </td>
                     </tr>

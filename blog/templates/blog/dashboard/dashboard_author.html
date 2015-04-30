@@ -140,8 +140,37 @@
     </table>
 </div>
 
-<h2>Notes</h2>
-<p>Include notes for this idea in this column!</p>
+<div class="note-box">
+    <h3>Relevant Notes</h3>
+    {% if thought_form.edit %}
+      {% get_latest_notes name='latest_notes' length=7 idea=thought_form.idea.value thought=thought_form.edit.value %}
+    {% else %}
+      {% get_latest_notes name='latest_notes' length=7 idea=thought_form.idea.value %}
+    {% endif %}
+
+    <table class="note-list">
+        <tbody>
+        {% for note in latest_notes %}
+        <tr>
+            <td>
+                <a class="overlay" href="{% url 'dashboard-notes' %}?id={{ note.id }}"></a>
+
+                <span class="title green">{{ note.title }}</span>
+                <span class="date blue">{{ note.date_published|date:"F j, Y, g:i A" }}</span>
+                {{ note.content|safe }}
+            </td>
+        </tr>
+        {% empty %}
+        <tr><td class="center-align">There are no Notes in the database.</td></tr>
+        {% endfor %}
+        <tr>
+            <td class="center-align">
+                <a class="more" href="{% url 'dashboard-notes' %}">More Notes...</a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
 {% endblock %}
 
 {% block footer %}
