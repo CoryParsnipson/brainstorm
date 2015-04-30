@@ -183,8 +183,33 @@
                 </table>
             </div>
 
-            <h3>Random Notes</h3>
-            <p>Random notes. A sharp. B flat.</p>
+            <div class="note-box">
+                <h3>Random Notes</h3>
+                {% get_latest_notes name='latest_notes' length=5 %}
+
+                <table class="note-list">
+                    <tbody>
+                    {% for note in latest_notes %}
+                    <tr>
+                        <td>
+                            <a class="overlay" href="{% url 'dashboard-notes' %}?id={{ note.id }}"></a>
+
+                            <span class="title green">{{ note.title }}</span>
+                            <span class="date blue">{{ note.date_published }}</span>
+                            {{ note.truncate|safe }}
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr><td>There are no Notes in the database.</td></tr>
+                    {% endfor %}
+                    <tr>
+                        <td class="center-align">
+                            <a class="more" href="{% url 'dashboard-notes' %}">More Notes...</a>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
             {% endblock %}
         </div>
     </div>

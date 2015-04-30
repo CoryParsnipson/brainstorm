@@ -1659,8 +1659,12 @@ class FormNoteView(View):
             callback = request.POST['next']
 
         if 'title' not in request.POST or not request.POST['title']:
-            auto_title_length = 30
-            auto_title = lib.strip_tags(lib.truncate(lib.strip_tags(request.POST['content']), max_length=auto_title_length))
+            auto_title = lib.strip_tags(
+                lib.truncate(
+                    request.POST['content'],
+                    max_length=Note._meta.get_field('title').max_length
+                )
+            )
             request.POST['title'] = auto_title
 
         if 'id' not in request.POST or not request.POST['id']:

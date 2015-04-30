@@ -75,6 +75,7 @@ NUM_IDEAS_FOOTER = 3
 NUM_AMAZON_RESULTS = 5
 NUM_READ_LIST = 3
 NUM_TASK_LIST = 3
+NUM_NOTE_LIST = 5
 
 
 ###############################################################################

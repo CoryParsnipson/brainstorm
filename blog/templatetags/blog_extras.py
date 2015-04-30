@@ -3,7 +3,7 @@ from django.core.urlresolvers import reverse
 from django.utils.dateformat import DateFormat
 
 from blog import lib
-from blog.models import Idea, ReadingListItem, Task
+from blog.models import Idea, ReadingListItem, Task, Note
 from blog.views import dashboard_stats
 
 register = template.Library()
@@ -27,6 +27,28 @@ class TemplateTaskList(template.Node):
         return ''
 
 
+class TemplateNoteList(template.Node):
+    """ template class to query for Notes
+    """
+    def __init__(self, name='notes', note_list_length=lib.NUM_NOTE_LIST, idea=None, thought=None):
+        self.name = name
+        self.length = max(0, note_list_length)
+        self.idea = template.Variable(idea) if idea else None
+        self.thought = template.Variable(thought) if thought else None
+
+    def render(self, context):
+        filter_args = {}
+
+        if self.idea:
+            filter_args['ideas'] = self.idea.resolve(context)
+
+        if self.thought:
+            filter_args['thoughts'] = self.thought.resolve(context)
+
+        context[self.name] = Note.objects.filter(**filter_args).order_by("-date_published")[:self.length]
+        return ''
+
+
 @register.tag
 def get_latest_tasks(parser, token):
     """ return a list of tasks and work them into the template context
@@ -36,7 +58,6 @@ def get_latest_tasks(parser, token):
             priority and date added)
           kwargs['name'] -> value to store tasks in context variable
     """
-
     token_data = token.split_contents()
     token_data = token_data[1:]  # index 0 is tag name
     tokens = dict([tuple(l.split("=")) for l in token_data])
@@ -51,6 +72,38 @@ def get_latest_tasks(parser, token):
         tokens['idea'] = None
 
     return TemplateTaskList(tokens['name'], task_list_length=tokens['length'], idea=tokens['idea'])
+
+
+@register.tag
+def get_latest_notes(parser, token):
+    """ return a list of notes and work them into the template context
+
+        parameters:
+          kwargs['length'] -> number of notes to return (ordered by date
+            published)
+          kwargs['name'] -> value to store tasks in context variable
+    """
+    token_data = token.split_contents()
+    token_data = token_data[1:]  # index 0 is tag name
+    tokens = dict([tuple(l.split("=")) for l in token_data])
+
+    try:
+        tokens['name'] = tokens['name'].replace("'", "")
+        tokens['length'] = int(tokens['length'])
+
+        if 'idea' not in tokens:
+            tokens['idea'] = None
+        else:
+            tokens['idea']
+
+        if 'thought' not in tokens:
+            tokens['thought'] = None
+        else:
+            tokens['thought']
+    except KeyError:
+        pass
+
+    return TemplateNoteList(name=tokens['name'], note_list_length=tokens['length'], idea=tokens['idea'], thought=tokens['thought'])
 
 
 @register.simple_tag

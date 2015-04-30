@@ -459,13 +459,30 @@ class Note(models.Model):
     ideas = models.ManyToManyField(Idea, blank=True, null=True)
     thoughts = models.ManyToManyField(Thought, blank=True, null=True)
     title = models.CharField(max_length=500)
-    content = models.TextField(max_length=1500)
+    content = models.TextField(max_length=5000)
     date_published = models.DateTimeField(auto_now_add=True, auto_now=True)
+
+    # non field members
+    allowed_tags = [
+        'br', 'em', 'strong', 'blockquote', 'quote', 'hr', 'ul', 'li', 'ol', 'p'
+    ]
 
     def strip_tags(self):
         """ return content field with no html tags included
         """
         return lib.strip_tags(self.content)
+
+    def truncate(self, max_length=150, allowed_tags=None, full_link=None):
+        """ output a form of the description field, truncated to max_length. Tags
+            will be whitelisted, stripped, and balanced to account for
+            truncation.
+        """
+        return lib.truncate(
+            content=self.content,
+            max_length=max_length,
+            allowed_tags=allowed_tags or self.allowed_tags,
+            full_link=full_link,
+        )
 
     def display_fancy_date(self):
         return lib.display_fancy_date(self.date_published)

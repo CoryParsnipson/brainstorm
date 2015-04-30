@@ -76,10 +76,46 @@
   margin-left: 10px;
 }
 
-.todo-box {
+.todo-box,
+.note-box {
   background-color: #404040;
   padding: 10px;
   margin-bottom: 1.5rem;
+}
+
+.note-box table.note-list {
+  color: #B7B7B7;
+  font-size: 9pt;
+  line-height: 1.2rem;
+}
+
+.note-box table.note-list tr:nth-child(odd) {
+  background-color: #383838;
+}
+
+.note-box table.note-list tr:hover {
+  background-color: #444444;
+}
+
+.note-box table.note-list td {
+  position: relative;  /* a.overlay boundary */
+  padding: 5px;
+}
+
+.note-box span.title {
+  font-size: 10pt;
+}
+
+.note-box span.date {
+  font-size: 8pt;
+  display: block;
+  line-height: 1rem;
+  margin: 0;
+  margin-bottom: 0.5rem;
+}
+
+.note-box a.more {
+  font-size: 10pt;
 }
 
 /******************************************************************************
