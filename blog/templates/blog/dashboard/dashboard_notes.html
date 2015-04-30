@@ -52,9 +52,10 @@ $(function() {
         </tbody>
     </table>
 </form>
+{% endblock %}
 
-<hr>
+{% block side %}
 <h2>Manage Notes</h2>
 {% include "blog/templates/template_editablelist.html" with queryset=notes show_note_delete=True %}
-
+{% include "blog/templates/template_pagination.html" with paginator=paginator pages=pagination narrow=True %}
 {% endblock %}

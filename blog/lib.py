@@ -46,6 +46,7 @@ PAGINATION_HIGHLIGHTS_PER_PAGE = 10
 PAGINATION_DASHBOARD_ACTIVITY_PER_PAGE = 30
 PAGINATION_DASHBOARD_READINGLIST_PER_PAGE = 15
 PAGINATION_DASHBOARD_HIGHLIGHTS_PER_PAGE = 30
+PAGINATION_DASHBOARD_NOTES_PER_PAGE = 30
 PAGINATION_DASHBOARD_TASKS_PER_PAGE = 30
 PAGINATION_DASHBOARD_IDEAS_PER_PAGE = 10
 PAGINATION_DASHBOARD_THOUGHTS_PER_PAGE = 50
@@ -60,6 +61,7 @@ PAGINATION_HIGHLIGHTS_PAGES_TO_LEAD = 3
 PAGINATION_DASHBOARD_ACTIVITY_PAGES_TO_LEAD = 0
 PAGINATION_DASHBOARD_READINGLIST_PAGES_TO_LEAD = 2
 PAGINATION_DASHBOARD_HIGHLIGHTS_PAGES_TO_LEAD = 4
+PAGINATION_DASHBOARD_NOTES_PAGES_TO_LEAD = 0
 PAGINATION_DASHBOARD_TASKS_PAGES_TO_LEAD = 4
 PAGINATION_DASHBOARD_IDEAS_PAGES_TO_LEAD = 2
 PAGINATION_DASHBOARD_THOUGHTS_PAGES_TO_LEAD = 4
@@ -238,9 +240,17 @@ class FlashMessageManager:
         elif msg_data['action'] == 'book_delete':
             if msg_data['status']:
                 if len(msg_data['tokens']) > 1:
-                    msg = "Successfully delete %d Books." % len(msg_data['tokens'])
+                    msg = "Successfully deleted %d Books." % len(msg_data['tokens'])
                 else:
                     msg = "Successfully deleted Book '%s'." % msg_data['tokens'][0]['book_title']
+            else:
+                msg = msg_data['action'] + ": %s." % msg_data['tokens'][0]['error']
+        elif msg_data['action'] == 'note_delete':
+            if msg_data['status']:
+                if len(msg_data['tokens']) > 1:
+                    msg = "Successfully deleted %d Notes." % len(msg_data['tokens'])
+                else:
+                    msg = "Successfully deleted Note '%s'." % msg_data['tokens'][0]['title']
             else:
                 msg = msg_data['action'] + ": %s." % msg_data['tokens'][0]['error']
         else:

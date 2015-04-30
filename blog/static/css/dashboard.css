@@ -596,6 +596,7 @@ table.task-list ul.dropdown li a {
 .activity-type-29 { background-image: url('../images/activity_icon_priority.png'); }         /* changed task priority */
 .activity-type-30 { background-image: url('../images/activity_icon_started_draft.png'); }    /* started new note */
 .activity-type-31 { background-image: url('../images/activity_icon_edit.png'); }             /* edited note */
+.activity-type-32 { background-image: url('../images/activity_icon_delete.png'); }           /* deleted note */
 
 span.excerpt { color: #AAAAAA; }
 

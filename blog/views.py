@@ -409,19 +409,35 @@ def dashboard_notes(request):
     """
     notes = Note.objects.all().order_by("-date_published")
 
+    page = request.GET.get('p')
+    paginator, notes_on_page = lib.create_paginator(
+        queryset=notes,
+        per_page=lib.PAGINATION_DASHBOARD_NOTES_PER_PAGE,
+        page=page,
+    )
+
+    pagination = lib.create_pagination(
+        queryset=notes,
+        current_page=page,
+        per_page=lib.PAGINATION_DASHBOARD_NOTES_PER_PAGE,
+        page_lead=lib.PAGINATION_DASHBOARD_NOTES_PAGES_TO_LEAD,
+    )
+
     instance = None
     if 'id' in request.GET:
         try:
             instance = Note.objects.get(id=request.GET['id'])
         except Note.DoesNotExist:
-            dne_msg = "Cannot edit Note #%d" % request.GET['id']
+            dne_msg = "Cannot edit Note #%s" % request.GET['id']
             messages.add_message(request, messages.ERROR, dne_msg)
     note_form = NoteForm(instance=instance)
 
     context = {
         'page_title': 'Notes',
-        'notes': notes,
+        'notes': notes_on_page,
         'note_form': note_form,
+        'paginator': paginator,
+        'pagination': pagination,
     }
     return render(request, 'blog/dashboard/dashboard_notes.html', context)
 
@@ -753,6 +769,9 @@ def dashboard_backend(request):
                 a.save()
 
             fmm.add_message({'action': action, 'status': status, 'tokens': tokens, 'extra_html': ''})
+        elif action == 'note_delete':
+            n = Note.objects.filter(id=i)[0]
+            FormNoteView.delete(request, n.id)
         else:
             messages.add_message(request, messages.ERROR, "Unknown operation specified.")
             return redirect(next_url)
@@ -1642,10 +1661,6 @@ class FormNoteView(View):
         if 'title' not in request.POST or not request.POST['title']:
             auto_title_length = 30
             auto_title = lib.strip_tags(lib.truncate(lib.strip_tags(request.POST['content']), max_length=auto_title_length))
-
-            if len(request.POST['content']) > auto_title_length:
-                auto_title += "..."
-
             request.POST['title'] = auto_title
 
         if 'id' not in request.POST or not request.POST['id']:
@@ -1684,3 +1699,39 @@ class FormNoteView(View):
                 return redirect(request.META['HTTP_REFERER'])
             else:
                 return JsonResponse(errors)
+
+    @staticmethod
+    def delete(request, id):
+        """ delete a Note identified by id
+        """
+        if not request.user.is_authenticated():
+            return HttpResponseForbidden
+
+        try:
+            id = int(id)
+        except ValueError:
+            msg = "Note '%s' does not exist." % id
+            messages.add_message(request, messages.ERROR, msg)
+            return redirect(request.META['HTTP_REFERER'])
+
+        try:
+            note = Note.objects.filter(id=id)[0]
+
+            # log activity in database
+            activity = Activity()
+            activity.author = request.user
+            activity.type = Activity.get_type_id('Deleted Note')
+            activity.store_tokens({'id': note.id, 'title': note.title})
+            activity.url = reverse('dashboard-notes')
+            activity.save()
+
+            msg = "Successfully deleted Note #%d '%s'" % (note.id, note.title)
+            note.delete()
+
+            messages.add_message(request, messages.SUCCESS, msg)
+        except Note.DoesNotExist:
+            msg = "Note '%s' does not exist." % id
+            messages.add_message(request, messages.ERROR, msg)
+            return redirect(request.META['HTTP_REFERER'])
+
+        return redirect(request.META['HTTP_REFERER'])

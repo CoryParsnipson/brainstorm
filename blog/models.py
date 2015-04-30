@@ -659,7 +659,9 @@ class Activity(models.Model):
         elif Activity.TYPE[int(self.type)][1] == 'Edited Note':
             t = self.get_tokens()
             msg = "edited <span class='excerpt'>Note #%d:</span> <span class='note'>%s</span>" % (t['id'], t['title'])
-        #elif Activity.TYPE[int(self.type)][1] == 'Deleted Note':
+        elif Activity.TYPE[int(self.type)][1] == 'Deleted Note':
+            t = self.get_tokens()
+            msg = "deleted <span class='excerpt'>Note #%d:</span> <span class='note'>%s</span>" % (t['id'], t['title'])
         #elif Activity.TYPE[int(self.type)][1] == 'Tweet':
         else:
             raise IndexError("Invalid Activity Type")
