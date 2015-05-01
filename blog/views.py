@@ -1705,6 +1705,38 @@ class FormNoteView(View):
                 return JsonResponse(errors)
 
     @staticmethod
+    def add_thought(request, note_id, thought_slug):
+        """ add a thought to the foreign key list of Thoughts associated with
+            this Note instance
+        """
+        try:
+            note = Note.objects.filter(id=int(note_id))
+            note.add_thought(thought_slug)
+        except (Note.DoesNotExist, ValueError) as e:
+            messages.add_message(request, messages.ERROR, e.message)
+            return redirect(request.META['HTTP_REFERER'])
+
+        msg = "Successfully associated Thought '%s' to Note '%s'" % (thought_slug, note.title)
+        messages.add_message(request, messages.SUCCESS, msg)
+        return redirect(request.META['HTTP_REFERER'])
+
+    @staticmethod
+    def add_idea(request, note_id, idea_slug):
+        """ add an idea to the foreign key list of Ideas associated with this
+            Note instance
+        """
+        try:
+            note = Note.objects.filter(id=int(note_id))
+            note.add_thought(idea_slug)
+        except (Note.DoesNotExist, ValueError) as e:
+            messages.add_message(request, messages.ERROR, e.message)
+            return redirect(request.META['HTTP_REFERER'])
+
+        msg = "Successfully associated Idea '%s' to Note '%s'" % (idea_slug, note.title)
+        messages.add_message(request, messages.SUCCESS, msg)
+        return redirect(request.META['HTTP_REFERER'])
+
+    @staticmethod
     def delete(request, id):
         """ delete a Note identified by id
         """

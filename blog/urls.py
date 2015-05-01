@@ -49,6 +49,8 @@ urlpatterns = patterns('',
     url(r'^api/forms/task/(?P<id>[0-9]+)/priority/(?P<priority>[0-9]+)', views.FormTaskView.change_priority, name='forms-task-priority'),
     url(r'^api/forms/task/(?P<id>[0-9]+)/delete', views.FormTaskView.delete, name='forms-task-delete'),
     url(r'^api/forms/note/$', views.FormNoteView.as_view(), name='forms-note'),
+    url(r'^api/forms/note/(?P<id>[0-9]+)/associate_idea/(?P<idea_slug>[a-z0-9\-]+)', views.FormNoteView.add_idea, name='forms-note-associate-idea'),
+    url(r'^api/forms/note/(?P<id>[0-9]+)/associate_thought/(?P<thought_slug>[a-z0-9\-]+)', views.FormNoteView.add_thought, name='forms-note-associate-thought'),
 )
 
 # setup serving of media asserts on development environment

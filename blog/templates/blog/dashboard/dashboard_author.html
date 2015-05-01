@@ -158,6 +158,18 @@
                 <span class="title green">{{ note.title }}</span>
                 <span class="date dark-grey">{{ note.date_published|date:"F j, Y, g:i A" }}</span>
 
+                <!-- hmmm, can't actually do this yet
+                <div>
+                    {% if thought_form.idea.value %}
+                    <a class="add_idea" href="#">Associate Idea</a>
+                    {% endif %}
+
+                    {% if thought_form.edit %}
+                    <a class="add_thought" href="#">Associate Thought</a>
+                    {% endif %}
+                </div>
+                -->
+
                 {% for thought in note.thoughts.all %}
                 <span class="thought">{{ thought.slug }}</span>
                 {% endfor %}

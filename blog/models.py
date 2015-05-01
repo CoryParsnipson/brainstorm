@@ -467,6 +467,37 @@ class Note(models.Model):
         'br', 'em', 'strong', 'blockquote', 'quote', 'hr', 'ul', 'li', 'ol', 'p'
     ]
 
+    def add_idea(self, idea_slug):
+        """ add an idea instance to list of associated Ideas. Note: duplicate
+            ideas will not be added; ValueError exception will be raised
+        """
+        try:
+            idea_slug = lib.slugify(idea_slug)
+            idea = Idea.objects.filter(slug=idea_slug)
+        except Idea.DoesNotExist:
+            raise ValueError("Idea '%s' does not exist." % idea_slug)
+
+        if self.ideas.filter(slug=idea.slug).exists():
+            raise ValueError("Idea '%s' is already associated with Note '%s'" % (idea_slug, self.title))
+
+        self.ideas.add(idea)
+
+    def add_thought(self, thought_slug):
+        """ add a thought instance to list of associated Thoughts. Note:
+            duplicate thoughts will not be added: ValueError exception
+            will be raised
+        """
+        try:
+            thought_slug = lib.slugify(thought_slug)
+            thought = Thought.objects.filter(slug=thought_slug)
+        except Thought.DoesNotExist:
+            raise ValueError("Thought '%s' does not exist." % thought_slug)
+
+        if self.thoughts.filter(slug=thought.slug).exists():
+            raise ValueError("Thought '%s' is already associated with Note '%s'" % (thought_slug, self.title))
+
+        self.thoughts.add(thought)
+
     def strip_tags(self):
         """ return content field with no html tags included
         """
