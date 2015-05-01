@@ -156,7 +156,16 @@
                 <a class="overlay" href="{% url 'dashboard-notes' %}?id={{ note.id }}"></a>
 
                 <span class="title green">{{ note.title }}</span>
-                <span class="date blue">{{ note.date_published|date:"F j, Y, g:i A" }}</span>
+                <span class="date dark-grey">{{ note.date_published|date:"F j, Y, g:i A" }}</span>
+
+                {% for thought in note.thoughts.all %}
+                <span class="thought">{{ thought.slug }}</span>
+                {% endfor %}
+
+                {% for idea in note.ideas.all %}
+                <span class="idea">{{ idea.slug }}</span>
+                {% endfor %}
+
                 {{ note.content|safe }}
             </td>
         </tr>

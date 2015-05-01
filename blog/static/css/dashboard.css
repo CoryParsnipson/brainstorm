@@ -103,6 +103,19 @@
   padding: 5px;
 }
 
+.note-box span.idea, .note-box span.thought {
+  display: inline-block;
+  font-size: 9pt;
+  font-weight: normal;
+  line-height: 1rem;
+  border-radius: 5px;
+  background-color: #303030;
+  padding: 1px 5px;
+  margin-top: -2px;
+  margin-right: 0.3rem;
+  margin-bottom: 0.5rem;
+}
+
 .note-box span.title {
   font-size: 10pt;
 }
@@ -112,7 +125,7 @@
   display: block;
   line-height: 1rem;
   margin: 0;
-  margin-bottom: 0.5rem;
+  margin-bottom: 0.3rem;
 }
 
 .note-box a.more {
