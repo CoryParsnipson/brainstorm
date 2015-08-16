@@ -498,6 +498,10 @@ def resize_image(filename, new_size=THOUGHT_PREVIEW_IMAGE_SIZE):
     image_file.write(out_img.getvalue())
     image_file.close()
 
+    # instead of the Amazon S3 stanza, give this a try:
+    # if hasattr(image_file, "_storage"):
+    #   image_file._storage.headers['Content-Type'] = ''
+
     # if we are on Amazon S3, set the content type
     if os.environ['DJANGO_SETTINGS_MODULE'].endswith('production'):
         boto_url = os.path.join(paths.MEDIA_DIR, filename)
