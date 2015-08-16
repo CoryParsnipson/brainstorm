@@ -300,6 +300,20 @@ span.big {
 }
 
 /******************************************************************************
+ * syntax highlighting
+ *****************************************************************************/
+pre {
+  border-left: 5px solid #EEE8D5;
+  background: #002B36;
+  color: #839496;
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 10pt;
+  margin-bottom: 1rem;
+  overflow-x: scroll;
+  padding: 5px 10px;
+}
+
+/******************************************************************************
  * blockquote and cite styles
  *****************************************************************************/
 blockquote {
