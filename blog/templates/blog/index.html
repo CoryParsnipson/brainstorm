@@ -69,11 +69,8 @@
 <ul class="medium-block-grid-2 small-block-grid-1 small-stories">
     {% for thought in latest_thoughts %}
     <li>
-        <div class="img-placeholder" {% if thought.preview %}style="background-image: url({{ thought.preview.url }})" {% endif %}>
+        <div class="img-placeholder" {% if thought.preview %}style="background-image: url({{ thought.preview.url }})" {% else %}style="background-image: url({{ thought.idea.icon.url }})" {% endif %}>
             <a class="overlay" href="{% url 'thought-page' thought.idea.slug thought.slug %}"></a>
-            {% if not thought.preview %}
-            <span class="placeholder">SP</span>
-            {% endif %}
         </div>
 
         <p class="idea"><a class="reverse-color" href="{% url 'idea-page' thought.idea.slug %}">{{ thought.idea }}</a></p>
