@@ -6,12 +6,12 @@ django-appconf==1.0.1
 django-imagekit==3.2.5
 django-postgrespool==0.3.0
 django-storages==1.1.8
-gunicorn==19.2.1
+gunicorn==19.5.0
 html5lib==0.999
 lxml==3.4.2
 pilkit==1.1.12
-Pillow==2.7.0
-psycopg2==2.6
+Pillow==3.3.2
+psycopg2==2.7.5
 python-amazon-product-api==0.2.8
 pytz==2014.10
 selenium==2.44.0
