@@ -6,10 +6,10 @@
 <script type="text/javascript">
   $(function() {
     /* add event to search bar on enter keypress */
-    $('#aws-search-bar').keypress(aws_search_enter_triggered);
+    $('#book-search-bar').keypress(book_search_enter_triggered);
 
     /* add event to search bar button on click */
-    $('#aws-search img').click(aws_search);
+    $('#book-search img').click(book_search);
 
     /* javascript clear button */
     $('#button-clear').click(function () {
@@ -46,7 +46,7 @@
 <h3>Currently Reading</h3>
 <div class="book-list">
     {% for book in wish_list %}
-    <div class="aws-book-result group">
+    <div class="book-book-result group">
         <img src="{{ book.cover }}" class="left">
         <p class="title">{{ book.title }}</p>
         <p class="author">{{ book.author }}</p>
@@ -71,7 +71,7 @@
 <h3>Recently Read</h3>
 <div class="book-list">
     {% for book in read_list %}
-    <div class="aws-book-result group">
+    <div class="book-book-result group">
         <img src="{{ book.cover }}" class="left">
         <p class="title">{{ book.title }}</p>
         <p class="author">{{ book.author }}</p>
@@ -98,12 +98,12 @@
 
 {% block side %}
 <h3>Add New Book to Reading List:</h3>
-<div id="aws-search" class="group">
-    <input id="aws-search-url" type="hidden" value="{% url 'search-aws' '' %}">
-    <input id="aws-search-bar" type="text" placeholder="Search Amazon AWS" class="search-bar left" />
+<div id="book-search" class="group">
+    <input id="book-search-url" type="hidden" value="{% url 'search-books' '' %}">
+    <input id="book-search-bar" type="text" placeholder="Search for books..." class="search-bar left" />
     <img src="{% static 'images/search.png' %}" class="left">
 </div>
-<div id="aws-results">
+<div id="book-results">
     <img class="loader" src="{% static 'images/loading.gif' %}">
 </div>
 <hr>

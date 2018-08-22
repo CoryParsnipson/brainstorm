@@ -38,7 +38,7 @@ urlpatterns = patterns('',
     url(r'^api/logout/', views.logout, name='logout'),
     url(r'^api/upload/', views.upload, name='upload'),
     url(r'^api/generate_upload_filename(?P<full_path>(\/full)?)/(?P<filename>.*)', views.generate_upload_filename, name='generate-upload-filename'),
-    url(r'^api/search_aws/(?P<keywords>.*)', views.search_aws, name='search-aws'),
+    url(r'^api/search_books/(?P<keywords>.*)', views.search_books, name='search-books'),
 
     url(r'^api/forms/idea/', views.FormIdeaView.as_view(), name='forms-idea'),
     url(r'^api/forms/thought/', views.FormThoughtView.as_view(), name='forms-thought'),

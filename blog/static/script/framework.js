@@ -168,29 +168,29 @@ function editable_check_id() {
 }
 
 // ----------------------------------------------------------------------------
-// reading list amazon aws prefill
+// reading list book search prefill
 // ----------------------------------------------------------------------------
 
-function aws_search_enter_triggered(event) {
+function book_search_enter_triggered(event) {
   if (event.which == 13)
-    aws_search(event);
+    book_search(event);
 }
 
 // run an ajax call to the amazon product api through slackerparadise RPC
-function aws_search(event) {
+function book_search(event) {
   // show ajax loader
-  $('#aws-results .loader').css({ 'display': 'block' });
+  $('#book-results .loader').css({ 'display': 'block' });
 
   $.ajax({
-    url: $('#aws-search-url').val() + $('#aws-search-bar').val() + '?n=3',
+    url: $('#book-search-url').val() + $('#book-search-bar').val() + '?n=3',
     method: "get",
     dataType: 'json',
     success: fillout_book_data,
     error: function () {
-      add_flash_message('Amazon Product API Error', 'error', true);
+      add_flash_message('Book Search API Error', 'error', true);
 
       // re-hide loading gif
-      $('#aws-results .loader').css({ 'display': 'none' });
+      $('#book-results .loader').css({ 'display': 'none' });
     },
   });
 }
@@ -200,7 +200,7 @@ function aws_search(event) {
 function fillout_book_data(data) {
   results_html = "";
 
-  book_preview_html = "<div class='aws-book-result aws-book-result-hover group'>";
+  book_preview_html = "<div class='book-book-result book-book-result-hover group'>";
   book_preview_html += "<a id='{0}' class='overlay' href='#'></a>";
   book_preview_html += "<img src='{1}' class='left'>";
   book_preview_html += "<p class='title'>{2}</p>";
@@ -209,7 +209,7 @@ function fillout_book_data(data) {
   book_preview_html += "</div>";
 
   if (data.length == 0) {
-    results_html = "<div class='aws-book-result'>";
+    results_html = "<div class='book-book-result'>";
     results_html += "<p class='empty center-align'>No results found.</p>";
     results_html += "</div>";
   }
@@ -233,7 +233,7 @@ function fillout_book_data(data) {
     );
   }
 
-  document.getElementById('aws-results').innerHTML = results_html;
+  document.getElementById('book-results').innerHTML = results_html;
 
   // bind fill form action to overlay links
   for (var i = 0; i < data.length; i++) {

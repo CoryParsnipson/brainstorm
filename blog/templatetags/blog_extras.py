@@ -243,7 +243,7 @@ def recently_read(**kwargs):
 
     list_html = "<h3>Recently Read</h3><div class=\"book-list\">"
     for book in read_list:
-        list_html += "<div class='aws-book-result aws-book-result-hover group'>"
+        list_html += "<div class='book-book-result book-book-result-hover group'>"
         list_html += "<img src='%s' class='left'>" % book.cover
         list_html += "<p class='title'>%s</p>" % book.title
         list_html += "<p class='author'>%s</p>" % book.author

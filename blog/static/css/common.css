@@ -946,7 +946,7 @@ div.book-list {
   margin-bottom: 2rem;
 }
 
-div.book-list p.empty, .aws-book-result p.empty {
+div.book-list p.empty, .book-book-result p.empty {
   font-size: 10pt;
   text-align: center;
   padding: 0 10px;
@@ -958,46 +958,51 @@ div.book-list p.empty a {
   display: block;
 }
 
-.aws-book-result {
+.book-book-result {
   width: 100%;
   min-height: 90px;
   position: relative;
   padding: 7px;
 }
 
-.aws-book-result:nth-of-type(odd) {
+.book-book-result:nth-of-type(odd) {
   background-color: #404040;
 }
 
-.aws-book-result-hover:hover, p.empty:hover {
+.book-book-result-hover:hover, p.empty:hover {
   background-color: #494949;
 }
 
-.aws-book-result p {
+.book-book-result img {
+   width: 57px;
+   height: 75px;
+}
+
+.book-book-result p {
   text-align: left;
 }
 
-.aws-book-result p.title {
+.book-book-result p.title {
   color: #F8C118;
   font-size: 10pt;
   line-height: 1rem;
   margin-bottom: 0;
 }
 
-.aws-book-result p.author {
+.book-book-result p.author {
   color: #B7B7B7;
   font-size: 8pt;
   line-height: 1.2rem;
   margin-bottom: 0.2rem;
 }
 
-.aws-book-result p.description {
+.book-book-result p.description {
   font-size: 10pt;
   line-height: 1.2rem;
   margin-bottom: 0.8rem;
 }
 
-.aws-book-result p.date {
+.book-book-result p.date {
   color: #B7B7B7;
   font-size: 8pt;
   line-height: 1rem;
@@ -1008,7 +1013,7 @@ div.book-list p.empty a {
   bottom: 3px;
 }
 
-.aws-book-result a.link-icon, .aws-book-result input[type="submit"] {
+.book-book-result a.link-icon, .book-book-result input[type="submit"] {
   position: absolute;
   bottom: 5px;
   right: 5px;

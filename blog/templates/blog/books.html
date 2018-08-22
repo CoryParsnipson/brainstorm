@@ -13,7 +13,7 @@
 <h3>Currently Reading/Wish List</h3>
 <div class="book-list">
     {% for book in wish_list %}
-    <div class="aws-book-result aws-book-result-hover group">
+    <div class="book-book-result book-book-result-hover group">
         <img src="{{ book.cover }}" class="left">
         <p class="title">
             {{ book.title }}
@@ -33,7 +33,7 @@
 <h3>Recently Read</h3>
 <div class="book-list">
     {% for book in read_list %}
-    <div class="aws-book-result aws-book-result-hover group">
+    <div class="book-book-result book-book-result-hover group">
         <img src="{{ book.cover }}" class="left">
         <p class="title">
             {{ book.title }}
@@ -57,7 +57,7 @@
 
 {% block side %}
 <h2>Cory's favorite types of books...</h2>
-<p>...are old science fiction, and really convoluted comedy books (fictional or otherwise). In particular, he enjoys <a href="http://www.amazon.com/Infinite-Jest-David-Foster-Wallace/dp/0316066524%3FSubscriptionId%3DAKIAILBDKYIUC2P45PPA%26tag%3Dslackparad-20%26linkCode%3Dxm2%26camp%3D2025%26creative%3D165953%26creativeASIN%3D0316066524" target="_blank">Infinite Jest</a> by <a href="http://en.wikipedia.org/wiki/David_Foster_Wallace" target="_blank">David Foster Wallace</a> and <a href="http://johndiesattheend.com/" target="_blank">John Dies at the End</a> by <a href="http://johndiesattheend.com/about.php" target="_blank">David Wong</a>. You can find those two and many more in this list right here.</p>
+<p>...are old science fiction, and really convoluted comedy books (fictional or otherwise). In particular, he enjoys <a href="http://johndiesattheend.com/" target="_blank">John Dies at the End</a> by <a href="http://johndiesattheend.com/about.php" target="_blank">David Wong</a>.</p>
 
 
 <h2>Books are awesome</h2>

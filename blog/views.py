@@ -829,17 +829,17 @@ def generate_upload_filename(request, filename, full_path=None):
 
 
 @login_required(login_url='index')
-def search_aws(request, keywords):
-    """ REST request to Amazon Product Advertising API
+def search_books(request, keywords):
+    """ REST request to find book information
     """
     try:
-        max_len = lib.NUM_AMAZON_RESULTS
-        if 'n' in request.GET and int(request.GET['n']) in range(lib.NUM_AMAZON_RESULTS):
+        max_len = lib.MAX_NUM_BOOK_RESULTS
+        if 'n' in request.GET and int(request.GET['n']) in range(lib.MAX_NUM_BOOK_RESULTS):
             max_len = int(request.GET['n'])
     except (IndexError, ValueError):
-        max_len = lib.NUM_AMAZON_RESULTS
+        max_len = lib.MAX_NUM_BOOK_RESULTS
 
-    data = lib.Amazon().search(keywords=keywords, max_len=max_len)
+    data = lib.BookSearch().search(keywords=keywords, max_len=max_len)
     for d in data:
         for k, v in d.items():
             d[k] = urlquote_plus(v)

@@ -3,11 +3,11 @@ import re
 import io
 import datetime
 
+import requests
 import boto
 import pytz
 import PIL
 from PIL import Image
-import amazonproduct
 from lxml import etree
 from lxml.html.clean import Cleaner
 
@@ -72,7 +72,7 @@ NUM_RECENT_IDEAS = 3
 
 NUM_IDEAS_FOOTER = 3
 
-NUM_AMAZON_RESULTS = 5
+MAX_NUM_BOOK_RESULTS = 5
 NUM_READ_LIST = 3
 NUM_TASK_LIST = 3
 NUM_NOTE_LIST = 5
@@ -81,39 +81,29 @@ NUM_NOTE_LIST = 5
 ###############################################################################
 # classes
 ###############################################################################
-class Amazon:
-    api = amazonproduct.API(cfg={
-        'access_key': common.KeyRing().get('AWS_ACCESS_KEY_ID'),
-        'secret_key': common.KeyRing().get('AWS_SECRET_ACCESS_KEY'),
-        'associate_tag': common.KeyRing().get('AWS_ASSOCIATE_TAG'),
-        'locale': 'us',
-    })
+class BookSearch:
+    google_book_api_get_string = "https://www.googleapis.com/books/v1/volumes?q="
 
-    def search(self, keywords, max_len=NUM_AMAZON_RESULTS):
-        """ given a string containing keywords, make a call to the
-            amazon API and return a list of results
+    def search(self, keywords, max_len=MAX_NUM_BOOK_RESULTS):
+        """ given a string containing keywords, make a call to an external
+            API and return a list of results
 
             Each result is a dictionary with the following keys:
-              'url' => url to amazon page
+              'url' => url to book page
               'title' => title of book
-              'author' => author of th ebook
+              'author' => author of the book
               'cover' => thumbnail url of image
         """
         if not keywords:
             return []
 
-        try:
-            results = self.api.item_search(
-                'Books',
-                Keywords=keywords,
-                ResponseGroup="Images,Small",
-            )
-        except amazonproduct.NoExactMatchesFound:
-            results = {}
+        # this implementation uses public google books api
+        query = self.google_book_api_get_string + keywords
+        http_resp = requests.get(query)
 
         books = []
         book_idx = 0
-        for book in results:
+        for book in http_resp.json()["items"]:
             if book_idx >= max_len:
                 break
 
@@ -121,16 +111,15 @@ class Amazon:
 
             try:
                 books.append({
-                    'url': book.DetailPageURL,
-                    'cover': book.SmallImage.URL,
-                    'title': book.ItemAttributes.Title,
-                    'author': book.ItemAttributes.Author,
+                    'url' : book["volumeInfo"]["infoLink"],
+                    'cover' : book["volumeInfo"]["imageLinks"]["smallThumbnail"],
+                    'title' : book["volumeInfo"]["title"],
+                    'author' : book["volumeInfo"]["authors"][0],
                 })
-            except AttributeError:
+            except KeyError:
                 book_idx -= 1
 
         return books
-
 
 class FlashMessageManager:
     def __init__(self):
