@@ -26,8 +26,6 @@ SECRET_KEY = keyring.get('DJANGO_SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-TEMPLATE_DEBUG = True
-
 ALLOWED_HOSTS = []
 
 # Application definition
@@ -97,12 +95,26 @@ STATIC_ROOT = paths.STATIC_DIR
 MEDIA_URL = '/' + paths.MEDIA_DIR + '/'
 MEDIA_ROOT = paths.MEDIA_ROOT
 
-# Template dirs
-# keep global, non-app specific template files here
-TEMPLATE_DIRS = (paths.TEMPLATE_DIR, )
-
-# have request template variable automatically
-TEMPLATE_CONTEXT_PROCESSORS = (
-    'django.core.context_processors.request',
-    'django.contrib.messages.context_processors.messages',
-)
+# template settings
+TEMPLATES = [
+    {
+        'BACKEND': 'django.template.backends.django.DjangoTemplates',
+        'APP_DIRS': True,
+        'DIRS': [
+            paths.TEMPLATE_DIR
+        ],
+        'OPTIONS': {
+            'context_processors': [
+                'django.contrib.auth.context_processors.auth',
+                'django.template.context_processors.request',
+                'django.template.context_processors.debug',
+                'django.template.context_processors.i18n',
+                'django.template.context_processors.media',
+                'django.template.context_processors.static',
+                'django.template.context_processors.tz',
+                'django.contrib.messages.context_processors.messages',
+            ],
+            'debug': True,
+        },
+    },
+]

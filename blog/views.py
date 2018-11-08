@@ -5,7 +5,7 @@ import random
 from django.core import serializers
 from django.core.urlresolvers import reverse
 from django.core.exceptions import ValidationError
-from django.core.context_processors import csrf
+from django.template.context_processors import csrf
 from django.http import JsonResponse, HttpResponseForbidden
 from django.views.generic import View
 from django.utils.http import urlquote_plus

@@ -29,8 +29,6 @@ keyring.set("SECRET_KEY", SECRET_KEY)
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-TEMPLATE_DEBUG = False
-
 ALLOWED_HOSTS = [
     '.slackerparadise.com',
     '.slackerparadise.herokuapp.com'
@@ -127,12 +125,26 @@ paths.STATIC_DIR = STATIC_URL
 
 STATICFILES_STORAGE = "slackerparadise.s3utils.StaticS3BotoStorage"
 
-# Template dirs
-# keep global, non-app specific template files here
-TEMPLATE_DIRS = (paths.TEMPLATE_DIR, )
-
-# have request template variable automatically
-TEMPLATE_CONTEXT_PROCESSORS = (
-    'django.core.context_processors.request',
-    'django.contrib.messages.context_processors.messages',
-)
+# template settings
+TEMPLATES = [
+    {
+        'BACKEND': 'django.template.backends.django.DjangoTemplates',
+        'APP_DIRS': True,
+        'DIRS': [
+            paths.TEMPLATE_DIR
+        ],
+        'OPTIONS': {
+            'context_processors': [
+                'django.contrib.auth.context_processors.auth',
+                'django.template.context_processors.request',
+                'django.template.context_processors.debug',
+                'django.template.context_processors.i18n',
+                'django.template.context_processors.media',
+                'django.template.context_processors.static',
+                'django.template.context_processors.tz',
+                'django.contrib.messages.context_processors.messages',
+            ],
+            'debug': False,
+        },
+    },
+]

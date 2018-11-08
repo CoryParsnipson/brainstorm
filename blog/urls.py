@@ -1,11 +1,11 @@
 from django.conf import settings
 from django.conf.urls.static import static
-from django.conf.urls import patterns, url
+from django.conf.urls import url
 from django.views.generic.base import RedirectView
 
 from . import views
 
-urlpatterns = patterns('',
+urlpatterns = [
     # favicon
     url(r'^favicon\.ico$', RedirectView.as_view(url='/static/favicon.ico')),
 
@@ -51,7 +51,7 @@ urlpatterns = patterns('',
     url(r'^api/forms/note/$', views.FormNoteView.as_view(), name='forms-note'),
     url(r'^api/forms/note/(?P<id>[0-9]+)/associate_idea/(?P<idea_slug>[a-z0-9\-]+)', views.FormNoteView.add_idea, name='forms-note-associate-idea'),
     url(r'^api/forms/note/(?P<id>[0-9]+)/associate_thought/(?P<thought_slug>[a-z0-9\-]+)', views.FormNoteView.add_thought, name='forms-note-associate-thought'),
-)
+]
 
 # setup serving of media asserts on development environment
 if settings.DEBUG:

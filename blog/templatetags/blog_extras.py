@@ -1,6 +1,7 @@
 from django import template
 from django.core.urlresolvers import reverse
 from django.utils.dateformat import DateFormat
+from django.utils.html import format_html
 
 from blog import lib
 from blog.models import Idea, ReadingListItem, Task, Note
@@ -118,13 +119,21 @@ def idea_dropdown(**kwargs):
     action = kwargs['action'] if 'action' in kwargs else ''
     ideas = Idea.objects.all().order_by('order')
 
-    dropdown_html = "<ul class='dropdown%s'>" % (' ' + dropdown_classes)
+    dropdown_html = format_html(
+        "<ul class='dropdown{}'>",
+        ' ' + dropdown_classes
+    )
 
     for idea in ideas:
-        li_name = " name='%s'" % (action or 'idea_dropdown')
-        dropdown_html += "<li><button type='submit'%s value='%s'>%s</button></li>" % (li_name, "thought_idea_move|" + idea.slug, idea.name)
+        li_name = " name=%s" % (action or 'idea_dropdown')
+        dropdown_html += format_html(
+            "<li><button type='submit'{} value='{}'>{}</button></li>",
+            li_name,
+            "thought_idea_move|" + idea.slug,
+            idea.name
+        )
 
-    dropdown_html += "</ul>"
+    dropdown_html += format_html("</ul>")
     return dropdown_html
 
 
@@ -143,13 +152,13 @@ def thought_nav(thought, **kwargs):
     direction = kwargs['direction'] if 'direction' in kwargs else 'next'
     length = kwargs['length'] if 'length' in kwargs else 1
     block_grid_class = kwargs['blockgridclass'] if 'blockgridclass' in kwargs else 'small-block-grid-1'
-    placeholder_html = "<div class='nav-placeholder'><p>&nbsp;</p><span>SP</span></div>"
+    placeholder_html = format_html("<div class='nav-placeholder'><p>&nbsp;</p><span>SP</span></div>")
 
-    list_html = "<ul class='%s thought-nav'>" % block_grid_class
-    list_html += "<li><div class='header strong'>%s</div></li>" % header
+    list_html = format_html("<ul class='{} thought-nav'>", block_grid_class)
+    list_html += format_html("<li><div class='header strong'>{}</div></li>", header)
 
     if not thought:
-        list_html += "<li>" + placeholder_html + "</li></ul>"
+        list_html += format_html("<li>{}</li></ul>", placeholder_html)
         return list_html
 
     if direction == 'next':
@@ -159,17 +168,16 @@ def thought_nav(thought, **kwargs):
 
     for t in adj_thoughts:
         if not t:
-            list_html += "<li>" + placeholder_html + "</li>"
+            list_html += format_html("<li>{}</li>", placeholder_html)
         else:
-            url = reverse('thought-page', kwargs={'idea_slug': t.idea.slug, 'thought_slug': t.slug})
+            list_html += format_html(
+                "<li><div class='nav'><a class='overlay' href='{}'></a><p>{}</p><img src='{}' /></div></li>",
+                reverse('thought-page', kwargs={'idea_slug': t.idea.slug, 'thought_slug': t.slug}),
+                t.title,
+                t.get_preview(),
+            )
 
-            list_html += "<li><div class='nav'>"
-            list_html += "<a class='overlay' href='%s'></a>" % url
-            list_html += "<p>%s</p>" % t.title
-            list_html += "<img src='%s' />" % t.get_preview()
-            list_html += "</div></li>"
-
-    list_html += "</ul>"
+    list_html += format_html("</ul>")
     return list_html
 
 
@@ -192,8 +200,8 @@ def url_qs(context, **kwargs):
         with the query string parameters cleaned swapped out with the
         named arguments.
 
-        NOTE: needs 'django.core.context_processors.request' under the settings
-        variable TEMPLATE_CONTEXT_PROCESSORS
+        NOTE: needs 'django.template.context_processors.request' under the settings
+        variable TEMPLATES.OPTIONS.context_processors
 
         e.g.) request.path -> http://www.slackerparadise.com/ideas
               request.META.QUERY_STRING -> idea=miscellaneous&p=4
@@ -241,29 +249,26 @@ def recently_read(**kwargs):
     num_entries = int(kwargs['n']) if 'n' in kwargs else lib.NUM_READ_LIST
     read_list = ReadingListItem.objects.filter(wishlist=False).order_by('-date_published')[:num_entries]
 
-    list_html = "<h3>Recently Read</h3><div class=\"book-list\">"
+    list_html = format_html("<h3>Recently Read</h3><div class=\"book-list\">")
     for book in read_list:
-        list_html += "<div class='book-book-result book-book-result-hover group'>"
-        list_html += "<img src='%s' class='left'>" % book.cover
-        list_html += "<p class='title'>%s</p>" % book.title
-        list_html += "<p class='author'>%s</p>" % book.author
-        list_html += "<p class='description'>%s</p>" % book.description
+        list_html += format_html("<div class='book-book-result book-book-result-hover group'>")
+        list_html += format_html("<img src='{}' class='left'>", book.cover)
+        list_html += format_html("<p class='title'>{}</p>", book.title)
+        list_html += format_html("<p class='author'>{}</p>", book.author)
+        list_html += format_html("<p class='description'>{}</p>", book.description)
 
         dt = DateFormat(book.date_published)
-        list_html += "<p class='date'>Added on %s</p>" % dt.format("F j, Y g:i A")
+        list_html += format_html("<p class='date'>Added on {}</p>", dt.format("F j, Y g:i A"))
 
         if book.favorite:
-            list_html += "<span class='favorite' title='Cory\'s Favorites'>&#x2605;</span>"
+            list_html += format_html("<span class='favorite' title='Cory\'s Favorites'>&#x2605;</span>")
 
-        list_html += "<a class='overlay' href='%s' target='_blank'></a>" % book.link
-        list_html += "</div>"
+        list_html += format_html("<a class='overlay' href='{}' target='_blank'></a></div>", book.link)
 
     if len(read_list) == 0:
-        list_html += "<p class='empty'>Cory hasn't read any books yet!</p>"
+        list_html += format_html("<p class='empty'>Cory hasn't read any books yet!</p>")
 
-    list_html += "<p class='empty'><a href='%s'>(See More)</a></p>" % reverse('books')
-    list_html += "</div>"
-
+    list_html += format_html("<p class='empty'><a href='%s'>(See More)</a></p></div>", reverse('books'))
     return list_html
 
 
@@ -277,38 +282,38 @@ def stat_box(context):
         return
 
     stats = dashboard_stats()
-    list_html = "<div class='stat-box'>"
-    list_html += "<h3>Stats</h3>"
+    list_html = format_html("<div class='stat-box'>")
+    list_html += format_html("<h3>Stats</h3>")
 
-    list_html += "<p class='green'>"
-    list_html += "<a href='%s'>Ideas</a>:<span class='right'>%s</span>" % (reverse('dashboard-ideas'), stats['idea_count'])
-    list_html += "</p>"
+    list_html += format_html("<p class='green'>")
+    list_html += format_html("<a href='{}'>Ideas</a>:<span class='right'>{}</span>", reverse('dashboard-ideas'), stats['idea_count'])
+    list_html += format_html("</p>")
 
-    list_html += "<p class='purple'>"
-    list_html += "<a href='%s'>Thoughts</a>:<span class='right'>%s</span>" % (reverse('dashboard-thoughts'), stats['thought_count'])
-    list_html += "</p>"
+    list_html += format_html("<p class='purple'>")
+    list_html += format_html("<a href='{}'>Thoughts</a>:<span class='right'>{}</span>", reverse('dashboard-thoughts'), stats['thought_count'])
+    list_html += format_html("</p>")
 
-    list_html += "<p class='blue'>"
-    list_html += "<a href='%s'>Drafts</a>:<span class='right'>%s</span>" % (reverse('dashboard-drafts'), stats['draft_count'])
-    list_html += "</p>"
+    list_html += format_html("<p class='blue'>")
+    list_html += format_html("<a href='{}'>Drafts</a>:<span class='right'>{}</span>", reverse('dashboard-drafts'), stats['draft_count'])
+    list_html += format_html("</p>")
 
-    list_html += "<p class='red'>"
-    list_html += "<a href='%s'>Trash</a>:<span class='right'>%s</span>" % (reverse('dashboard-trash'), stats['trash_count'])
-    list_html += "</p>"
+    list_html += format_html("<p class='red'>")
+    list_html += format_html("<a href='{}'>Trash</a>:<span class='right'>{}</span>", reverse('dashboard-trash'), stats['trash_count'])
+    list_html += format_html("</p>")
 
-    list_html += "<p class='orange'>"
-    list_html += "<a href='%s'>Highlights</a>:<span class='right'>%s</span>" % (reverse('dashboard-highlights'), stats['highlight_count'])
-    list_html += "</p>"
+    list_html += format_html("<p class='orange'>")
+    list_html += format_html("<a href='{}'>Highlights</a>:<span class='right'>{}</span>", reverse('dashboard-highlights'), stats['highlight_count'])
+    list_html += format_html("</p>")
 
-    list_html += "<p class='yellow'>"
-    list_html += "<a href='%s'>Books</a>:" % reverse('dashboard-books')
-    list_html += "<span class='right grey'>"
-    list_html += "<span class='green'>W-</span>%s&nbsp;" % stats['wish_book_count']
-    list_html += "<span class='red'>R-</span>%s&nbsp;" % stats['read_book_count']
-    list_html += "<span class='purple'>T-</span>%s" % stats['total_book_count']
-    list_html += "</span>"
-    list_html += "</p>"
+    list_html += format_html("<p class='yellow'>")
+    list_html += format_html("<a href='{}'>Books</a>:", reverse('dashboard-books'))
+    list_html += format_html("<span class='right grey'>")
+    list_html += format_html("<span class='green'>W-</span>{}&nbsp;", stats['wish_book_count'])
+    list_html += format_html("<span class='red'>R-</span>{}&nbsp;", stats['read_book_count'])
+    list_html += format_html("<span class='purple'>T-</span>{}", stats['total_book_count'])
+    list_html += format_html("</span>")
+    list_html += format_html("</p>")
 
-    list_html += "</div>"
+    list_html += format_html("</div>")
 
     return list_html

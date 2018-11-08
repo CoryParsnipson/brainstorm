@@ -131,7 +131,7 @@ class Thought(models.Model):
     is_draft = models.BooleanField(default=True)
     is_trash = models.BooleanField(default=False)
     date_published = models.DateTimeField(auto_now_add=True)
-    date_edited = models.DateTimeField(auto_now=True, auto_now_add=True)
+    date_edited = models.DateTimeField(auto_now=True)
     preview = models.ImageField(
         upload_to=paths.MEDIA_IMAGE_DIR,
         blank=True,
@@ -456,11 +456,11 @@ class Note(models.Model):
         later. Notes should be able to be linked to ideas, but it is
         not necessary, as they shouldn't represent fully formed thoughts.
     """
-    ideas = models.ManyToManyField(Idea, blank=True, null=True)
-    thoughts = models.ManyToManyField(Thought, blank=True, null=True)
+    ideas = models.ManyToManyField(Idea, blank=True)
+    thoughts = models.ManyToManyField(Thought, blank=True)
     title = models.CharField(max_length=75)
     content = models.TextField(max_length=5000)
-    date_published = models.DateTimeField(auto_now_add=True, auto_now=True)
+    date_published = models.DateTimeField(auto_now_add=True)
 
     # non field members
     allowed_tags = [

@@ -52,3 +52,11 @@ docs/_build/
 
 # PyBuilder
 target/
+
+*.swp
+
+keyring.txt
+
+database/
+venv/
+media/images/
