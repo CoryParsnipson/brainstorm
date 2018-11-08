@@ -2,7 +2,7 @@ amqp==2.3.2
 anyjson==0.3.3
 BeautifulSoup==3.2.1
 billiard==3.5.0.4
-boto==2.36.0
+boto==2.49.0
 celery==4.2.1
 certifi==2018.8.13
 chardet==3.0.4
@@ -11,7 +11,7 @@ Django==1.11.16
 django-appconf==1.0.1
 django-imagekit==4.0.2
 django-postgrespool==0.3.0
-django-storages==1.1.8
+django-storages==1.7.1
 gunicorn==19.5.0
 html5lib==0.999
 idna==2.7
