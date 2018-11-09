@@ -1,6 +1,7 @@
 import os
 import json
 import datetime
+import urllib
 
 import pytz
 from imagekit.models import ImageSpecField

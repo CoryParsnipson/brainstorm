@@ -90,6 +90,10 @@ class HighlightForm(forms.ModelForm):
             }),
         }
 
+    def __init__(self, *args, **kwargs):
+        super(HighlightForm, self).__init__(*args, **kwargs)
+        self.fields['description'].required = False
+
 
 class ReadingListItemForm(forms.ModelForm):
     """ Django form class for managing ReadingListItems
@@ -136,3 +140,8 @@ class NoteForm(forms.ModelForm):
                 'class': 'editor',
             }),
         }
+
+    def __init__(self, *args, **kwargs):
+        super(NoteForm, self).__init__(*args, **kwargs)
+        self.fields['content'].required = False
+
