@@ -118,3 +118,6 @@ TEMPLATES = [
         },
     },
 ]
+
+CELERY_BROKER_URL=os.environ['REDIS_URL']
+CELERY_RESULT_BAKCEND=os.environ['REDIS_URL']

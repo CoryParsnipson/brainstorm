@@ -54,6 +54,10 @@ docs/_build/
 target/
 
 *.swp
+.env
+
+celerybeat-schedule
+dump.rdb
 
 keyring.txt
 
