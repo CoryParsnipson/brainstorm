@@ -220,8 +220,8 @@ function fillout_book_data(data) {
     values[i] = {
       'id_title': decodeURIComponent(data[i].title).replace(/\+/g, ' '),
       'id_author': decodeURIComponent(data[i].author).replace(/\+/g, ' '),
-      'id_link': decodeURIComponent(data[i].url).replace(/\+/g, ' '),
-      'id_cover': decodeURIComponent(data[i].cover).replace(/\+/g, ' '),
+      'id_link': decodeURIComponent(data[i].url),
+      'id_cover': decodeURIComponent(data[i].cover),
     };
 
     results_html += book_preview_html.format(
