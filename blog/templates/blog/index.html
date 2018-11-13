@@ -51,7 +51,7 @@
             <p class="title">
                 <a href="{{ highlight.url }}" target="_blank">{{ highlight.title }}</a>
                 {% if request.user.is_authenticated and request.user.is_superuser %}
-                <a class="edit" href="{% url 'dashboard-highlights' %}?highlight={{ highlight.id }}">edit</a>
+                <a class="edit" href="{% url 'dashboard-highlights' %}?id={{ highlight.id }}">edit</a>
                 {% endif %}
             </p>
             <p class="subtitle"><a href="{{ highlight.url }}" target="_blank">{{ highlight.url }}</a></p>
