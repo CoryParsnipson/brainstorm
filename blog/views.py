@@ -1343,8 +1343,10 @@ class FormHighlightView(View):
         unpublished_highlights = Highlight.objects.filter(is_published=False)
         latest_highlight = Highlight.objects.filter(is_published=True).order_by('-date_published')[:1][0]
 
+        last_published = latest_highlight.date_published.replace(tzinfo=None)
+
         # if there are highlights that are unpublished or the last published highlight was < 24 hours ago
-        if len(unpublished_highlights) > 0 or (datetime.now() - latest_highlight.date_published) < timedelta(2):
+        if len(unpublished_highlights) > 0 or (datetime.now() - last_published) < timedelta(2):
             # calculate publish date by multiplying 2 by number of unpublished highlights + 2 (+/- some random jitter)
             jitter = timedelta(hours=random.randint(-6, 6), minutes=random.randint(-30, 30))
             time_to_publish = 2 * len(unpublished_highlights) + jitter
