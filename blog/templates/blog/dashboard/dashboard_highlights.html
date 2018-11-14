@@ -18,7 +18,7 @@
 
 {% block content %}
 <h2>Highlights on the Web</h2>
-{% include "blog/templates/template_editablelist.html" with queryset=highlights show_highlight_delete=True %}
+{% include "blog/templates/template_editablelist.html" with queryset=highlights show_highlight_delete=True color_unpublished=True %}
 {% include "blog/templates/template_pagination.html" with paginator=paginator pages=pagination %}
 {% endblock %}
 

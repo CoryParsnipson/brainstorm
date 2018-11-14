@@ -50,7 +50,7 @@ def index(request):
         t.content = t.truncate()
 
     # get latest link of the day
-    highlight = Highlight.objects.all().order_by('-date_published')[:1]
+    highlight = Highlight.objects.filter(is_published=True).order_by('-date_published')[:1]
     highlight_cut = False
     if highlight:
         highlight = highlight[0]
@@ -91,7 +91,7 @@ def logout_page(request):
 
 
 def highlights(request):
-    highlight_list = Highlight.objects.all().order_by('-date_published')
+    highlight_list = Highlight.objects.filter(is_published=True).order_by('-date_published')
 
     page = request.GET.get('p')
     paginator, highlights_on_page = lib.create_paginator(
@@ -330,7 +330,7 @@ def dashboard_highlights(request):
 
         ?id=[highlight id]   specify an id to edit an idea
     """
-    highlight_list = Highlight.objects.all().order_by('-date_published')
+    highlight_list = Highlight.objects.all().order_by('is_published', '-date_published')
 
     paginator, highlights_on_page = lib.create_paginator(
         queryset=highlight_list,
@@ -1057,7 +1057,7 @@ def dashboard_stats():
         'draft_count': Thought.objects.filter(is_draft=True, is_trash=False).count(),
         'trash_count': Thought.objects.filter(is_trash=True).count(),
         'idea_count': Idea.objects.all().count(),
-        'highlight_count': Highlight.objects.all().count(),
+        'highlight_count': Highlight.objects.filter(is_published=True).count(),
         'read_book_count': ReadingListItem.objects.filter(wishlist=False).count(),
         'wish_book_count': ReadingListItem.objects.filter(wishlist=True).count(),
         'total_book_count': ReadingListItem.objects.all().count(),

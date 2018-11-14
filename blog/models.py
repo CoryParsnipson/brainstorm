@@ -286,6 +286,7 @@ class Highlight(models.Model):
     description = models.TextField(max_length=1500)
     url = models.URLField(max_length=1000, blank=False, null=False)
     date_published = models.DateTimeField(auto_now_add=True)
+    is_published = models.BooleanField(default=False)
     icon = models.ImageField(
         upload_to=paths.MEDIA_IMAGE_DIR,
         blank=True,

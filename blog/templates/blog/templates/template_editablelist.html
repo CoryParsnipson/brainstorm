@@ -73,6 +73,10 @@
                 {% endfor %}
                 {% endif %}
 
+                {% if color_unpublished and not item.is_published %}
+                <span class="slug orange">Unpublished</span>
+                {% endif %}
+
                 {% if item.idea and show_idea %}<span class="slug purple">{{ item.idea.slug }}</span>{% endif %}
                 {{ item.strip_tags }}
             </td>
