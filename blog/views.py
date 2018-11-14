@@ -1349,7 +1349,7 @@ class FormHighlightView(View):
         if len(unpublished_highlights) > 0 or (datetime.now() - last_published) < timedelta(2):
             # calculate publish date by multiplying 2 by number of unpublished highlights + 2 (+/- some random jitter)
             jitter = timedelta(hours=random.randint(-6, 6), minutes=random.randint(-30, 30))
-            time_to_publish = 2 * len(unpublished_highlights) + jitter
+            time_to_publish = timedelta(days=(2 * len(unpublished_highlights))) + jitter
 
             #publish_highlight.send_async(instance.id, time_to_publish)
             publish_highlight.send_async(instance.id, timedelta(minutes=10))
