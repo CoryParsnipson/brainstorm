@@ -1357,7 +1357,7 @@ class FormHighlightView(View):
                     time_to_publish = timedelta(days=(2 * len(unpublished_highlights))) + jitter
 
                     #publish_highlight.apply_async((highlight.id,), eta=time_to_publish)
-                    publish_highlight.apply_async((highlight.id,), eta=datetime.now() + timedelta(minutes=10))
+                    publish_highlight.apply_async((highlight.id,), eta=datetime.utcnow() + timedelta(minutes=10))
                 else:
                     highlight.is_published = True
             except IndexError as e:
