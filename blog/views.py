@@ -1338,27 +1338,33 @@ class FormHighlightView(View):
 
             msg = "Successfully created Highlight '%s'" % request.POST['title']
 
-        # do a check to see if there is a backlog of highlights and if there is
-        # schedule this highlight to be published in the future
-        unpublished_highlights = Highlight.objects.filter(is_published=False)
-        latest_highlight = Highlight.objects.filter(is_published=True).order_by('-date_published')[:1][0]
-
-        last_published = latest_highlight.date_published.replace(tzinfo=None)
-
-        # if there are highlights that are unpublished or the last published highlight was < 24 hours ago
-        if len(unpublished_highlights) > 0 or (datetime.now() - last_published) < timedelta(2):
-            # calculate publish date by multiplying 2 by number of unpublished highlights + 2 (+/- some random jitter)
-            jitter = timedelta(hours=random.randint(-6, 6), minutes=random.randint(-30, 30))
-            time_to_publish = timedelta(days=(2 * len(unpublished_highlights))) + jitter
-
-            #publish_highlight.apply_async(instance.id, eta=time_to_publish)
-            publish_highlight.apply_async(instance.id, eta=timedelta(minutes=10))
-        else:
-            instance.is_published = True
-
         highlight_form = HighlightForm(request.POST, request.FILES, instance=instance)
         if highlight_form.is_valid():
             highlight = highlight_form.save()
+
+            try:
+                # do a check to see if there is a backlog of highlights and if there is
+                # schedule this highlight to be published in the future
+                unpublished_highlights = Highlight.objects.filter(is_published=False)
+                latest_highlight = Highlight.objects.filter(is_published=True).order_by('-date_published')[:1][0]
+
+                last_published = latest_highlight.date_published.replace(tzinfo=None)
+
+                # if there are highlights that are unpublished or the last published highlight was < 24 hours ago
+                if len(unpublished_highlights) > 0 or (datetime.now() - last_published) < timedelta(2):
+                    # calculate publish date by multiplying 2 by number of unpublished highlights + 2 (+/- some random jitter)
+                    jitter = timedelta(hours=random.randint(-6, 6), minutes=random.randint(-30, 30))
+                    time_to_publish = timedelta(days=(2 * len(unpublished_highlights))) + jitter
+
+                    #publish_highlight.apply_async(highlight.id, eta=time_to_publish)
+                    publish_highlight.apply_async(highlight.id, eta=timedelta(minutes=10))
+                else:
+                    highlight.is_published = True
+            except Exception as e:
+                highlight.is_published = True
+
+            highlight.save()
+
             activity.store_tokens({'title': request.POST['title'], 'id': highlight.id})
             activity.url = reverse('dashboard-highlights') + "?id=" + str(highlight.id)
             activity.save()
