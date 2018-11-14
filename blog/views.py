@@ -1,6 +1,7 @@
 import os
 import urllib
 import random
+from datetime import datetime, timedelta
 
 from django.core import serializers
 from django.core.urlresolvers import reverse
@@ -18,6 +19,7 @@ import lib
 import paths
 from models import Idea, Thought, Highlight, ReadingListItem, Task, Activity, Note
 from forms import LoginForm, IdeaForm, ThoughtForm, HighlightForm, ReadingListItemForm, TaskForm, NoteForm
+from tasks import publish_highlight
 
 
 ###############################################################################
@@ -1335,6 +1337,22 @@ class FormHighlightView(View):
             activity.type = Activity.get_type_id('Added New Highlight')
 
             msg = "Successfully created Highlight '%s'" % request.POST['title']
+
+        # do a check to see if there is a backlog of highlights and if there is
+        # schedule this highlight to be published in the future
+        unpublished_highlights = Highlight.objects.filter(is_published=False)
+        latest_highlight = Highlight.objects.filter(is_published=True).order_by('-date_published')[:1]
+
+        # if there are highlights that are unpublished or the last published highlight was < 24 hours ago
+        if len(unpublished_highlights) > 0 or (datetime.now() - latest_highlight.date_published) < timedelta(2):
+            # calculate publish date by multiplying 2 by number of unpublished highlights + 2 (+/- some random jitter)
+            jitter = timedelta(hours=random.randint(-6, 6), minutes=random.randint(-30, 30))
+            time_to_publish = 2 * len(unpublished_highlights) + jitter
+
+            #publish_highlight.send_async(instance.id, time_to_publish)
+            publish_highlight.send_async(instance.id, timedelta(minutes=10))
+        else:
+            instance.is_published = True
 
         highlight_form = HighlightForm(request.POST, request.FILES, instance=instance)
         if highlight_form.is_valid():
