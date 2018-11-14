@@ -1341,7 +1341,7 @@ class FormHighlightView(View):
         # do a check to see if there is a backlog of highlights and if there is
         # schedule this highlight to be published in the future
         unpublished_highlights = Highlight.objects.filter(is_published=False)
-        latest_highlight = Highlight.objects.filter(is_published=True).order_by('-date_published')[:1]
+        latest_highlight = Highlight.objects.filter(is_published=True).order_by('-date_published')[:1][0]
 
         # if there are highlights that are unpublished or the last published highlight was < 24 hours ago
         if len(unpublished_highlights) > 0 or (datetime.now() - latest_highlight.date_published) < timedelta(2):
