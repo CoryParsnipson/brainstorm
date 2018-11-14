@@ -12,7 +12,6 @@ django-appconf==1.0.1
 django-imagekit==4.0.2
 django-postgrespool==0.3.0
 django-storages==1.7.1
-gunicorn==19.5.0
 html5lib==0.999
 idna==2.7
 kombu==4.2.1
@@ -29,3 +28,4 @@ six==1.9.0
 SQLAlchemy==0.9.8
 urllib3==1.23
 vine==1.1.4
+waitress==1.1.0
