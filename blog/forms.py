@@ -52,6 +52,8 @@ class ThoughtForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super(ThoughtForm, self).__init__(*args, **kwargs)
 
+        self.fields['slug'] = forms.CharField(required=False)
+
         # calculate next url
         next_url = reverse_lazy('dashboard-thoughts') + "?id={idea}"
         self.fields['next'] = forms.CharField(widget=forms.HiddenInput, required=False, initial=next_url)
