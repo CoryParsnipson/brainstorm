@@ -1342,8 +1342,6 @@ class FormHighlightView(View):
         if highlight_form.is_valid():
             highlight = highlight_form.save()
 
-            import pdb; pdb.set_trace()
-
             try:
                 # do a check to see if there is a backlog of highlights and if there is
                 # schedule this highlight to be published in the future
@@ -1362,7 +1360,7 @@ class FormHighlightView(View):
                     publish_highlight.apply_async((highlight.id,), eta=datetime.now() + timedelta(minutes=10))
                 else:
                     highlight.is_published = True
-            except Exception as e:
+            except IndexError as e:
                 highlight.is_published = True
 
             highlight.save()
