@@ -1351,8 +1351,8 @@ class FormHighlightView(View):
             jitter = timedelta(hours=random.randint(-6, 6), minutes=random.randint(-30, 30))
             time_to_publish = timedelta(days=(2 * len(unpublished_highlights))) + jitter
 
-            #publish_highlight.send_async(instance.id, time_to_publish)
-            publish_highlight.send_async(instance.id, timedelta(minutes=10))
+            #publish_highlight.apply_async(instance.id, eta=time_to_publish)
+            publish_highlight.apply_async(instance.id, eta=timedelta(minutes=10))
         else:
             instance.is_published = True
 
