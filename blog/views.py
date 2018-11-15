@@ -1352,15 +1352,9 @@ class FormHighlightView(View):
 
                 # if there are highlights that are unpublished or the last published highlight was < 24 hours ago
                 if len(unpublished_highlights) > 0 or (datetime.now() - last_published) < timedelta(2):
-                    # calculate initial offset time
-                    if len(unpublished_highlights) > 0:
-                        time_to_publish = datetime.utcnow()
-                    else:
-                        time_to_publish = last_published
-
                     # calculate publish date by multiplying 2 by number of unpublished highlights + 2 (+/- some random jitter)
                     jitter = timedelta(hours=random.randint(-6, 6), minutes=random.randint(-30, 30))
-                    time_to_publish += datetime.utcnow() + timedelta(days=(2 * (len(unpublished_highlights) + 1))) + jitter
+                    time_to_publish = last_published + timedelta(days=(2 * (len(unpublished_highlights) + 1))) + jitter
 
                     publish_highlight.apply_async((highlight.id,), eta=time_to_publish)
                 else:
