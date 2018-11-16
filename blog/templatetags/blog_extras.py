@@ -268,7 +268,7 @@ def recently_read(**kwargs):
     if len(read_list) == 0:
         list_html += format_html("<p class='empty'>Cory hasn't read any books yet!</p>")
 
-    list_html += format_html("<p class='empty'><a href='%s'>(See More)</a></p></div>", reverse('books'))
+    list_html += format_html("<p class='empty'><a href='{}'>(See More)</a></p></div>", reverse('books'))
     return list_html
 
 
