@@ -340,7 +340,7 @@ class ReadingListItem(models.Model):
     title = models.CharField(max_length=150)
     author = models.CharField(max_length=150)
     link = models.URLField(max_length=400)
-    description = models.CharField(max_length=200, blank=True, null=True)
+    description = models.CharField(max_length=1500, blank=True, null=True)
     date_published = models.DateTimeField(auto_now_add=True)
     wishlist = models.BooleanField(default=False)
     favorite = models.BooleanField(default=False)
