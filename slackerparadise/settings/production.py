@@ -13,18 +13,13 @@ import os
 import dj_database_url  # heroku postgres adapter
 
 import paths
-import common
 
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.7/howto/deployment/checklist/
 
-# instatiate keyring object
-keyring = common.KeyRing()
-
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = os.environ['DJANGO_SECRET_KEY']
-keyring.set("SECRET_KEY", SECRET_KEY)
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
@@ -99,11 +94,6 @@ AWS_ACCESS_KEY_ID = os.environ['AWS_ACCESS_KEY_ID']
 AWS_SECRET_ACCESS_KEY = os.environ['AWS_SECRET_ACCESS_KEY']
 AWS_STORAGE_BUCKET_NAME = os.environ['S3_BUCKET_NAME']
 AWS_ASSOCIATE_TAG = os.environ['AWS_ASSOCIATE_TAG']
-
-keyring.set("AWS_ACCESS_KEY_ID", AWS_ACCESS_KEY_ID)
-keyring.set("AWS_SECRET_ACCESS_KEY", AWS_SECRET_ACCESS_KEY)
-keyring.set("AWS_STORAGE_BUCKET_NAME", AWS_STORAGE_BUCKET_NAME)
-keyring.set("AWS_ASSOCIATE_TAG", AWS_ASSOCIATE_TAG)
 
 # media files
 MEDIA_URL = 'http://%s.s3.amazonaws.com/media/' % AWS_STORAGE_BUCKET_NAME

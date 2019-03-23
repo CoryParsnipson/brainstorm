@@ -11,17 +11,13 @@ https://docs.djangoproject.com/en/1.7/ref/settings/
 import os
 
 import paths
-import common
 
-
-# instatiate keyring object
-keyring = common.KeyRing(os.path.join(paths.KEYRING_DIR, 'keyring.txt'))
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.7/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = keyring.get('DJANGO_SECRET_KEY')
+SECRET_KEY = os.environ['DJANGO_SECRET_KEY']
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True

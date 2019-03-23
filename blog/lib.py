@@ -20,7 +20,6 @@ from django.utils import timezone
 from django.utils.http import urlunquote_plus
 
 import paths
-import common
 
 ###############################################################################
 # app level defines
