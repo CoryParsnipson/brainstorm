@@ -15,11 +15,11 @@ from django.contrib import messages
 from django.contrib.auth import authenticate, login as auth_login, logout as auth_logout
 from django.contrib.auth.decorators import login_required
 
-import lib
+from blog import lib
 import paths
-from models import Idea, Thought, Highlight, ReadingListItem, Task, Activity, Note
-from forms import LoginForm, IdeaForm, ThoughtForm, HighlightForm, ReadingListItemForm, TaskForm, NoteForm
-from tasks import publish_highlight
+from blog.models import Idea, Thought, Highlight, ReadingListItem, Task, Activity, Note
+from blog.forms import LoginForm, IdeaForm, ThoughtForm, HighlightForm, ReadingListItemForm, TaskForm, NoteForm
+from blog.tasks import publish_highlight
 
 
 ###############################################################################

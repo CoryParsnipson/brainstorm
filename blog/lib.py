@@ -545,7 +545,7 @@ def create_pagination(queryset, current_page, per_page=PAGINATION_THOUGHTS_PER_P
         lower_pages = []
         upper_pages = []
 
-    pagination['pages'] = lower_pages + [current_page.number] + upper_pages
+    pagination['pages'] = [i for j in (lower_pages, [current_page.number], upper_pages) for i in j]
 
     return pagination
 

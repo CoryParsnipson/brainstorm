@@ -59,7 +59,7 @@ target/
 celerybeat-schedule
 dump.rdb
 
-keyring.txt
+keyring.sh
 
 database/
 venv/

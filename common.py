@@ -25,7 +25,7 @@ class KeyRing:
             # open given filename (assume relative to cwd if not absolute path)
             f = open(keyfile)
         except IOError as e:
-            print "KeyRing: " + e.message
+            print("KeyRing: " + e.message)
             return
 
         for line in f:

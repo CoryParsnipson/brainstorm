@@ -6,7 +6,7 @@ import urllib
 import pytz
 from imagekit.models import ImageSpecField
 from imagekit.processors import Crop
-from BeautifulSoup import BeautifulSoup
+from bs4 import BeautifulSoup
 
 from django.db import models
 from django.db.models import Max
@@ -15,7 +15,7 @@ from django.conf import settings
 from django.contrib.auth.models import User
 
 import paths
-import lib
+from blog import lib
 
 
 ###############################################################################
