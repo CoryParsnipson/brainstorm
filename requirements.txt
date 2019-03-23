@@ -20,6 +20,7 @@ pilkit==2.0
 Pillow==5.4.1
 psycopg2==2.7.7
 pytz==2018.7
+redis==3.2.1
 requests==2.21.0
 six==1.9.0
 soupsieve==1.8
