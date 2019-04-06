@@ -3,7 +3,7 @@ anyjson==0.3.3
 beautifulsoup4==4.7.1
 billiard==3.6.0.0
 boto==2.49.0
-celery==4.3.0rc3
+celery==4.3.0
 certifi==2018.8.13
 chardet==3.0.4
 dj-database-url==0.3.0

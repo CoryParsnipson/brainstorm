@@ -110,6 +110,9 @@ class Idea(models.Model):
         lib.delete_file(self.icon.name)
         super(Idea, self).delete(*args, **kwargs)
 
+    def __str__(self):
+        return self.__unicode__()
+
     def __unicode__(self):
         return self.name
 
