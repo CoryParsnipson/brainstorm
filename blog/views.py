@@ -222,7 +222,7 @@ def idea_detail(request, idea_slug=None):
 
     # pick from a list, prevent duplicates
     other_ideas = Idea.objects.exclude(slug=idea_slug)
-    indices = range(0, len(other_ideas))
+    indices = list(range(0, len(other_ideas)))
     footer_ideas = []
     while indices and len(footer_ideas) < lib.NUM_IDEAS_FOOTER:
         idx = random.randint(1, len(indices)) - 1
