@@ -825,7 +825,7 @@ def upload(request):
 def generate_upload_filename(request, filename, full_path=None):
     """ server call to calculate filename of uploaded file
     """
-    filename = urllib.unquote(filename)
+    filename = urllib.parse.unquote(filename)
     filename = filename.replace('\\', os.sep)
     return JsonResponse(lib.generate_upload_filename(filename, full_path), safe=False)
 
