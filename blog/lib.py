@@ -583,7 +583,7 @@ def display_compact_date(dt=None):
         display_date = timezone.localtime(dt).strftime("%I:%M %p").lstrip('0')
     elif age < datetime.timedelta(days=5):
         display_date = "%s day%s ago" % (age.days, 's' if age.days > 1 else '')
-    elif age < datetime.timedelta(days=now.day):
+    elif age < datetime.timedelta(days=now.day * now.month):
         display_date = dt.strftime("%b %d")
     else:
         display_date = dt.strftime("%b %Y")
@@ -611,7 +611,7 @@ def display_fancy_date(dt=None):
         display_date = 'Today'
     elif age < datetime.timedelta(days=2):
         display_date = 'Yesterday'
-    elif age < datetime.timedelta(days=now.day):
+    elif age < datetime.timedelta(days=now.day * now.month):
         display_date = dt.strftime("%B %d")
     else:
         display_date = dt.strftime("%b %Y")
