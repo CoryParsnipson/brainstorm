@@ -17,7 +17,7 @@ idna==2.7
 kombu==4.4.0
 lxml==4.3.2
 pilkit==2.0
-Pillow==5.4.1
+Pillow==6.2.1
 psycopg2==2.7.7
 pytz==2018.7
 redis==3.2.1
