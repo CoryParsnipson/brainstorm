@@ -10,8 +10,8 @@ Hello, Human:
 
 If you are reading this then I, Cory Parsnipson, have most certainly died in a terribly gruesome way. Slacker Paradise is in danger and it is up to *you* to restore it to its once majestic glory.
   
-Set up a VirtualEnv, You Freaking Dope
---------------------------------------
+Set up a VirtualEnv
+-------------------
 
 Look at requirements.txt. Look at it. Can you get all these things together and put them in a virtual environment? What do you mean, "no"? Fuck off, just do it.
 
